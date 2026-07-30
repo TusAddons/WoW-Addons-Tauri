@@ -1195,7 +1195,7 @@ end
 -- Swaps the left and right comparison items.
 function PawnUI_SwapCompareItems()
 	local Item1, Item2 = PawnUIComparisonItems[1], PawnUIComparisonItems[2]
-	if SOUNDKIT then PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON) else PlaySound("igMainMenuOptionCheckBoxOn") end
+	if SOUNDKIT then PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON) else PlaySound(856) end
 	-- Set the right item to nil first so that unnecessary comparisons aren't performed.
 	PawnUI_SetCompareItem(2, nil)
 	PawnUI_SetCompareItem(1, Item2)

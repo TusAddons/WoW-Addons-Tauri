@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Swatter - An AddOn debugging aid for World of Warcraft.
 	Version: 7.3.1 (<%codename%>)
 	Revision: $Id: Swatter.lua 424 2016-11-26 17:06:54Z brykrys $
@@ -275,7 +275,7 @@ end
 
 local function keyPairs(t,f)
 	local a, i = {}, 0
-	for n in pairs(t) do table.insert(a, n) end
+	for n in pairs(t) do a[#a+1] = n end
 	table.sort(a, f)
 	local iter = function ()
 		i = i + 1
@@ -397,7 +397,7 @@ function Swatter.OnEvent(frame, event, ...)
 		if (addon:lower() == "!swatter") then
 			-- We need to cleanup our error history
 			if (not SwatterData.errors) then SwatterData.errors = {} end
-			local ec = table.getn(SwatterData.errors) or 0
+			local ec = #(SwatterData.errors) or 0
 			if (ec > Swatter.HISTORY_SIZE) then
 				local remove = ec - Swatter.HISTORY_SIZE
 				for i=1, remove do
@@ -535,7 +535,7 @@ end
 
 function Swatter.ErrorNext()
 	local cur = Swatter.Error.pos or 1
-	local max = table.getn(Swatter.errorOrder) or 0
+	local max = #(Swatter.errorOrder) or 0
 	if (cur < max) then
 		Swatter.ErrorDisplay(cur + 1)
 	else

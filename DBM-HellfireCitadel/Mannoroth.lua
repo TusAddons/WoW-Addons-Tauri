@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod(1395, "DBM-HellfireCitadel", nil, 669)
+﻿local mod	= DBM:NewMod(1395, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 31 $"):sub(12, -3))
@@ -574,13 +574,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self:IsMythic() then
 			if not tContains(doomSpikeTargets, args.destName) then
-				table.insert(doomSpikeTargets, args.destName)
+				doomSpikeTargets[#doomSpikeTargets+1] = args.destName
 			end
 			updateRangeFrame(self)
 		end
 	elseif spellId == 186362 then--Only cast once per phase transition (twice whole fight)
 		if not tContains(guldanTargets, args.destName) then
-			table.insert(guldanTargets, args.destName)
+			guldanTargets[#guldanTargets+1] = args.destName
 		end
 		warnWrathofGuldan:CombinedShow(0.3, args.destName)
 		local icon = self.vb.wrathIcon

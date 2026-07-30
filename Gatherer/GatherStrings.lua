@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 	WARNING: This is a generated file.
 	If you wish to perform or update localizations, please go to our Localizer website at:
 	http://localizer.norganna.org/
@@ -1078,7 +1078,7 @@ GathererLocalizations = {
 		["REPORT_COLUMN_HEADER_Y"]	= "Y";
 		["REPORT_DELETE_CONFIRMATION"]	= "Seguro que quieres borrar %d nodos de recolección?";
 		["REPORT_DELETE_MARKED"]	= "Eliminar los marcados";
-		["REPORT_MARKED_NODES_COUNT"]	= "Nodos marcados: &1";
+		["REPORT_MARKED_NODES_COUNT"]	= "Nodos marcados: %1";
 		["REPORT_MARKING_NOTE"]	= "Nota: Cuando marcas nodos, estos permanecerán marcados hasta que los desmarques ya sea haciendo click en la linea del objeto, usando el botón de desmarcar o recargando el juego.";
 		["REPORT_MARK_THESE"]	= "Marcar esos";
 		["REPORT_SEARCH_BY_REGION"]	= "Por región";

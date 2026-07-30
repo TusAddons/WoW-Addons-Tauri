@@ -1,4 +1,4 @@
---[[	*** DataStore Export Script ***
+﻿--[[	*** DataStore Export Script ***
 Written by : Thaoky, EU-Marecages de Zangar
 Date: 10-03-2010
 
@@ -115,7 +115,7 @@ local tab = {  -- tab[i][j] = xor(i-1, j-1)
 function bXor(a, b)
 	local res, c = 0, 1
 	while a > 0 and b > 0 do
-		local a2, b2 = math.mod(a, 16), math.mod(b, 16)
+		local a2, b2 = math.fmod(a, 16), math.fmod(b, 16)
 		res = res + tab[a2+1][b2+1]*c
 		a = (a-a2)/16
 		b = (b-b2)/16

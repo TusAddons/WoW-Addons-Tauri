@@ -1,9 +1,9 @@
 ## Interface: 70300
 ## Title: PetTracker Journal
+## Author: Artiom97es
 ## Notes: Load on demand modification for the Pet Journal.
-## Author: Jaliborc (João Cardoso)
 ## X-Category: Battle Pets
-## Version: 7.3.0
+## Version: 7.3.1-Artiom97es
 
 ## Dependencies: PetTracker
 ## LoadWith: Blizzard_Collections

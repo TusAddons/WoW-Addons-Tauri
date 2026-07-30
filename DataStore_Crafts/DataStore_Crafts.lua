@@ -1,5 +1,5 @@
---[[	*** DataStore_Crafts ***
-Written by : Thaoky, EU-Marécages de Zangar
+﻿--[[	*** DataStore_Crafts ***
+Written by : Thaoky, EU-MarÃ©cages de Zangar
 June 23rd, 2009
 --]]
 if not DataStore then return end
@@ -183,12 +183,12 @@ local function ScanCooldowns()
 				local cooldownTime = localTime + cooldown
 				if math.abs (( cooldownTime < THREEOCLOCK and SECONDSPERDAY or 0 ) + cooldownTime - SECONDSPERDAY ) < 300 then
 					if serverTime > THREEOCLOCK then
-						table.insert(profession.Cooldowns, skillName .. "|" .. THREEOCLOCK .. "|" .. serverDate - timediff + SECONDSPERDAY)
+						profession.Cooldowns[#profession.Cooldowns+1] = skillName .. "|" .. THREEOCLOCK .. "|" .. serverDate - timediff + SECONDSPERDAY
 					else
-						table.insert(profession.Cooldowns, skillName .. "|" .. THREEOCLOCK .. "|" .. serverDate - timediff)
+						profession.Cooldowns[#profession.Cooldowns+1] = skillName .. "|" .. THREEOCLOCK .. "|" .. serverDate - timediff
 					end
 				else
-					table.insert(profession.Cooldowns, skillName .. "|" .. cooldown .. "|" .. serverClock)
+					profession.Cooldowns[#profession.Cooldowns+1] = skillName .. "|" .. cooldown .. "|" .. serverClock
 				end
 			end
 		end
@@ -393,7 +393,7 @@ end
 --	"Your skill in (.+) has increased to (%d+)."
 local arg1pattern, arg2pattern
 if GetLocale() == "deDE" then		
-	-- ERR_SKILL_UP_SI = "Eure Fertigkeit '%1$s' hat sich auf %2$d erhöht.";
+	-- ERR_SKILL_UP_SI = "Eure Fertigkeit '%1$s' hat sich auf %2$d erhÃ¶ht.";
 	arg1pattern = "'%%1%$s'"
 	arg2pattern = "%%2%$d"
 else

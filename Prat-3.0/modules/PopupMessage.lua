@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------
 --
 -- Prat - A framework for World of Warcraft chat mods
 --
@@ -229,27 +229,27 @@ L=
 		["Clear Nickname"] = "Efface le surnom",
 		--[[Translation missing --]]
 		--[[ ["Clears alternate name to show in popups."] = "",--]] 
-		["framealpha_desc"] = "Régler la transparence de la popup lorsqu'elle disparait.",
+		["framealpha_desc"] = "RÃ©gler la transparence de la popup lorsqu'elle disparait.",
 		["framealpha_name"] = "Transparence des popups",
 		["Popup"] = true,
 		["PopupMessage"] = "Message popup",
 		["Remove Nickname"] = "Retirer un surnom",
 		--[[Translation missing --]]
 		--[[ ["Removes an alternate name to show in popups."] = "",--]] 
-		["Set Separately"] = "Afficher séparément",
+		["Set Separately"] = "Afficher sÃ©parÃ©ment",
 		["Show All Popups"] = "Afficher toutes les popups",
 		["Show Popups"] = "Afficher les popups",
-		["Show Popups for all chat windows."] = "Afficher les popups pour toutes les fenêtres de discussion.",
-		["Show Popups for each window."] = "Afficher les popups pour chaque fenêtre.",
-		["show_desc"] = "Afficher les popups pour chaque fenêtre.",
+		["Show Popups for all chat windows."] = "Afficher les popups pour toutes les fenÃªtres de discussion.",
+		["Show Popups for each window."] = "Afficher les popups pour chaque fenÃªtre.",
+		["show_desc"] = "Afficher les popups pour chaque fenÃªtre.",
 		["show_name"] = "Afficher les popups",
-		["show_perframedesc"] = "Active ou désactive l'affichage des popups.",
-		["show_perframename"] = "Afficher les popups de la fenêtre de discussion %d",
-		["showall_desc"] = "Afficher les popups pour toutes les fenêtres de discussion.",
+		["show_perframedesc"] = "Active ou dÃ©sactive l'affichage des popups.",
+		["show_perframename"] = "Afficher les popups de la fenÃªtre de discussion %d",
+		["showall_desc"] = "Afficher les popups pour toutes les fenÃªtres de discussion.",
 		["showall_name"] = "Afficher toutes les popups",
-		["Shows messages in a popup window."] = "Afficher les messages dans une fenêtre popup.",
+		["Shows messages in a popup window."] = "Afficher les messages dans une fenÃªtre popup.",
 		["Shows messages with your name in a popup."] = "Afficher les messages avec votre nom dans une popup.",
-		["Toggle setting options separately for each chat window."] = "Activer des préférences différentes pour chaque fenêtre de discussion.",
+		["Toggle setting options separately for each chat window."] = "Activer des prÃ©fÃ©rences diffÃ©rentes pour chaque fenÃªtre de discussion.",
 	}
 }
 PL:AddLocale(PRAT_MODULE, "frFR",L)
@@ -259,10 +259,10 @@ PL:AddLocale(PRAT_MODULE, "frFR",L)
 L=
 {
 	["PopupMessage"] = {
-		["Add Nickname"] = "Spitzname hinzufügen",
-		["Adds an alternate name to show in popups."] = "Einen anderen (alternierenden) Namen hinzufügen, der in Popups angezeigt werden soll.",
-		["Clear Nickname"] = "Spitznamen löschen",
-		["Clears alternate name to show in popups."] = "Einen anderen (alternierenden) Namen löschen, der in Popups angezeigt werden soll.",
+		["Add Nickname"] = "Spitzname hinzufÃ¼gen",
+		["Adds an alternate name to show in popups."] = "Einen anderen (alternierenden) Namen hinzufÃ¼gen, der in Popups angezeigt werden soll.",
+		["Clear Nickname"] = "Spitznamen lÃ¶schen",
+		["Clears alternate name to show in popups."] = "Einen anderen (alternierenden) Namen lÃ¶schen, der in Popups angezeigt werden soll.",
 		["framealpha_desc"] = "Den Transparenzwert des Popup-Rahmens bei voller Darstellung einstellen.",
 		["framealpha_name"] = "Transparenz der Popup-Rahmens",
 		["Popup"] = true,
@@ -272,17 +272,17 @@ L=
 		["Set Separately"] = "Einzeln einstellen",
 		["Show All Popups"] = "Alle Popups anzeigen",
 		["Show Popups"] = "Popups anzeigen",
-		["Show Popups for all chat windows."] = "Popups für alle Chatfenster anzeigen.",
-		["Show Popups for each window."] = "Popups für jedes Fenster anzeigen.",
-		["show_desc"] = "Popups für jedes Fenster anzeigen.",
+		["Show Popups for all chat windows."] = "Popups fÃ¼r alle Chatfenster anzeigen.",
+		["Show Popups for each window."] = "Popups fÃ¼r jedes Fenster anzeigen.",
+		["show_desc"] = "Popups fÃ¼r jedes Fenster anzeigen.",
 		["show_name"] = "Popups anzeigen",
 		["show_perframedesc"] = "Anzeige der Popups ein- und ausschalten.",
 		["show_perframename"] = "Popups vom Chatfenster%d anzeigen",
-		["showall_desc"] = "Popups für alle Chatfenster anzeigen.",
+		["showall_desc"] = "Popups fÃ¼r alle Chatfenster anzeigen.",
 		["showall_name"] = "Alle Popups anzeigen",
 		["Shows messages in a popup window."] = "Mitteilungen in einem Popup-Fenster anzeigen.",
 		["Shows messages with your name in a popup."] = "Mitteilungen in einem Popup-Fenster mit deinem Namen anzeigen.",
-		["Toggle setting options separately for each chat window."] = "Optionseinstellungen einzeln für jedes Chatfenster umschalten.",
+		["Toggle setting options separately for each chat window."] = "Optionseinstellungen einzeln fÃ¼r jedes Chatfenster umschalten.",
 	}
 }
 PL:AddLocale(PRAT_MODULE, "deDE", L)
@@ -290,30 +290,30 @@ PL:AddLocale(PRAT_MODULE, "deDE", L)
 L=
 {
 	["PopupMessage"] = {
-		["Add Nickname"] = "별명 추가",
-		["Adds an alternate name to show in popups."] = "팝업에 표시할 별명을 추가합니다.",
-		["Clear Nickname"] = "별명 전체 삭제",
-		["Clears alternate name to show in popups."] = "팝업에 표시할 별명을 전체 삭제합니다.",
-		["framealpha_desc"] = "가장 밝아졌을 때 팝업 창의 투명도를 설정합니다.",
-		["framealpha_name"] = "팝업 창 투명도",
-		["Popup"] = "팝업",
-		["PopupMessage"] = "팝업 메시지",
-		["Remove Nickname"] = "별명 제거",
-		["Removes an alternate name to show in popups."] = "팝업에 표시할 별명을 제거합니다.",
-		["Set Separately"] = "개별 설정",
-		["Show All Popups"] = "모든 팝업 표시",
-		["Show Popups"] = "팝업 표시",
-		["Show Popups for all chat windows."] = "모든 대화창에 팝업을 표시합니다.",
-		["Show Popups for each window."] = "각 대화창 별로 팝업을 표시합니다.",
-		["show_desc"] = "각 창 별로 팝업을 표시합니다.",
-		["show_name"] = "팝업 표시",
-		["show_perframedesc"] = "팝업 표시 여부를 토글합니다.",
-		["show_perframename"] = "%d번 대화창 팝업 표시",
-		["showall_desc"] = "모든 대화창에 팝업을 표시합니다.",
-		["showall_name"] = "모든 팝업 표시",
-		["Shows messages in a popup window."] = "팝업창 안에 메시지를 표시합니다.",
-		["Shows messages with your name in a popup."] = "팝업 창에 당신의 이름과 메시지를 같이 표시합니다.",
-		["Toggle setting options separately for each chat window."] = "각 대화창 별로 설정 옵션을 끄거나 켭니다.",
+		["Add Nickname"] = "ë³„ëª… ì¶”ê°€",
+		["Adds an alternate name to show in popups."] = "íŒì—…ì— í‘œì‹œí•  ë³„ëª…ì„ ì¶”ê°€í•©ë‹ˆë‹¤.",
+		["Clear Nickname"] = "ë³„ëª… ì „ì²´ ì‚­ì œ",
+		["Clears alternate name to show in popups."] = "íŒì—…ì— í‘œì‹œí•  ë³„ëª…ì„ ì „ì²´ ì‚­ì œí•©ë‹ˆë‹¤.",
+		["framealpha_desc"] = "ê°€ìž¥ ë°ì•„ì¡Œì„ ë•Œ íŒì—… ì°½ì˜ íˆ¬ëª…ë„ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.",
+		["framealpha_name"] = "íŒì—… ì°½ íˆ¬ëª…ë„",
+		["Popup"] = "íŒì—…",
+		["PopupMessage"] = "íŒì—… ë©”ì‹œì§€",
+		["Remove Nickname"] = "ë³„ëª… ì œê±°",
+		["Removes an alternate name to show in popups."] = "íŒì—…ì— í‘œì‹œí•  ë³„ëª…ì„ ì œê±°í•©ë‹ˆë‹¤.",
+		["Set Separately"] = "ê°œë³„ ì„¤ì •",
+		["Show All Popups"] = "ëª¨ë“  íŒì—… í‘œì‹œ",
+		["Show Popups"] = "íŒì—… í‘œì‹œ",
+		["Show Popups for all chat windows."] = "ëª¨ë“  ëŒ€í™”ì°½ì— íŒì—…ì„ í‘œì‹œí•©ë‹ˆë‹¤.",
+		["Show Popups for each window."] = "ê° ëŒ€í™”ì°½ ë³„ë¡œ íŒì—…ì„ í‘œì‹œí•©ë‹ˆë‹¤.",
+		["show_desc"] = "ê° ì°½ ë³„ë¡œ íŒì—…ì„ í‘œì‹œí•©ë‹ˆë‹¤.",
+		["show_name"] = "íŒì—… í‘œì‹œ",
+		["show_perframedesc"] = "íŒì—… í‘œì‹œ ì—¬ë¶€ë¥¼ í† ê¸€í•©ë‹ˆë‹¤.",
+		["show_perframename"] = "%dë²ˆ ëŒ€í™”ì°½ íŒì—… í‘œì‹œ",
+		["showall_desc"] = "ëª¨ë“  ëŒ€í™”ì°½ì— íŒì—…ì„ í‘œì‹œí•©ë‹ˆë‹¤.",
+		["showall_name"] = "ëª¨ë“  íŒì—… í‘œì‹œ",
+		["Shows messages in a popup window."] = "íŒì—…ì°½ ì•ˆì— ë©”ì‹œì§€ë¥¼ í‘œì‹œí•©ë‹ˆë‹¤.",
+		["Shows messages with your name in a popup."] = "íŒì—… ì°½ì— ë‹¹ì‹ ì˜ ì´ë¦„ê³¼ ë©”ì‹œì§€ë¥¼ ê°™ì´ í‘œì‹œí•©ë‹ˆë‹¤.",
+		["Toggle setting options separately for each chat window."] = "ê° ëŒ€í™”ì°½ ë³„ë¡œ ì„¤ì • ì˜µì…˜ì„ ë„ê±°ë‚˜ ì¼­ë‹ˆë‹¤.",
 	}
 }
 PL:AddLocale(PRAT_MODULE, "koKR",L)
@@ -374,68 +374,68 @@ PL:AddLocale(PRAT_MODULE, "esMX",L)
 L=
 {
 	["PopupMessage"] = {
-		["Add Nickname"] = "Добавить ник",
-		["Adds an alternate name to show in popups."] = "Добавить альтернативное имя для отображения при всплывании.",
-		["Clear Nickname"] = "Очистить ники",
-		["Clears alternate name to show in popups."] = "Очистить альтернативные имена для отображения при всплывании.",
-		["framealpha_desc"] = "Установка прозрачности всплывающего окна при полном затухании.",
-		["framealpha_name"] = "Прозрачность окна всплывания",
-		["Popup"] = "Всплывающий",
-		["PopupMessage"] = "Всплывающее окно",
-		["Remove Nickname"] = "Удалить ник",
-		["Removes an alternate name to show in popups."] = "Удалить альтернативное имя для отображения при всплывании.",
-		["Set Separately"] = "Разделение",
-		["Show All Popups"] = "Все всплывающие",
-		["Show Popups"] = "Показывать всплывания",
-		["Show Popups for all chat windows."] = "Показывать всплывающие окна для всего чата.",
-		["Show Popups for each window."] = "Показывать всплывания для всех окон.",
-		["show_desc"] = "Отображать всплывние для всех окон чата.",
-		["show_name"] = "Показывать всплывание",
-		["show_perframedesc"] = "Вкл/Выкл отображение всплывания.",
-		["show_perframename"] = "Показать всплывание окна %d",
-		["showall_desc"] = "Показывать всплывающие окна для всего чата.",
-		["showall_name"] = "Все всплывающие",
-		["Shows messages in a popup window."] = "Показывать сообщение во всплывающем окне.",
-		["Shows messages with your name in a popup."] = "Показывать сообщение с вашим именем во всплывающем окне.",
-		["Toggle setting options separately for each chat window."] = "Вкл/Выкл настройки разделения для всех окон чата.",
+		["Add Nickname"] = "Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð½Ð¸Ðº",
+		["Adds an alternate name to show in popups."] = "Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð°Ð»ÑŒÑ‚ÐµÑ€Ð½Ð°Ñ‚Ð¸Ð²Ð½Ð¾Ðµ Ð¸Ð¼Ñ Ð´Ð»Ñ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ Ð¿Ñ€Ð¸ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°Ð½Ð¸Ð¸.",
+		["Clear Nickname"] = "ÐžÑ‡Ð¸ÑÑ‚Ð¸Ñ‚ÑŒ Ð½Ð¸ÐºÐ¸",
+		["Clears alternate name to show in popups."] = "ÐžÑ‡Ð¸ÑÑ‚Ð¸Ñ‚ÑŒ Ð°Ð»ÑŒÑ‚ÐµÑ€Ð½Ð°Ñ‚Ð¸Ð²Ð½Ñ‹Ðµ Ð¸Ð¼ÐµÐ½Ð° Ð´Ð»Ñ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ Ð¿Ñ€Ð¸ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°Ð½Ð¸Ð¸.",
+		["framealpha_desc"] = "Ð£ÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ° Ð¿Ñ€Ð¾Ð·Ñ€Ð°Ñ‡Ð½Ð¾ÑÑ‚Ð¸ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°ÑŽÑ‰ÐµÐ³Ð¾ Ð¾ÐºÐ½Ð° Ð¿Ñ€Ð¸ Ð¿Ð¾Ð»Ð½Ð¾Ð¼ Ð·Ð°Ñ‚ÑƒÑ…Ð°Ð½Ð¸Ð¸.",
+		["framealpha_name"] = "ÐŸÑ€Ð¾Ð·Ñ€Ð°Ñ‡Ð½Ð¾ÑÑ‚ÑŒ Ð¾ÐºÐ½Ð° Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°Ð½Ð¸Ñ",
+		["Popup"] = "Ð’ÑÐ¿Ð»Ñ‹Ð²Ð°ÑŽÑ‰Ð¸Ð¹",
+		["PopupMessage"] = "Ð’ÑÐ¿Ð»Ñ‹Ð²Ð°ÑŽÑ‰ÐµÐµ Ð¾ÐºÐ½Ð¾",
+		["Remove Nickname"] = "Ð£Ð´Ð°Ð»Ð¸Ñ‚ÑŒ Ð½Ð¸Ðº",
+		["Removes an alternate name to show in popups."] = "Ð£Ð´Ð°Ð»Ð¸Ñ‚ÑŒ Ð°Ð»ÑŒÑ‚ÐµÑ€Ð½Ð°Ñ‚Ð¸Ð²Ð½Ð¾Ðµ Ð¸Ð¼Ñ Ð´Ð»Ñ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ Ð¿Ñ€Ð¸ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°Ð½Ð¸Ð¸.",
+		["Set Separately"] = "Ð Ð°Ð·Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ",
+		["Show All Popups"] = "Ð’ÑÐµ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°ÑŽÑ‰Ð¸Ðµ",
+		["Show Popups"] = "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°Ð½Ð¸Ñ",
+		["Show Popups for all chat windows."] = "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°ÑŽÑ‰Ð¸Ðµ Ð¾ÐºÐ½Ð° Ð´Ð»Ñ Ð²ÑÐµÐ³Ð¾ Ñ‡Ð°Ñ‚Ð°.",
+		["Show Popups for each window."] = "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°Ð½Ð¸Ñ Ð´Ð»Ñ Ð²ÑÐµÑ… Ð¾ÐºÐ¾Ð½.",
+		["show_desc"] = "ÐžÑ‚Ð¾Ð±Ñ€Ð°Ð¶Ð°Ñ‚ÑŒ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð½Ð¸Ðµ Ð´Ð»Ñ Ð²ÑÐµÑ… Ð¾ÐºÐ¾Ð½ Ñ‡Ð°Ñ‚Ð°.",
+		["show_name"] = "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°Ð½Ð¸Ðµ",
+		["show_perframedesc"] = "Ð’ÐºÐ»/Ð’Ñ‹ÐºÐ» Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ðµ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°Ð½Ð¸Ñ.",
+		["show_perframename"] = "ÐŸÐ¾ÐºÐ°Ð·Ð°Ñ‚ÑŒ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°Ð½Ð¸Ðµ Ð¾ÐºÐ½Ð° %d",
+		["showall_desc"] = "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°ÑŽÑ‰Ð¸Ðµ Ð¾ÐºÐ½Ð° Ð´Ð»Ñ Ð²ÑÐµÐ³Ð¾ Ñ‡Ð°Ñ‚Ð°.",
+		["showall_name"] = "Ð’ÑÐµ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°ÑŽÑ‰Ð¸Ðµ",
+		["Shows messages in a popup window."] = "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð²Ð¾ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°ÑŽÑ‰ÐµÐ¼ Ð¾ÐºÐ½Ðµ.",
+		["Shows messages with your name in a popup."] = "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ñ Ð²Ð°ÑˆÐ¸Ð¼ Ð¸Ð¼ÐµÐ½ÐµÐ¼ Ð²Ð¾ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°ÑŽÑ‰ÐµÐ¼ Ð¾ÐºÐ½Ðµ.",
+		["Toggle setting options separately for each chat window."] = "Ð’ÐºÐ»/Ð’Ñ‹ÐºÐ» Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ñ€Ð°Ð·Ð´ÐµÐ»ÐµÐ½Ð¸Ñ Ð´Ð»Ñ Ð²ÑÐµÑ… Ð¾ÐºÐ¾Ð½ Ñ‡Ð°Ñ‚Ð°.",
 	}
 }
 PL:AddLocale(PRAT_MODULE, "ruRU",L)
 L=
 {
 	["PopupMessage"] = {
-		["Add Nickname"] = "添加昵称",
-		["Adds an alternate name to show in popups."] = "添加一个显示在弹出中的替换名",
-		["Clear Nickname"] = "清除昵称",
-		["Clears alternate name to show in popups."] = "弹出显示清除候补名称",
-		["framealpha_desc"] = "设置完全消失时弹出框体透明度值",
-		["framealpha_name"] = "弹出框体透明度",
-		["Popup"] = "弹出",
-		["PopupMessage"] = "弹出信息",
-		["Remove Nickname"] = "移除昵称",
-		["Removes an alternate name to show in popups."] = "移除在弹出里显示的候补名称",
-		["Set Separately"] = "个别设置",
-		["Show All Popups"] = "显示所有弹出",
-		["Show Popups"] = "显示弹出",
-		["Show Popups for all chat windows."] = "为所有聊天窗后显示弹出",
-		["Show Popups for each window."] = "为每个窗口显示弹出",
-		["show_desc"] = "在每个窗口显示弹出",
-		["show_name"] = "显示弹出",
-		["show_perframedesc"] = "弹出开关",
-		["show_perframename"] = "显示聊天框体%d弹出",
-		["showall_desc"] = "在所有聊天窗口显示弹出",
-		["showall_name"] = "显示所有弹出",
-		["Shows messages in a popup window."] = "在弹出窗口显示信息",
-		["Shows messages with your name in a popup."] = "在弹出中显示含有你名字的信息",
-		["Toggle setting options separately for each chat window."] = "分别为每个聊天窗口设置选项",
+		["Add Nickname"] = "æ·»åŠ æ˜µç§°",
+		["Adds an alternate name to show in popups."] = "æ·»åŠ ä¸€ä¸ªæ˜¾ç¤ºåœ¨å¼¹å‡ºä¸­çš„æ›¿æ¢å",
+		["Clear Nickname"] = "æ¸…é™¤æ˜µç§°",
+		["Clears alternate name to show in popups."] = "å¼¹å‡ºæ˜¾ç¤ºæ¸…é™¤å€™è¡¥åç§°",
+		["framealpha_desc"] = "è®¾ç½®å®Œå…¨æ¶ˆå¤±æ—¶å¼¹å‡ºæ¡†ä½“é€æ˜Žåº¦å€¼",
+		["framealpha_name"] = "å¼¹å‡ºæ¡†ä½“é€æ˜Žåº¦",
+		["Popup"] = "å¼¹å‡º",
+		["PopupMessage"] = "å¼¹å‡ºä¿¡æ¯",
+		["Remove Nickname"] = "ç§»é™¤æ˜µç§°",
+		["Removes an alternate name to show in popups."] = "ç§»é™¤åœ¨å¼¹å‡ºé‡Œæ˜¾ç¤ºçš„å€™è¡¥åç§°",
+		["Set Separately"] = "ä¸ªåˆ«è®¾ç½®",
+		["Show All Popups"] = "æ˜¾ç¤ºæ‰€æœ‰å¼¹å‡º",
+		["Show Popups"] = "æ˜¾ç¤ºå¼¹å‡º",
+		["Show Popups for all chat windows."] = "ä¸ºæ‰€æœ‰èŠå¤©çª—åŽæ˜¾ç¤ºå¼¹å‡º",
+		["Show Popups for each window."] = "ä¸ºæ¯ä¸ªçª—å£æ˜¾ç¤ºå¼¹å‡º",
+		["show_desc"] = "åœ¨æ¯ä¸ªçª—å£æ˜¾ç¤ºå¼¹å‡º",
+		["show_name"] = "æ˜¾ç¤ºå¼¹å‡º",
+		["show_perframedesc"] = "å¼¹å‡ºå¼€å…³",
+		["show_perframename"] = "æ˜¾ç¤ºèŠå¤©æ¡†ä½“%då¼¹å‡º",
+		["showall_desc"] = "åœ¨æ‰€æœ‰èŠå¤©çª—å£æ˜¾ç¤ºå¼¹å‡º",
+		["showall_name"] = "æ˜¾ç¤ºæ‰€æœ‰å¼¹å‡º",
+		["Shows messages in a popup window."] = "åœ¨å¼¹å‡ºçª—å£æ˜¾ç¤ºä¿¡æ¯",
+		["Shows messages with your name in a popup."] = "åœ¨å¼¹å‡ºä¸­æ˜¾ç¤ºå«æœ‰ä½ åå­—çš„ä¿¡æ¯",
+		["Toggle setting options separately for each chat window."] = "åˆ†åˆ«ä¸ºæ¯ä¸ªèŠå¤©çª—å£è®¾ç½®é€‰é¡¹",
 	}
 }
 PL:AddLocale(PRAT_MODULE, "zhCN",L)
 L=
 {
 	["PopupMessage"] = {
-		["Add Nickname"] = "Añadir un Apodo",
-		["Adds an alternate name to show in popups."] = "Añade un nombre alternativo para mostrar en las ventanas emergentes.",
+		["Add Nickname"] = "AÃ±adir un Apodo",
+		["Adds an alternate name to show in popups."] = "AÃ±ade un nombre alternativo para mostrar en las ventanas emergentes.",
 		["Clear Nickname"] = "Limpiar Apodo",
 		["Clears alternate name to show in popups."] = "Limpia el nombre alternativo a mostrar en las ventanas emergentes.",
 		["framealpha_desc"] = "Establece el valor de transparencia del marco emergente al desaparecer completamente.",
@@ -451,44 +451,44 @@ L=
 		["Show Popups for each window."] = "Mostrar Emergentes para cada ventana.",
 		["show_desc"] = "Muestra Emergentes para cada ventana.",
 		["show_name"] = "Mostar Emergentes",
-		["show_perframedesc"] = "Alterna activación de mostrar ventanas emergentes.",
+		["show_perframedesc"] = "Alterna activaciÃ³n de mostrar ventanas emergentes.",
 		["show_perframename"] = "Mostrar Marcos Emergentes de Chat %d",
 		["showall_desc"] = "Mostrar Ventanas Emergentes para todas las ventanas de chat.",
 		["showall_name"] = "Mostrar Todas las Emergentes",
 		["Shows messages in a popup window."] = "Muestra mensajes en una ventana emergente.",
 		["Shows messages with your name in a popup."] = "Muestra mensajes con tu nombre en una ventana emergente.",
-		["Toggle setting options separately for each chat window."] = "Cambiar opciones de configuración por separado para cada ventana de chat.",
+		["Toggle setting options separately for each chat window."] = "Cambiar opciones de configuraciÃ³n por separado para cada ventana de chat.",
 	}
 }
 PL:AddLocale(PRAT_MODULE, "esES",L)
 L=
 {
 	["PopupMessage"] = {
-		["Add Nickname"] = "新增暱稱",
+		["Add Nickname"] = "æ–°å¢žæš±ç¨±",
 		--[[Translation missing --]]
 		--[[ ["Adds an alternate name to show in popups."] = "",--]] 
-		["Clear Nickname"] = "清除暱稱",
+		["Clear Nickname"] = "æ¸…é™¤æš±ç¨±",
 		--[[Translation missing --]]
 		--[[ ["Clears alternate name to show in popups."] = "",--]] 
-		["framealpha_desc"] = "設定彈出視窗完全淡入時的透明度值",
-		["framealpha_name"] = "彈出視窗透明度",
-		["Popup"] = "彈出",
-		["PopupMessage"] = "彈出訊息",
-		["Remove Nickname"] = "移除暱稱",
+		["framealpha_desc"] = "è¨­å®šå½ˆå‡ºè¦–çª—å®Œå…¨æ·¡å…¥æ™‚çš„é€æ˜Žåº¦å€¼",
+		["framealpha_name"] = "å½ˆå‡ºè¦–çª—é€æ˜Žåº¦",
+		["Popup"] = "å½ˆå‡º",
+		["PopupMessage"] = "å½ˆå‡ºè¨Šæ¯",
+		["Remove Nickname"] = "ç§»é™¤æš±ç¨±",
 		--[[Translation missing --]]
 		--[[ ["Removes an alternate name to show in popups."] = "",--]] 
-		["Set Separately"] = "單獨設定",
-		["Show All Popups"] = "顯示所有彈出視窗",
-		["Show Popups"] = "顯示彈出視窗",
-		["Show Popups for all chat windows."] = "顯示彈出全部聊天視窗。",
-		["Show Popups for each window."] = "顯示彈出每個視窗。",
-		["show_desc"] = "顯示彈出每個視窗。",
-		["show_name"] = "顯示彈出",
-		["show_perframedesc"] = "換顯示彈出開動和關閉。",
-		["show_perframename"] = "顯示 ChatFrame%d 彈出",
-		["showall_desc"] = "顯示彈出全部聊天視窗。",
-		["showall_name"] = "顯示全部彈出",
-		["Shows messages in a popup window."] = "顯示在彈出視窗訊息。",
+		["Set Separately"] = "å–®ç¨è¨­å®š",
+		["Show All Popups"] = "é¡¯ç¤ºæ‰€æœ‰å½ˆå‡ºè¦–çª—",
+		["Show Popups"] = "é¡¯ç¤ºå½ˆå‡ºè¦–çª—",
+		["Show Popups for all chat windows."] = "é¡¯ç¤ºå½ˆå‡ºå…¨éƒ¨èŠå¤©è¦–çª—ã€‚",
+		["Show Popups for each window."] = "é¡¯ç¤ºå½ˆå‡ºæ¯å€‹è¦–çª—ã€‚",
+		["show_desc"] = "é¡¯ç¤ºå½ˆå‡ºæ¯å€‹è¦–çª—ã€‚",
+		["show_name"] = "é¡¯ç¤ºå½ˆå‡º",
+		["show_perframedesc"] = "æ›é¡¯ç¤ºå½ˆå‡ºé–‹å‹•å’Œé—œé–‰ã€‚",
+		["show_perframename"] = "é¡¯ç¤º ChatFrame%d å½ˆå‡º",
+		["showall_desc"] = "é¡¯ç¤ºå½ˆå‡ºå…¨éƒ¨èŠå¤©è¦–çª—ã€‚",
+		["showall_name"] = "é¡¯ç¤ºå…¨éƒ¨å½ˆå‡º",
+		["Shows messages in a popup window."] = "é¡¯ç¤ºåœ¨å½ˆå‡ºè¦–çª—è¨Šæ¯ã€‚",
 		--[[Translation missing --]]
 		--[[ ["Shows messages with your name in a popup."] = "",--]] 
 		--[[Translation missing --]]
@@ -507,7 +507,7 @@ end
 
 --
 ----[[
---	Chinese Local : CWDG Translation Team 昏睡墨鱼 (Thomas Mo)
+--	Chinese Local : CWDG Translation Team æ˜ç¡å¢¨é±¼ (Thomas Mo)
 --	CWDG site: http://Cwowaddon.com
 --	$Rev: 80460 $
 --]]
@@ -753,7 +753,7 @@ function module:CheckText(text, display_text, event, r, g, b)
         self.lastevent = Prat.EVENT_ID
         self.pouring = true
 		self:Pour(display_text or text, r,g,b)
-		Prat:PlaySound("popup");
+		Prat:PlaySound(856);
         self.pouring = nil
 	end	
 end

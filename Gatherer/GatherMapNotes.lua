@@ -110,20 +110,55 @@ function Gatherer.MapNotes.MapDraw()
 	
 	local showType, showObject
 	local mapID, mapFloor = Gatherer.ZoneTokens.GetZoneMapIDAndFloor(Gatherer.ZoneTokens.GetZoneToken(GetCurrentMapAreaID()))
-	if ( Gatherer.Storage.HasDataOnZone(mapID) ) then
+	local zText = GetRealZoneText() or ""
+	local sText = GetSubZoneText() or ""
+	local isViewingMine = sText:find("Excava") or sText:find("Mina") or zText:find("Excava") or zText:find("Mina") or mapID == 976 or mapID == 978 or mapID == "GARRISON_HORDE_TIER3"
+	
+	local zonesToDraw = { mapID }
+	if ( isViewingMine ) then
+		local astroMapID = Astrolabe:GetCurrentPlayerPosition()
+		local astroToken = astroMapID and Gatherer.ZoneTokens.GetZoneToken(astroMapID)
+		local curToken = Gatherer.Util.GetPositionInCurrentZone()
+		local drawnCheck = {}
+		local mineZones = { mapID, curToken, "DRAENOR_SHADOWMOON_VALLEY", 947, "GARRISON_HORDE_TIER3", "GARRISON_ALLIANCE_TIER3", 976, 978, astroToken, astroMapID }
+		zonesToDraw = {}
+		for _, z in ipairs(mineZones) do
+			if z and not drawnCheck[z] then
+				drawnCheck[z] = true
+				table.insert(zonesToDraw, z)
+			end
+		end
+	end
+
+	for _, drawZone in ipairs(zonesToDraw) do
+	if ( Gatherer.Storage.HasDataOnZone(drawZone) ) then
 		for _, gatherType in pairs(Gatherer.Constants.SupportedGatherTypes) do
-			for index, xPos, yPos in Gatherer.Storage.ZoneGatherNodes(mapID, gatherType) do
+			for index, xPos, yPos in Gatherer.Storage.ZoneGatherNodes(drawZone, gatherType) do
 				local displayNode = false
-				for _, gatherID, count in GetNodeGatherNames(mapID, gatherType, index) do
+				for _, gatherID, count in GetNodeGatherNames(drawZone, gatherType, index) do
 					if ( Gatherer.Config.DisplayFilter_MainMap(gatherID) ) then
 						displayNode = true
 						break
 					end
 				end
 				local _, _, _, isMicroDungeon = GetMapInfo();
-				if ( displayNode and isMicroDungeon ) then
-					local _, _, indoors = GetNodeInfo(mapID, gatherType, index)
-					displayNode = indoors
+				if ( displayNode and isViewingMine ) then
+					local _, _, indoors = GetNodeInfo(drawZone, gatherType, index)
+					if drawZone == "DRAENOR_SHADOWMOON_VALLEY" or drawZone == 947 then
+						displayNode = indoors or (xPos >= 0.52 and xPos <= 0.66 and yPos >= 0.22 and yPos <= 0.42)
+					else
+						displayNode = indoors or drawZone == 976 or drawZone == 978
+					end
+				elseif ( displayNode and (drawZone == "DRAENOR_SHADOWMOON_VALLEY" or drawZone == 947 or drawZone == 971 or drawZone == 972 or drawZone == 973 or drawZone == "GARRISON_ALLIANCE_TIER3" or drawZone == "GARRISON_ALLIANCE_TIER2" or drawZone == "GARRISON_ALLIANCE_TIER1") ) then
+					local _, _, indoors = GetNodeInfo(drawZone, gatherType, index)
+					if ( indoors or (xPos >= 0.57 and xPos <= 0.76 and yPos >= 0.26 and yPos <= 0.48) or (xPos >= 57 and xPos <= 76 and yPos >= 26 and yPos <= 48) ) then
+						displayNode = false
+					end
+				elseif ( displayNode and (drawZone == "DRAENOR_FROSTFIRE_RIDGE" or drawZone == 941 or drawZone == 977 or drawZone == "GARRISON_HORDE_TIER3" or drawZone == "GARRISON_HORDE_TIER2" or drawZone == "GARRISON_HORDE_TIER1") ) then
+					local _, _, indoors = GetNodeInfo(drawZone, gatherType, index)
+					if ( indoors or (xPos >= 0.44 and xPos <= 0.60 and yPos >= 0.45 and yPos <= 0.68) or (xPos >= 44 and xPos <= 60 and yPos >= 45 and yPos <= 68) ) then
+						displayNode = false
+					end
 				end
 				if ( displayNode ) then
 					if ( noteCount < maxNotes ) then
@@ -132,14 +167,14 @@ function Gatherer.MapNotes.MapDraw()
 						
 						mainNote:SetAlpha(setting("mainmap.opacity", 80) / 100)
 						
-						local texture = Gatherer.Util.GetNodeTexture(mapID, gatherType, index)
+						local texture = Gatherer.Util.GetNodeTexture(drawZone, gatherType, index)
 						_G[mainNote:GetName().."Texture"]:SetTexture(texture)
 						
 						local iconsize = setting("mainmap.iconsize", 16)
 						mainNote:SetWidth(iconsize)
 						mainNote:SetHeight(iconsize)
 						
-						mainNote.mapID = mapID
+						mainNote.mapID = drawZone
 						mainNote.index = index
 						mainNote.gType = gatherType
 						
@@ -150,13 +185,15 @@ function Gatherer.MapNotes.MapDraw()
 							mainNote:EnableMouse(false)
 						end
 						
-						Astrolabe:PlaceIconOnWorldMap(WorldMapButton, mainNote, mapID, mapFloor, xPos, yPos)
+						local nodeMapID, nodeMapFloor = Gatherer.ZoneTokens.GetZoneMapIDAndFloor(drawZone)
+						Astrolabe:PlaceIconOnWorldMap(WorldMapButton, mainNote, nodeMapID or drawZone, nodeMapFloor or 0, xPos, yPos)
 					else -- reached note limit
 						break
 					end
 				end
 			end
 		end
+	end
 	end
 	
 	local numUsedOverlays = math.ceil(noteCount / 100)

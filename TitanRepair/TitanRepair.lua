@@ -1,4 +1,4 @@
--- **************************************************************************
+﻿-- **************************************************************************
 -- * TitanRepair.lua
 -- *
 -- * By: Adsertor, Archarodim and the Titan Development Team
@@ -125,10 +125,10 @@ function TitanPanelRepairButton_OnLoad(self)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD");
 
 	-- (re)set the status structures we need to change & store
-	for i = 0, table.getn(TPR.ITEM_STATUS) do
+	for i = 0, #(TPR.ITEM_STATUS) do
 		TitanPanelRepairButton_ResetStatus(TPR.ITEM_STATUS[i].values)
 	end
-	for i = 0, table.getn(TPR.INVENTORY_STATUS) do
+	for i = 0, #(TPR.INVENTORY_STATUS) do
 		TitanPanelRepairButton_ResetStatus(TPR.INVENTORY_STATUS[i].values)
 	end
 end
@@ -822,7 +822,7 @@ local function RepairSumTotals()
 		-- calculate the totals
 		-- traverse through the durability table and get the damage value,
 		-- item_frac = 1 (undamaged), item_frac < 1 (damaged)
-		for i = 1, table.getn(TPR.ITEM_STATUS) do
+		for i = 1, #(TPR.ITEM_STATUS) do
 			item_status = TPR.ITEM_STATUS[i].values;
 			item_frac = item_status.item_frac;
 			-- set the inventory damage to a seperate variable
@@ -897,7 +897,7 @@ function TitanPanelRepairButton_GetButtonText(id)
 		else -- calculate the totals
 			-- traverse through the durability table and get the damage value,
 			-- item_frac = 1 (undamaged), item_frac < 1 (damaged)
-			for i = 1, table.getn(TPR.ITEM_STATUS) do
+			for i = 1, #(TPR.ITEM_STATUS) do
 				item_status = TPR.ITEM_STATUS[i].values;
 				item_frac = item_status.item_frac;
 				-- set the inventory damage to a seperate variable
@@ -1001,7 +1001,7 @@ function TitanPanelRepairButton_GetTooltipText()
 	if (TitanGetVar(TITAN_REPAIR_ID,"ShowItems")) then
 		out = out..TitanUtils_GetGoldText(L["REPAIR_LOCALE"]["Items"])..TitanUtils_GetHighlightText("\n")
 	end
-	for i = 1, table.getn(TPR.ITEM_STATUS) do
+	for i = 1, #(TPR.ITEM_STATUS) do
 		cost = TPR.ITEM_STATUS[i].values.cost;
 		str, label = TitanRepair_GetStatusStr(i);
 

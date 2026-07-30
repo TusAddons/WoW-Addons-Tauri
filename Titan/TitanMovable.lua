@@ -1,4 +1,4 @@
---[[ File
+﻿--[[ File
 NAME: TitanMovable.lua
 DESC: Contains the routines to adjust the Blizzard frames to make room for the Titan bars the user has selected.
 There are a select set of Blizzard frames at the top of screen and at the bottom of the screen that Titan will move.
@@ -101,7 +101,7 @@ NOTE:
 local function TitanMovableFrame_CheckThisFrame(frameName)
 	-- For safety check if the frame is in the table to adjust
 	if TitanMovableData[frameName] then
-		table.insert(TitanMovable, frameName)
+		TitanMovable[#TitanMovable+1] = frameName
 	end
 end
 

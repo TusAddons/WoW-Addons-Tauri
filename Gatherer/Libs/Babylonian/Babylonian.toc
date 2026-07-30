@@ -1,12 +1,12 @@
 ## Title: Babylonian |cff224477(lib)
+## Author: Artiom97es
 ## Notes: Provides the facilites to support languages other than those supported by the client locale.
 ##
 ## Interface: 70300
 ## LoadOnDemand: 0
 ##
-## Version: 7.3.1 (<%codename%>)
+## Version: 7.3.1 (<%codename%>)_v2-Artiom97es
 ## Revision: $Id: Babylonian.toc 432 2017-09-02 11:52:14Z brykrys $
-## Author: Norganna's AddOns
 ## X-Part-Of: Libraries
 ## X-Category: Library
 ## X-Max-Interface: 70300

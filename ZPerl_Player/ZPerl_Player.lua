@@ -492,8 +492,8 @@ function XPerl_Player_OnLoad(self)
 	-- This resolves an issue with the backdrop being added constantly to the other special frames.
 	--[[local _, class = UnitClass("player")
 	if (class == "DEATHKNIGHT") then
-		table.insert(self.FlashFrames, self.runes)
-		table.insert(perlframes, self.runes)
+		self.FlashFrames[#self.FlashFrames+1] = self.runes
+		perlframes[#perlframes+1] = self.runes
 	end]]
 
 	XPerl_RegisterPerlFrames(self, perlframes)--, self.runes
@@ -1737,6 +1737,11 @@ end
 
 -- XPerl_Player_Set_Bits()
 function XPerl_Player_Set_Bits(self)
+	if (InCombatLockdown()) then
+		XPerl_OutOfCombatQueue[XPerl_Player_Set_Bits] = self
+		return
+	end
+
 	if (XPerl_ArcaneBar_RegisterFrame and not self.nameFrame.castBar) then
 		XPerl_ArcaneBar_RegisterFrame(self.nameFrame, UnitHasVehicleUI("player") and "vehicle" or "player")
 	end
@@ -1749,14 +1754,12 @@ function XPerl_Player_Set_Bits(self)
 		self.portraitFrame:SetWidth(3)
 	end
 
-	if not InCombatLockdown() then
-		self.state:SetAttribute("extendedPortrait", pconf.extendPortrait)
-		self.state:SetAttribute("druidBarOff", pconf.noDruidBar)
-		self.state:SetAttribute("xpBar", pconf.xpBar)
-		self.state:SetAttribute("repBar", pconf.repBar)
-		self.state:SetAttribute("spec", pconf.showRunes)
-		self.state:SetAttribute("specDock", pconf.dockRunes)
-	end
+	self.state:SetAttribute("extendedPortrait", pconf.extendPortrait)
+	self.state:SetAttribute("druidBarOff", pconf.noDruidBar)
+	self.state:SetAttribute("xpBar", pconf.xpBar)
+	self.state:SetAttribute("repBar", pconf.repBar)
+	self.state:SetAttribute("spec", pconf.showRunes)
+	self.state:SetAttribute("specDock", pconf.dockRunes)
 
 	if (pconf.level) then
 		self.levelFrame:Show()

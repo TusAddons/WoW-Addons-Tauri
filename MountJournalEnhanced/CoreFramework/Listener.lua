@@ -1,4 +1,4 @@
-local MODULE_NAME, MODULE_VERSION = "Listener", "1.0";
+﻿local MODULE_NAME, MODULE_VERSION = "Listener", "1.0";
 
 local module = CoreFramework:NewModule(MODULE_NAME, MODULE_VERSION);
 if (not module) then return; end
@@ -29,7 +29,7 @@ function private:AddUpdateHandler(handler, id)
     end
     
     if (id == nil) then
-        table.insert(self.updateListeners, { handler = handler });
+        self.updateListeners[#self.updateListeners+1] = { handler = handler };
     else
         self.updateListenersWidthId[id] = { handler = handler };
     end

@@ -1,4 +1,4 @@
-local ADDON_NAME = ...
+﻿local ADDON_NAME = ...
 
 local COLLECTION_ACHIEVEMENT_CATEGORY = 15246
 local MOUNT_ACHIEVEMENT_CATEGORY = 15248
@@ -496,7 +496,7 @@ function private:MountJournalFilterDropDown_Initialize(sender, level)
 
         local sortedFamilies = {}
         for family, _ in pairs(MountJournalEnhancedFamily) do
-            table.insert(sortedFamilies, family)
+            sortedFamilies[#sortedFamilies+1] = family
         end
         table.sort(sortedFamilies, function(a, b) return (L[a] or a) < (L[b] or b) end)
 

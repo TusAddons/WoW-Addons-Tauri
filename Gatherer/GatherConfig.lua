@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Gatherer Addon for World of Warcraft(tm).
 	Version: 7.3.1 (<%codename%>)
 	Revision: $Id: GatherConfig.lua 1180 2017-08-01 18:52:34Z brykrys $
@@ -292,7 +292,7 @@ local function setter(setting, value)
 			end
 			-- If not, add it and then sort it
 			if (not found) then
-				table.insert(profiles, value)
+				profiles[#profiles+1] = value
 				table.sort(profiles)
 			end
 			DEFAULT_CHAT_FRAME:AddMessage("Saved profile: "..value)
@@ -325,7 +325,7 @@ local function setter(setting, value)
 			end
 			-- If not, add it and then sort it
 			if (not found) then
-				table.insert(profiles, value)
+				profiles[#profiles+1] = value
 				table.sort(profiles)
 			end
 			DEFAULT_CHAT_FRAME:AddMessage("Saved profile: "..value)
@@ -702,7 +702,7 @@ function MakeGuiConfig()
 			if (cat) then
 				local skill = Gatherer.Constants.SkillLevel[cat]
 				if (skill) then
-					table.insert(entry, skill)
+					entry[#entry+1] = skill
 				end
 			end
 			table.insert(itemLists[gtype], entry)
@@ -946,7 +946,7 @@ function SharingBlacklist_Add( name )
 	local currentSelection = SharingBlacklist[SelectedIgnore]
 
 	if not ( SharingBlacklist[name] ) then
-		table.insert(SharingBlacklist, name)
+		SharingBlacklist[#SharingBlacklist+1] = name
 		LastIgnoredPlayer = name
 		StaticPopup_Show("GATHERER_REMOVE_BLACKLISTED_NODES")
 	end

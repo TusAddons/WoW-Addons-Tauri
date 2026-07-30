@@ -483,7 +483,44 @@ function Postal_BlackBook.BlackBookMenu(self, level)
 			for i = 1, #db do
 				local p, r, f = strsplit("|", db[i])
 				if r == realm and f == faction and p ~= player then
-					info.text = p
+					local factionIcon = (f == "Alliance" and "|cff0070dd[A]|r ") or (f == "Horde" and "|cffff0000[H]|r ") or ""
+					local friendLevel, friendClass
+					local altsDB = Postal.db.global.BlackBook.alts
+					if altsDB then
+						for a = 1, #altsDB do
+							local ap, ar, af, al, ac = strsplit("|", altsDB[a])
+							if ap == p and ar == r then friendLevel = al friendClass = ac break end
+						end
+					end
+					if not friendClass and IsInGuild() then
+						for g = 1, GetNumGuildMembers(true) do
+							local gn, _, _, gl, gc, _, _, _, _, _, gcfn = GetGuildRosterInfo(g)
+							if gn and strmatch(gn, "([^%-]+)") == p then friendLevel = gl friendClass = gcfn break end
+						end
+					end
+					if not friendClass then
+						for fr = 1, GetNumFriends() do
+							local fn, fl, fc = GetFriendInfo(fr)
+							if fn == p then
+								friendLevel = fl
+								for k, v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if v == fc then friendClass = k break end end
+								if not friendClass then for k, v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if v == fc then friendClass = k break end end end
+								break
+							end
+						end
+					end
+
+					if friendLevel and friendClass then
+						local clr = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[friendClass] or RAID_CLASS_COLORS[friendClass]
+						local locClass = LOCALIZED_CLASS_NAMES_MALE[friendClass] or friendClass
+						if clr then
+							info.text = format("%s%s |cff%.2x%.2x%.2x(%s %s)|r", factionIcon, p, clr.r*255, clr.g*255, clr.b*255, friendLevel, locClass)
+						else
+							info.text = format("%s%s (%s %s)", factionIcon, p, friendLevel, locClass)
+						end
+					else
+						info.text = factionIcon .. p
+					end
 					info.func = Postal_BlackBook.SetSendMailName
 					info.arg1 = p
 					UIDropDownMenu_AddButton(info, level)
@@ -512,11 +549,12 @@ function Postal_BlackBook.BlackBookMenu(self, level)
 			for i = 1, #db do
 				local p, r, f, l, c = strsplit("|", db[i])
 				if r == realm and p ~= player then
+					local factionIcon = (f == "Alliance" and "|cff0070dd[A]|r ") or (f == "Horde" and "|cffff0000[H]|r ") or ""
 					if l and c then
 						local clr = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[c] or RAID_CLASS_COLORS[c]
-						info.text = format("%s |cff%.2x%.2x%.2x(%d %s)|r", p, clr.r*255, clr.g*255, clr.b*255, l, LOCALIZED_CLASS_NAMES_MALE[c])
+						info.text = format("%s%s |cff%.2x%.2x%.2x(%d %s)|r", factionIcon, p, clr.r*255, clr.g*255, clr.b*255, l, LOCALIZED_CLASS_NAMES_MALE[c])
 					else
-						info.text = p
+						info.text = factionIcon .. p
 					end
 					info.func = Postal_BlackBook.SetSendMailName
 					info.arg1 = p
@@ -550,11 +588,12 @@ elseif UIDROPDOWNMENU_MENU_VALUE == "allalt" then
 				local p, r, f, l, c = strsplit("|", db[i])
 				local pr = p.."-"..r
 				if (pr ~= plre ) then
+					local factionIcon = (f == "Alliance" and "|cff0070dd[A]|r ") or (f == "Horde" and "|cffff0000[H]|r ") or ""
 					if l and c then
 						local clr = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[c] or RAID_CLASS_COLORS[c]
-						info.text = format("%s-%s |cff%.2x%.2x%.2x(%d %s)|r", p, r, clr.r*255, clr.g*255, clr.b*255, l, LOCALIZED_CLASS_NAMES_MALE[c])
+						info.text = format("%s%s-%s |cff%.2x%.2x%.2x(%d %s)|r", factionIcon, p, r, clr.r*255, clr.g*255, clr.b*255, l, LOCALIZED_CLASS_NAMES_MALE[c])
 					else
-						info.text = ("%s-%s"):format(p, r)
+						info.text = factionIcon .. ("%s-%s"):format(p, r)
 					end
 					info.func = Postal_BlackBook.SetSendMailName
 					info.arg1 = ("%s-%s"):format(p, r)
@@ -649,11 +688,12 @@ elseif UIDROPDOWNMENU_MENU_VALUE == "allalt" then
 				local p, r, f, l, c = strsplit("|", db[i])
 				if p ~= player and ( r == realm or all ) then
 					p = all and p.."-"..r or p
+					local factionIcon = (f == "Alliance" and "|cff0070dd[A]|r ") or (f == "Horde" and "|cffff0000[H]|r ") or ""
 					if l and c then
 						local clr = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[c] or RAID_CLASS_COLORS[c]
-						info.text = format("%s |cff%.2x%.2x%.2x(%d %s)|r", p, clr.r*255, clr.g*255, clr.b*255, l, LOCALIZED_CLASS_NAMES_MALE[c])
+						info.text = format("%s%s |cff%.2x%.2x%.2x(%d %s)|r", factionIcon, p, clr.r*255, clr.g*255, clr.b*255, l, LOCALIZED_CLASS_NAMES_MALE[c])
 					else
-						info.text = p
+						info.text = factionIcon .. p
 					end
 					info.func = Postal_BlackBook.DeleteAlt
 					info.arg1 = db[i]
@@ -666,7 +706,32 @@ elseif UIDROPDOWNMENU_MENU_VALUE == "allalt" then
 			local endIndex = math.min(startIndex+24, numFriendsOnList)
 			for i = startIndex, endIndex do
 				local name = sorttable[i]
-				info.text = name
+				local f = UnitFactionGroup("player")
+				local factionIcon = (f == "Alliance" and "|cff0070dd[A]|r ") or (f == "Horde" and "|cffff0000[H]|r ") or ""
+				local friendLevel, friendClass
+				for f_i = 1, GetNumFriends() do
+					local f_name, f_level, f_class, _, f_connected = GetFriendInfo(f_i)
+					if f_name == name and f_connected then
+						friendLevel = f_level
+						friendClass = f_class
+						break
+					end
+				end
+				
+				if friendLevel and friendClass then
+					local classFileName
+					for k, v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if v == friendClass then classFileName = k break end end
+					if not classFileName then for k, v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if v == friendClass then classFileName = k break end end end
+					if classFileName then
+						local clr = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classFileName] or RAID_CLASS_COLORS[classFileName]
+						info.text = format("%s%s |cff%.2x%.2x%.2x(%d %s)|r", factionIcon, name, clr.r*255, clr.g*255, clr.b*255, friendLevel, friendClass)
+					else
+						info.text = format("%s%s (%d %s)", factionIcon, name, friendLevel, friendClass)
+					end
+				else
+					info.text = factionIcon .. name
+				end
+				
 				info.func = Postal_BlackBook.SetSendMailName
 				info.arg1 = name
 				UIDropDownMenu_AddButton(info, level)
@@ -677,7 +742,9 @@ elseif UIDROPDOWNMENU_MENU_VALUE == "allalt" then
 			local endIndex = math.min(startIndex+24, (GetNumGuildMembers(true)))
 			for i = startIndex, endIndex do
 				local name = sorttable[i]
-				info.text = sorttable[i]
+				local f = UnitFactionGroup("player")
+				local factionIcon = (f == "Alliance" and "|cff0070dd[A]|r ") or (f == "Horde" and "|cffff0000[H]|r ") or ""
+				info.text = factionIcon .. sorttable[i]
 				info.func = Postal_BlackBook.SetSendMailName
 				info.arg1 = strmatch(sorttable[i], "(.*) |cffffd200")
 				UIDropDownMenu_AddButton(info, level)

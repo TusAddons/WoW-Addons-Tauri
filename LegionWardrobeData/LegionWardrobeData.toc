@@ -1,6 +1,7 @@
 ## Interface: 70300
 ## Title: Legion Wardrobe Data
-## Author: ykiigor
+## Author: Artiom97es
+## Version: 1.1-Artiom97es
 ## LoadOnDemand: 1
 ## RequiredDeps: LegionWardrobe
 Data.lua

@@ -1,4 +1,4 @@
---- **LibDialog-1.0** provides methods for creating dialogs similar to Blizzard's default StaticPopup dialogs,
+﻿--- **LibDialog-1.0** provides methods for creating dialogs similar to Blizzard's default StaticPopup dialogs,
 -- with additions (such as multiple CheckButtons) and improvements (such as multiple EditBoxes, frame and widget
 -- recycling, and not tainting default UI elements).
 -- @class file
@@ -176,7 +176,7 @@ local function _RecycleWidget(widget, actives, heap)
         return
     end
     table.remove(actives, remove_index):ClearAllPoints()
-    table.insert(heap, widget)
+    heap[#heap+1] = widget
 end
 
 local function _ReleaseCheckBox(checkbox)

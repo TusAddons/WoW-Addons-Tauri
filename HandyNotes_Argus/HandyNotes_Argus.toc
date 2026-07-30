@@ -1,6 +1,7 @@
 ## Interface: 70300
 #@non-debug@
 ## Title: HandyNotes - Argus
+## Author: Artiom97es
 ## Title-deDE: HandyNotes - Argus
 ## Title-frFR: HandyNotes - Argus
 ## Title-koKR: HandyNotes - 아르거스
@@ -20,8 +21,7 @@
 # ## Title: HandyNotes - Argus
 # ## Notes: Shows the POIs in Argus
 #@end-debug@
-## Author: arith
-## Version: v0.08
+## Version: v0.9-Artiom97es
 ## RequiredDeps: HandyNotes
 ## OptionalDeps: LibBabble-SubZone-3.0, LibUIDropDownMenu
 ## OptionalDeps: 

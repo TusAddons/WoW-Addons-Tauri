@@ -1,4 +1,4 @@
---[[ File
+﻿--[[ File
 NAME: TitanConfig.lua
 DESC: This file contains routines used by Titan to show and process the Titan options.
 Titan uses Ace libraries to place the Titan options within the Blizzard option screens. 
@@ -1196,7 +1196,7 @@ local function TitanUpdateChars()
 	local players = {};
 	-- Rip through the players (with server name) to sort them
 	for index, id in pairs(TitanSettings.Players) do
-		table.insert(players, index);
+		players[#players+1] = index;
 	end
 
 	-- set up the options for the user

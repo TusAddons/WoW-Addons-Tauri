@@ -119,11 +119,9 @@ local _trL = Gatherer.Locale.TrLocale
 --************************************************************************
 -- This returns the raw data table, BE CAREFUL WITH IT!!!!
 --************************************************************************
---[[
 function lib.GetRawDataTable()
 	return data
 end
---]]
 
 local function processSourceList( newSource, ... )
 	for i = 1, select("#", ...) do
@@ -245,8 +243,8 @@ function lib.AddNode(nodeName, gatherType, inMapID, gatherX, gatherY, source, in
 	-- Else, we didn't find it in the current list, time to create a new node!
 	else
 		node = { [POS_X]=0, [POS_Y]=0, [INSPECTED]=0, [FLOOR]=indoorFloor }
-		table.insert(gtypeTable, node)
-		index = table.getn(gtypeTable)
+		gtypeTable[#gtypeTable+1] = node
+		index = #(gtypeTable)
 	end
 
 	local gatherData;
@@ -640,9 +638,9 @@ setmetatable(iteratorStateTables, { __mode = "k" }); --weak keys
 local workTableCache = { {}, {}, {}, {}, }; -- initial size of 4 tables
 
 local function getWorkTablePair()
-	if ( table.getn(workTableCache) < 2 ) then
-		table.insert(workTableCache, {})
-		table.insert(workTableCache, {})
+	if ( #(workTableCache) < 2 ) then
+		workTableCache[#workTableCache+1] = {}
+		workTableCache[#workTableCache+1] = {}
 	end
 	local index = table.remove(workTableCache)
 	local state = table.remove(workTableCache)
@@ -660,14 +658,14 @@ local function releaseWorkTablePair( index )
 		for k, v in pairs(data) do
 			data[k] = nil
 		end
-		table.insert(workTableCache, index)
-		table.insert(workTableCache, data)
+		workTableCache[#workTableCache+1] = index
+		workTableCache[#workTableCache+1] = data
 	end
 end
 
 local function getWorkTable()
-	if ( table.getn(workTableCache) < 1 ) then
-		table.insert(workTableCache, {})
+	if ( #(workTableCache) < 1 ) then
+		workTableCache[#workTableCache+1] = {}
 	end
 	local workTable = table.remove(workTableCache)
 	iteratorStateTables[workTable] = false
@@ -680,7 +678,7 @@ local function releaseWorkTable( workTable )
 		for k, v in pairs(workTable) do
 			workTable[k] = nil
 		end
-		table.insert(workTableCache, workTable)
+		workTableCache[#workTableCache+1] = workTable
 	end
 end
 
@@ -1128,7 +1126,7 @@ eventFrame:SetScript("OnEvent", function( frame, event, arg1 )
 					--set the database aside and warn the user
 					lib.ClearDatabase()
 					data.setAsideDatabases = savedData.setAsideDatabases or {}
-					table.insert(data.setAsideDatabases, savedData)
+					data.setAsideDatabases[#data.setAsideDatabases+1] = savedData
 					StaticPopup_Show("GATHERER_DATABASE_TOO_NEW")
 				
 				end

@@ -1,6 +1,6 @@
 -- LibBabble-3.0 is hereby placed in the Public Domain
 -- Credits: ckknight
-local LIBBABBLE_MAJOR, LIBBABBLE_MINOR = "LibBabble-3.0", 2
+local LIBBABBLE_MAJOR, LIBBABBLE_MINOR = "LibBabble-3.0", 999
 
 local LibBabble = LibStub:NewLibrary(LIBBABBLE_MAJOR, LIBBABBLE_MINOR)
 if not LibBabble then
@@ -27,12 +27,14 @@ end
 
 local lookup_mt = { __index = function(self, key)
 	local db = tablesToDB[self]
-	local current_key = db.current[key]
+	if not db then return key end
+	local current = db.current or db.base
+	local current_key = current and current[key]
 	if current_key then
 		self[key] = current_key
 		return current_key
 	end
-	local base_key = db.base[key]
+	local base_key = db.base and db.base[key]
 	local real_MAJOR_VERSION
 	for k,v in pairs(data) do
 		if v == db then
@@ -69,8 +71,11 @@ local function initReverse(module, reverse)
 	for k in pairs(reverse) do
 		reverse[k] = nil
 	end
-	for k,v in pairs(db.current) do
-		reverse[v] = k
+	local current = db.current or db.base
+	if current then
+		for k,v in pairs(current) do
+			reverse[v] = k
+		end
 	end
 	tablesToDB[reverse] = db
 	db.reverse = reverse
@@ -115,7 +120,7 @@ Example:
 function prototype:GetUnstrictLookupTable()
 	local db = tablesToDB[self]
 
-	return db.current
+	return db.current or db.base
 end
 --[[---------------------------------------------------------------------------
 Notes:
@@ -178,12 +183,15 @@ function prototype:GetReverseIterator(key)
 		return pairs(reverseIterators[key])
 	end
 	local t
-	for k,v in pairs(db.current) do
-		if v == key then
-			if not t then
-				t = {}
+	local current = db.current or db.base
+	if current then
+		for k,v in pairs(current) do
+			if v == key then
+				if not t then
+					t = {}
+				end
+				t[k] = true
 			end
-			t[k] = true
 		end
 	end
 	reverseIterators[key] = t or blank
@@ -201,7 +209,7 @@ Example:
 function prototype:Iterate()
 	local db = tablesToDB[self]
 
-	return pairs(db.current)
+	return pairs((db and (db.current or db.base)) or {})
 end
 
 -- #NODOC
@@ -225,6 +233,9 @@ function prototype:SetBaseTranslations(base)
 			base[k] = k
 		end
 	end
+	if not db.current then
+		db.current = base
+	end
 end
 
 local function init(module)
@@ -242,7 +253,7 @@ end
 -- modules need to call this to set the current table. if current is true, use the base table.
 function prototype:SetCurrentTranslations(current)
 	local db = tablesToDB[self]
-	if current == true then
+	if current == true or not current then
 		db.current = db.base
 	else
 		local oldCurrent = db.current
@@ -257,6 +268,9 @@ function prototype:SetCurrentTranslations(current)
 		else
 			db.current = current
 		end
+	end
+	if not db.current then
+		db.current = db.base
 	end
 	init(self)
 end

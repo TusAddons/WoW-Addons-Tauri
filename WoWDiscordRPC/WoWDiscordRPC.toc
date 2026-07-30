@@ -1,0 +1,8 @@
+## Interface: 70300
+## Title: WoW Discord RPC
+## Notes: IntegraciÃ³n de Discord Rich Presence para World of Warcraft Legion 7.3.5
+## Author: Teamwork
+## Version: 1.0.0
+## SavedVariables: WoWDiscordRPC_DB
+
+WoWDiscordRPC.lua

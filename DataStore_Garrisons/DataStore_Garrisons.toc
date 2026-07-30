@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: DataStore_Garrisons
+## Author: Artiom97es
 ## Notes: Stores information about garrisons and followers
-## Author: Thaoky (EU-Marécages de Zangar)
-## Version: r22
+## Version: r23-Artiom97es
 ## Dependencies: DataStore
 ## OptionalDeps: Ace3
 ## SavedVariables: DataStore_GarrisonsDB

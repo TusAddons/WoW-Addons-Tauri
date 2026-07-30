@@ -3,10 +3,10 @@
 deDE.lua
 deDE localization strings for Ackis Recipe List
 ************************************************************************
-File date: 2012-08-18T4:52:05Z 
+File date: 2012-08-18T9:52:05Z 
 File revision: 4d6b8e446c1381fe41575a671a6c54702932e4db 
-Project revision: 91a3a6169d0f9c5d597f01630a67df42a2703590
-Project version: 7.3.0.2-15-g91a3a616
+Project revision: e062c22807cdc0ea8ab367d74537384aaee9cb59
+Project version: 7.3.0.1
 ************************************************************************
 Original translated by: Winkiller, Dessa
 Currently maintained by:
@@ -56,7 +56,6 @@ L["Alanna Raveneye"] = "Alanna Rabenauge"
 L["Alard Schmied"] = true
 L["Albert de Hyde"] = true
 L["Alchemist Finklestein"] = "Alchemist Finkelstein"
-L["Alchemist Funen"] = "Alchemist Funen "
 L["Alchemist Gribble"] = "Alchimist Grabbel"
 L["Alchemist Kanhu"] = true
 L["Alchemist Mallory"] = "Alchimist Mallory"
@@ -140,7 +139,6 @@ L["Asarnan"] = true
 L["Ashleaf Sprite"] = "Eschenblattgeist"
 L["Ashtongue Warrior"] = "Krieger der Aschenzungen"
 L["Aska Mistrunner"] = "Aska Nebelläufer"
-L["Ataxon"] = "Ataxon "
 L["Auchenai Monk"] = "Mönch der Auchenai"
 L["Auria Irondreamer"] = "Auria Erzträumer"
 L["Auto Load Recipe Database"] = "Rezeptdatenbank automatisch laden"
@@ -717,7 +715,6 @@ L["Himmik"] = true
 L["Hiwahi Three-Feathers"] = "Hiwahi Dreifeder"
 L["Hobart Grapplehammer"] = "Hobart Wurfhammer"
 L["Hotoppik Copperpinch"] = "Hotoppik Kupferzwick"
-L["Hrul Sharphoof"] = "Hrul Scharfhuf "
 L["Hula'mahi"] = true
 L["Humphry"] = true
 L["Hurnak Grimmord"] = true
@@ -737,7 +734,6 @@ L["Inkmaster Wei"] = "Tintenmeister Wei"
 L["Innkeeper Biribi"] = "Gastwirtin Biribi"
 L["Innkeeper Fizzgrimble"] = "Gastwirt Zischgrimbel"
 L["Innkeeper Grilka"] = "Gastwirtin Grilka"
-L["Inquisitor Vethroz"] = "Inquisitor Vethroz "
 L["Inscription"] = "Inschriftenkunde"
 L["INSTANCE_DESC"] = "Rezepte aus (5 Mann) Instanzen sollen im Scan angezeigt werden."
 L["Iranis Shadebloom"] = "Iranis Schattenblüte"
@@ -819,7 +815,6 @@ L["Katherine Lee"] = true
 L["Kaye Toogie"] = true
 L["Keelen Sheets"] = "Keelen Tuchus"
 L["Keena"] = true
-L["Keeper Raynae"] = "Hüterin Raynae "
 L["Kelgruk Bloodaxe"] = "Kelgruk Blutaxt"
 L["Kelsey Yance"] = true
 L["Kendor Kabonka"] = true
@@ -1448,7 +1443,6 @@ L["TOOLTIP_SCALE_DESC"] = "Ändert die Skalierung vom ARL Tooltip. Mögliche Wer
 L["Top"] = "Oben"
 L["Top Left"] = "Oben links"
 L["Top Right"] = "Oben rechts"
-L["Toraan the Revered"] = "Toraan der Verehrte "
 L["Torloth the Magnificent"] = "Torloth der Prächtige"
 L["Torn Fin Coastrunner"] = "Küstenläufer der Fetzenflossen"
 L["Torn Fin Muckdweller"] = "Matschkrabbler der Fetzenflossen"
@@ -1505,7 +1499,6 @@ L["View Exclusion List"] = "Zeige Ausschlussliste"
 L["VIEW_EXCLUSION_LIST_DESC"] = "Gibt alle Rezepte in der Ausschlussliste aus."
 L["Viggz Shinesparked"] = "Viggz Funkenschimmer"
 L["Vilebranch Hideskinner"] = "Balgabzieher der Blutfratzen"
-L["Vindicator Jaelaana"] = "Verteidigerin Jaelaana "
 L["Vira Younghoof"] = "Vira Junghuf"
 L["Vir'aani Arcanist"] = "Arkanist der Vir'aani"
 L["Vivianna"] = true
@@ -1590,4 +1583,8 @@ L["Zorbin Fandazzle"] = "Zorbin von Schiller"
 L["Zula Slagfury"] = "Zula Schmelzzorn"
 L["Zurai"] = true
 L["Zurii"] = true
+
+-- ToC
+L["Description"] = "Ackis Recipelist ist ein AddOn, das deine Berufe durchsucht und dir mitteilt, wo du fehlende Rezepte bekommst. Es funktioniert mit allen Berufen, inklusive Runenschmiedens."
+L["Title"] = "Ackis Rezeptliste 2.0"
 

@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------
 --
 -- Prat - A framework for World of Warcraft chat mods
 --
@@ -223,18 +223,18 @@ L=
 		--[[ ["buttonpos_name"] = "",--]] 
 		--[[Translation missing --]]
 		--[[ ["ChatFrame"] = "",--]] 
-		["Copy all of the text in the selected chat frame into an edit box"] = "Copier tout le texte de la fenêtre de discussion sélectionnée dans une boîte d'édition.",
+		["Copy all of the text in the selected chat frame into an edit box"] = "Copier tout le texte de la fenÃªtre de discussion sÃ©lectionnÃ©e dans une boÃ®te d'Ã©dition.",
 		["Copy Text"] = "Copier le texte",
-		["Copy Text Format"] = "Format du texte copié",
-		["Copy text from the active chat window."] = "Copier le texte à partir de la fenêtre de discussion active.",
+		["Copy Text Format"] = "Format du texte copiÃ©",
+		["Copy text from the active chat window."] = "Copier le texte Ã  partir de la fenÃªtre de discussion active.",
 		--[[Translation missing --]]
 		--[[ ["Copy To Editbox"] = "",--]] 
 		["CopyChat"] = "Copier",
 		["HTML"] = true,
 		["Message From : %s"] = "Message de : %s",
 		["Plain"] = "Texte seul",
-		["Should the copied text be plain, or formatted so you can see the colors."] = "Le texte copié doit-il être seul, ou formaté de tel manière à voir les couleurs.",
-		["showbutton_desc"] = "Montrer un bouton sur la fenêtre de discussion.",
+		["Should the copied text be plain, or formatted so you can see the colors."] = "Le texte copiÃ© doit-il Ãªtre seul, ou formatÃ© de tel maniÃ¨re Ã  voir les couleurs.",
+		["showbutton_desc"] = "Montrer un bouton sur la fenÃªtre de discussion.",
 		["showbutton_name"] = "Bouton de copie",
 		--[[Translation missing --]]
 		--[[ ["TOPLEFT"] = "",--]] 
@@ -254,10 +254,10 @@ L=
 		["BBCode"] = true,
 		["BOTTOMLEFT"] = "Unten, links",
 		["BOTTOMRIGHT"] = "Unten, rechts",
-		["buttonpos_desc"] = "Wo im Chatfenster die Kopier-Schaltfläche angezeigt werden soll.",
-		["buttonpos_name"] = "Schaltflächenposition",
+		["buttonpos_desc"] = "Wo im Chatfenster die Kopier-SchaltflÃ¤che angezeigt werden soll.",
+		["buttonpos_name"] = "SchaltflÃ¤chenposition",
 		["ChatFrame"] = "Chatfenster",
-		["Copy all of the text in the selected chat frame into an edit box"] = "Den gesamten Text des ausgewählten Chatfensters in ein Eingabefeld kopieren",
+		["Copy all of the text in the selected chat frame into an edit box"] = "Den gesamten Text des ausgewÃ¤hlten Chatfensters in ein Eingabefeld kopieren",
 		["Copy Text"] = "Text kopieren",
 		["Copy Text Format"] = "Textformat kopieren",
 		["Copy text from the active chat window."] = "Text im aktiven Chatfenster kopieren.",
@@ -267,8 +267,8 @@ L=
 		["Message From : %s"] = "Mitteilung von: %s",
 		["Plain"] = "Einfach",
 		["Should the copied text be plain, or formatted so you can see the colors."] = "Soll der kopierte Text einfach oder formattiert mit farbiger Darstellung kopiert werden?",
-		["showbutton_desc"] = "Schaltfläche im Chat-Rahmen anzeigen",
-		["showbutton_name"] = "Schaltfläche Kopieren",
+		["showbutton_desc"] = "SchaltflÃ¤che im Chat-Rahmen anzeigen",
+		["showbutton_name"] = "SchaltflÃ¤che Kopieren",
 		["TOPLEFT"] = "Oben, links",
 		["TOPRIGHT"] = "Oben, rechts",
 		["Wowace.com Forums"] = "Wowace.com Foren",
@@ -279,28 +279,28 @@ PL:AddLocale(PRAT_MODULE, "deDE", L)
 L=
 {
 	["CopyChat"] = {
-		[" Text"] = " 텍스트",
+		[" Text"] = "Â í…ìŠ¤íŠ¸",
 		["BBCode"] = true,
-		["BOTTOMLEFT"] = "하단, 좌측",
-		["BOTTOMRIGHT"] = "하단, 우측",
-		["buttonpos_desc"] = "복사 버튼을 표시할 대화창의 위치",
-		["buttonpos_name"] = "버튼 위치",
-		["ChatFrame"] = "대화창",
-		["Copy all of the text in the selected chat frame into an edit box"] = "선택된 대화창의 모든 내용을 대화 입력창으로 복사합니다",
-		["Copy Text"] = "텍스트 복사",
-		["Copy Text Format"] = "복사 내용 서식",
-		["Copy text from the active chat window."] = "활성 대화창에서 내용을 복사합니다.",
-		["Copy To Editbox"] = "대화 입력창에 복사",
-		["CopyChat"] = "대화 복사 [CopyChat]",
+		["BOTTOMLEFT"] = "í•˜ë‹¨, ì¢Œì¸¡",
+		["BOTTOMRIGHT"] = "í•˜ë‹¨, ìš°ì¸¡",
+		["buttonpos_desc"] = "ë³µì‚¬ ë²„íŠ¼ì„ í‘œì‹œí•  ëŒ€í™”ì°½ì˜ ìœ„ì¹˜",
+		["buttonpos_name"] = "ë²„íŠ¼ ìœ„ì¹˜",
+		["ChatFrame"] = "ëŒ€í™”ì°½",
+		["Copy all of the text in the selected chat frame into an edit box"] = "ì„ íƒëœ ëŒ€í™”ì°½ì˜ ëª¨ë“  ë‚´ìš©ì„ ëŒ€í™” ìž…ë ¥ì°½ìœ¼ë¡œ ë³µì‚¬í•©ë‹ˆë‹¤",
+		["Copy Text"] = "í…ìŠ¤íŠ¸ ë³µì‚¬",
+		["Copy Text Format"] = "ë³µì‚¬ ë‚´ìš© ì„œì‹",
+		["Copy text from the active chat window."] = "í™œì„± ëŒ€í™”ì°½ì—ì„œ ë‚´ìš©ì„ ë³µì‚¬í•©ë‹ˆë‹¤.",
+		["Copy To Editbox"] = "ëŒ€í™” ìž…ë ¥ì°½ì— ë³µì‚¬",
+		["CopyChat"] = "ëŒ€í™” ë³µì‚¬ [CopyChat]",
 		["HTML"] = true,
-		["Message From : %s"] = "%s|1으로;로;부터 메시지",
-		["Plain"] = "보통",
-		["Should the copied text be plain, or formatted so you can see the colors."] = "복사된 내용을 보통으로 표시하거나, 또는 색상을 보기 위해 형식화 합니다.",
-		["showbutton_desc"] = "대화창에 버튼 표시",
-		["showbutton_name"] = "복사 버튼",
-		["TOPLEFT"] = "상단, 좌측",
-		["TOPRIGHT"] = "상단, 우측",
-		["Wowace.com Forums"] = "Wowace.com 포럼",
+		["Message From : %s"] = "%s|1ìœ¼ë¡œ;ë¡œ;ë¶€í„° ë©”ì‹œì§€",
+		["Plain"] = "ë³´í†µ",
+		["Should the copied text be plain, or formatted so you can see the colors."] = "ë³µì‚¬ëœ ë‚´ìš©ì„ ë³´í†µìœ¼ë¡œ í‘œì‹œí•˜ê±°ë‚˜, ë˜ëŠ” ìƒ‰ìƒì„ ë³´ê¸° ìœ„í•´ í˜•ì‹í™” í•©ë‹ˆë‹¤.",
+		["showbutton_desc"] = "ëŒ€í™”ì°½ì— ë²„íŠ¼ í‘œì‹œ",
+		["showbutton_name"] = "ë³µì‚¬ ë²„íŠ¼",
+		["TOPLEFT"] = "ìƒë‹¨, ì¢Œì¸¡",
+		["TOPRIGHT"] = "ìƒë‹¨, ìš°ì¸¡",
+		["Wowace.com Forums"] = "Wowace.com í¬ëŸ¼",
 	}
 }
 PL:AddLocale(PRAT_MODULE, "koKR",L)
@@ -357,56 +357,56 @@ PL:AddLocale(PRAT_MODULE, "esMX",L)
 L=
 {
 	["CopyChat"] = {
-		[" Text"] = " Текст",
+		[" Text"] = " Ð¢ÐµÐºÑÑ‚",
 		["BBCode"] = true,
-		["BOTTOMLEFT"] = "Снизу, Слева",
-		["BOTTOMRIGHT"] = "Снизу, Справа",
-		["buttonpos_desc"] = "Где в окне чата показывать кнопку копирования",
-		["buttonpos_name"] = "Положение кнопки",
-		["ChatFrame"] = "Окно чата",
-		["Copy all of the text in the selected chat frame into an edit box"] = "Копировать весь текст из выбранного окна чата в поле ввода.",
-		["Copy Text"] = "Копировать текст",
-		["Copy Text Format"] = "Формат копирования текста",
-		["Copy text from the active chat window."] = "Копировать текст из активного окна чата.",
-		["Copy To Editbox"] = "Копировать чат",
-		["CopyChat"] = "Копия Чата",
+		["BOTTOMLEFT"] = "Ð¡Ð½Ð¸Ð·Ñƒ, Ð¡Ð»ÐµÐ²Ð°",
+		["BOTTOMRIGHT"] = "Ð¡Ð½Ð¸Ð·Ñƒ, Ð¡Ð¿Ñ€Ð°Ð²Ð°",
+		["buttonpos_desc"] = "Ð“Ð´Ðµ Ð² Ð¾ÐºÐ½Ðµ Ñ‡Ð°Ñ‚Ð° Ð¿Ð¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ ÐºÐ½Ð¾Ð¿ÐºÑƒ ÐºÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ",
+		["buttonpos_name"] = "ÐŸÐ¾Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ ÐºÐ½Ð¾Ð¿ÐºÐ¸",
+		["ChatFrame"] = "ÐžÐºÐ½Ð¾ Ñ‡Ð°Ñ‚Ð°",
+		["Copy all of the text in the selected chat frame into an edit box"] = "ÐšÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð²ÐµÑÑŒ Ñ‚ÐµÐºÑÑ‚ Ð¸Ð· Ð²Ñ‹Ð±Ñ€Ð°Ð½Ð½Ð¾Ð³Ð¾ Ð¾ÐºÐ½Ð° Ñ‡Ð°Ñ‚Ð° Ð² Ð¿Ð¾Ð»Ðµ Ð²Ð²Ð¾Ð´Ð°.",
+		["Copy Text"] = "ÐšÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ñ‚ÐµÐºÑÑ‚",
+		["Copy Text Format"] = "Ð¤Ð¾Ñ€Ð¼Ð°Ñ‚ ÐºÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ Ñ‚ÐµÐºÑÑ‚Ð°",
+		["Copy text from the active chat window."] = "ÐšÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ñ‚ÐµÐºÑÑ‚ Ð¸Ð· Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾Ð³Ð¾ Ð¾ÐºÐ½Ð° Ñ‡Ð°Ñ‚Ð°.",
+		["Copy To Editbox"] = "ÐšÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ñ‡Ð°Ñ‚",
+		["CopyChat"] = "ÐšÐ¾Ð¿Ð¸Ñ Ð§Ð°Ñ‚Ð°",
 		["HTML"] = true,
-		["Message From : %s"] = "Сообщение от : %s",
-		["Plain"] = "Обычный текст",
-		["Should the copied text be plain, or formatted so you can see the colors."] = "Копировать информацию как обычный текст или же форматированный, с сохранением цветов и т.п.",
-		["showbutton_desc"] = "Показывать кнопку копирования в окне чата",
-		["showbutton_name"] = "Кнопка копирования",
-		["TOPLEFT"] = "Сверху, Слева",
-		["TOPRIGHT"] = "Сверху, Справа",
-		["Wowace.com Forums"] = "Форумы Wowace.com",
+		["Message From : %s"] = "Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚ : %s",
+		["Plain"] = "ÐžÐ±Ñ‹Ñ‡Ð½Ñ‹Ð¹ Ñ‚ÐµÐºÑÑ‚",
+		["Should the copied text be plain, or formatted so you can see the colors."] = "ÐšÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸ÑŽ ÐºÐ°Ðº Ð¾Ð±Ñ‹Ñ‡Ð½Ñ‹Ð¹ Ñ‚ÐµÐºÑÑ‚ Ð¸Ð»Ð¸ Ð¶Ðµ Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ð¹, Ñ ÑÐ¾Ñ…Ñ€Ð°Ð½ÐµÐ½Ð¸ÐµÐ¼ Ñ†Ð²ÐµÑ‚Ð¾Ð² Ð¸ Ñ‚.Ð¿.",
+		["showbutton_desc"] = "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ ÐºÐ½Ð¾Ð¿ÐºÑƒ ÐºÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ Ð² Ð¾ÐºÐ½Ðµ Ñ‡Ð°Ñ‚Ð°",
+		["showbutton_name"] = "ÐšÐ½Ð¾Ð¿ÐºÐ° ÐºÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ",
+		["TOPLEFT"] = "Ð¡Ð²ÐµÑ€Ñ…Ñƒ, Ð¡Ð»ÐµÐ²Ð°",
+		["TOPRIGHT"] = "Ð¡Ð²ÐµÑ€Ñ…Ñƒ, Ð¡Ð¿Ñ€Ð°Ð²Ð°",
+		["Wowace.com Forums"] = "Ð¤Ð¾Ñ€ÑƒÐ¼Ñ‹ Wowace.com",
 	}
 }
 PL:AddLocale(PRAT_MODULE, "ruRU",L)
 L=
 {
 	["CopyChat"] = {
-		[" Text"] = "文本",
-		["BBCode"] = "BB代码",
-		["BOTTOMLEFT"] = "左下",
-		["BOTTOMRIGHT"] = "右下",
-		["buttonpos_desc"] = "复制按钮在聊天框的位置",
-		["buttonpos_name"] = "按钮位置",
-		["ChatFrame"] = "聊天框",
-		["Copy all of the text in the selected chat frame into an edit box"] = "在选定的聊天框复制全部文本到输入框",
-		["Copy Text"] = "复制文本",
-		["Copy Text Format"] = "复制文本格式",
-		["Copy text from the active chat window."] = "从活跃的聊天窗口复制文本",
-		["Copy To Editbox"] = "复制到编辑框",
-		["CopyChat"] = "聊天复制",
-		["HTML"] = "超文本标记语言",
-		["Message From : %s"] = "信息来自: %s",
-		["Plain"] = "简洁",
-		["Should the copied text be plain, or formatted so you can see the colors."] = "如果用简洁或排版复制的文本,你可以看到颜色",
-		["showbutton_desc"] = "在聊天框显示按钮",
-		["showbutton_name"] = "复制按钮",
-		["TOPLEFT"] = "左上",
-		["TOPRIGHT"] = "右上",
-		["Wowace.com Forums"] = "Wowace.com论坛",
+		[" Text"] = "æ–‡æœ¬",
+		["BBCode"] = "BBä»£ç ",
+		["BOTTOMLEFT"] = "å·¦ä¸‹",
+		["BOTTOMRIGHT"] = "å³ä¸‹",
+		["buttonpos_desc"] = "å¤åˆ¶æŒ‰é’®åœ¨èŠå¤©æ¡†çš„ä½ç½®",
+		["buttonpos_name"] = "æŒ‰é’®ä½ç½®",
+		["ChatFrame"] = "èŠå¤©æ¡†",
+		["Copy all of the text in the selected chat frame into an edit box"] = "åœ¨é€‰å®šçš„èŠå¤©æ¡†å¤åˆ¶å…¨éƒ¨æ–‡æœ¬åˆ°è¾“å…¥æ¡†",
+		["Copy Text"] = "å¤åˆ¶æ–‡æœ¬",
+		["Copy Text Format"] = "å¤åˆ¶æ–‡æœ¬æ ¼å¼",
+		["Copy text from the active chat window."] = "ä»Žæ´»è·ƒçš„èŠå¤©çª—å£å¤åˆ¶æ–‡æœ¬",
+		["Copy To Editbox"] = "å¤åˆ¶åˆ°ç¼–è¾‘æ¡†",
+		["CopyChat"] = "èŠå¤©å¤åˆ¶",
+		["HTML"] = "è¶…æ–‡æœ¬æ ‡è®°è¯­è¨€",
+		["Message From : %s"] = "ä¿¡æ¯æ¥è‡ª: %s",
+		["Plain"] = "ç®€æ´",
+		["Should the copied text be plain, or formatted so you can see the colors."] = "å¦‚æžœç”¨ç®€æ´æˆ–æŽ’ç‰ˆå¤åˆ¶çš„æ–‡æœ¬,ä½ å¯ä»¥çœ‹åˆ°é¢œè‰²",
+		["showbutton_desc"] = "åœ¨èŠå¤©æ¡†æ˜¾ç¤ºæŒ‰é’®",
+		["showbutton_name"] = "å¤åˆ¶æŒ‰é’®",
+		["TOPLEFT"] = "å·¦ä¸Š",
+		["TOPRIGHT"] = "å³ä¸Š",
+		["Wowace.com Forums"] = "Wowace.comè®ºå›",
 	}
 }
 PL:AddLocale(PRAT_MODULE, "zhCN",L)
@@ -424,7 +424,7 @@ L=
 		--[[Translation missing --]]
 		--[[ ["buttonpos_name"] = "",--]] 
 		["ChatFrame"] = "MarcoChat",
-		["Copy all of the text in the selected chat frame into an edit box"] = "Copiar todo el texto seleccionado en el marco del chat a una caja de edición",
+		["Copy all of the text in the selected chat frame into an edit box"] = "Copiar todo el texto seleccionado en el marco del chat a una caja de ediciÃ³n",
 		["Copy Text"] = "Copiar Texto",
 		["Copy Text Format"] = "Copiar Texto con fomato",
 		["Copy text from the active chat window."] = "Copiar texto desde la ventana de chat activa.",
@@ -434,9 +434,9 @@ L=
 		["HTML"] = true,
 		["Message From : %s"] = "Mensaje de : %s",
 		["Plain"] = "Liso",
-		["Should the copied text be plain, or formatted so you can see the colors."] = "El texto copiado debería ser llano, o con formato para que pueda ver los colores. ",
-		["showbutton_desc"] = "Muestra un botón en el marco del chat",
-		["showbutton_name"] = "Botón Copiar",
+		["Should the copied text be plain, or formatted so you can see the colors."] = "El texto copiado deberÃ­a ser llano, o con formato para que pueda ver los colores. ",
+		["showbutton_desc"] = "Muestra un botÃ³n en el marco del chat",
+		["showbutton_name"] = "BotÃ³n Copiar",
 		--[[Translation missing --]]
 		--[[ ["TOPLEFT"] = "",--]] 
 		--[[Translation missing --]]
@@ -448,32 +448,32 @@ PL:AddLocale(PRAT_MODULE, "esES",L)
 L=
 {
 	["CopyChat"] = {
-		[" Text"] = "文字",
+		[" Text"] = "æ–‡å­—",
 		["BBCode"] = true,
-		["BOTTOMLEFT"] = "下, 左",
-		["BOTTOMRIGHT"] = "下, 右",
+		["BOTTOMLEFT"] = "ä¸‹, å·¦",
+		["BOTTOMRIGHT"] = "ä¸‹, å³",
 		--[[Translation missing --]]
 		--[[ ["buttonpos_desc"] = "",--]] 
-		["buttonpos_name"] = "按鈕位置",
-		["ChatFrame"] = "聊天視窗",
+		["buttonpos_name"] = "æŒ‰éˆ•ä½ç½®",
+		["ChatFrame"] = "èŠå¤©è¦–çª—",
 		--[[Translation missing --]]
 		--[[ ["Copy all of the text in the selected chat frame into an edit box"] = "",--]] 
-		["Copy Text"] = "複製文字",
-		["Copy Text Format"] = "複製文字格式",
-		["Copy text from the active chat window."] = "複製使用中聊天視窗文字",
-		["Copy To Editbox"] = "複製至編輯盒",
+		["Copy Text"] = "è¤‡è£½æ–‡å­—",
+		["Copy Text Format"] = "è¤‡è£½æ–‡å­—æ ¼å¼",
+		["Copy text from the active chat window."] = "è¤‡è£½ä½¿ç”¨ä¸­èŠå¤©è¦–çª—æ–‡å­—",
+		["Copy To Editbox"] = "è¤‡è£½è‡³ç·¨è¼¯ç›’",
 		["CopyChat"] = true,
 		["HTML"] = true,
-		["Message From : %s"] = "來自 %s 的訊息",
+		["Message From : %s"] = "ä¾†è‡ª %s çš„è¨Šæ¯",
 		--[[Translation missing --]]
 		--[[ ["Plain"] = "",--]] 
 		--[[Translation missing --]]
 		--[[ ["Should the copied text be plain, or formatted so you can see the colors."] = "",--]] 
-		["showbutton_desc"] = "於聊天視窗中顯示按鈕",
-		["showbutton_name"] = "複製按鈕",
-		["TOPLEFT"] = "上, 左",
-		["TOPRIGHT"] = "上, 右",
-		["Wowace.com Forums"] = "Wowace.com 論壇",
+		["showbutton_desc"] = "æ–¼èŠå¤©è¦–çª—ä¸­é¡¯ç¤ºæŒ‰éˆ•",
+		["showbutton_name"] = "è¤‡è£½æŒ‰éˆ•",
+		["TOPLEFT"] = "ä¸Š, å·¦",
+		["TOPRIGHT"] = "ä¸Š, å³",
+		["Wowace.com Forums"] = "Wowace.com è«–å£‡",
 	}
 }
 PL:AddLocale(PRAT_MODULE, "zhTW",L)
@@ -793,7 +793,7 @@ function module:DoCopyChatScroll(frame, noshow)
         local msg = v.message
 
         if msg then
-            table.insert(scrapelines, msg)
+            scrapelines[#scrapelines+1] = msg
         end
     end
 

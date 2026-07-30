@@ -79,12 +79,22 @@ function addon:FollowerScore(mission,followerID)
 	local score,chance=self:MissionScore(mission)
 	return format("%s %d %04d",score,self:GetAnyData(0,followerID,'durability',0),followerID and math.min(1000-self:GetAnyData(0,followerID,'rank',90),999)),chance
 end
-local filters={skipMaxed=false,skipBusy=false}
+local filters={skipMaxed=false,skipBusy=false,skipEpic=false}
 function filters.nop(followerID)
 	return true
 end
 function filters.maxed(followerID,missionID)
 	return filters.skipMaxed and addon:GetAnyData(0,followerID,'maxed') or false
+end
+function filters.troops(followerID,missionID)
+	return filters.skipTroops and addon:GetAnyData(0,followerID,'isTroop') or false
+end
+function filters.epic(followerID,missionID)
+	if not filters.skipEpic then return false end
+	local quality = tonumber(addon:GetAnyData(0,followerID,'quality')) or 0
+	local isLegion = addon:GetAnyData(0, followerID, 'followerTypeID') == 4
+	local maxQuality = isLegion and 5 or 4
+	return quality >= maxQuality or addon:GetAnyData(0,followerID,'maxed')
 end
 function filters.busy(followerID,missionID)
 	return not addon:IsFollowerAvailableForMission(followerID,filters.skipBusy)
@@ -96,7 +106,7 @@ function filters.other(followerID,missionID)
 	return filters.busy(followerID,missionID) or filters.ignored(followerID,missionID)
 end
 function filters.xp(followerID,missionID)
-	return filters.maxed(followerID,missionID) or filters.other(followerID,missionID)
+	return filters.maxed(followerID,missionID) or filters.epic(followerID,missionID) or filters.troops(followerID,missionID) or filters.other(followerID,missionID)
 end
 --alias
 --[[
@@ -213,16 +223,18 @@ local function AddMoreFollowers(self,mission,scores,justdo,max)
 		end
 	end
 end
-local function MatchMaker(self,mission,party,includeBusy,onlyBest)
-
+local function MatchMaker(self,mission,party,includeBusy,onlyBest,skipEpic)
+	if skipEpic == nil then skipEpic = self:GetBoolean("GCSKIPEPIC") end
 	local class=mission.class
 	local missionID=mission.missionID
 	local filterOut=filters[class] or filters.other
-	filters.skipMaxed=self:GetBoolean("IGP")
+	filters.skipMaxed=self:GetBoolean("IGP") or (skipEpic and class == 'xp')
+	filters.skipEpic=(skipEpic and class == 'xp')
+	filters.skipTroops=(skipEpic and class == 'xp')
 	local followerType=mission.followerTypeID
 	local hallMission=followerType==LE_FOLLOWER_TYPE_GARRISON_7_0
 	if followerType==LE_FOLLOWER_TYPE_SHIPYARD_6_2 then
-		filters.skipMaxed=false
+		filters.skipTroops=false
 	end
 
 	if (includeBusy==nil) then
@@ -312,13 +324,25 @@ local function MatchMaker(self,mission,party,includeBusy,onlyBest)
 		end
 		if P:FreeSlots() > 0 then
 			if not onlyBest then
-				filters.skipMaxed=false
+				AddMoreFollowers(self,mission,scores,true)
+				AddMoreFollowers(self,mission,troops,true)
+			end
+		end
+		if P:FreeSlots() > 0 then
+			if not onlyBest then
+				if not (skipEpic and class == 'xp') or (self:GetBoolean("GCFILLEPIC") and not P:IsEmpty()) then
+					filters.skipMaxed=false
+					filters.skipEpic=false
+				end
 				AddMoreFollowers(self,mission,scores)
 				AddMoreFollowers(self,mission,troops)
 			end
 		end
 		if P:FreeSlots() > 0 then
-			filters.skipMaxed=false
+			if not (skipEpic and class == 'xp') or self:GetBoolean("GCFILLEPIC") then
+				filters.skipMaxed=false
+				filters.skipEpic=false
+			end
 			AddMoreFollowers(self,mission,scores,true)
 			AddMoreFollowers(self,mission,troops,true)
 		end
@@ -353,18 +377,8 @@ function addon:MCMatchMaker(missionID,party,skipEpic,cap)
 --[===[@debug@
 	print("Using cap data:",cap)
 --@end-debug@]===]
-	MatchMaker(self,mission,party,false,true,cap)
-	if (skipEpic) then
-		if (self:GetMissionData(missionID,'class')=='xp') then
-			for i=1,#party.members do
-				if not self:GetAnyData(0,party.members[i],'maxed') then
-					return
-				end
-			end
-			party.full=false
-			wipe(party.members)
-		end
-	end
+	MatchMaker(self,mission,party,false,true,skipEpic)
+
 	return party.perc
 end
 function addon:MatchMaker(missionID,party,includeBusy,useCap,currentCap)

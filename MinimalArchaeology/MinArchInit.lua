@@ -1,4 +1,4 @@
-function MinArch:InitMain(self)
+﻿function MinArch:InitMain(self)
 	-- Update Artifacts
 	self:RegisterEvent("ARTIFACT_COMPLETE");
 	self:RegisterEvent("ARTIFACT_DIGSITE_COMPLETE");
@@ -16,10 +16,9 @@ function MinArch:InitMain(self)
 	MinArch['frame']['defaultHeight'] = MinArchMain:GetHeight();
 	MinArch['frame']['height'] = MinArchMain:GetHeight();
 	
-	for i=1,18 do
-		MinArch['artifacts'][i] = {}; 
+	for i=1, 25 do MinArch['artifacts'][i] = {}; 
 		MinArch['artifacts'][i]['appliedKeystones'] = 0;
-		MinArch['artifactbars'][i] = MinArchMain["artifactBar"..i];
+		if MinArchMain["artifactBar"..i] then MinArch['artifactbars'][i] = MinArchMain["artifactBar"..i]; end
 		MinArchOptions['ABOptions'][i] = {};
 		MinArchOptions['ABOptions'][i]['AlwaysUseKeystone'] = false;
 		MinArchOptions['ABOptions'][i]['Hide'] = false;

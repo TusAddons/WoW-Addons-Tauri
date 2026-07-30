@@ -1,11 +1,11 @@
 ## Interface: 70300
 ## Title: Bagnon
-## Author: Tuller & Jaliborc (João Cardoso)
+## Author: Artiom97es
 ## Notes: Single window displays for your inventory and bank
 ## SavedVariables: Bagnon_Sets
 
 ## OptionalDeps: BagBrother, ItemRack, Wardrobe, WoWUnit
-## Version: 7.3.11
+## Version: 7.3.12
 
 main.lua
 

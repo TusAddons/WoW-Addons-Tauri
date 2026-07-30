@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("Brawlers", "DBM-Brawlers")
+﻿local mod	= DBM:NewMod("Brawlers", "DBM-Brawlers")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 17564 $"):sub(12, -3))
@@ -211,11 +211,11 @@ end
 local startCallbacks, endCallbacks = {}, {}
 
 function mod:OnMatchStart(callback)
-	table.insert(startCallbacks, callback)
+	startCallbacks[#startCallbacks+1] = callback
 end
 
 function mod:OnMatchEnd(callback)
-	table.insert(endCallbacks, callback)
+	endCallbacks[#endCallbacks+1] = callback
 end
 
 --Most group up for this so they can buff eachother for matches. Syncing should greatly improve reliability, especially for match end since the person fighting definitely should detect that (probably missing yells still)

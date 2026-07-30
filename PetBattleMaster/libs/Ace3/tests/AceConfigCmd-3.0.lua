@@ -1,4 +1,4 @@
-dofile("wow_api.lua")
+﻿dofile("wow_api.lua")
 dofile("LibStub.lua")
 dofile("../CallbackHandler-1.0/CallbackHandler-1.0.lua")
 dofile("../AceConsole-3.0/AceConsole-3.0.lua")
@@ -143,7 +143,7 @@ ccmd:HandleCommand("test","testapp","toggle thisshoulderror") -- shouldn't work
 assert(n.get_toggle==0)
 assert(n.set_toggle==0)
 assert(n.validate_base==0)
-assert(table.getn(expect)==0)
+assert(#(expect)==0)
 
 n:clear()
 ccmd:HandleCommand("test","testapp","toggle off")

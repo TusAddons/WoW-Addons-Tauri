@@ -1,0 +1,15 @@
+## Interface: 70000
+## Title: HandyNotes_PandariaTreasures
+## Author: Artiom97es
+## Version: 1.7-Artiom97es
+## Notes: Shows location of treasures, rares and helps filling some Achievements in Pandaria
+## OptionalDeps: Ace3
+## RequiredDeps: HandyNotes
+## X-Embeds: Ace3
+## SavedVariables: PandariaTreasuresDB
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+HandyNotes_PandariaTreasures.lua

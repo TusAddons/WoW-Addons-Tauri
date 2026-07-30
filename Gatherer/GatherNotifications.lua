@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Gatherer Addon for World of Warcraft(tm).
 	Version: 7.3.1 (<%codename%>)
 	Revision: $Id: GatherNotifications.lua 979 2012-09-04 07:38:10Z Esamynn $
@@ -52,7 +52,7 @@ local function DisplayNotification()
 		local C = HIGHLIGHT_FONT_COLOR
 		Tooltip:SetText(_tr("NOTIFICATIONS_TITLE"), C.r, C.g, C.b)
 		for _, text in ipairs(Messages) do
-			Tooltip:AddLine("———————————————————————————————————————————————————") -- I'd perfer if this produced a solid line :/
+			Tooltip:AddLine("â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”") -- I'd perfer if this produced a solid line :/
 			Tooltip:AddLine(text, nil, nil, nil, true)
 		end
 		Tooltip:Show()
@@ -60,7 +60,7 @@ local function DisplayNotification()
 end
 
 function AddInfo( text )
-	table.insert(Messages, text)
+	Messages[#Messages+1] = text
 	DisplayNotification()
 end
 

@@ -1,18 +1,19 @@
-changeset:   1153:efb123a9b4b2
+changeset:   1149:fe402521b2ac
+tag:         3.5.71
 user:        sylvanaar <sylvanaar@mindspring.com>
-date:        Sat Jun 30 11:26:01 2018 -0700
-summary:     New module: Highlight - Intended purpose is to highlight/colorize interesting text. Right now it is limited to the player's own name, and "guild-like" strings e.g. "<My Guild Name>".
+date:        Tue Jun 26 16:07:38 2018 -0700
+summary:     Dim the "say grats" link a bit.
 
 
-changeset:   1152:b014e9eb3988
+changeset:   1148:cca3df1f5abf
 user:        sylvanaar <sylvanaar@mindspring.com>
-date:        Sat Jun 30 10:00:42 2018 -0700
-summary:     Update smfhax for current chatframe architecture
+date:        Tue Jun 26 14:50:48 2018 -0700
+summary:     Add a nil check, and fix spelling errors
 
 
-changeset:   1151:71c243e708f8
+changeset:   1147:ad01beed1f11
 user:        sylvanaar <sylvanaar@mindspring.com>
-date:        Sat Jun 30 09:30:16 2018 -0700
-summary:     Fix smfhax compile issues - doesn't work though.
+date:        Tue Jun 26 14:33:50 2018 -0700
+summary:     Make the grats link more expressive.
 
 

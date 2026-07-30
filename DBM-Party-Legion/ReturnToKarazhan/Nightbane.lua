@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Nightbane", "DBM-Party-Legion", 11)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 16 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 17440 $"):sub(12, -3))
 mod:SetCreatureID(114895)
 mod:SetEncounterID(2031)
 mod:SetZone()
@@ -149,7 +149,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 228808 and destGUID == UnitGUID("player") and not DBM:UnitDebuff("player", filteredDebuff) and self:AntiSpam(2, 1) then
+	if spellId == 228808 and destGUID == UnitGUID("player") and not UnitDebuff("player", filteredDebuff) and self:AntiSpam(2, 1) then
 		specWarnCharredEarth:Show()
 		specWarnCharredEarth:Play("runaway")
 	end
@@ -171,8 +171,8 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
-	local spellId = legacySpellId or bfaSpellId
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
+	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
 	if spellId == 228806 then--Charred Earth pre cast
 		timerCharredEarthCD:Start()
 	end

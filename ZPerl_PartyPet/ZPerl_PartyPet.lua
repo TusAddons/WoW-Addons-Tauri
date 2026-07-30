@@ -618,6 +618,11 @@ end
 
 -- XPerl_Party_Pet_Set_Bits1
 function XPerl_Party_Pet_Set_Bits1(self)
+	if (InCombatLockdown()) then
+		XPerl_OutOfCombatQueue[XPerl_Party_Pet_Set_Bits1] = self
+		return
+	end
+
 	if (not self:GetParent()) then
 		self:SetParent(_G["XPerl_party"..self:GetID()])
 	end

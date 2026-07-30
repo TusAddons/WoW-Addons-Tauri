@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Gatherer Addon for World of Warcraft(tm).
 	Version: 7.3.1 (<%codename%>)
 	Revision: $Id: GatherDropRates.lua 1129 2014-11-13 21:02:28Z esamynn $
@@ -259,8 +259,8 @@ setmetatable(iteratorStateTables, { __mode = "k" }); --weak keys
 local workTableCache = { {}, {}, {}, {}, }; -- initial size of 4 tables
 
 local function getWorkTable()
-	if ( table.getn(workTableCache) < 1 ) then
-		table.insert(workTableCache, {})
+	if ( #(workTableCache) < 1 ) then
+		workTableCache[#workTableCache+1] = {}
 	end
 	local workTable = table.remove(workTableCache)
 	iteratorStateTables[workTable] = false
@@ -273,7 +273,7 @@ local function releaseWorkTable( workTable )
 		for k, v in pairs(workTable) do
 			workTable[k] = nil
 		end
-		table.insert(workTableCache, workTable)
+		workTableCache[#workTableCache+1] = workTable
 	end
 end
 
@@ -328,7 +328,7 @@ do --create a new block
 			end
 			for item, count in pairs(data) do
 				if (item ~= "total") then
-					table.insert(dropsCache, item)
+					dropsCache[#dropsCache+1] = item
 				end
 			end
 			if ( sort == "ASC" ) then

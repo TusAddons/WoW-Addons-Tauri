@@ -287,6 +287,10 @@ L= DBM:GetModLocalization(688)
 --------------------
 L= DBM:GetModLocalization(671)
 
+L:SetOptionLocalization({
+	KickArrow	= "Mostrar flecha cuando $spell:114487 ocurra cerca de ti"
+})
+
 ------------------
 -- Melenablanca --
 ------------------

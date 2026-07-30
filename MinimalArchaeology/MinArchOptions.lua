@@ -1,4 +1,4 @@
--- Options Panel Functions
+﻿-- Options Panel Functions
 
 function MinArch:OptionsLoad()
 	MinArchOptionPanel.AddonName:SetText("Minimal Archaeology");
@@ -71,7 +71,7 @@ end
 
 function MinArch:HideOptionToggle()
 	if (MinArchIsReady == true) then
-		for i=1, 18 do
+		for i=1, GetNumArchaeologyRaces() do
 			MinArchOptions['ABOptions'][i]['Hide'] = MinArchOptionPanel.hideArtifact["hide"..i]:GetChecked()
 		end
 	end
@@ -80,7 +80,7 @@ end
 
 function MinArch:CapOptionToggle()
 	if (MinArchIsReady == true) then
-		for i=1, 18 do
+		for i=1, GetNumArchaeologyRaces() do
 			MinArchOptions['ABOptions'][i]['Cap'] = MinArchOptionPanel.capArtifact["cap"..i]:GetChecked()
 		end
 	end
@@ -89,7 +89,7 @@ end
 
 function MinArch:UseKeystoneOptionToggle()
 	if (MinArchIsReady == true) then
-		for i=1, 18 do
+		for i=1, GetNumArchaeologyRaces() do
 			if (i ~= ARCHAEOLOGY_RACE_FOSSIL) then -- no keystones for fossils
 				MinArchOptions['ABOptions'][i]['AlwaysUseKeystone'] = MinArchOptionPanel.useKeystones["usekeystone"..i]:GetChecked()
 			end
@@ -140,7 +140,7 @@ end
 function MinArch:OpenOptions()
 	if (MinArchIsReady == true) then
 		MinArch:UpdateMain();
-		for i=1, 18 do
+		for i=1, GetNumArchaeologyRaces() do
 			MinArchOptionPanel.hideArtifact["hide"..i].text:SetText(MinArch['artifacts'][i]['race']);
 			MinArchOptionPanel.hideArtifact["hide"..i]:SetChecked(MinArchOptions['ABOptions'][i]['Hide']);
 			

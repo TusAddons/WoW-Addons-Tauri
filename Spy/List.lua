@@ -91,10 +91,10 @@ function Spy:ManageNearbyList()
 	table.sort(inactive, function(a, b) return a.time < b.time end)
 
 	local list = {}
-	for player in pairs(activeKoS) do table.insert(list, activeKoS[player]) end
-	for player in pairs(inactiveKoS) do table.insert(list, inactiveKoS[player]) end
-	for player in pairs(active) do table.insert(list, active[player]) end
-	for player in pairs(inactive) do table.insert(list, inactive[player]) end
+	for player in pairs(activeKoS) do list[#list+1] = activeKoS[player] end
+	for player in pairs(inactiveKoS) do list[#list+1] = inactiveKoS[player] end
+	for player in pairs(active) do list[#list+1] = active[player] end
+	for player in pairs(inactive) do list[#list+1] = inactive[player] end
 	Spy.CurrentList = list
 end
 
@@ -258,10 +258,6 @@ function Spy:UpdatePlayerData(name, class, level, race, guild, isEnemy, isGuess)
 	if playerData then
 		playerData.time = time()
 		if not Spy.ActiveList[name] then
---			if WorldMapFrame:IsVisible() then
-			if (WorldMapFrame:IsVisible() and Spy.db.profile.SwitchToZone) then
-				SetMapToCurrentZone()
-			end
 			if (GetPlayerMapPosition("player") == nil) then -- Patch 7.1 restricted areas causes a nil
 				local x,y = 0,0
 				local InsName = GetInstanceInfo()

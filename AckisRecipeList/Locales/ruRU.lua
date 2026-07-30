@@ -3,10 +3,10 @@
 ruRU.lua
 ruRU localization strings for Ackis Recipe List
 ************************************************************************
-File date: 2012-08-18T4:52:05Z 
+File date: 2012-08-18T9:52:05Z 
 File revision: 4d6b8e446c1381fe41575a671a6c54702932e4db 
-Project revision: 91a3a6169d0f9c5d597f01630a67df42a2703590
-Project version: 7.3.0.2-15-g91a3a616
+Project revision: e062c22807cdc0ea8ab367d74537384aaee9cb59
+Project version: 7.3.0.1
 ************************************************************************
 Currently maintained by:
 http://www.wowace.com/addons/arl/localization/translators/
@@ -56,7 +56,6 @@ L["Alanna Raveneye"] = "Аланна Око Ворона"
 L["Alard Schmied"] = "Алард Шмид"
 L["Albert de Hyde"] = "Альберт де Гид"
 L["Alchemist Finklestein"] = "Алхимик Финкльштейн"
-L["Alchemist Funen"] = "Алхимик Фунен"
 L["Alchemist Gribble"] = "Алхимик Гриббл"
 L["Alchemist Kanhu"] = "Алхимик Канху"
 L["Alchemist Mallory"] = "Алхимик Маллори"
@@ -142,7 +141,6 @@ L["Asarnan"] = "Азарнан"
 L["Ashleaf Sprite"] = "Дух ясеневого листа"
 L["Ashtongue Warrior"] = "Пеплоуст-воин"
 L["Aska Mistrunner"] = "Аска Вестница Туманов"
-L["Ataxon"] = "Атаксон"
 L["Auchenai Monk"] = "Аукенайский монах"
 L["Auria Irondreamer"] = "Ория Айрондример"
 L["Auto Load Recipe Database"] = "Автоматически загружать базу данных рецептов"
@@ -743,7 +741,6 @@ L["Inkmaster Wei"] = "Мастер каллиграфии Вэй"
 L["Innkeeper Biribi"] = "Хозяйка таверны Бириби"
 L["Innkeeper Fizzgrimble"] = "Хозяин таверны Ворчунелло"
 L["Innkeeper Grilka"] = "Хозяйка таверны Грилка"
-L["Inquisitor Vethroz"] = "Инквизитор Ветроз"
 L["Inscription"] = "Начертание"
 L["INSTANCE_DESC"] = "Включение в сканирование рецептов, добываемых в подземельях на 5 человек."
 L["Iranis Shadebloom"] = "Иранис Темный Цветок"
@@ -825,7 +822,6 @@ L["Katherine Lee"] = "Катерина Ли"
 L["Kaye Toogie"] = "Кей Туги"
 L["Keelen Sheets"] = "Килен Пряжеткач"
 L["Keena"] = "Кеена"
-L["Keeper Raynae"] = "Хранительница Рейна"
 L["Kelgruk Bloodaxe"] = "Келгрук Кровавый Топор"
 L["Kelsey Yance"] = "Келси Янс"
 L["Kendor Kabonka"] = "Кендор Кабонка"
@@ -838,7 +834,6 @@ L["Killian Sanatha"] = "Киллиан Саната"
 L["Kilxx"] = "Кликс"
 L["Kireena"] = "Киреена"
 L["Kirembri Silvermane"] = "Киремби Серебряная Грива"
-L["KISS_SYAITH"] = "По координатам 49.0, 55.8 на Расколотом Берегу, пройдите через Портал, затем используйте команду /поцелуй на Сиайт, чтобы узнать этот рецепт."
 L["Kithas"] = "Китхас"
 L["Kitta Firewind"] = "Китта Огневетер"
 L["Knaz Blunderflame"] = "Наз Огнепых"
@@ -1454,7 +1449,6 @@ L["TOOLTIP_SCALE_DESC"] = "Изменение масштаба подсказк�
 L["Top"] = "Вверху"
 L["Top Left"] = "Вверху слева"
 L["Top Right"] = "Вверху справа"
-L["Toraan the Revered"] = "Тораан Почитаемый"
 L["Torloth the Magnificent"] = "Торлот Великолепный"
 L["Torn Fin Coastrunner"] = "Береговик из племени Рваного Плавника"
 L["Torn Fin Muckdweller"] = "Грязекоп из племени Рваного Плавника"
@@ -1512,7 +1506,6 @@ L["View Exclusion List"] = "Обзор списка исключений"
 L["VIEW_EXCLUSION_LIST_DESC"] = "Вывод всех рецептов, содержащихся в списке исключений."
 L["Viggz Shinesparked"] = "Виггз Синеискр"
 L["Vilebranch Hideskinner"] = "Шкуродер из племени Порочной Ветви"
-L["Vindicator Jaelaana"] = "Воздаятельница Джаэлаана"
 L["Vira Younghoof"] = "Вира Нежное Копыто"
 L["Vir'aani Arcanist"] = "Чародей из клана Вир'аани"
 L["Vivianna"] = "Вивианна"
@@ -1597,4 +1590,8 @@ L["Zorbin Fandazzle"] = "Зорбин Дребезгун"
 L["Zula Slagfury"] = "Зула Окалина"
 L["Zurai"] = "Зурай"
 L["Zurii"] = "Зурии"
+
+-- ToC
+L["Description"] = "Сканирует ваши профессии, составляет список отсутствующих рецептов, отображает информацию о способах их получения."
+L["Title"] = "Ackis Recipe List"
 

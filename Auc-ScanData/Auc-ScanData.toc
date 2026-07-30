@@ -1,4 +1,5 @@
 ## Title: Auc:ScanData
+## Author: Artiom97es
 ## Notes: Allows Auctioneer to delay loading the, probably, large auction scan dataset until it is needed.
 ##
 ## Interface: 70300
@@ -7,9 +8,8 @@
 ## Dependencies: Auc-Advanced
 ## OptionalDeps: Auc-Util-PriceLevel
 ##
-## Version: 7.6.5736 (TasmanianThylacine)
+## Version: 7.6.5736 (TasmanianThylacine)_v2-Artiom97es
 ## Revision: $Id: Auc-ScanData.toc 5722 2017-09-02 11:56:11Z brykrys $
-## Author: Norganna's AddOns
 ## X-Part-Of: Auctioneer
 ## X-Category: Auction House
 ## X-Max-Interface: 70300

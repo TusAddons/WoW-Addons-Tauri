@@ -1,4 +1,4 @@
--- Widget is based on the AceGUIWidget-DropDown.lua supplied with AceGUI-3.0
+﻿-- Widget is based on the AceGUIWidget-DropDown.lua supplied with AceGUI-3.0
 -- Widget created by Yssaril
 
 local AceGUI = LibStub("AceGUI-3.0")
@@ -15,7 +15,7 @@ do
 		self:ClearAllPoints()
 		self:Hide()
 		self.check:Hide()
-		table.insert(contentFrameCache, self)
+		contentFrameCache[#contentFrameCache+1] = self
 	end
 
 	local function ContentOnClick(this, button)

@@ -1,4 +1,4 @@
-
+﻿
 local addonName, scope = ...
 local oRA = scope.addon
 local module = oRA:NewModule("Invite", "AceTimer-3.0")
@@ -300,7 +300,7 @@ local function updateRankButtons()
 			inviteRank(i, rankName, IsShiftKeyDown())
 		end)
 		button:SetRelativeWidth(0.33)
-		table.insert(rankButtons, button)
+		rankButtons[#rankButtons+1] = button
 		frame:AddChild(button)
 	end
 	frame:ResumeLayout()

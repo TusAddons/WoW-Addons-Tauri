@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: DataStore_Achievements
+## Author: Artiom97es
 ## Notes: Stores information about character achievements
-## Author: Thaoky (EU-Marécages de Zangar)
-## Version: r46
+## Version: r47-Artiom97es
 ## Dependencies: DataStore
 ## OptionalDeps: Ace3
 ## SavedVariables: DataStore_AchievementsDB

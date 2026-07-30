@@ -7,7 +7,7 @@
 	<Script file="Bindings.lua"/>
 	
 	<Frame name="MinArchMain"  inherits="MATBasic" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" movable="true" parent="UIParent">
-		<size x="300" y="510" />
+		<size x="330" y="510" />
 		<Anchors>
 			<Anchor point="CENTER" relativePoint="CENTER" relativeTo="UIParent" />
 		</Anchors>

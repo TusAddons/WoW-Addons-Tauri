@@ -1582,7 +1582,7 @@ end
 local function SearchForMissingItemsRecursively(group, listing)
 	if group.visible then
 		if group.collectible and (not group.b or group.b == 2 or group.b == 3) then
-			table.insert(listing, group);
+			listing[#listing+1] = group;
 		end
 		if group.g and group.expanded then
 			-- Go through the sub groups and determine if any of them have a response.
@@ -1608,7 +1608,7 @@ local function SearchForMissingItemNames(group)
 	-- Build the array of names.
 	local arr = {};
 	for key,value in pairs(uniqueNames) do
-		table.insert(arr, key);
+		arr[#arr+1] = key;
 	end
 	return arr; 
 end
@@ -2168,8 +2168,7 @@ local function RefreshCollections()
 		
 		-- Refresh the Collection Windows!
 		app:RefreshData(false, true);
-		collectgarbage();
-		
+-- collectgarbage(); -- Disabled for performance optimization by IA
 		-- Report success.
 		app.print("Done refreshing collections.");
 	end);
@@ -2210,7 +2209,7 @@ local function RefreshMountCollection()
 			app:PlayFanfare();
 		end
 		wipe(searchCache);
-		collectgarbage();
+-- collectgarbage(); -- Disabled for performance optimization by IA
 	end);
 end
 local function SetCompletionistMode(completionistMode, fromSettings)
@@ -2526,6 +2525,7 @@ local function AttachTooltipForEncounter(self, encounterID)
 	AttachTooltipSearchResults(self, "encounterID:" .. encounterID, SearchForFieldAndSummarizeForCurrentDifficulty, "encounterID", tonumber(encounterID));
 end
 local function AttachTooltip(self)
+	if self.IsForbidden and self:IsForbidden() then return end
 	if not self.AllTheThingsProcessing then
 		self.AllTheThingsProcessing = true;
 		if (not InCombatLockdown() or GetDataMember("DisplayTooltipsInCombat")) and GetDataMember("EnableTooltipInformation") then
@@ -3738,7 +3738,7 @@ app.BaseMount = {
 			return "|cffb19cd9" .. (select(1, GetSpellInfo(t.spellID)) or "???") .. "|r";
 			--return select(1, GetSpellLink(t.spellID)) or select(1, GetSpellInfo(t.spellID)) or ("Spell #" .. t.spellID);
 		elseif key == "description" then
-			local mountID = GetTempDataMember("MOUNT_SPELLID_TO_MOUNTID")[t.spellID];
+			local mountID = (GetTempDataMember("MOUNT_SPELLID_TO_MOUNTID") or {})[t.spellID];
 			if mountID then return select(2, C_MountJournal_GetMountInfoExtraByID(mountID)); end
 		elseif key == "link" then
 			if t.itemID then
@@ -3752,10 +3752,11 @@ app.BaseMount = {
 		elseif key == "icon" then
 			return select(3, GetSpellInfo(t.spellID));
 		elseif key == "displayID" then
-			local mountID = GetTempDataMember("MOUNT_SPELLID_TO_MOUNTID")[t.spellID];
+			local mountID = (GetTempDataMember("MOUNT_SPELLID_TO_MOUNTID") or {})[t.spellID];
 			if mountID then return select(1, C_MountJournal_GetMountInfoExtraByID(mountID)); end
 		elseif key == "name" then
-			return C_MountJournal_GetMountInfoByID(GetTempDataMember("MOUNT_SPELLID_TO_MOUNTID")[t.spellID]);
+			local mountID = (GetTempDataMember("MOUNT_SPELLID_TO_MOUNTID") or {})[t.spellID];
+			if mountID then return C_MountJournal_GetMountInfoByID(mountID); end
 		elseif key == "tsm" then
 			if t.itemID then return string.format("i:%d", t.itemID); end
 			if t.parent and t.parent.itemID then return string.format("i:%d", t.parent.itemID); end
@@ -4123,7 +4124,8 @@ app.BaseSpecies = {
 		elseif key == "collectible" then
 			return true;
 		elseif key == "collected" then
-			if select(1, C_PetJournal.GetNumCollectedInfo(t.speciesID)) > 0 then
+			local numCollected = select(1, C_PetJournal.GetNumCollectedInfo(t.speciesID)) or 0
+			if numCollected > 0 then
 				return 1;
 			end
 		elseif key == "f" then
@@ -4184,7 +4186,7 @@ end
 		"|cff66ccffWrath of the Lich King is the second expansion. The majority of the expansion content takes place in Northrend & centers around the plans of the Lich King. Content highlights include the increase of the level cap from 70 to 80, the introduction of the death knight Hero class, & new PvP/World PvP content.|r",		-- Wrath
 		"|cff66ccffCataclysm is the third expansion. Set primarily in a dramatically reforged Kalimdor & Eastern Kingdoms on the world of Azeroth, the expansion follows the return of Deathwing, who causes a new Sundering as he makes his cataclysmic re-entrance into the world from Deepholm. Cataclysm returns players to the two continents of Azeroth for most of their campaigning, opening new zones such as Mount Hyjal, the sunken world of Vashj'ir, Deepholm, Uldum and the Twilight Highlands. It includes two new playable races, the worgen & the goblins. The expansion increases level cap to 85, adds the ability to fly in Kalimdor & Eastern Kingdoms, intorduces Archaeology & reforging, & restructures the world itself.|r",				-- Cata
 		"|cff66ccffMists of Pandaria is the fourth expansion pack. The expansion refocuses primarily on the war between the Alliance & Horde, in the wake of the accidental rediscovery of Pandaria. Adventurers rediscover the ancient pandaren people, whose wisdom will help guide them to new destinies; the Pandaren Empire's ancient enemy, the mantid; and their legendary oppressors, the enigmatic mogu. The land changes over time & the conflict between Varian Wrynn & Garrosh Hellscream escalates. As civil war wracks the Horde, the Alliance & forces in the Horde opposed to Hellscream's violent uprising join forces to take the battle directly to Hellscream & his Sha-touched allies in Orgrimmar.|r",			-- Mists
-		"|cff66ccffWarlords of Draenor is the fifth expansion. Across Draenor's savage jungles & battle-scarred plains, Azeroth's heroes will engage in a mythic conflict involving mystical draenei champions & mighty orc clans, & cross axes with the likes of Grommash Hellscream, Blackhand, & Ner’zhul at the height of their primal power. Players will need to scour this unwelcoming land in search of allies to help build a desperate defense against the old Horde’s formidable engine of conquest, or else watch their own world’s bloody, war-torn history repeat itself.|r",	-- WoD
+		"|cff66ccffWarlords of Draenor is the fifth expansion. Across Draenor's savage jungles & battle-scarred plains, Azeroth's heroes will engage in a mythic conflict involving mystical draenei champions & mighty orc clans, & cross axes with the likes of Grommash Hellscream, Blackhand, & Nerâ€™zhul at the height of their primal power. Players will need to scour this unwelcoming land in search of allies to help build a desperate defense against the old Hordeâ€™s formidable engine of conquest, or else watch their own worldâ€™s bloody, war-torn history repeat itself.|r",	-- WoD
 		"|cff66ccffLegion is the sixth expansion. Gul'dan is expelled into Azeroth to reopen the Tomb of Sargeras & the gateway to Argus, commencing the third invasion of the Burning Legion. After the defeat at the Broken Shore, the defenders of Azeroth search for the Pillars of Creation, which were Azeroth's only hope for closing the massive demonic portal at the heart of the Tomb. However, the Broken Isles came with their own perils to overcome, from Xavius, to God-King Skovald, to the nightborne, & to Tidemistress Athissa. Khadgar moved Dalaran to the shores of this land, the city serves as a central hub for the heroes. The death knights of Acherus also took their floating necropolis to the Isles. The heroes of Azeroth sought out legendary artifact weapons to wield in battle, but also found unexpected allies in the form of the Illidari. Ongoing conflict between the Alliance & the Horde led to the formation of the class orders, with exceptional commanders putting aside faction to lead their classes in the fight against the Legion.|r"			-- Legion
 	};
 	app.BaseTier = {
@@ -5281,12 +5283,22 @@ local function MinimapButtonOnEnter(self)
 	GameTooltipIcon.icon:SetTexture(L("LOGO_LARGE"));
 	GameTooltipIcon:Show();
 end
+local function SafeHide(obj)
+	if obj and not (obj.IsForbidden and obj:IsForbidden()) then
+		pcall(obj.Hide, obj);
+	end
+end
+local function SafeClearPoints(obj)
+	if obj and not (obj.IsForbidden and obj:IsForbidden()) then
+		pcall(obj.ClearAllPoints, obj);
+	end
+end
 local function MinimapButtonOnLeave()
-	GameTooltip:Hide();
-	GameTooltipIcon.icon.Background:Hide();
-	GameTooltipIcon.icon.Border:Hide();
-	GameTooltipIcon:Hide();
-	GameTooltipModel:Hide();
+	SafeHide(GameTooltip);
+	SafeHide(GameTooltipIcon.icon.Background);
+	SafeHide(GameTooltipIcon.icon.Border);
+	SafeHide(GameTooltipIcon);
+	SafeHide(GameTooltipModel);
 end
 local function CreateMinimapButton()
 	-- Create the Button for the Minimap frame. Create a local and non-local copy.
@@ -5882,15 +5894,16 @@ local function RowOnClick(self, button)
 	end
 end
 local function RowOnEnter(self)
+	if (self and self.IsForbidden and self:IsForbidden()) or (GameTooltip and GameTooltip.IsForbidden and GameTooltip:IsForbidden()) or (GameTooltipIcon and GameTooltipIcon.IsForbidden and GameTooltipIcon:IsForbidden()) then return end
 	local reference = self.ref; -- NOTE: This is the good ref value, not the parasitic one.
 	if reference and GameTooltip then
-		GameTooltipIcon.icon.Background:Hide();
-		GameTooltipIcon.icon.Border:Hide();
-		GameTooltipIcon:Hide();
-		GameTooltipModel:Hide();
-		GameTooltip:ClearLines();
-		GameTooltipIcon:ClearAllPoints();
-		GameTooltipModel:ClearAllPoints();
+		SafeHide(GameTooltipIcon.icon.Background);
+		SafeHide(GameTooltipIcon.icon.Border);
+		SafeHide(GameTooltipIcon);
+		SafeHide(GameTooltipModel);
+		pcall(GameTooltip.ClearLines, GameTooltip);
+		SafeClearPoints(GameTooltipIcon);
+		SafeClearPoints(GameTooltipModel);
 		if self:GetCenter() > (UIParent:GetWidth() / 2) then
 			GameTooltip:SetOwner(self, "ANCHOR_LEFT");
 			GameTooltipIcon:SetPoint("TOPRIGHT", GameTooltip, "TOPLEFT", 0, 0);
@@ -6165,13 +6178,14 @@ local function RowOnEnter(self)
 	end
 end
 local function RowOnLeave(self)
+	if (self and self.IsForbidden and self:IsForbidden()) or (GameTooltip and GameTooltip.IsForbidden and GameTooltip:IsForbidden()) or (GameTooltipIcon and GameTooltipIcon.IsForbidden and GameTooltipIcon:IsForbidden()) then return end
 	if GameTooltip then
-		GameTooltip:ClearLines();
-		GameTooltip:Hide();
-		GameTooltipIcon.icon.Background:Hide();
-		GameTooltipIcon.icon.Border:Hide();
-		GameTooltipIcon:Hide();
-		GameTooltipModel:Hide();
+		pcall(GameTooltip.ClearLines, GameTooltip);
+		SafeHide(GameTooltip);
+		SafeHide(GameTooltipIcon.icon.Background);
+		SafeHide(GameTooltipIcon.icon.Border);
+		SafeHide(GameTooltipIcon);
+		SafeHide(GameTooltipModel);
 	end
 end
 CreateRow = function(self)
@@ -6187,7 +6201,7 @@ CreateRow = function(self)
 		row:SetPoint("TOPLEFT", self.rows[row.index], "BOTTOMLEFT");
 		row:SetPoint("TOPRIGHT", self.rows[row.index], "BOTTOMRIGHT");
 	end
-	table.insert(self.rows, row);
+	self.rows[#self.rows+1] = row;
 	
 	-- Setup highlighting and event handling
 	row:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD");
@@ -6402,7 +6416,7 @@ function app:GetDataCache()
 		db.text = GROUP_FINDER; -- L("DUNGEONS&RAIDS");
 		db.icon = "Interface\\LFGFRAME\\LFGIcon-ReturntoKarazhan"; -- LFGICON-DUNGEON";
 		db.g = app.Categories.Instances;
-		table.insert(g, db);
+		g[#g+1] = db;
 		
 		-- Zones
 		if app.Categories.Zones then
@@ -6411,7 +6425,7 @@ function app:GetDataCache()
 			db.expanded = false;
 			db.text = BUG_CATEGORY2; -- L("ZONES");
 			db.icon = "Interface\\ICONS\\Achievement_Zone_Outland_01"
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- World Drops
@@ -6421,7 +6435,7 @@ function app:GetDataCache()
 			db.text = L("WORLD_DROPS");
 			db.icon = "Interface\\ICONS\\INV_Misc_Map02";
 			db.g = app.Categories.WorldDrops;
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 	
 		-- Group Finder
@@ -6430,7 +6444,7 @@ function app:GetDataCache()
 			db.f = 0;
 			db.expanded = false;
 			db.text = DUNGEONS_BUTTON;
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Achievements
@@ -6439,7 +6453,7 @@ function app:GetDataCache()
 			db.f = 0;
 			db.expanded = false;
 			db.text = TRACKER_HEADER_ACHIEVEMENTS;
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Class Halls
@@ -6450,7 +6464,7 @@ function app:GetDataCache()
 			db.text = GetCategoryInfo(15275);
 			db.icon = "Interface\\Icons\\achievement_level_110";
 			db.g = app.Categories.ClassHalls;
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- World Events
@@ -6459,7 +6473,7 @@ function app:GetDataCache()
 			db.f = 0;
 			db.expanded = false;
 			db.text = EVENTS_LABEL; -- L("EVENTS");
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Pet Battles
@@ -6470,7 +6484,7 @@ function app:GetDataCache()
 			db.expanded = false;
 			db.text = SHOW_PET_BATTLES_ON_MAP_TEXT; -- Pet Battles
 			db.g = app.Categories.PetBattles;
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- PvP
@@ -6480,7 +6494,7 @@ function app:GetDataCache()
 			db.text = STAT_CATEGORY_PVP;
 			db.icon = "Interface\\Icons\\Achievement_PVP_Legion08";
 			db.g = app.Categories.PVP;
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Craftables
@@ -6491,7 +6505,7 @@ function app:GetDataCache()
 			db.icon = "Interface\\ICONS\\ability_repair";
 			db.g = app.Categories.Craftables;
 			db.collectible = false;
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Professions
@@ -6502,7 +6516,7 @@ function app:GetDataCache()
 			db.icon = "Interface\\ICONS\\INV_Scroll_04";
 			db.g = app.Categories.Professions;
 			db.collectible = false;
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Gear Sets
@@ -6512,7 +6526,7 @@ function app:GetDataCache()
 			db.expanded = false;
 			db.text = LOOT_JOURNAL_ITEM_SETS; -- L("GEAR_SETS");
 			db.icon = "Interface\\ICONS\\Achievement_Transmog_Collections";
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Illusions
@@ -6521,7 +6535,7 @@ function app:GetDataCache()
 			db.expanded = false;
 			db.text = "Illusions";
 			db.group = app.Categories.Illusions;
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Factions
@@ -6529,7 +6543,7 @@ function app:GetDataCache()
 			db = app.CreateAchievement(11177, app.Categories.Factions);
 			db.expanded = false;
 			db.text = "Factions";
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Mounts
@@ -6538,7 +6552,7 @@ function app:GetDataCache()
 			db.f = 100;
 			db.expanded = false;
 			db.text = MOUNTS; -- L("MOUNTS");
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Pet Journal
@@ -6548,7 +6562,7 @@ function app:GetDataCache()
 			db.expanded = false;
 			db.text = PET_JOURNAL;
 			db.icon = "Interface\\ICONS\\INV_Pet_BattlePetTraining";
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Titles
@@ -6556,7 +6570,7 @@ function app:GetDataCache()
 			db = app.CreateAchievement(2188, app.Categories.Titles);
 			db.expanded = false;
 			db.text = "Titles";
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Toys
@@ -6565,7 +6579,7 @@ function app:GetDataCache()
 			db.icon = "Interface\\ICONS\\INV_Misc_Toy_10";
 			db.expanded = false;
 			db.text = TOY_BOX; -- Toy Box
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		--[[
@@ -6575,7 +6589,7 @@ function app:GetDataCache()
 			db.expanded = false;
 			db.g = app.Categories.NeverImplemented;
 			db.text = "Never Implemented";
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		-- Unsorted
 		if app.Categories.Unsorted then
@@ -6583,19 +6597,19 @@ function app:GetDataCache()
 			db.g = app.Categories.Unsorted;
 			db.expanded = false;
 			db.text = "Unsorted";
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		-- Titles (Dynamic)
 		db = app.CreateAchievement(2188, GetTitleCache());
 		db.expanded = false;
 		db.text = "Titles (Dynamic)";
-		table.insert(g, db);
+		g[#g+1] = db;
 		
 		-- Factions (Dynamic)
 		db = app.CreateAchievement(11177, GetFactionCache());
 		db.expanded = false;
 		db.text = "Factions (Dynamic)";
-		table.insert(g, db);
+		g[#g+1] = db;
 		--]]
 		
 		-- Illusions (Dynamic)
@@ -6604,7 +6618,7 @@ function app:GetDataCache()
 		db.g = GetIllusionCache();
 		db.expanded = false;
 		db.text = "Illusions (Dynamic)";
-		table.insert(g, db);
+		g[#g+1] = db;
 		]]--
 		
 		-- Mounts (Dynamic)
@@ -6613,7 +6627,7 @@ function app:GetDataCache()
 		db.f = 100;
 		db.expanded = false;
 		db.text = "Mounts (Dynamic)";
-		table.insert(g, db);
+		g[#g+1] = db;
 		]]--
 		
 		--[[
@@ -6622,19 +6636,19 @@ function app:GetDataCache()
 		db = app.CreateAchievement(11171, GetArtifactCache());
 		db.expanded = false;
 		db.text = "Artifacts (Dynamic)";
-		table.insert(g, db);
+		g[#g+1] = db;
 		
 		-- Titles (Dynamic)
 		db = app.CreateAchievement(2188, GetTitleCache());
 		db.expanded = false;
 		db.text = "Titles (Dynamic)";
-		table.insert(g, db);
+		g[#g+1] = db;
 		
 		-- Factions (Dynamic)
 		db = app.CreateAchievement(11177, GetFactionCache());
 		db.expanded = false;
 		db.text = "Factions (Dynamic)";
-		table.insert(g, db);
+		g[#g+1] = db;
 		
 		-- Gear Sets
 		table.insert(g, GetGearSetCache());
@@ -6646,7 +6660,7 @@ function app:GetDataCache()
 		db.expanded = false;
 		db.g = GetRawSourceDataCache();
 		db.text = "Raw Source Data (Dynamic)";
-		table.insert(g, db);
+		g[#g+1] = db;
 		]]--
 		
 		-- The Main Window's Data
@@ -6675,7 +6689,7 @@ function app:GetDataCache()
 			db.expanded = false;
 			db.g = app.Categories.NeverImplemented;
 			db.text = "Never Implemented";
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		
 		-- Unsorted
@@ -6684,7 +6698,7 @@ function app:GetDataCache()
 			db.g = app.Categories.Unsorted;
 			db.expanded = false;
 			db.text = "Unsorted";
-			table.insert(g, db);
+			g[#g+1] = db;
 		end
 		BuildGroups(allData, allData.g);
 		UpdateGroups(allData, allData.g, 1);

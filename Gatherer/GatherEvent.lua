@@ -166,10 +166,19 @@ function Gatherer.Event.OnEvent( event, ... )
 
 		-- LE_GAME_ERR_USE_LOCKED_WITH_SPELL_S = 261, string/name = ERR_USE_LOCKED_WITH_SPELL_S
 		-- see https://www.townlong-yak.com/framexml/live/Helix/LuaEnum.lua
-		if (err_number == LE_GAME_ERR_USE_LOCKED_WITH_SPELL_S) then
+		local isLocked = (err_number == LE_GAME_ERR_USE_LOCKED_WITH_SPELL_S or err_number == 261)
+		if not isLocked and msg then
+			local lowerMsg = msg:lower()
+			if lowerMsg:find("requiere ") or lowerMsg:find("requires ") then
+				isLocked = true
+			end
+		end
+
+		if (isLocked) then
 			-- Now check to see if we're moused over a valid object
 			LibSwag.SetTooltip()
 			local tooltip = LibSwag.GetLastTip()
+			
 			if not ( tooltip ) then return end
 			local tip = tooltip.tip
 

@@ -2,6 +2,7 @@
 
 
 ## Title: Prat |cff8080ff3.0|r
+## Author: Artiom97es
 ## Notes: A framework for chat ehancement modules. 
 ## Title-zhCN: Prat |cff8080ff3.0|r
 ## Notes-zhCN: 整合的聊天增强助手
@@ -11,8 +12,7 @@
 ## Notes-deDE: Ein Grundaddon für Chatfenstermodule.
 ## Notes-koKR: 대화창에 대한 다양한 기능을 제공하는 애드온입니다.
 ## Notes-ruRU: Фреймворк для чата. Это БЕТА-версия, а значит возможны баги и глюки.
-## Version: r1155      
-## Author: Sylvanaar (Sylvaan - Zul'Jin/US-Horde)
+## Version: r1150      _v2-Artiom97es
 ## eMail: sylvanaar@mindspring.com 
 
 ## X-Category: Chat/Communication 

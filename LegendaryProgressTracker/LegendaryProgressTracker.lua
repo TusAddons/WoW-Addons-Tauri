@@ -33,6 +33,43 @@ function LPT:GuidToID(guid, guidType)
 	end
 end
 
+-- Escanea raros ya matados (quest flags) y los suma retroactivamente al contador
+function LPT:ScanKilledRares()
+	local isleCount = 0
+	local argusCount = 0
+	local brokenIslesCount = 0
+	
+	for npcId, data in pairs(LPTisleRares) do
+		if IsQuestFlaggedCompleted(data["questId"]) then
+			isleCount = isleCount + 1
+		end
+	end
+	
+	for npcId, data in pairs(LPTargusRares) do
+		if IsQuestFlaggedCompleted(data["questId"]) then
+			argusCount = argusCount + 1
+		end
+	end
+	
+	for npcId, data in pairs(LPTbrokenIslesRares) do
+		if IsQuestFlaggedCompleted(data["questId"]) then
+			brokenIslesCount = brokenIslesCount + 1
+		end
+	end
+	
+	-- Solo sumar la diferencia (por si ya tiene algo trackeado manualmente)
+	local isleNew = math.max(0, isleCount - (lptEvents.islandRare or 0))
+	local argusNew = math.max(0, argusCount - (lptEvents.argusRare or 0))
+	local brokenIslesNew = math.max(0, brokenIslesCount - (lptEvents.brokenIslesRare or 0))
+	
+	lptEvents.islandRare = (lptEvents.islandRare or 0) + isleNew
+	lptEvents.argusRare = (lptEvents.argusRare or 0) + argusNew
+	lptEvents.brokenIslesRare = (lptEvents.brokenIslesRare or 0) + brokenIslesNew
+	
+	local totalNew = isleNew + argusNew + brokenIslesNew
+	return totalNew, isleNew, argusNew, brokenIslesNew
+end
+
 function LPT:SlashCommands(input)
 
 	input = string.lower(input)
@@ -57,27 +94,86 @@ function LPT:SlashCommands(input)
 			printInfo = false
 		end
 		if printInfo then
-			self:Print("Informational prints on")
+			self:Print("Impresión de información activada")
 		else
-			self:Print("Informational prints off")
+			self:Print("Impresión de información desactivada")
 		end
+	end
+
+	if command == "lock" then
+		lptUIConfig.locked = not lptUIConfig.locked
+		if lptUIConfig.locked then
+			self:Print("Rastreador visual bloqueado.")
+		else
+			self:Print("Rastreador visual desbloqueado. Puedes arrastrarlo.")
+		end
+		LPT:UpdateUI()
 	end
 
 	if command == "blp" then
 		self:Print(LPT:GetBLP())
 	end
 	
-	--[[if command == "save" then
-		LPT:SaveHistory("ForcedSave")
-		LPT:PrintEvents()
+	if command == "scan" then
+		if historical.numLegs > 0 and value ~= "force" then
+			self:Print("|cFFFF5555¡Atención!|r Ya has conseguido al menos un legendario.")
+			self:Print("No es posible distinguir qué raros mataste antes o después de tu último legendario.")
+			self:Print("Si quieres forzarlo de todas formas, usa: |cFF00FF00/lpt scan force|r")
+		else
+			local totalNew, isleNew, argusNew, brokenNew = LPT:ScanKilledRares()
+			if totalNew > 0 then
+				self:Print("|cFF00FF00Escaneo completado.|r Se han añadido " .. totalNew .. " raros a tu progreso:")
+				if brokenNew > 0 then self:Print("  Islas Abruptas: +" .. brokenNew) end
+				if isleNew > 0 then self:Print("  Costa Abrupta: +" .. isleNew) end
+				if argusNew > 0 then self:Print("  Argus: +" .. argusNew) end
+				self:Print("Nuevo BLP: " .. LPT:GetBLP() .. "%")
+				if LPT.UpdateUI then LPT:UpdateUI() end
+			else
+				self:Print("No se encontraron raros nuevos para añadir. Tu progreso ya está al día.")
+			end
+		end
+	end
+	
+	if command == "reset" then
+		if lptEvents then
+			lptBackup = {}
+			for k,v in pairs(lptEvents) do
+				lptBackup[k] = v
+			end
+		end
 		LPT:ResetEvents()
-	end]]--
+		self:Print("Progreso reiniciado. Backup temporal guardado (usa /lpt restore o /lpt restore full).")
+		LPT:UpdateUI()
+	end
+	
+	if command == "restore" then
+		if lptBackup then
+			if value == "full" then
+				lptEvents = {}
+				for k,v in pairs(lptBackup) do
+					lptEvents[k] = v
+				end
+				self:Print("Progreso restaurado completamente desde el backup.")
+			else
+				for k,v in pairs(lptBackup) do
+					if type(v) == "number" then
+						lptEvents[k] = (lptEvents[k] or 0) + v
+					end
+				end
+				self:Print("El backup se ha sumado a tu progreso actual.")
+			end
+			LPT:UpdateUI()
+		else
+			self:Print("No hay ningún backup guardado en esta sesión.")
+		end
+	end
 		
 end
 
 function LPT:PLAYER_LOGIN()
 	LPT:setIslandRares()
 	LPT:setArgusRares()
+	LPT:setBrokenIslesRares()
 end
 
 function LPT:OnInitialize()
@@ -100,6 +196,9 @@ function LPT:BAG_UPDATE_DELAYED()
 			LPTrareFlag = nil
 		elseif LPTisleRares[LPTrareFlag["ID"]] ~= nil and IsQuestFlaggedCompleted(LPTisleRares[LPTrareFlag["ID"]]["questId"]) then
 			LPT:IsleRareCompleted(LPTrareFlag["ID"])
+			LPTrareFlag = nil
+		elseif LPTbrokenIslesRares[LPTrareFlag["ID"]] ~= nil and IsQuestFlaggedCompleted(LPTbrokenIslesRares[LPTrareFlag["ID"]]["questId"]) then
+			LPT:BrokenIslesRareCompleted(LPTrareFlag["ID"])
 			LPTrareFlag = nil
 		elseif time() > LPTrareFlag["expiration"] then
 			LPTrareFlag = nil
@@ -145,6 +244,7 @@ function LPT:VerifyInitalize()
 	lptEvents.blingtron = 0
 	lptEvents.argusChest = 0
 	lptEvents.argusRare = 0
+	lptEvents.brokenIslesRare = 0
 	lptEvents.oldRaid = 0
 end
 
@@ -213,40 +313,48 @@ function LPT:ResetEvents()
 	lptEvents.lesserInvasion = 0
 	lptEvents.greaterInvasion = 0
 	lptEvents.argusRare = 0
+	lptEvents.brokenIslesRare = 0
 	lptEvents.oldRaid = 0
 
 end
 
-function LPT:PrintEvents()
+function LPT:GetEventsString()
+	local s = ""
 	if historical.numLegs == 0 then 
-		self:Print("Reporting events since install")
+		s = s .. "Eventos desde la instalación del addon\n"
 	else
-		self:Print("Reporting events since last legendary")
+		s = s .. "Eventos desde tu último legendario\n"
 	end
-	self:Print("Emissary Chests: " .. lptEvents.emissaryChest)
-	self:Print("Weekly Chest: " .. lptEvents.weeklyChest)
-	self:Print("Paragon Rep Chests: " .. lptEvents.paragonChest)
-	self:Print("Argus Chests (Lesser; Greater): " .. lptEvents.argusLesserChest .. "; " .. lptEvents.argusGreaterChest)
-	self:Print("Argus Rares: " .. lptEvents.argusRare)
-	self:Print("Argus Invasions (Lesser; Greater): " .. lptEvents.lesserInvasion .. "; " .. lptEvents.greaterInvasion)
-	--self:Print("Normal Mode Dungeons: " .. lptEvents.normalDungeon)
-	self:Print("Heroic Dungeons: " .. lptEvents.heroicDungeon)
-	self:Print("Broken Shore Rares: " .. lptEvents.islandRare)
-	self:Print("Mythic 0 Dungeon Bosses: " .. lptEvents.mythicDungeon)
-	self:Print("Mythic + Dungeons: " ..lptEvents.mPlusDungeon)
-	self:Print("Raid bosses (LFR; Normal; Heroic; Mythic; Non Current Raid): " .. lptEvents.lfr .. "; " .. 
-		lptEvents.normalRaid .. "; " .. lptEvents.heroicRaid .. "; " .. lptEvents.mythicRaid.. "; " .. lptEvents.oldRaid)
-	self:Print("World Bosses: " .. lptEvents.worldBoss)
-	self:Print("PvP events: " .. lptEvents.pvp)
-	self:Print("War Supplies Caches: " .. lptEvents.warSupplies)
-	self:Print("Blingtron 6000: " .. lptEvents.blingtron)
+	s = s .. "Cofres de Emisario: " .. lptEvents.emissaryChest .. "\n"
+	s = s .. "Cofre Semanal (M+): " .. lptEvents.weeklyChest .. "\n"
+	s = s .. "Cofres de Baluarte (Paragón): " .. lptEvents.paragonChest .. "\n"
+	s = s .. "Cofres de Argus (Menor; Mayor): " .. lptEvents.argusLesserChest .. "; " .. lptEvents.argusGreaterChest .. "\n"
+	s = s .. "Raros de Argus: " .. lptEvents.argusRare .. "\n"
+	s = s .. "Raros de las Islas Abruptas: " .. lptEvents.brokenIslesRare .. "\n"
+	s = s .. "Invasiones de Argus (Menor; Mayor): " .. lptEvents.lesserInvasion .. "; " .. lptEvents.greaterInvasion .. "\n"
+	s = s .. "Jefes de Mazmorra Heroica: " .. lptEvents.heroicDungeon .. "\n"
+	s = s .. "Raros de la Costa Abrupta: " .. lptEvents.islandRare .. "\n"
+	s = s .. "Jefes de Mazmorra Mítica 0: " .. lptEvents.mythicDungeon .. "\n"
+	s = s .. "Mazmorras Míticas+: " .. lptEvents.mPlusDungeon .. "\n"
+	s = s .. "Jefes de Banda (Buscador; Normal; Heroico; Mítico; Antiguos): " .. lptEvents.lfr .. "; " .. lptEvents.normalRaid .. "; " .. lptEvents.heroicRaid .. "; " .. lptEvents.mythicRaid .. "; " .. lptEvents.oldRaid .. "\n"
+	s = s .. "Jefes de Mundo: " .. lptEvents.worldBoss .. "\n"
+	s = s .. "Eventos JcJ (PvP): " .. lptEvents.pvp .. "\n"
+	s = s .. "Entregas de Suministros: " .. lptEvents.warSupplies .. "\n"
+	s = s .. "Joyatrón 6000: " .. lptEvents.blingtron .. "\n"
 	if historical.numLegs == 0 then 
-		self:Print("Time since install of addon " .. tonumber(string.format("%.1f", (time() - historical.installedDate) / DAY)) .. " days")
+		s = s .. "Días desde la instalación: " .. tonumber(string.format("%.1f", (time() - historical.installedDate) / DAY)) .. "\n"
 	else
-		self:Print("Time since last legendary " .. tonumber(string.format("%.1f", (time() - lastLegInfo.date) / DAY)) .. " days")
+		s = s .. "Días desde el último legendario: " .. tonumber(string.format("%.1f", (time() - lastLegInfo.date) / DAY)) .. "\n"
 	end
-	self:Print(LPT:GetBLP() .. "% towards bad luck protection cap")
+	s = s .. LPT:GetBLP() .. "% hacia el límite de Protección contra mala suerte"
+	return s
+end
 
+function LPT:PrintEvents()
+	local s = LPT:GetEventsString()
+	for line in string.gmatch(s, "[^\n]+") do
+		self:Print(line)
+	end
 end
 
 function LPT:ENCOUNTER_END(event, id, _, difficulty, _, killed)
@@ -302,11 +410,11 @@ function LPT:CHAT_MSG_LOOT(event, message, _, _, _, looter)
 			return
 		end
 		
-		self:Print("Congratulations on your legendary!!")
+		self:Print("¡Enhorabuena por tu legendario!")
 		if historical.numLegs == 0 then 
-			self:Print("Time since install of addon " .. tonumber(string.format("%.1f", (time() - historical.installedDate) / DAY)) .. " days")
+			self:Print("Días desde la instalación del addon: " .. tonumber(string.format("%.1f", (time() - historical.installedDate) / DAY)))
 		else
-			self:Print("Time since previous legendary " .. tonumber(string.format("%.1f", (time() - lastLegInfo.date) / DAY)) .. " days")
+			self:Print("Días desde el legendario anterior: " .. tonumber(string.format("%.1f", (time() - lastLegInfo.date) / DAY)))
 		end
 		LPT:PrintEvents()
 		LPT:SaveHistory(name)
@@ -338,7 +446,7 @@ function LPT:CHALLENGE_MODE_COMPLETED()
 end
 
 function LPT:COMBAT_LOG_EVENT_UNFILTERED(eventName, timeStamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, argxx, destGuid, ...)
-	if string.match(event,"UNIT_DIED") then
+	if event == "UNIT_DIED" then
 		local mobID = LPT:GuidToID(destGuid, "mob")
 		
 		if LPTisleRares[mobID] ~= nil and LPTisleRares[mobID]["killed"] == false then
@@ -346,6 +454,10 @@ function LPT:COMBAT_LOG_EVENT_UNFILTERED(eventName, timeStamp, event, hideCaster
 			LPTrareFlag["ID"] = mobID
 			LPTrareFlag["expiration"] = time() + 180
 		elseif LPTargusRares[mobID] ~= nil and LPTargusRares[mobID]["killed"] == false then
+			LPTrareFlag = {}
+			LPTrareFlag["ID"] = mobID
+			LPTrareFlag["expiration"] = time() + 180
+		elseif LPTbrokenIslesRares[mobID] ~= nil and LPTbrokenIslesRares[mobID]["killed"] == false then
 			LPTrareFlag = {}
 			LPTrareFlag["ID"] = mobID
 			LPTrareFlag["expiration"] = time() + 180
@@ -490,7 +602,17 @@ function LPT:Initalize()
 		historical = {}
 		historical.numLegs = 0
 		historical.installedDate = time()
-		historical.weekNum = LPT:GetWeek() 
+		historical.weekNum = LPT:GetWeek()
+		historical.raresScanned = false
+	end
+	
+	-- Auto-scan de raros ya matados en primera instalación (sin legendarios)
+	if historical.numLegs == 0 and historical.raresScanned ~= true then
+		historical.raresScanned = true
+		local totalNew = LPT:ScanKilledRares()
+		if totalNew > 0 then
+			LPT:Print("|cFF00FF00Auto-scan:|r Se han detectado " .. totalNew .. " raros ya eliminados y se han añadido a tu progreso.")
+		end
 	end
 	
 	if historical.weekNum == nil or historical.weekNum < LPT:GetWeek() then
@@ -523,6 +645,10 @@ function LPT:Initalize()
 		lptEvents.argusRare = 0
 	end
 	
+	if lptEvents.brokenIslesRare == nil then
+		lptEvents.brokenIslesRare = 0
+	end
+	
 	if lptEvents.lesserInvasion == nil then
 		lptEvents.lesserInvasion = 0
 	end
@@ -546,9 +672,13 @@ function LPT:Initalize()
 		lptEvents["oldRaid"] = 0
 	end
 	
+	if lptUIConfig == nil then
+		lptUIConfig = { x = 10, y = 200, locked = false }
+	end
+
 	LPT:RegisterEvents() 
 	LPTchestOpen = {}
-	
+	LPT:CreateTrackerUI()
 end
 
 function LPT:BOSS_KILL(...)
@@ -573,7 +703,13 @@ end
 
 function LPT:RegisterEvents() 
 	local zoneName = GetZoneText()
-	if zoneName == "Krokuun" or zoneName == "Broken Shore" or zoneName == "Antoran Wastes" or zoneName == "Mac'Aree" then
+	-- Broken Isles zones where rares can drop legendaries
+	local brokenIslesZones = {
+		["Azsuna"] = true, ["Stormheim"] = true, ["Val'sharah"] = true,
+		["Highmountain"] = true, ["Suramar"] = true, ["Helheim"] = true,
+		["Thunder Totem"] = true,
+	}
+	if zoneName == "Krokuun" or zoneName == "Broken Shore" or zoneName == "Antoran Wastes" or zoneName == "Mac'Aree" or brokenIslesZones[zoneName] then
 		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 		self:RegisterEvent("UNIT_SPELLCAST_SENT")
 		self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
@@ -601,28 +737,29 @@ function LPT:RegisterEvents()
 end
 
 function LPT:GetBLP()
-	local BLPCap = 622
+	local BLPCap = 250
 	local percentages = {
-	["mPlusDungeon"] = 10,
-	["emissaryChest"] = 19,
-	["normalRaid"] = 6,
-	["argusLesserChest"] = 0.04,
-	["worldBoss"] = 5,
-	["lfr"] = 4,
-	["heroicRaid"] = 1,
-	["paragonChest"] = 2,
-	["greaterInvasion"] = 1,
-	["lesserInvasion"] = 6,
-	["mythicRaid"] = 1,
-	["argusRare"] = 0.04,
+	["mPlusDungeon"] = 2.5,
+	["emissaryChest"] = 4,
+	["normalRaid"] = 3,
+	["argusLesserChest"] = 0.1,
+	["worldBoss"] = 3,
+	["lfr"] = 2,
+	["heroicRaid"] = 4,
+	["paragonChest"] = 4,
+	["greaterInvasion"] = 4,
+	["lesserInvasion"] = 1,
+	["mythicRaid"] = 6,
+	["argusRare"] = 0.2,
+	["brokenIslesRare"] = 0.2,
 	["blingtron"] = 0.2,
 	["weeklyChest"] = 5,
-	["heroicDungeon"] = 0.2,
-	["mythicDungeon"] = 0.4,
-	["pvp"] = 4,
-	["islandRare"] = 0.05,
-	["islandChest"] = 0.05,
-	["oldRaid"] = 0.35
+	["heroicDungeon"] = 0.5,
+	["mythicDungeon"] = 1,
+	["pvp"] = 1,
+	["islandRare"] = 0.2,
+	["islandChest"] = 0.1,
+	["oldRaid"] = 1.5
 	}
 	local currentTotal = 0
 	for event,value in pairs(percentages) do
@@ -630,4 +767,52 @@ function LPT:GetBLP()
 	end
 	--return value is in percentage
 	return tonumber(string.format("%.1f", (currentTotal / BLPCap * 100)))
+end
+
+function LPT:CreateTrackerUI()
+	if LPT.UIFrame then return end
+
+	local f = CreateFrame("Button", "LPTTrackerFrame", UIParent)
+	f:SetSize(80, 24)
+	f:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", lptUIConfig.x or 10, lptUIConfig.y or 200)
+	f:SetMovable(true)
+	f:EnableMouse(true)
+	f:RegisterForDrag("LeftButton")
+
+	local text = f:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	text:SetPoint("CENTER", f, "CENTER", 0, 0)
+	f.text = text
+
+	f:SetScript("OnDragStart", function(self)
+		if not lptUIConfig.locked then
+			self:StartMoving()
+		end
+	end)
+	f:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing()
+		lptUIConfig.x = self:GetLeft()
+		lptUIConfig.y = self:GetBottom()
+	end)
+
+	f:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:AddLine("Legendary Progress Tracker", 1, 1, 1)
+		GameTooltip:AddLine(LPT:GetEventsString(), nil, nil, nil, true)
+		if not lptUIConfig.locked then
+			GameTooltip:AddLine("\n|cff00ff00Arrastra para mover. Escribe /lpt lock para bloquear.|r")
+		end
+		GameTooltip:Show()
+	end)
+	f:SetScript("OnLeave", function(self)
+		GameTooltip:Hide()
+	end)
+
+	LPT.UIFrame = f
+	LPT:UpdateUI()
+end
+
+function LPT:UpdateUI()
+	if LPT.UIFrame then
+		LPT.UIFrame.text:SetText("BLP: " .. LPT:GetBLP() .. "%")
+	end
 end

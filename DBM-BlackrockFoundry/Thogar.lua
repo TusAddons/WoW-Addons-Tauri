@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod(1147, "DBM-BlackrockFoundry", nil, 457)
+﻿local mod	= DBM:NewMod(1147, "DBM-BlackrockFoundry", nil, 457)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 25 $"):sub(12, -3))
@@ -337,7 +337,7 @@ local function showTrainWarning(self)
 					if not usedv[trainTable[train][i]] then
 						usedv[trainTable[train][i]] = #textTable + 1
 						local t = { vehicle = trainTable[train][i], lane = L.lane.." "..i }
-						table.insert(textTable, t)
+						textTable[#textTable+1] = t
 					else
 						local t = textTable[usedv[trainTable[train][i]]]
 						t.lane = t.lane..", "..i

@@ -36,9 +36,18 @@ function module:OnInitialized()
 	self:RegisterEvent("GARRISON_FOLLOWER_LIST_UPDATE","OnEvent")
 	self:RegisterEvent("GARRISON_FOLLOWER_UPGRADED","OnEvent")
 	self:RegisterEvent("GARRISON_FOLLOWER_XP_CHANGED","OnEvent")
+	self:RegisterEvent("PLAYER_LOGOUT","OnLogout")
 	self.caches={}
 	for _,f in ipairs(cacheTypes) do
 		self.caches[f]=cache:new(f)
+	end
+end
+function module:OnLogout()
+	for _,f in ipairs(cacheTypes) do
+		if self.caches[f] then
+			self.caches[f]:Refresh()
+			self.caches[f]:SaveFollowersToDB()
+		end
 	end
 end
 function module:OnEvent(event,...)
@@ -81,6 +90,7 @@ print(event,followerType,followerID)
 			if event=="GARRISON_FOLLOWER_UPGRADED" then
 				self:AddAbilities(self.cache[followerID])
 			end
+			self:SaveFollowersToDB()
 		end
 	else
 		self:Wipe()
@@ -110,6 +120,59 @@ function cache:Refresh()
 			self.names[follower.name]=i
 			tinsert(self.sorted,i)
 			self.cache[i]=follower
+		end
+	end
+	self:SaveFollowersToDB()
+end
+function cache:SaveFollowersToDB()
+	if not addon.db or not addon.db.global then return end
+	local realm = GetRealmName() or "Unknown"
+	local char = UnitName("player") or "Unknown"
+	addon.db.global.followerData = addon.db.global.followerData or {}
+	addon.db.global.followerData[realm] = addon.db.global.followerData[realm] or {}
+	addon.db.global.followerData[realm][char] = addon.db.global.followerData[realm][char] or {}
+	local dest = addon.db.global.followerData[realm][char]
+	dest[self.type] = dest[self.type] or {}
+	wipe(dest[self.type])
+
+	local charDest = nil
+	if addon.privatedb and addon.privatedb.char then
+		addon.privatedb.char.followers = addon.privatedb.char.followers or {}
+		addon.privatedb.char.followers[self.type] = addon.privatedb.char.followers[self.type] or {}
+		charDest = addon.privatedb.char.followers[self.type]
+		wipe(charDest)
+	end
+
+	for id, follower in pairs(self.cache) do
+		if type(follower) == "table" and follower.isCollected then
+			local data = {
+				name = follower.name,
+				fullname = follower.fullname,
+				level = follower.level,
+				iLevel = follower.iLevel,
+				quality = follower.quality,
+				xp = follower.xp,
+				levelXP = follower.levelXP,
+				classSpecName = follower.classSpecName,
+				followerTypeID = follower.followerTypeID,
+				isTroop = follower.isTroop,
+				maxed = follower.maxed,
+				weaponItemLevel = follower.weaponItemLevel,
+				armorItemLevel = follower.armorItemLevel,
+				durability = follower.durability,
+				maxDurability = follower.maxDurability,
+				status = follower.status,
+			}
+			if follower.abilities then
+				data.abilities = {}
+				for _, ab in pairs(follower.abilities) do
+					tinsert(data.abilities, { id = ab.id, name = ab.name, icon = ab.icon, isTrait = ab.isTrait })
+				end
+			end
+			dest[self.type][id] = data
+			if charDest then
+				charDest[id] = data
+			end
 		end
 	end
 end

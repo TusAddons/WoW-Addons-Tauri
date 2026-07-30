@@ -1,4 +1,4 @@
--- ----------------------------------------------------------------------------
+﻿-- ----------------------------------------------------------------------------
 -- Localized Lua globals.
 -- ----------------------------------------------------------------------------
 -- Libraries
@@ -186,7 +186,7 @@ function TargetButtonManager:Spawn(eventName, data)
 
 	if #ActiveTargetButtons >= private.NUM_RAID_ICONS or _G.InCombatLockdown() then
 		data.sourceText = ("%s %s"):format(data.sourceText, _G.PARENS_TEMPLATE:format(_G.QUEUED_STATUS_QUEUED))
-		table.insert(QueuedData, data)
+		QueuedData[#QueuedData+1] = data
 
 		return
 	end

@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 local icons = addon.Icons
@@ -273,13 +273,13 @@ local function BuildView()
 
 	if (currentXPack ~= CAT_ALLINONE) then
 		for index, faction in ipairs(Factions[currentXPack][currentFactionGroup]) do
-			table.insert(view, faction)	-- insert the table pointer
+			view[#view+1] = faction	-- insert the table pointer
 		end
 	else	-- all in one, add all factions
 		for xPackIndex, xpack in ipairs(Factions) do		-- all xpacks
 			for factionGroupIndex, factionGroup in ipairs(xpack) do 	-- all faction groups
 				for index, faction in ipairs(factionGroup) do
-					table.insert(view, faction)	-- insert the table pointer
+					view[#view+1] = faction	-- insert the table pointer
 				end
 			end
 		end
@@ -424,7 +424,7 @@ local function GetSuggestion(faction, bottom)
 	
 	local levels = {}
 	for k, _ in pairs(factionTable) do		-- get the levels for which we have a suggestion for this faction
-		table.insert(levels, k)
+		levels[#levels+1] = k
 	end
 	table.sort(levels)	-- sort them, otherwise there's a risk of returning a suggestion for the wrong level
 	

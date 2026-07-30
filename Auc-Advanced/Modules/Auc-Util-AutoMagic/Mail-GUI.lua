@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Auctioneer - AutoMagic Utility module
 	Version: 7.6.5736 (TasmanianThylacine)
 	Revision: $Id: Mail-GUI.lua 5415 2013-06-11 15:18:58Z brykrys $
@@ -264,7 +264,7 @@ function lib.makeMailGUI()
 		--parse
 		local B, D = {},{}
 		for button, dataTable in pairs(settings) do
-			table.insert(B, {button})
+			B[#B+1] = {button}
 			if selection == button then
 				D = dataTable
 			end

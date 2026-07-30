@@ -1,5 +1,5 @@
---[[	*** DataStore_Quests ***
-Written by : Thaoky, EU-Marécages de Zangar
+﻿--[[	*** DataStore_Quests ***
+Written by : Thaoky, EU-MarÃ©cages de Zangar
 July 8th, 2009
 --]]
 
@@ -287,7 +287,7 @@ local function ScanQuests()
 				isOnMap, hasLocalPOI, isTask, isBounty, isStory, isHidden = GetQuestLogTitle(i)
 
 		if isHeader then
-			table.insert(headers, title or "")
+			headers[#headers+1] = title or ""
 			lastHeaderIndex = lastHeaderIndex + 1
 		else
 			SelectQuestLogEntry(i)
@@ -306,7 +306,7 @@ local function ScanQuests()
 			value = value + LShift(level, 16)								-- bits 16-23 : level
 			value = value + LShift(GetQuestLogRewardMoney(), 24)		-- bits 24+ : money
 
-			table.insert(quests, value)
+			quests[#quests+1] = value
 			lastQuestIndex = lastQuestIndex + 1
 			
 			tags[lastQuestIndex] = GetQuestTagID(questID, isComplete, frequency)
@@ -548,7 +548,7 @@ local function _GetCharactersOnQuest(questName, player, realm, account)
 			for i = 1, questLogSize do
 				local name = _GetQuestLogInfo(character, i)
 				if questName == name then		-- same quest found ?
-					table.insert(out, characterKey)	
+					out[#out+1] = characterKey	
 				end
 			end
 		end

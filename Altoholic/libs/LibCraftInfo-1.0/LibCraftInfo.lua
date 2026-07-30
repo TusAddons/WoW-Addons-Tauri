@@ -1,5 +1,5 @@
---[[	*** LibCraftInfo ***
-Written by : Thaoky, EU-Mar�cages de Zangar
+﻿--[[	*** LibCraftInfo ***
+Written by : Thaoky, EU-Marï¿½cages de Zangar
 September 21st, 2013
 
 This library contains various information about crafts, namely:
@@ -156,7 +156,7 @@ function lib:GetProfessionCraftList(professionSpellID, expansionID)
 	for spellID, attrib in pairs(lib.dataSource) do
 		tmpID = bAnd(attrib, 255)
 		if tmpID == searchedID then
-			table.insert(out, spellID)
+			out[#out+1] = spellID
 		end
 	end
 

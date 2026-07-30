@@ -1,0 +1,8 @@
+## Interface: 70300
+## Title: ChatFontFix
+## Author: Artiom97es
+## Notes: Previene que caracteres árabes, chinos o coreanos hagan gigante la fuente del chat.
+## Version: 1.2-Artiom97es
+## SavedVariables: ChatFontFixDB
+dictionary.lua
+core.lua

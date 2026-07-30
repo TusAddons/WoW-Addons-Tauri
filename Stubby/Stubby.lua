@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Stubby AddOn for World of Watcraft (tm)
 	Version: 7.6.5736 (TasmanianThylacine)
 	Revision: $Id: Stubby.lua 374 2014-10-31 12:11:53Z brykrys $
@@ -283,7 +283,7 @@ function rebuildNotifications(notifyItems)
 		-- Sort all hooks for this type in ascending numerical order.
 		local sortedPositions = {}
 		for requestedPos in pairs(hData) do
-			table.insert(sortedPositions, requestedPos)
+			sortedPositions[#sortedPositions+1] = requestedPos
 		end
 		table.sort(sortedPositions)
 
@@ -836,7 +836,7 @@ function cleanUpAddOnData()
 
 			if (StubbyConfig.configs) then
 				if (cleanList == nil) then cleanList = {} end
-				table.insert(cleanList, b)
+				cleanList[#cleanList+1] = b
 			end
 		end
 	end

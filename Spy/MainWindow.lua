@@ -185,8 +185,21 @@ function Spy:CreateMapNote(num)
 	Spy.MapNoteList[num].mapX = 0
 	Spy.MapNoteList[num].mapY = 0
 	Spy.MapNoteList[num].worldIcon = worldIcon
+	local origWorldShow = worldIcon.Show
+	worldIcon.Show = function(self)
+		if Spy.MapNoteList[num] and Spy.MapNoteList[num].displayed then
+			origWorldShow(self)
+		end
+	end
 	Spy.MapNoteList[num].worldIcon:Hide()
+	
 	Spy.MapNoteList[num].miniIcon = miniIcon
+	local origMiniShow = miniIcon.Show
+	miniIcon.Show = function(self)
+		if Spy.MapNoteList[num] and Spy.MapNoteList[num].displayed then
+			origMiniShow(self)
+		end
+	end
 	Spy.MapNoteList[num].miniIcon:Hide()
 end
 

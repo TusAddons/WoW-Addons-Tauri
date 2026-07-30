@@ -3,6 +3,7 @@ if not Drop then
 	return
 elseif not Version then
 	local function closeAll()
+		if InCombatLockdown() then return end
 		Drop:CloseAll()
 	end
 
@@ -143,6 +144,7 @@ function Drop:Display(...)
 end
 
 function Drop:CloseAll()
+	if InCombatLockdown() then return end
 	for i, frame in ipairs(self.usedFrames) do
 		frame:Release()
 	end

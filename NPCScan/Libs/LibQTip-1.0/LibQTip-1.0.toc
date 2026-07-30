@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: Lib: QTip-1.0
+## Author: Artiom97es
 ## Notes: Library providing multi-column tooltips.
-## Author: Torhal, Adirelle, Elkano, Tristanian
-## Version: @project-version@
+## Version: @project-version@_v2-Artiom97es
 ## LoadOnDemand: 1
 ## X-Date: @project-date-iso@
 ## X-Credits: Kaelten (input on initial design)

@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: Rematch
+## Author: Artiom97es
 ## Notes: A pet journal alternative for managing pets and teams.
-## Author: Gello
-## Version: 4.7.11
+## Version: 4.7.12-Artiom97es
 ## SavedVariables: RematchSaved, RematchSettings
 
 Localization\Rematch deDE.lua

@@ -1,4 +1,4 @@
-if GetLocale() ~= "deDE" then return end
+﻿if GetLocale() ~= "deDE" then return end
 local L
 
 -----------------------
@@ -275,6 +275,10 @@ L= DBM:GetModLocalization(688)
 -- Korlof --
 -----------------------
 L= DBM:GetModLocalization(671)
+
+L:SetOptionLocalization({
+	KickArrow	= "Zeige DBM-Pfeil, falls $spell:114487 in deiner Nähe ist"
+})
 
 -----------------------
 -- Durand/High Inquisitor Whitemane --

@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 local icons = addon.Icons
@@ -292,7 +292,7 @@ local function InitTransmogSetsInfo(sets)
 	end
 	
 	for desc, _ in pairs(pvpDescriptions) do
-		table.insert(pvpSortedDescriptions, desc)
+		pvpSortedDescriptions[#pvpSortedDescriptions+1] = desc
 	end
 	table.sort(pvpSortedDescriptions)
 end
@@ -341,7 +341,7 @@ local function BuildView()
 				(isPVP and includePVP and descOK and factionOK) then		-- it is a PVP set, and we want it, and it's description is OK
 
 				if (currentXPack == CAT_ALLINONE) or (currentXPack == xpackIndex) then
-					table.insert(view, setInfo)	-- insert the table pointer
+					view[#view+1] = setInfo	-- insert the table pointer
 				end
 			end
 		end

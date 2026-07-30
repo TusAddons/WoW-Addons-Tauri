@@ -1,12 +1,12 @@
 ## Title: Auc:Util:Compact UI
+## Author: Artiom97es
 ## Notes: Provides additional features and enhancement of the Auction House's "Browse" frame.
 ##
 ## Interface: 70300
 ## Dependancies: Auc-Advanced
 ##
-## Version: 7.6.5736 (TasmanianThylacine)
+## Version: 7.6.5736 (TasmanianThylacine)_v2-Artiom97es
 ## Revision: $Id: Auc-Util-CompactUI.toc 5722 2017-09-02 11:56:11Z brykrys $
-## Author: Norganna's AddOns
 ## X-Part-Of: Auctioneer
 ## X-Category: Auction House
 ## X-Max-Interface: 70300

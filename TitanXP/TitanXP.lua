@@ -1,4 +1,4 @@
--- **************************************************************************
+﻿-- **************************************************************************
 -- * TitanXP.lua
 -- *
 -- * By: TitanMod, Dark Imakuni, Adsertor and the Titan Development Team
@@ -95,7 +95,7 @@ end
 
 function TitanPanelXPButton_OnHide()
 	if (TitanPanelSettings) then
-		for i = 1, table.getn(TitanPanelSettings.Buttons) do		
+		for i = 1, #(TitanPanelSettings.Buttons) do		
 			if(TitanPanelSettings.Buttons[i] == TITAN_XP_ID) then
 				found = true;			
 			end	

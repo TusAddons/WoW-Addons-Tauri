@@ -287,9 +287,9 @@ print("Adding Menu",GCS.Menu,GHF.MissionTab:IsVisible(),GHF.FollowerTab:IsVisibl
 	elseif GHF.FollowerTab:IsVisible() then
 		self.currentmenu=GHF.FollowerTab
 		menu,size=self:CreateOptionsLayer('HALLMOVEPANEL')
-	--elseif GSF.MissionControlTab:IsVisible() then
-	--	self.currentmenu=GSF.MissionControlTab
-	--	menu,size=self:CreateOptionsLayer('BIGSCREEN','GCSKIPRARE','GCSKIPEPIC')
+	elseif GSF.MissionControlTab:IsVisible() then
+		self.currentmenu=GSF.MissionControlTab
+		menu,size=self:CreateOptionsLayer('BIGSCREEN','GCSKIPRARE','GCSKIPEPIC')
 	else
 		self.currentmenu=nil
 		menu,size=self:CreateOptionsLayer('HALLMOVEPANEL')
@@ -303,11 +303,7 @@ print("Adding Menu",GCS.Menu,GHF.MissionTab:IsVisible(),GHF.FollowerTab:IsVisibl
 	frame:SetParent(GCS)
 	frame:SetFrameStrata(GCS:GetFrameStrata())
 	frame:SetFrameLevel(GCS:GetFrameLevel()+2)
-	local label=AceGUI:Create("Label")
-	label:SetText(L["Support for Order Hall missions has been moved to OrderHallCommander.\nPlease install it NOW! (no need to remove GarrisoCommander)"])
-	label:SetColor(C.Red())
-	label:SetWidth(380)
-	menu:AddChild(label)
+	-- label removed to prevent annoying warning message
 	menu:ClearAllPoints()
 	menu:SetPoint("TOPLEFT",GCS,"TOPLEFT",25,-18)
 	menu:SetWidth(GCS:GetWidth()-50)

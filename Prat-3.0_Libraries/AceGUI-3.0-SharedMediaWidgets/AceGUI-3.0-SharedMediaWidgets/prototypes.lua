@@ -1,4 +1,4 @@
--- Widget created by Yssaril
+﻿-- Widget created by Yssaril
 --@debug@
 local DataVersion = 9001 -- dev version always overwrites everything else :)
 --@end-debug@
@@ -267,7 +267,7 @@ do
 		frame:Hide()
 		frame:SetBackdrop(frameBackdrop)
 		frame.bgTex:SetTexture(nil)
-		table.insert(DropDownCache, frame)
+		DropDownCache[#DropDownCache+1] = frame
 		return nil
 	end
 end

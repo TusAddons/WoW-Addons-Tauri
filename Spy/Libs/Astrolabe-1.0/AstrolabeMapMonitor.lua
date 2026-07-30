@@ -1,4 +1,4 @@
---[[
+﻿--[[
 Name: AstrolabeMapMonitor
 Revision: $Rev: 44 $
 $Date: 2007-03-30 11:56:21 -0700 (Fri, 30 Mar 2007) $
@@ -70,7 +70,7 @@ else
 		end
 	end
 	if not ( worldMapFound ) then
-		table.insert(WorldMapDisplayFrames, WorldMapFrame);
+		WorldMapDisplayFrames[#WorldMapDisplayFrames+1] = WorldMapFrame;
 	end
 end
 

@@ -1,6 +1,7 @@
 ## Interface: 70300
 ## X-Min-Interface: 70100
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFOptions GUI|r
+## Author: Artiom97es
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFGUI für Einstellungen|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF设置界面|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFПараметры GUI|r
@@ -23,7 +24,7 @@
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 1
 ## DefaultState: enabled
-## Author: Nitram and Tandanu
+## Version: 1.1-Artiom97es
 ## URL: http://www.deadlybossmods.com
 localization.en.lua
 localization.de.lua

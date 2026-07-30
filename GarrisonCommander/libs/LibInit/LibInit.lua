@@ -1,4 +1,4 @@
---- Main methods directly available in your addon
+﻿--- Main methods directly available in your addon
 -- @classmod lib
 -- @author Alar of Runetotem
 -- @release 47
@@ -1045,7 +1045,7 @@ do
 				local appo={}
 				if (not libs) then return end
 				for i,_ in pairs(libs) do
-						table.insert(appo,i)
+						appo[#appo+1] = i
 				end
 				table.sort(appo)
 				for _,libname in pairs(appo) do
@@ -1254,7 +1254,7 @@ function lib:AddSubLabel(title,description,stringcolor)
 			args={},
 			order=getorder(self,group),
 	}
-	table.insert(m,flag)
+	m[#m+1] = flag
 	return group.args[flag]
 end
 
@@ -1868,7 +1868,7 @@ end
 local function kpairs(t,f)
 	local a = new()
 	f=f or fsort
-	for n in pairs(t) do table.insert(a, n) end
+	for n in pairs(t) do a[#a+1] = n end
 	table.sort(a, f)
 	local i = 0      -- iterator variable
 	local iter = function ()   -- iterator function

@@ -1,0 +1,12 @@
+## Interface: 70300
+## Title: Details Raid Check (plugin)
+## Author: Artiom97es
+## Version: 1.1-Artiom97es
+## Notes: Show a icon on Details title bar showing flask, food, pre-pots.
+## RequiredDeps: Details
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+Details_RaidCheck.lua

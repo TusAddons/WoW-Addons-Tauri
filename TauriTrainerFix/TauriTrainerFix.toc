@@ -1,0 +1,6 @@
+﻿## Interface: 70300
+## Title: TauriTrainerFix
+## Author: Artiom97es
+## Notes: Fixes attempt to compare number with nil in Blizzard_TrainerUI
+## Version: 1.1-Artiom97es
+core.lua

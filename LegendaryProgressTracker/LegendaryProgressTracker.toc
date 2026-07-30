@@ -1,9 +1,9 @@
 ## Interface: 70300
 ## Title: Legendary Progress Tracker
-## Author: Kilwen
-## Version: 0.3.12
+## Author: Artiom97es
+## Version: 0.3.14-Artiom97es
 
-## SavedVariablesPerCharacter: lastLegInfo, lptEvents, printInfo, bosses, historical
+## SavedVariablesPerCharacter: lastLegInfo, lptEvents, printInfo, bosses, historical, lptUIConfig
 ## SavedVariables: lptHistory
 
 embeds.xml

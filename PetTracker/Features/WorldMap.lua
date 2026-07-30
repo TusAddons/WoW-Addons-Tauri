@@ -43,7 +43,25 @@ function Map:Startup()
 	self.blips, self.tamers = {}, {}
 
 	self:RegisterEvent('ZONE_CHANGED_NEW_AREA')
-	self:SetScript('OnEvent', SetMapToCurrentZone)
+	self:RegisterEvent('PLAYER_REGEN_ENABLED')
+	self:SetScript('OnEvent', function(self, event, ...)
+		if event == 'PLAYER_REGEN_ENABLED' then
+			if self.pendingZoneUpdate then
+				self.pendingZoneUpdate = nil
+				SetMapToCurrentZone()
+			end
+			if self:IsVisible() and self.pendingTrackingUpdate then
+				self.pendingTrackingUpdate = nil
+				self:TrackingChanged()
+			end
+		elseif event == 'ZONE_CHANGED_NEW_AREA' then
+			if InCombatLockdown() then
+				self.pendingZoneUpdate = true
+			else
+				SetMapToCurrentZone()
+			end
+		end
+	end)
 	self:SetScript('OnMouseDown', self.ShowSuggestions)
 	self:SetScript('OnEditFocusLost', self.FocusLost)
 	self:SetScript('OnTextChanged', self.FilterChanged)
@@ -56,6 +74,10 @@ end
 
 function Map:TrackingChanged()
 	if self:IsVisible() then
+		if InCombatLockdown() then
+			self.pendingTrackingUpdate = true
+			return
+		end
 		self:CacheTamers()
 		self:UpdateBlips()
 	end
@@ -76,6 +98,7 @@ end
 --[[ Blips ]]--
 
 function Map:UpdateBlips()
+	if InCombatLockdown() then return end
 	self:ColorTamers()
 	self:ResetBlips()
 
@@ -150,24 +173,29 @@ end
 --[[ Tamers ]]--
 
 function Map:CacheTamers()
+	if InCombatLockdown() then return end
 	wipe(self.tamers)
 
 	for i = 1, GetNumMapLandmarks() do
 		local frame = _G['WorldMapFramePOI' .. i]
 		if frame then
 			self.tamers[frame] = Tamer:At(select(10, GetMapLandmarkInfo(i)))
-			frame:SetScript('PreClick', self.ShowTamer)
+			if not issecurevariable(frame, "PreClick") then
+				frame:SetScript('PreClick', self.ShowTamer)
+			end
 		end
 	end
 end
 
 function Map:ColorTamers()
+	if InCombatLockdown() then return end
 	for frame, tamer in pairs(self.tamers) do
 		frame.Texture:SetDesaturated(IsQuestFlaggedCompleted(tamer.quest))
 	end
 end
 
 function Map:ShowTamer()
+	if InCombatLockdown() then return end
 	local tamer = Map.tamers[self]
 	if tamer then
 		tamer:Display()
@@ -178,6 +206,10 @@ end
 --[[ Tooltip ]]--
 
 function Map:UpdateTip()
+	if InCombatLockdown() then
+		Tooltip:Hide()
+		return
+	end
 	if WorldMapTooltip:IsVisible() or GameTooltip:IsVisible() then
 		Tooltip:Hide()
 	else

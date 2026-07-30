@@ -1,5 +1,6 @@
 ## Interface: 70300
 ## Title: GarrisonCommander
+## Author: Artiom97es
 ## Notes: Sending all follower to missions with just one click and more
 ## Notes-itIT: Invia tutti i seguaci in missione con un click e molto altro
 ## Notes-frFR: Vous aide au moment de choisir le droit utilisateur pour la bonne mission
@@ -11,8 +12,7 @@
 ## Notes-ruRU: Отправить всех последователей на миссии со щелчком и более
 ## Notes-zhTW: 发送所有的追随者与点击多任务
 ## Notes-zhCN: 發送所有的追隨者與點擊多任務
-## Author: Alar of Daggerspine
-## Version: 2.18.5 70200
+## Version: 2.18.5 70201-Artiom97es
 ## X-Revision: 797379e
 ## eMail: alar@aspide.it
 ## URL: http://wow.aspide.it

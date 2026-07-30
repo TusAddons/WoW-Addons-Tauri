@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("CoENTrash", "DBM-Party-Legion", 12)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 16 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 15403 $"):sub(12, -3))
 --mod:SetModelID(47785)
 mod:SetZone()
 
@@ -86,8 +86,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_START(uId, _, bfaSpellId, _, legacySpellId)
-	local spellId = legacySpellId or bfaSpellId
+function mod:UNIT_SPELLCAST_START(uId, _, _, _, spellId)
 	if spellId == 238653 then
 		self:SendSync("ShadowWave")
 	end

@@ -1,4 +1,4 @@
--- HereBeDragons is a data API for the World of Warcraft mapping system
+﻿-- HereBeDragons is a data API for the World of Warcraft mapping system
 
 -- HereBeDragons-1.0 is not supported on WoW 8.0
 if select(4, GetBuildInfo()) >= 80000 then
@@ -141,7 +141,7 @@ if not oldversion or oldversion < 33 then
                     offsetY = offsetY,
                     offsetX = offsetX
                 }
-                table.insert(transforms, transform)
+                transforms[#transforms+1] = transform
             end
         end
     end
@@ -606,7 +606,7 @@ end
 function HereBeDragons:GetAllMapIDs()
     local t = {}
     for id in pairs(mapData) do
-        table.insert(t, id)
+        t[#t+1] = id
     end
     return t
 end

@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 
 -- ** Constants ** 
@@ -127,7 +127,7 @@ local function CreateLists(level, buttonIndex)
 			list["Button"..i] = button
 		end
 		
-		table.insert(listsPool, list)
+		listsPool[#listsPool+1] = list
 	end
 	
 	if buttonIndex <= MAX_BUTTONS then return end

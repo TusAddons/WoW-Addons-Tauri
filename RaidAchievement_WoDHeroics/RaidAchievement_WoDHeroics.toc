@@ -1,7 +1,8 @@
 ﻿## Interface: 70300
 ## Title: Raid|cff7fff7fAchievement|r - WoD Dungeons
+## Author: Artiom97es
 ## Title-ruRU: Raid|cff7fff7fAchievement|r - Подземелья WoD
-## Author: Shurshik
+## Version: 1.1-Artiom97es
 ## Notes: RaidAchievement WoD Dungeons Module
 ## Notes-ruRU: Модуль RaidAchievement - Подземелья WoD
 ## Dependencies: RaidAchievement

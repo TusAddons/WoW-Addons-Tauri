@@ -1,4 +1,4 @@
-
+﻿
 local addonName, scope = ...
 local addon = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceTimer-3.0")
 scope.addon = addon
@@ -1050,7 +1050,7 @@ function addon:RegisterList(name, contents, ...)
 		end
 		newList.cols = cols
 	end
-	table.insert(lists, newList)
+	lists[#lists+1] = newList
 end
 
 function addon:UpdateList(name)

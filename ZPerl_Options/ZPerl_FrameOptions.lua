@@ -1,4 +1,4 @@
--- X-Perl UnitFrames
+﻿-- X-Perl UnitFrames
 -- Author: Zek <Boodhoof-EU>
 -- License: GNU GPL v3, 29 June 2007 (see LICENSE.txt)
 
@@ -89,7 +89,7 @@ end
 function XPerl_Options_CheckButton_OnEnter(self)
 	if (self.flashFrame and not InCombatLockdown()) then
 		local array
-		if (table.getn(self.flashFrame) == 0) then
+		if (#(self.flashFrame) == 0) then
 			array = {self.flashFrame}
 		else
 			array = self.flashFrame

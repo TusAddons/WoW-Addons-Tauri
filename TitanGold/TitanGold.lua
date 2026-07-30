@@ -1,4 +1,4 @@
---[[
+﻿--[[
 -- **************************************************************************
 -- * Updates for the new TitanPanel: Titan Development Team
 -- * 2010 Jul : Started from Titan Gold Tracker to create this Titan version
@@ -274,7 +274,7 @@ function TitanPanelGoldButton_GetTooltipText()
 			character, charserver = string.match(index, '(.*)_(.*)');
 			if (character) then
 				if (charserver == server) then
-					table.insert(GoldSaveSorted, index); -- insert all keys from hash into the array
+					GoldSaveSorted[#GoldSaveSorted+1] = index; -- insert all keys from hash into the array
 				end
 			end
 		end
@@ -318,7 +318,7 @@ function TitanPanelGoldButton_GetTooltipText()
 				end
 				if (character) then
 					if (charserver == server) then
-						table.insert(GoldSaveSorted, index); -- insert all keys from hash into the array
+						GoldSaveSorted[#GoldSaveSorted+1] = index; -- insert all keys from hash into the array
 					end
 				end
 			end

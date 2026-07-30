@@ -1,9 +1,8 @@
-## Author: Ackis, Torhal, Ressy
 
 ## Interface: 70300
-## Version: 7.3.0.2-15-g91a3a616
-## X-Revision: 91a3a616
-## X-Date: 2017-08-29T23:28:58Z
+## Version: 7.3.0.2-Artiom97es
+## X-Revision: e062c22
+## X-Date: 2017-08-30T4:28:58Z
 
 ## X-Credits: Zhinjio, FGWarmonger, Kagaro, Speeddymon, Xinhuan, Aesir, BWMerlin, everyone who translated stuff and more!
 ## X-Category: Tradeskill
@@ -24,6 +23,7 @@
 
 #@non-debug@
 ## Title: Ackis Recipe List
+## Author: Artiom97es
 ## Title-frFR: Ackis Recipe List
 ## Title-deDE: Ackis Rezeptliste 2.0
 ## Title-itIT: Ackis Recipe List

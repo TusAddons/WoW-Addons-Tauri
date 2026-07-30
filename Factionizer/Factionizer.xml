@@ -77,7 +77,7 @@
 
 <!--v set 1-->
 	<Frame name="FIZ_ReputationDetailFrame" parent="ReputationFrame" enableMouse="true" hidden="true">
-		<Size x="412" y="520"/>
+		<Size x="450" y="525"/>
 		<Anchors><Anchor point="TOPLEFT" relativeTo="ReputationFrame" relativePoint="TOPRIGHT"><Offset x="0" y="0"/></Anchor></Anchors>
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
 			<BackgroundInsets><AbsInset left="11" right="12" top="12" bottom="11"/></BackgroundInsets>
@@ -106,53 +106,58 @@
 				</Texture>
 				<FontString name="FIZ_ReputationDetailStandingName" inherits="GameFontNormalSmall" justifyH="LEFT">
 					<Size x="0" y="10"/>
-					<Anchors><Anchor point="TOPLEFT" relativeTo="FIZ_DetailBg2" relativePoint="TOPLEFT"><Offset x="10" y="-10"/></Anchor></Anchors>
-				</FontString>
-				<FontString name="FIZ_ReputationDetailStandingNeeded" inherits="GameFontHighlightSmall" justifyH="LEFT">
-					<Size x="0" y="10"/><Anchors>
-						<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailStandingName" relativePoint="BOTTOMLEFT">
-					<Offset x="0" y="-2"/></Anchor></Anchors>
+					<Anchors><Anchor point="TOPLEFT" relativeTo="FIZ_DetailBg2" relativePoint="TOPLEFT"><Offset x="10" y="-8"/></Anchor></Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingCurrent" inherits="GameFontHighlightSmall" justifyH="LEFT">
 					<Size x="0" y="10"/><Anchors>
-						<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailStandingNeeded" relativePoint="BOTTOMLEFT">
-					<Offset x="0" y="-2"/></Anchor></Anchors>
+						<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailStandingName" relativePoint="BOTTOMLEFT">
+					<Offset x="0" y="-4"/></Anchor></Anchors>
+				</FontString>
+				<FontString name="FIZ_ReputationDetailStandingNeeded" inherits="GameFontHighlightSmall" justifyH="LEFT">
+					<Size x="0" y="10"/><Anchors>
+						<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailStandingCurrent" relativePoint="BOTTOMLEFT">
+					<Offset x="0" y="-3"/></Anchor></Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingMissing" inherits="GameFontHighlightSmall" justifyH="LEFT">
 					<Size x="0" y="10"/><Anchors>
-						<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailStandingCurrent" relativePoint="BOTTOMLEFT">
-					<Offset x="0" y="-7"/></Anchor></Anchors>
+						<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailStandingNeeded" relativePoint="BOTTOMLEFT">
+					<Offset x="0" y="-3"/></Anchor></Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingBag" inherits="GameFontHighlightSmall" justifyH="LEFT">
 					<Size x="0" y="10"/><Anchors>
 						<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailStandingMissing" relativePoint="BOTTOMLEFT">
-					<Offset x="0" y="-2"/></Anchor></Anchors>
+					<Offset x="0" y="-3"/></Anchor></Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingBagBank" inherits="GameFontHighlightSmall" justifyH="LEFT">
 					<Size x="0" y="10"/><Anchors>
 						<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailStandingBag" relativePoint="BOTTOMLEFT">
-					<Offset x="0" y="-2"/></Anchor></Anchors>
+					<Offset x="0" y="-3"/></Anchor></Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingQuests" inherits="GameFontHighlightSmall" justifyH="LEFT">
 					<Size x="0" y="10"/><Anchors>
 						<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailStandingBagBank" relativePoint="BOTTOMLEFT">
-					<Offset x="0" y="-2"/></Anchor></Anchors>
+					<Offset x="0" y="-3"/></Anchor></Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingGained" inherits="GameFontHighlightSmall" justifyH="LEFT">
 					<Size x="0" y="10"/><Anchors>
 						<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailStandingQuests" relativePoint="BOTTOMLEFT">
-					<Offset x="0" y="-5"/></Anchor></Anchors>
+					<Offset x="0" y="-3"/></Anchor></Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingToExaltedHeader" inherits="GameFontHighlightSmall" justifyH="LEFT">
 					<Size x="0" y="10"/><Anchors>
 						<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailStandingGained" relativePoint="BOTTOMLEFT">
-					<Offset x="0" y="-2"/></Anchor></Anchors>
+					<Offset x="0" y="-3"/></Anchor></Anchors>
 				</FontString>
 
-				<FontString name="FIZ_ReputationDetailStandingNextValue" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+				<FontString name="FIZ_ReputationDetailStandingNextValue" inherits="GameFontHighlightSmall" justifyH="LEFT">
 					<Size x="0" y="10"/><Anchors>
-						<Anchor point="TOP" relativeTo="FIZ_ReputationDetailStandingName" relativePoint="TOP"><Offset x="0" y="0"/></Anchor>
-						<Anchor point="RIGHT" relativeTo="FIZ_ReputationDetailFrame" relativePoint="RIGHT"><Offset x="-40" y="0"/></Anchor>
+						<Anchor point="LEFT" relativeTo="FIZ_ReputationDetailStandingName" relativePoint="RIGHT"><Offset x="6" y="0"/></Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="FIZ_ReputationDetailStandingCurrentValue" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+					<Size x="0" y="10"/><Anchors>
+						<Anchor point="TOP" relativeTo="FIZ_ReputationDetailStandingCurrent" relativePoint="TOP"><Offset x="0" y="0"/></Anchor>
+						<Anchor point="RIGHT" relativeTo="FIZ_ReputationDetailFrame" relativePoint="RIGHT"><Offset x="-15" y="0"/></Anchor>
 					</Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingNeededValue" inherits="GameFontHighlightSmall" justifyH="RIGHT">
@@ -161,40 +166,41 @@
 						<Anchor point="RIGHT" relativeTo="FIZ_ReputationDetailFrame" relativePoint="RIGHT"><Offset x="-15" y="0"/></Anchor>
 					</Anchors>
 				</FontString>
-				<FontString name="FIZ_ReputationDetailStandingCurrentValue" inherits="GameFontHighlightSmall" justifyH="RIGHT">
-					<Size x="0" y="10"/><Anchors>
-						<Anchor point="TOPRIGHT" relativeTo="FIZ_ReputationDetailStandingNeededValue" relativePoint="BOTTOMRIGHT">
-					<Offset x="0" y="-2"/></Anchor></Anchors>
-				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingMissingValue" inherits="GameFontHighlightSmall" justifyH="RIGHT">
 					<Size x="0" y="10"/><Anchors>
-						<Anchor point="TOPRIGHT" relativeTo="FIZ_ReputationDetailStandingCurrentValue" relativePoint="BOTTOMRIGHT">
-					<Offset x="0" y="-7"/></Anchor></Anchors>
+						<Anchor point="TOP" relativeTo="FIZ_ReputationDetailStandingMissing" relativePoint="TOP"><Offset x="0" y="0"/></Anchor>
+						<Anchor point="RIGHT" relativeTo="FIZ_ReputationDetailFrame" relativePoint="RIGHT"><Offset x="-15" y="0"/></Anchor>
+					</Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingBagValue" inherits="GameFontHighlightSmall" justifyH="RIGHT">
 					<Size x="0" y="10"/><Anchors>
-						<Anchor point="TOPRIGHT" relativeTo="FIZ_ReputationDetailStandingMissingValue" relativePoint="BOTTOMRIGHT">
-					<Offset x="0" y="-2"/></Anchor></Anchors>
+						<Anchor point="TOP" relativeTo="FIZ_ReputationDetailStandingBag" relativePoint="TOP"><Offset x="0" y="0"/></Anchor>
+						<Anchor point="RIGHT" relativeTo="FIZ_ReputationDetailFrame" relativePoint="RIGHT"><Offset x="-15" y="0"/></Anchor>
+					</Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingBagBankValue" inherits="GameFontHighlightSmall" justifyH="RIGHT">
 					<Size x="0" y="10"/><Anchors>
-							<Anchor point="TOPRIGHT" relativeTo="FIZ_ReputationDetailStandingBagValue" relativePoint="BOTTOMRIGHT">
-					<Offset x="0" y="-2"/></Anchor></Anchors>
+						<Anchor point="TOP" relativeTo="FIZ_ReputationDetailStandingBagBank" relativePoint="TOP"><Offset x="0" y="0"/></Anchor>
+						<Anchor point="RIGHT" relativeTo="FIZ_ReputationDetailFrame" relativePoint="RIGHT"><Offset x="-15" y="0"/></Anchor>
+					</Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingQuestsValue" inherits="GameFontHighlightSmall" justifyH="RIGHT">
 					<Size x="0" y="10"/><Anchors>
-						<Anchor point="TOPRIGHT" relativeTo="FIZ_ReputationDetailStandingBagBankValue" relativePoint="BOTTOMRIGHT">
-					<Offset x="0" y="-2"/></Anchor></Anchors>
+						<Anchor point="TOP" relativeTo="FIZ_ReputationDetailStandingQuests" relativePoint="TOP"><Offset x="0" y="0"/></Anchor>
+						<Anchor point="RIGHT" relativeTo="FIZ_ReputationDetailFrame" relativePoint="RIGHT"><Offset x="-15" y="0"/></Anchor>
+					</Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingGainedValue" inherits="GameFontHighlightSmall" justifyH="RIGHT">
 					<Size x="0" y="10"/><Anchors>
-						<Anchor point="TOPRIGHT" relativeTo="FIZ_ReputationDetailStandingQuestsValue" relativePoint="BOTTOMRIGHT">
-					<Offset x="0" y="-5"/></Anchor></Anchors>
+						<Anchor point="TOP" relativeTo="FIZ_ReputationDetailStandingGained" relativePoint="TOP"><Offset x="0" y="0"/></Anchor>
+						<Anchor point="RIGHT" relativeTo="FIZ_ReputationDetailFrame" relativePoint="RIGHT"><Offset x="-15" y="0"/></Anchor>
+					</Anchors>
 				</FontString>
 				<FontString name="FIZ_ReputationDetailStandingToExaltedValue" inherits="GameFontHighlightSmall" justifyH="RIGHT">
 					<Size x="0" y="10"/><Anchors>
-						<Anchor point="TOPRIGHT" relativeTo="FIZ_ReputationDetailStandingGainedValue" relativePoint="BOTTOMRIGHT">
-					<Offset x="0" y="-2"/></Anchor></Anchors>
+						<Anchor point="TOP" relativeTo="FIZ_ReputationDetailStandingToExaltedHeader" relativePoint="TOP"><Offset x="0" y="0"/></Anchor>
+						<Anchor point="RIGHT" relativeTo="FIZ_ReputationDetailFrame" relativePoint="RIGHT"><Offset x="-15" y="0"/></Anchor>
+					</Anchors>
 				</FontString>
 
 				<FontString name="FIZ_ReputationDetailFactionName" inherits="GameFontNormal" justifyH="LEFT">
@@ -248,7 +254,7 @@
 <!--^ set 3-->
 				<Scripts>
 					<OnClick>
-						PlaySound("igMainMenuOptionCheckBoxOn");
+						FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						HideParentPanel(self);
 					</OnClick>
 				</Scripts>
@@ -273,9 +279,9 @@
 					<OnClick>
 						FactionToggleAtWar(GetSelectedFaction());
 						if ( self:GetChecked() ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 						ReputationFrame_Update();
 					</OnClick>
@@ -306,10 +312,10 @@
 					</OnLoad>
 					<OnClick>
 						if ( self:GetChecked() ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 							SetFactionInactive(GetSelectedFaction());
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 							SetFactionActive(GetSelectedFaction());
 						end
 					</OnClick>
@@ -333,13 +339,15 @@
 					</OnLoad>
 					<OnClick>
 						if ( self:GetChecked() ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 							SetWatchedFactionIndex(GetSelectedFaction());
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 							SetWatchedFactionIndex(0);
 						end
-						ReputationWatchBar_Update();
+						if ReputationWatchBar_Update then ReputationWatchBar_Update() end
+						if StatusTrackingBarManager and StatusTrackingBarManager.UpdateBars then StatusTrackingBarManager:UpdateBars() end
+						if FIZ_ReputationFrame_Update then FIZ_ReputationFrame_Update() elseif ReputationFrame_Update then ReputationFrame_Update() end
 					</OnClick>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -417,7 +425,7 @@
 			<CheckButton name="FIZ_ShowQuestButton" inherits="OptionsCheckButtonTemplate">
 				<Size x="20" y="20"/><Anchors>
 					<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailDivider3" relativePoint="BOTTOMLEFT">
-					<Offset x="10" y="20"/></Anchor></Anchors>
+					<Offset x="12" y="22"/></Anchor></Anchors>
 				<HitRectInsets>
 					<AbsInset left="0" right="-80" top="0" bottom="0"/>
 				</HitRectInsets>
@@ -432,9 +440,9 @@
 					<OnClick>
 						FIZ_Data.ShowQuests = self:GetChecked()
 						if ( FIZ_Data.ShowQuests ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 						FIZ_BuildUpdateList()
 						FIZ_UpdateList_Update()
@@ -451,7 +459,7 @@
 				<Size x="20" y="20"/>
 						<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailDivider3" relativePoint="BOTTOMLEFT">
-						<Offset x="110" y="20"/>
+						<Offset x="135" y="22"/>
 								</Anchor>
 				</Anchors>
 				<HitRectInsets>
@@ -468,9 +476,9 @@
 					<OnClick>
 						FIZ_Data.ShowInstances = self:GetChecked()
 						if ( FIZ_Data.ShowInstances ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 						FIZ_BuildUpdateList()
 						FIZ_UpdateList_Update()
@@ -487,7 +495,7 @@
 				<Size x="20" y="20"/>
 						<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailDivider3" relativePoint="BOTTOMLEFT">
-						<Offset x="10" y="0"/>
+						<Offset x="12" y="0"/>
 								</Anchor>
 				</Anchors>
 				<HitRectInsets>
@@ -504,9 +512,9 @@
 					<OnClick>
 						FIZ_Data.ShowMobs = self:GetChecked()
 						if ( FIZ_Data.ShowMobs ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 						FIZ_BuildUpdateList()
 						FIZ_UpdateList_Update()
@@ -523,7 +531,7 @@
 				<Size x="20" y="20"/>
 						<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailDivider3" relativePoint="BOTTOMLEFT">
-						<Offset x="110" y="0"/>
+						<Offset x="135" y="0"/>
 								</Anchor>
 				</Anchors>
 				<HitRectInsets>
@@ -540,9 +548,9 @@
 					<OnClick>
 						FIZ_Data.ShowItems = self:GetChecked()
 						if ( FIZ_Data.ShowItems ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 						FIZ_BuildUpdateList()
 						FIZ_UpdateList_Update()
@@ -559,7 +567,7 @@
 				<Size x="20" y="20"/>
 						<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailDivider3" relativePoint="BOTTOMLEFT">
-						<Offset x="10" y="-20"/>
+						<Offset x="12" y="-22"/>
 								</Anchor>
 				</Anchors>
 				<HitRectInsets>
@@ -576,9 +584,9 @@
 					<OnClick>
 						FIZ_Data.ShowGeneral = self:GetChecked()
 						if ( FIZ_Data.ShowGeneral ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 						FIZ_BuildUpdateList()
 						FIZ_UpdateList_Update()
@@ -593,10 +601,10 @@
 			</CheckButton>
 
 			<Button name="FIZ_ShowAllButton" inherits="SmallFontButton">
-				<Size x="80" y="20" />
+				<Size x="85" y="20" />
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailDivider3" relativePoint="BOTTOMLEFT">
-						<Offset x="230" y="20"/>
+						<Offset x="250" y="22"/>
 								</Anchor>
 				</Anchors>
 				<Scripts>
@@ -605,7 +613,7 @@
 						FIZ_Data.ShowMobs = true
 						FIZ_Data.ShowInstances = true
 						FIZ_Data.ShowItems = true
-						PlaySound("igMainMenuOptionCheckBoxOn");
+						FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						FIZ_BuildUpdateList()
 						FIZ_UpdateList_Update()
 					</OnClick>
@@ -618,10 +626,10 @@
 				</Scripts>
 			</Button>
 			<Button name="FIZ_ShowNoneButton" inherits="SmallFontButton">
-				<Size x="80" y="20" />
+				<Size x="85" y="20" />
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailDivider3" relativePoint="BOTTOMLEFT">
-						<Offset x="230" y="0"/>
+						<Offset x="250" y="0"/>
 								</Anchor>
 				</Anchors>
 				<Scripts>
@@ -630,7 +638,7 @@
 						FIZ_Data.ShowMobs = nil
 						FIZ_Data.ShowInstances = nil
 						FIZ_Data.ShowItems = nil
-						PlaySound("igMainMenuOptionCheckBoxOff");
+						FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						FIZ_BuildUpdateList()
 						FIZ_UpdateList_Update()
 					</OnClick>
@@ -643,15 +651,15 @@
 				</Scripts>
 			</Button>
 			<Button name="FIZ_ExpandButton" inherits="SmallFontButton">
-				<Size x="80" y="20" />
+				<Size x="85" y="20" />
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="FIZ_ShowAllButton" relativePoint="TOPRIGHT">
-						<Offset x="5" y="0"/>
+						<Offset x="8" y="0"/>
 								</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						PlaySound("igMainMenuOptionCheckBoxOn");
+						FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						FIZ_ShowUpdateEntries(true)
 					</OnClick>
 					<OnEnter>
@@ -663,15 +671,15 @@
 				</Scripts>
 			</Button>
 			<Button name="FIZ_CollapseButton" inherits="SmallFontButton">
-				<Size x="80" y="20" />
+				<Size x="85" y="20" />
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="FIZ_ShowNoneButton" relativePoint="TOPRIGHT">
-						<Offset x="5" y="0"/>
+						<Offset x="8" y="0"/>
 								</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						PlaySound("igMainMenuOptionCheckBoxOff");
+						FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						FIZ_ShowUpdateEntries(false)
 					</OnClick>
 					<OnEnter>
@@ -684,7 +692,7 @@
 			</Button>
 
 			<Button name="FIZ_SupressNoneFactionButton" inherits="SmallFontButton">
-				<Size x="165" y="20" />
+				<Size x="178" y="20" />
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="FIZ_ShowNoneButton" relativePoint="BOTTOMLEFT">
 						<Offset x="0" y="-5"/>
@@ -692,7 +700,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						PlaySound("igMainMenuOptionCheckBoxOff");
+						FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						FIZ_SupressNone(false)
 					</OnClick>
 					<OnEnter>
@@ -704,15 +712,15 @@
 				</Scripts>
 			</Button>
 			<Button name="FIZ_SupressNoneGlobalButton" inherits="SmallFontButton">
-				<Size x="165" y="20" />
+				<Size x="178" y="20" />
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="FIZ_SupressNoneFactionButton" relativePoint="BOTTOMLEFT">
-						<Offset x="0" y="0"/>
+						<Offset x="0" y="-1"/>
 								</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						PlaySound("igMainMenuOptionCheckBoxOff");
+						FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						FIZ_SupressNone(true)
 					</OnClick>
 					<OnEnter>
@@ -727,13 +735,13 @@
 			<Button name="FIZ_ClearSessionGainButton" inherits="SmallFontButton">
 				<Size x="220" y="20" />
 				<Anchors>
-					<Anchor point="TOPRIGHT" relativeTo="FIZ_SupressNoneGlobalButton" relativePoint="BOTTOMLEFT">
-						<Offset x="-5" y="0"/>
+					<Anchor point="TOPLEFT" relativeTo="FIZ_ReputationDetailDivider3" relativePoint="BOTTOMLEFT">
+						<Offset x="15" y="-58"/>
 								</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						PlaySound("igMainMenuOptionCheckBoxOff");
+						FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						FIZ_ClearSessionGain()
 					</OnClick>
 					<OnEnter>
@@ -765,10 +773,10 @@
 		<Scripts>
 			<OnClick>
 				if(FIZ_OptionsFrame:IsVisible()) then
-					PlaySound("igMainMenuOptionCheckBoxOff");
+					FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 					FIZ_OptionsFrame:Hide();
 				else
-					PlaySound("igMainMenuOptionCheckBoxOn");
+					FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 					ReputationDetailFrame:Hide();
 					FIZ_ReputationDetailFrame:Hide();
 					FIZ_OptionsFrame:Show();
@@ -798,9 +806,9 @@
 			<OnClick>
 				FIZ_Data.SortByStanding = self:GetChecked()
 				if ( FIZ_Data.SortByStanding ) then
-					PlaySound("igMainMenuOptionCheckBoxOn");
+					FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 				else
-					PlaySound("igMainMenuOptionCheckBoxOff");
+					FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 				end
 				ReputationFrame_Update()
 			</OnClick>
@@ -904,9 +912,9 @@
 					<OnClick>
 						FIZ_Data.ShowMissing = self:GetChecked()
 						if ( FIZ_Data.ShowMissing ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 						ReputationFrame_Update()
 					</OnClick>
@@ -940,9 +948,9 @@
 					<OnClick>
 						FIZ_Data.ExtendDetails = self:GetChecked()
 						if ( FIZ_Data.ExtendDetails ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 					</OnClick>
 					<OnEnter>
@@ -975,9 +983,9 @@
 					<OnClick>
 						FIZ_Data.WriteChatMessage = self:GetChecked()
 						if ( FIZ_Data.WriteChatMessage ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 					</OnClick>
 					<OnEnter>
@@ -1010,9 +1018,9 @@
 					<OnClick>
 						FIZ_Data.NoGuildGain = self:GetChecked()
 						if ( FIZ_Data.NoGuildGain ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 					</OnClick>
 					<OnEnter>
@@ -1045,9 +1053,9 @@
 					<OnClick>
 						FIZ_Data.SuppressOriginalChat = self:GetChecked()
 						if ( FIZ_Data.SuppressOriginalChat ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 					</OnClick>
 					<OnEnter>
@@ -1080,9 +1088,9 @@
 					<OnClick>
 						FIZ_Data.ShowPreviewRep = self:GetChecked()
 						if ( FIZ_Data.ShowPreviewRep ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 						ReputationFrame_Update()
 					</OnClick>
@@ -1116,9 +1124,9 @@
 					<OnClick>
 						FIZ_Data.SwitchFactionBar = self:GetChecked()
 						if ( FIZ_Data.SwitchFactionBar ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 						ReputationFrame_Update()
 					</OnClick>
@@ -1152,9 +1160,9 @@
 					<OnClick>
 						FIZ_Data.SilentSwitch = self:GetChecked()
 						if ( FIZ_Data.SilentSwitch ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 						ReputationFrame_Update()
 					</OnClick>
@@ -1188,9 +1196,9 @@
 					<OnClick>
 						FIZ_Data.NoGuildSwitch = self:GetChecked()
 						if ( FIZ_Data.NoGuildSwitch ) then
-							PlaySound("igMainMenuOptionCheckBoxOn");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOn");
 						else
-							PlaySound("igMainMenuOptionCheckBoxOff");
+							FIZ_PlaySound("igMainMenuOptionCheckBoxOff");
 						end
 						ReputationFrame_Update()
 					</OnClick>

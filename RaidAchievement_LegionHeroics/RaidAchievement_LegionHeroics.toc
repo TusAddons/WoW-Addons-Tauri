@@ -1,0 +1,13 @@
+﻿## Interface: 70300
+## Title: Raid|cff7fff7fAchievement|r - Legion Dungeons
+## Author: Artiom97es
+## Title-ruRU: Raid|cff7fff7fAchievement|r - Подземелья Legion
+## Version: 1.1-Artiom97es
+## Notes: RaidAchievement Legion Dungeons Module
+## Notes-ruRU: Модуль RaidAchievement - Подземелья Legion
+## Dependencies: RaidAchievement
+## LoadOnDemand: 1
+## SavedVariablesPerCharacter: legionhraspisokon
+RaidAchievement_LegionHeroics.lua
+RaidAchievement_LegionHeroicsbosses.lua
+RaidAchievement_LegionHeroics.xml

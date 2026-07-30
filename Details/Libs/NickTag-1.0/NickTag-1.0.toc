@@ -1,0 +1,7 @@
+## Interface: 70200
+## Title: NickTag-1.0
+## Author: Artiom97es
+## Version: 1.1-Artiom97es
+## Notes: Standalone version of the NickTag library.
+
+NickTag-1.0.xml

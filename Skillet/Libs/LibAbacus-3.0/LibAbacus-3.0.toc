@@ -1,8 +1,8 @@
 ﻿## Interface: 20400
 ## LoadOnDemand: 1
 ## Title: Lib: Abacus-3.0
+## Author: Artiom97es
 ## Notes: A library to provide tools for formatting money and time.
-## Author: ckknight
 ## X-AceLibrary-Abacus-2.0: true
 ## X-eMail: ckknight@gmail.com
 ## X-Category: Library

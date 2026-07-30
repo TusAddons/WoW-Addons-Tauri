@@ -35,6 +35,50 @@ SlashCmdList["GATHERER"] = function( msg )
 	Gatherer.Command.Process(msg)
 end
 
+SLASH_GMAP1 = "/gmap"
+SlashCmdList["GMAP"] = function( msg )
+	local Astrolabe = DongleStub("Astrolabe-1.0")
+	local areaID = GetCurrentMapAreaID()
+	local mapTex, _, _, isMicro = GetMapInfo()
+	local astroID, astroFloor, px, py = Astrolabe:GetCurrentPlayerPosition()
+	local mapToken = Gatherer.ZoneTokens.GetZoneToken(areaID)
+	local astroToken = Gatherer.ZoneTokens.GetZoneToken(astroID)
+	local subZone = GetSubZoneText() or ""
+	local curZoneToken = Gatherer.Util.GetPositionInCurrentZone()
+	
+	Gatherer.Util.ChatPrint("=== DEBUG MAPA / M === ")
+	Gatherer.Util.ChatPrint("1. Mapa Abierto (areaID): " .. tostring(areaID) .. " -> token: " .. tostring(mapToken))
+	Gatherer.Util.ChatPrint("2. Textura/Info: " .. tostring(mapTex) .. " (isMicro: " .. tostring(isMicro) .. ")")
+	Gatherer.Util.ChatPrint("3. Posición Astrolabe (astroID): " .. tostring(astroID) .. " -> token: " .. tostring(astroToken))
+	Gatherer.Util.ChatPrint("4. SubZona actual: " .. tostring(subZone) .. " | curZoneToken: " .. tostring(curZoneToken))
+	
+	Gatherer.Util.ChatPrint("5. Tablas de Draenor/Ciudadela con nodos en memoria:")
+	local db = (Gatherer.Storage and Gatherer.Storage.GetRawDataTable and Gatherer.Storage.GetRawDataTable()) or _G["GatherItems"]
+	if db then
+		local found = false
+		for k, v in pairs(db) do
+			if k ~= "dbVersion" then
+				local total = 0
+				if type(v) == "table" then
+					for gType, nodes in pairs(v) do
+						if type(nodes) == "table" then total = total + #nodes end
+					end
+				end
+				local ks = tostring(k)
+				if total > 0 and (ks:find("DRAENOR") or ks:find("GARRISON") or ks == "971" or ks == "976" or ks == "947") then
+					found = true
+					Gatherer.Util.ChatPrint(" -> TABLA [" .. ks .. "] tiene " .. total .. " nodos.")
+				end
+			end
+		end
+		if not found then
+			Gatherer.Util.ChatPrint(" -> NINGUNA de Draenor/Ciudadela tiene nodos.")
+		end
+	else
+		Gatherer.Util.ChatPrint(" -> db (GatherItems y data) es nil!")
+	end
+end
+
 local function PrintUsageLine( cmd, curSetting, description )
 	if ( curSetting ) then
 		Gatherer.Util.ChatPrint(format("  |cffffffff/gatherer %s|r |cff2040ff[%s]|r - %s", cmd, curSetting, description))

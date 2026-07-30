@@ -1,4 +1,4 @@
-dofile("wow_api.lua")
+﻿dofile("wow_api.lua")
 dofile("LibStub.lua")
 dofile("../CallbackHandler-1.0/CallbackHandler-1.0.lua")
 dofile("../AceDB-3.0/AceDB-3.0.lua")
@@ -151,8 +151,8 @@ do
 
 	local db = LibStub("AceDB-3.0"):New({}, defaults)
 	
-	table.insert(db.profile.monkey, "alpha")
-	table.insert(db.profile.random, "beta")
+	db.profile.monkey[#db.profile.monkey+1] = "alpha"
+	db.profile.random[#db.profile.random+1] = "beta"
 
 	-- Here, the tables db.profile.monkey should be REAL, not cached
 	assert(rawget(db.profile, "monkey"))
@@ -180,8 +180,8 @@ do
 
 	assert(rawget(db.profile.autoSendRules.Cairthas.include, "ptSets") == nil)
 	assert(rawget(db.profile.autoSendRules.Cairthas.include, "items") == nil)
-	table.insert(db.profile.autoSendRules.Cairthas.include.ptSets, "TradeSkill.Mat.ByProfession.Leatherworking")
-	table.insert(db.profile.autoSendRules.Cairthas.include.items, "Light Leather")
+	db.profile.autoSendRules.Cairthas.include.ptSets[#db.profile.autoSendRules.Cairthas.include.ptSets+1] = "TradeSkill.Mat.ByProfession.Leatherworking"
+	db.profile.autoSendRules.Cairthas.include.items[#db.profile.autoSendRules.Cairthas.include.items+1] = "Light Leather"
 
 	db.profile.autoSendRules.Cairthas.include.ptSets.boo = true
 

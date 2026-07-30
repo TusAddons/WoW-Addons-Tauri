@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 
@@ -82,7 +82,7 @@ local function BuildView()
 	end
 	
 	for i = 1, num do
-		table.insert(view, i)
+		view[#view+1] = i
 	end
 	
 	table.sort(view, PrimaryLevelSort[viewSortField])

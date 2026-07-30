@@ -1,0 +1,8 @@
+## Interface: 40200
+## Title: oUF Combat Fader
+## Author: Artiom97es
+## Notes: Adds combat fade ability to oUF
+## Version: 1.0.1-Artiom97es
+## Dependencies: oUF
+
+oUF_CombatFader.lua

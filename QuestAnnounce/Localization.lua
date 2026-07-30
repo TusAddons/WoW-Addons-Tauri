@@ -74,12 +74,12 @@ end
 
 local L = AL3:NewLocale("QuestAnnounce", "esES") or AL3:NewLocale("QuestAnnounce", "esMX")
 if L then
--- L["Announce Every"] = "Announce Every"
+L["Announce Every"] = "Anunciar cada"
 -- L["Announce progression every x number of steps (0 will announce on quest objective completion only)"] = "Announce progression every x number of steps (0 will announce on quest objective completion only)"
 -- L["Are you sure you want to announce to this channel?"] = "Are you sure you want to announce to this channel?"
 -- L["Chat Frame"] = "Chat Frame"
-L["Completed: "] = "terminado" -- Needs review
-L["Debug"] = "depurar" -- Needs review
+L["Completed: "] = "terminado " -- Needs review
+L["Debug"] = "depurar " -- Needs review
 -- L["Enable"] = "Enable"
 L["Enable/Disable QuestAnnounce"] = "Activar / Desactivar" -- Needs review
 L["Enable/Disable QuestAnnounce Debug Mode"] = "Activar / Desactivar la depuración QuestAnnounce" -- Needs review
@@ -88,7 +88,7 @@ L["Enable/Disable QuestAnnounce Debug Mode"] = "Activar / Desactivar la depuraci
 -- L["Instance"] = "Instance"
 -- L["Officer"] = "Officer"
 -- L["Party"] = "Party"
-L["Progress: "] = "progreso" -- Needs review
+L["Progress: "] = "progreso " -- Needs review
 -- L["QuestAnnounce Test Message"] = "QuestAnnounce Test Message"
 -- L["Raid Warning Frame"] = "Raid Warning Frame"
 -- L["Say"] = "Say"

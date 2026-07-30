@@ -3,10 +3,10 @@
 zhCN.lua
 zhCN localization strings for Ackis Recipe List
 ************************************************************************
-File date: 2012-08-18T4:52:05Z 
+File date: 2012-08-18T9:52:05Z 
 File revision: 4d6b8e446c1381fe41575a671a6c54702932e4db 
-Project revision: 91a3a6169d0f9c5d597f01630a67df42a2703590
-Project version: 7.3.0.2-15-g91a3a616
+Project revision: e062c22807cdc0ea8ab367d74537384aaee9cb59
+Project version: 7.3.0.1
 ************************************************************************
 Original translated by: iCat, Kurax, 冰焱妩魅 @ CWDG, ananhaid
 Currently maintained by:
@@ -1589,4 +1589,8 @@ L["Zorbin Fandazzle"] = "索尔宾·范达瑟"
 L["Zula Slagfury"] = "祖拉·熔怒"
 L["Zurai"] = "祖莱"
 L["Zurii"] = "苏蕾"
+
+-- ToC
+L["Description"] = "扫描并告知如何获取缺失配方的详细商业技能信息插件。"
+L["Title"] = "Ackis Recipe List"
 

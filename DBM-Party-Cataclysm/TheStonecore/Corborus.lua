@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(110, "DBM-Party-Cataclysm", 7, 67)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 16 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 180 $"):sub(12, -3))
 mod:SetCreatureID(43438)
 mod:SetEncounterID(1056)
 mod:SetZone()
@@ -19,8 +19,8 @@ local warnDampening					= mod:NewSpellAnnounce(82415, 2)
 local warnSubmerge					= mod:NewAnnounce("WarnSubmerge", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local warnEmerge					= mod:NewAnnounce("WarnEmerge", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 
-local specWarnCrystalBarrage		= mod:NewSpecialWarningYou(81634, nil, nil, nil, 1, 2)
-local specWarnCrystalBarrageClose	= mod:NewSpecialWarningClose(81634, nil, nil, nil, 1, 2)
+local specWarnCrystalBarrage		= mod:NewSpecialWarningYou(81634)
+local specWarnCrystalBarrageClose	= mod:NewSpecialWarningClose(81634)
 
 local timerDampening				= mod:NewCDTimer(10, 82415)
 local timerSubmerge					= mod:NewTimer(80, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp", nil, nil, 6)
@@ -28,6 +28,7 @@ local timerEmerge					= mod:NewTimer(30, "TimerEmerge", "Interface\\AddOns\\DBM-
 
 local crystalTargets = {}
 
+mod:AddBoolOption("CrystalArrow")
 mod:AddBoolOption("RangeFrame")
 
 function mod:OnCombatStart(delay)
@@ -49,14 +50,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCrystalBarrage:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
 			specWarnCrystalBarrage:Show()
-			specWarnCrystalBarrage:Play("targetyou")
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if uId then--May also not work right if same spellid is applied to people near the target, then will need more work.
 				local inRange = DBM.RangeCheck:GetDistance("player", uId)
 				if inRange and inRange < 6 then
 					specWarnCrystalBarrageClose:CombinedShow(0.3, args.destName)
-					specWarnCrystalBarrageClose:ScheduleVoice(0.3, "runaway")
+					if self.Options.CrystalArrow then
+						local x, y = UnitPosition(uId)
+						DBM.Arrow:ShowRunAway(x, y, 8, 5)
+					end
 				end
 			end
 		end
@@ -73,7 +76,7 @@ end
 --"<6.5> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Corborus#0xF130A9AE00013D1D#elite#2904790#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [40]
 --"<36.5> [UNIT_SPELLCAST_SUCCEEDED] Corborus:Possible Target<Omegal>:boss1:ClearAllDebuffs::0:34098", -- [1228]
 --"<65.6> [UNIT_SPELLCAST_SUCCEEDED] Corborus:Possible Target<nil>:boss1:Emerge::0:81948", -- [1830]
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 34098 then--ClearAllDebuffs, He casts this before borrowing.
 		warnSubmerge:Show()
 		timerEmerge:Start()

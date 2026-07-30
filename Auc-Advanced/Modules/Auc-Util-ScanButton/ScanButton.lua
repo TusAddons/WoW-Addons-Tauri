@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Auctioneer - Scan Button module
 	Version: 7.6.5736 (TasmanianThylacine)
 	Revision: $Id: ScanButton.lua 5631 2016-07-31 14:14:30Z brykrys $
@@ -412,7 +412,7 @@ function private.checkedFrames()
 	queue = {}
 	for i,v in pairs(private.Filters) do
 		if v[1] == 1 then
-			table.insert(queue, v[2])
+			queue[#queue+1] = v[2]
 		end
 	end
 

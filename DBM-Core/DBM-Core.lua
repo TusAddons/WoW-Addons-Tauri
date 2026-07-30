@@ -41,8 +41,8 @@
 --  Globals/Default Options  --
 -------------------------------
 DBM = {
-	Revision = tonumber(("$Revision: 17622 $"):sub(12, -3)),
-	DisplayVersion = "7.3.32 alpha", -- the string that is shown as version
+	Revision = tonumber(("$Revision: 17598 $"):sub(12, -3)),
+	DisplayVersion = "7.3.31", -- the string that is shown as version
 	ReleaseRevision = 17598 -- the revision of the latest stable version that is available
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -420,7 +420,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Suramar",--Renamed to DBM-Nighthold
 	"DBM-KulTiras",--Merged to DBM-Azeroth-BfA
 	"DBM-Zandalar",--Merged to DBM-Azeroth-BfA
-	"DBM-PvP",--Discontinued do to inability to maintain such large scale external projects with limitted time/resources
+--	"DBM-PvP",--Discontinued do to inability to maintain such large scale external projects with limitted time/resources
 }
 
 
@@ -1203,7 +1203,6 @@ do
 								hasMythic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Mythic") or 0) == 1,
 								hasTimeWalker	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-TimeWalker") or 0) == 1,
 								isWorldBoss		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-World-Boss") or 0) == 1,
-								isExpedition	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Expedition") or 0) == 1,
 								minRevision		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinCoreRevision") or 0),
 								minExpansion	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinExpansion") or 0),
 								modId			= addonName,
@@ -6224,7 +6223,6 @@ function DBM:SetCurrentSpecInfo()
 	currentSpecID = tonumber(currentSpecID)
 end
 
---TODO C_IslandsQueue.GetIslandDifficultyInfo(), if 38-40 don't work
 function DBM:GetCurrentInstanceDifficulty()
 	local _, instanceType, difficulty, difficultyName, _, _, _, _, instanceGroupSize = GetInstanceInfo()
 	local keystoneLevel = C_ChallengeMode.GetActiveKeystoneInfo() or 0
@@ -6252,11 +6250,11 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "heroic5", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 12 then
 		return "normal5", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
-	elseif difficulty == 14 or difficulty == 38 then
+	elseif difficulty == 14 then
 		return "normal", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
-	elseif difficulty == 15 or difficulty == 39 then
+	elseif difficulty == 15 then
 		return "heroic", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
-	elseif difficulty == 16 or difficulty == 40 then
+	elseif difficulty == 16 then
 		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
 	elseif difficulty == 17 then--Variable LFR (ie post WoD zones)
 		return "lfr", difficultyName.." - ", difficulty, instanceGroupSize, keystoneLevel
@@ -6333,12 +6331,12 @@ function DBM:GetSpellInfo(spellId)
 	end
 end
 
-function DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4)
+function DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3)
 	if wowTOC == 80000 then
 		for i = 1, 60 do
 			local spellName, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3 = UnitDebuff(uId, i)
 			if not spellName then return end
-			if spellInput == spellName or spellInput == spellId or spellInput2 == spellName or spellInput2 == spellId or spellInput3 == spellName or spellInput3 == spellId or spellInput4 == spellName or spellInput4 == spellId then
+			if spellInput == spellName or spellInput == spellId or spellInput2 == spellName or spellInput2 == spellId or spellInput3 == spellName or spellInput3 == spellId then
 				return spellName, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3
 			end
 		end
@@ -6347,7 +6345,7 @@ function DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4)
 			for i = 1, 60 do
 				local spellName, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3 = UnitDebuff(uId, i)
 				if not spellName then return end
-				if spellInput == spellName or spellInput == spellId or spellInput2 == spellName or spellInput2 == spellId or spellInput3 == spellName or spellInput3 == spellId or spellInput4 == spellName or spellInput4 == spellId then
+				if spellInput == spellName or spellInput == spellId or spellInput2 == spellName or spellInput2 == spellId or spellInput3 == spellName or spellInput3 == spellId then
 					return spellName, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3
 				end
 			end
@@ -6357,12 +6355,12 @@ function DBM:UnitDebuff(uId, spellInput, spellInput2, spellInput3, spellInput4)
 	end
 end
 
-function DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4)
+function DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3)
 	if wowTOC == 80000 then
 		for i = 1, 60 do
 			local spellName, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3 = UnitBuff(uId, i)
 			if not spellName then return end
-			if spellInput == spellName or spellInput == spellId or spellInput2 == spellName or spellInput2 == spellId or spellInput3 == spellName or spellInput3 == spellId or spellInput4 == spellName or spellInput4 == spellId then
+			if spellInput == spellName or spellInput == spellId or spellInput2 == spellName or spellInput2 == spellId or spellInput3 == spellName or spellInput3 == spellId then
 				return spellName, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3
 			end
 		end
@@ -6371,7 +6369,7 @@ function DBM:UnitBuff(uId, spellInput, spellInput2, spellInput3, spellInput4)
 			for i = 1, 60 do
 				local spellName, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3 = UnitBuff(uId, i)
 				if not spellName then return end
-				if spellInput == spellName or spellInput == spellId or spellInput2 == spellName or spellInput2 == spellId or spellInput3 == spellName or spellInput3 == spellId or spellInput4 == spellName or spellInput4 == spellId then
+				if spellInput == spellName or spellInput == spellId or spellInput2 == spellName or spellInput2 == spellId or spellInput3 == spellName or spellInput3 == spellId then
 					return spellName, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3
 				end
 			end
@@ -6625,7 +6623,7 @@ do
 			SetMapToCurrentZone()
 			currentMapId = C_Map and C_Map.GetCurrentMapID("player") or GetCurrentMapAreaID()
 		end
-		local currentMapName = C_Map and C_Map.GetMapInfo(currentMapId) or GetMapNameByID and GetMapNameByID(currentMapId) or DBM_CORE_UNKNOWN
+		local currentMapName = C_Map and C_Map.GetMapInfo(currentMapId) or GetMapNameByID(currentMapId)
 		if IsInRaid() then
 			for i = 1, GetNumGroupMembers() do
 				if isInInstance and select(4, UnitPosition("raid"..i)) == currentMapId or select(7, GetRaidRosterInfo(i)) == currentMapName then
@@ -7320,14 +7318,6 @@ function bossModPrototype:IsTrivial(level)
 	if difficultyIndex == 24 then return false end--Timewalker dungeon, ignore level and return false for trivial
 	if playerLevel >= level then
 		return true
-	end
-	return false
-end
-
-function bossModPrototype:IsValidWarning(sourceGUID)
-	for uId in DBM:GetGroupMembers() do
-		local target = uId.."target"
-		if UnitExists(target) and UnitGUID(target) == sourceGUID and UnitAffectingCombat(target) then return true end
 	end
 	return false
 end

@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Configator - A library to help you create a gui config
 	Version: 7.3.1 (<%codename%>)
 	Revision: $Id: Configator.lua 406 2016-07-31 13:26:09Z brykrys $
@@ -152,7 +152,7 @@ function lib:Create(setter, getter, dialogWidth, dialogHeight, gapWidth, gapHeig
 	if not gapHeight then gapHeight = 0 end
 
 	local gui = CreateFrame("Frame", name, UIParent)
-	table.insert(lib.frames, gui)
+	lib.frames[#lib.frames+1] = gui
 	gui.setter = setter
 	gui.getter = getter
 	gui.dialogWidth  = dialogWidth
@@ -192,7 +192,7 @@ function lib:Create(setter, getter, dialogWidth, dialogHeight, gapWidth, gapHeig
 	-- Create a proxy to see if we should react to global CloseWindow() calls
 	gui.Proxy = CreateFrame("Frame", name.."Proxy", gui)
 	gui.Proxy.gui = gui
-	table.insert(UISpecialFrames, name.."Proxy") -- make frames Esc Sensitive by default
+	UISpecialFrames[#UISpecialFrames+1] = name.."Proxy" -- make frames Esc Sensitive by default
 	gui.Proxy.Hide = proxyHide
 	gui.Proxy.IsShown = proxyIsShown
 
@@ -385,7 +385,7 @@ if not lib.help then
 		font:SetText(text)
 		font.pad = pad
 
-		table.insert(lib.help.rows, font)
+		lib.help.rows[#lib.help.rows+1] = font
 
 		font:SetPoint("TOPLEFT", lib.help.content, "TOPLEFT", 5, -5)
 		font:SetPoint("TOPRIGHT", lib.help.content, "TOPRIGHT", -5, -5)
@@ -403,7 +403,7 @@ if not lib.help then
 		for i=#lib.help.rows, 1, -1 do
 			lib.help.rows[i]:Hide()
 			lib.help.rows[i]:ClearAllPoints()
-			table.insert(lib.help.fontcache, lib.help.rows[i])
+			lib.help.fontcache[#lib.help.fontcache+1] = lib.help.rows[i]
 			table.remove(lib.help.rows, i)
 		end
 		lib.help.refresh = true
@@ -623,7 +623,7 @@ function kit:RegenTabs()
 			if self.config.cats[catId].isOpen then
 				local list = {}
 				for tabName in pairs(self.config.tabs[catId]) do
-					table.insert(list, tabName)
+					list[#list+1] = tabName
 				end
 				local sortFunction = nil
 				if not ( self.config.cats[catId].isSorted ) then
@@ -830,8 +830,8 @@ function kit:AddTab(tabName, catId, gapWidth, gapHeight, topOffset, leftOffset)
 		scroll = nil,
 		expanded = nil,
 	}
-	table.insert(self.tabs, tab)
-	id = table.getn(self.tabs)
+	self.tabs[#self.tabs+1] = tab
+	id = #(self.tabs)
 
 	self.config.tabs[catId][tabName] = id
 	tab.id = id
@@ -898,7 +898,7 @@ function kit:AddCat(catId, catName, sortedTabs, isOpen)
 
 	self.config.isZero = false
 
-	table.insert(self.config.order, catId)
+	self.config.order[#self.config.order+1] = catId
 	self.config.tabs[catId] = { }
 	self.config.cats[catId] = {
 		name = catName,
@@ -1157,7 +1157,7 @@ function kit:AddHelp(id, qid, question, answer)
 				return
 			end
 		end
-		table.insert(content.HelpButton.qlist, qid)
+		content.HelpButton.qlist[#content.HelpButton.qlist+1] = qid
 	end
 end
 
@@ -1871,7 +1871,7 @@ function kit:ColumnCheckboxes(id, cols, options)
 	assert(isGuiObject(self), "Must be called on a valid object")
 	local last, cont, el, setting, text
 	last = self:GetLast(id)
-	local optc = table.getn(options)
+	local optc = #(options)
 	local rows = math.ceil(optc / cols)
 	local row, col = 0, 0
 	cont = nil
@@ -1901,7 +1901,7 @@ function kit:SetEscSensitive(setting)
 		end
 	end
 	if (setting) then
-		table.insert(UISpecialFrames, name)
+		UISpecialFrames[#UISpecialFrames+1] = name
 	end
 end
 

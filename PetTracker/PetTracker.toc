@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: PetTracker
+## Author: Artiom97es
 ## Notes: Tracking pets in and out of combat since 2012.
-## Author: Jaliborc (João Cardoso)
-## Version: 7.3.0
+## Version: 7.3.1-Artiom97es
 
 ## SavedVariables: PetTracker_Sets
 ## SavedVariablesPerCharacter: PetTracker_State

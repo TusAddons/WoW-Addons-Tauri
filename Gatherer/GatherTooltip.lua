@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Gatherer Addon for World of Warcraft(tm).
 	Version: 7.3.1 (<%codename%>)
 	Revision: $Id: GatherTooltip.lua 1129 2014-11-13 21:02:28Z esamynn $
@@ -82,7 +82,7 @@ function Gatherer.GameTooltip_OnShow()
 			local right = _G["GameTooltipTextRight"..n]
 			if not left or not left:IsShown() then return end
 			if right and right:IsShown() then return end
-			table.insert(line, left)
+			line[#line+1] = left
 		end
 		
 		local profession, locked_format_string;

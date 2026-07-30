@@ -1,10 +1,10 @@
 ## Interface: 70300
 ## Title: PetTracker Breeds
+## Author: Artiom97es
 ## Notes: Displays the breed of pets in the Pet Journal, while in battle and on tooltips.
-## Author: Jaliborc (João Cardoso)
 
 ## Dependencies: PetTracker
 ## X-Category: Battle Pets
-## Version: 7.3.0
+## Version: 7.3.1-Artiom97es
 
 Breeds.lua

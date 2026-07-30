@@ -98,7 +98,8 @@
 				</Texture>
 			</Layer>
 		</Layers>
-		<BarTexture level="ARTWORK" name="$parentBar" urgency="5" file="Interface\Archeology\Arch-Progress-Fill"/>		
+		<BarTexture name="$parentBar" file="Interface\TargetingFrame\UI-StatusBar"/>
+		<BarColor r="0.8" g="0.5" b="0.1" />
 		<Frames>
 			<!-- Keystone Button -->
 			<Button name="$parentKeystone" inherits="MATKeystone" parentKey="keystone">
@@ -108,7 +109,7 @@
 			</Button>
 			<!-- Solve Button -->
 			<Button name="$parentButtonSolve" inherits="MATBSolve" parentKey="buttonSolve">
-				<Size x="50" y="18"/>
+				<Size x="80" y="18"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parent" x="5" y="3"/>
 				</Anchors>	

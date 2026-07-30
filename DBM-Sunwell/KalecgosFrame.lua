@@ -1,4 +1,4 @@
-local Kal 	= DBM:GetModByName("Kal")
+﻿local Kal 	= DBM:GetModByName("Kal")
 local L		= Kal:GetLocalizedStrings()
 
 function Kal:InitializeMenu()
@@ -150,7 +150,7 @@ function Kal:CreateFrame()
 	if firstEntry then
 		local entry = firstEntry
 		while entry do
-			table.insert(frames, entry.data.frame)
+			frames[#frames+1] = entry.data.frame
 			entry.data.frame:Hide()
 			entry.data = nil
 			entry = entry:GetNext()
@@ -239,7 +239,7 @@ function Kal:RemoveEntry(name)
 		local entry = firstEntry
 		while entry do
 			if entry.data.name == name then
-				table.insert(frames, entry.data.frame)
+				frames[#frames+1] = entry.data.frame
 				entry.data.frame:Hide()
 				entry.data = nil
 				if entry == firstEntry then

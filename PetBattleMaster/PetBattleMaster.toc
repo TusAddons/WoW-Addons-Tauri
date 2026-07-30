@@ -1,9 +1,9 @@
 ## Interface: 70300
 ## Title: PetBattleMaster
+## Author: Artiom97es
 ## Notes: Pet Battles support tool.
-## Author: Udorn
 ## SavedVariables: PetBattleMasterDb
-## Version: 7.0.4
+## Version: 7.0.5-Artiom97es
 ## X-Feedback: http://www.curse.com/addons/wow/petbattlemaster
 ## OptionalDeps: Ace3, LibDataBroker-1.1, LibDBIcon-1.0, LibPetJournal-2.0, PetTracker
 ## X-Embeds: Ace3, LibDataBroker-1.1, LibDBIcon-1.0, LibPetJournal-2.0

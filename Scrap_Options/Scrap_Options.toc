@@ -1,11 +1,11 @@
 ## Interface: 70300
 ## Title: Scrap Options
+## Author: Artiom97es
 ## Notes: Load on demand options and tutorials.
 
-## Author: Jaliborc (João Cardoso)
 ## X-License: GNU General Public License Version 3
 ## X-Category: Inventory
-## Version: 13.6
+## Version: 13.7-Artiom97es
 
 ## OptionalDeps: Poncho-1.0, Sushi-3.0, CustomTutorials-2.1
 ## Dependencies: Scrap

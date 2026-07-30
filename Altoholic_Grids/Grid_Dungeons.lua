@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 local icons = addon.Icons
@@ -269,7 +269,7 @@ local function BuildView()
 	local currentRaids = addon:GetOption(OPTION_RAIDS)
 
 	for index, raidList in ipairs(Dungeons[currentXPack][currentRaids]) do
-		table.insert(view, raidList)	-- insert the table pointer
+		view[#view+1] = raidList	-- insert the table pointer
 	end
 	
 	isViewValid = true

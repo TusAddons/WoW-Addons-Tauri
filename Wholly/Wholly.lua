@@ -2423,37 +2423,15 @@ if nil == Wholly or Wholly.versionNumber < Wholly_File_Version then
 
 			local f = CreateFrame("Button", nil, WorldMapFrame.BorderFrame, "UIPanelButtonTemplate")
 			f:SetSize(100, 25)
-			if nil == Gatherer_WorldMapDisplay then
-				if not Grail.existsWoD then
-					f:SetPoint("TOPLEFT", WorldMapPositioningGuide, "TOPLEFT", 4, -4)
-				else
-					f:SetPoint("TOPLEFT", WorldMapFrameTutorialButton, "TOPRIGHT", 0, -30)
-				end
-			else
-				f:SetPoint("TOPLEFT", Gatherer_WorldMapDisplay, "TOPRIGHT", 4, 0)
-			end
+			f:ClearAllPoints()
+			f:SetPoint("TOPRIGHT", WorldMapFrame.BorderFrame, "TOPRIGHT", -140, -4)
 			f:SetToplevel(true)
 			f:SetScale(0.7)
 			f:SetText("Wholly")
 			f:SetScript("OnShow", function(self)
-									if nil == Gatherer_WorldMapDisplay then
-										if not Grail.existsWoD then
-											if not(GetCVarBool("miniWorldMap")) then
-												f:SetPoint("TOPLEFT", WorldMapPositioningGuide, "TOPLEFT", 4, -4)
-											else
-												self:SetPoint("TOPLEFT", WorldMapTitleButton, "TOPLEFT", 8, -3)
-											end
-										else
-											if TomTomWorldFrame and TomTomWorldFrame.Player then
-												f:SetPoint("TOPLEFT", TomTomWorldFrame.Player, "TOPRIGHT", 10, 6)
-											else
-												f:SetPoint("TOPLEFT", WorldMapFrameTutorialButton, "TOPRIGHT", 0, -30)
-											end
-										end
-									else
-										self:SetPoint("TOPLEFT", Gatherer_WorldMapDisplay, "TOPRIGHT", 4, 0)
-									end
-								end)
+				self:ClearAllPoints()
+				self:SetPoint("TOPRIGHT", WorldMapFrame.BorderFrame, "TOPRIGHT", -140, -4)
+			end)
 			f:SetScript("OnEnter", function(self) local t = Wholly.tooltip t:ClearLines() t:SetOwner(self) t:AddLine(Wholly.mapCountLine) t:Show() t:ClearAllPoints() t:SetPoint("TOPLEFT", self, "BOTTOMRIGHT") end)
 			f:SetScript("OnLeave", function(self) Wholly.tooltip:Hide() end)
 			f:SetScript("OnClick", function(self) Wholly.pairedConfigurationButton:Click() end)

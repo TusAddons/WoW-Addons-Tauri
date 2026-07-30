@@ -1,0 +1,8 @@
+## Interface: 30300
+## Title: oUF RaidDebuffs
+## Author: Artiom97es
+## Notes: Raid debuff mod for oUF
+## Version: 1.3-Artiom97es
+## OptionalDeps: oUF
+
+oUF_RaidDebuffs.lua

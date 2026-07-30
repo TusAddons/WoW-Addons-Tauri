@@ -1,8 +1,8 @@
-## Interface: 70200
+## Interface: 70300
 ## Title: Ackis Recipe List: Mining
+## Author: Artiom97es
 ## Notes: Mining data for Ackis Recipe List.
-## Author: Ackis, Pompy, Ressy, Torhal
-## Version: 7.2.0.1-1-g8d211fa
+## Version: 7.2.0.1-1-g8d211fa_v2-Artiom97es
 ## X-Revision: 8d211fa
 ## X-Date: 2017-03-28T18:31:43Z
 ## Dependencies: AckisRecipeList

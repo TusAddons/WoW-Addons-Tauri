@@ -27,13 +27,15 @@ function f:GUILDBANKFRAME_OPENED(event, Addon, ...)
 		end)
 	end
 	firstFrameScan = false
-	if f.menuButtons then
+	if f.menuButtons and f.menuButtons["ScanBank"] then -- Comprobación añadida
 		f.menuButtons["ScanBank"]:Enable()
 	end
 end
 
 function f:GUILDBANKFRAME_CLOSED(event, Addon, ...)
-    f.menuButtons["ScanBank"]:Disable()	
+    if f.menuButtons and f.menuButtons["ScanBank"] then
+        f.menuButtons["ScanBank"]:Disable()	
+    end
 end
 
 function f:Scan(auto, prevAuto)

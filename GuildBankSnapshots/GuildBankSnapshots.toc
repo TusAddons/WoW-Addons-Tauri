@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: Guild Bank Snapshots
+## Author: Artiom97es
 ## Notes: Creates snapshots of guild bank logs.
-## Author: Niketa
-## Version: 1.1
+## Version: 1.2-Artiom97es
 ## SavedVariables: GuildBankSnapshotsDB
 
 Core.lua

@@ -1,4 +1,4 @@
------------------------------------------------------------------------
+﻿-----------------------------------------------------------------------
 -- Upvalued Lua API.
 -----------------------------------------------------------------------
 -- Functions
@@ -73,7 +73,7 @@ local function NewInstance(width, height, useFauxScroll)
 	_G.ButtonFrameTemplate_HideAttic(copyFrame)
 	_G.ButtonFrameTemplate_HideButtonBar(copyFrame)
 
-	table.insert(_G.UISpecialFrames, frameName)
+	_G.UISpecialFrames[#_G.UISpecialFrames+1] = frameName
 	_G.HideUIPanel(copyFrame)
 
 	copyFrame.title = copyFrame.TitleText

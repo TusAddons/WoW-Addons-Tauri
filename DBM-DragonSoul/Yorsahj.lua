@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod(325, "DBM-DragonSoul", nil, 187)
+﻿local mod	= DBM:NewMod(325, "DBM-DragonSoul", nil, 187)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 188 $"):sub(12, -3))
@@ -140,35 +140,35 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif spellId == 104901 and args:GetDestCreatureID() == 55312 then--Yellow
-		table.insert(oozesHitTable, L.Yellow)
+		oozesHitTable[#oozesHitTable+1] = L.Yellow
 		if #oozesHitTable == expectedOozes then--All of em absorbed
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 		yellowActive = true
 	elseif spellId == 104896 and args:GetDestCreatureID() == 55312 then--Purple
-		table.insert(oozesHitTable, L.Purple)
+		oozesHitTable[#oozesHitTable+1] = L.Purple
 		if #oozesHitTable == expectedOozes then
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 		specWarnPurple:Show()--We warn here to make sure everyone is topped off and things like healing rain are not on ground.
 	elseif spellId == 105027 and args:GetDestCreatureID() == 55312 then--Blue
-		table.insert(oozesHitTable, L.Blue)
+		oozesHitTable[#oozesHitTable+1] = L.Blue
 		if #oozesHitTable == expectedOozes then
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 	elseif spellId == 104897 and args:GetDestCreatureID() == 55312 then--Red
-		table.insert(oozesHitTable, L.Red)
+		oozesHitTable[#oozesHitTable+1] = L.Red
 		if #oozesHitTable == expectedOozes then
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 	elseif spellId == 104894 and args:GetDestCreatureID() == 55312 then--Black
-		table.insert(oozesHitTable, L.Black)
+		oozesHitTable[#oozesHitTable+1] = L.Black
 		if #oozesHitTable == expectedOozes then
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 	elseif spellId == 104898 then--Green
 		if args:GetSrcCreatureID() == 55312 then--Only trigger the actual acid spits off the boss getting buff, not the oozes spawning.
-			table.insert(oozesHitTable, L.Green)
+			oozesHitTable[#oozesHitTable+1] = L.Green
 			if #oozesHitTable == expectedOozes then
 				warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 			end

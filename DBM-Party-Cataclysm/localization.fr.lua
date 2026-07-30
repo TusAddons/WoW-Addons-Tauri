@@ -1,4 +1,4 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
@@ -97,6 +97,10 @@ L:SetTimerLocalization({
 -- General Umbriss --
 ---------------------
 L= DBM:GetModLocalization(131)
+
+L:SetOptionLocalization{
+	PingBlitz	= "Ping sur la minimap lorsque le Général Umbriss est sur le point de vous faire une Attaque éclair"
+}
 
 --------------------------
 -- Forgemaster Throngus --
@@ -340,7 +344,8 @@ L= DBM:GetModLocalization(186)
 
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame	= "Show range frame (10 yards)"
+	RangeFrame	= "Show range frame (10 yards)",
+	StormArrow	= "Show DBM Arrow for $spell:43648"
 }
 
 ---------------
@@ -439,7 +444,8 @@ L:SetOptionLocalization{
 L= DBM:GetModLocalization(175)
 
 L:SetOptionLocalization{
-	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477)
+	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
+	LinkArrow		= "Show DBM arrow when you are affected by $spell:96477"
 }
 
 ------------------------

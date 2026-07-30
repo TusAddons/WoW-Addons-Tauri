@@ -1,7 +1,7 @@
-local mod	= DBM:NewMod(2031, "DBM-AntorusBurningThrone", nil, 946)
+﻿local mod	= DBM:NewMod(2031, "DBM-AntorusBurningThrone", nil, 946)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17603 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 17578 $"):sub(12, -3))
 mod:SetCreatureID(124828)
 mod:SetEncounterID(2092)
 mod:SetZone()
@@ -497,7 +497,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			--tankStacks[args.destName] = amount
 			if not tContains(tankStacks, args.destName) then
-				table.insert(tankStacks, args.destName)
+				tankStacks[#tankStacks+1] = args.destName
 			end
 			local swapAmount = (self:IsLFR() or not self.vb.firstscytheSwap) and 3 or 2
 			if amount >= swapAmount then
@@ -527,7 +527,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			--tankStacks[args.destName] = amount
 			if not tContains(tankStacks, args.destName) then
-				table.insert(tankStacks, args.destName)
+				tankStacks[#tankStacks+1] = args.destName
 			end
 			if amount >= 2 then
 				if args:IsPlayer() then
@@ -544,7 +544,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			--tankStacks[args.destName] = amount
 			if not tContains(tankStacks, args.destName) then
-				table.insert(tankStacks, args.destName)
+				tankStacks[#tankStacks+1] = args.destName
 			end
 			if amount >= 2 then
 				if args:IsPlayer() then
@@ -888,8 +888,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
-	local spellId = legacySpellId or bfaSpellId
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 	if spellId == 257300 and self:AntiSpam(5, 1) then--Ember of Rage
 		specWarnEmberofRage:Show()
 		specWarnEmberofRage:Play("watchstep")

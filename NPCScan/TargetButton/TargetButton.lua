@@ -1,4 +1,4 @@
--- ----------------------------------------------------------------------------
+﻿-- ----------------------------------------------------------------------------
 -- Localized Lua globals.
 -- ----------------------------------------------------------------------------
 -- Functions
@@ -309,7 +309,7 @@ function TargetButton:Deactivate()
 	self.killedTextureFrame.right:Hide()
 	self:Hide()
 
-	table.insert(RaidIconIDs, self.raidIconID)
+	RaidIconIDs[#RaidIconIDs+1] = self.raidIconID
 	self.raidIconID = nil
 
 	self.Classification:SetText("")

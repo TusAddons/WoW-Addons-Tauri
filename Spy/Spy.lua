@@ -702,19 +702,7 @@ Spy.options = {
 						Spy.db.profile.DisplayOnMap = value
 					end,
 				},
-				SwitchToZone = {
-					name = L["SwitchToZone"],
-					desc = L["SwitchToZoneDescription"],
-					type = "toggle",
-					order = 5,
-					width = "full",
-					get = function(info)
-						return Spy.db.profile.SwitchToZone
-					end,
-					set = function(info, value)
-						Spy.db.profile.SwitchToZone = value
-					end,
-				},				
+
 				MapDisplayLimit = {
 					name = L["MapDisplayLimit"],
 					type = "group",
@@ -1108,7 +1096,7 @@ local Default_Profile = {
 		MinimapTracking=true,
 		MinimapDetails=true,
 		DisplayOnMap=true,
-		SwitchToZone=true,
+
 		MapDisplayLimit="None",
 		DisplayWinLossStatistics=true,
 		DisplayKOSReason=true,
@@ -1251,7 +1239,7 @@ function Spy:CheckDatabase()
 	if Spy.db.profile.MinimapTracking == nil then Spy.db.profile.MinimapTracking = Default_Profile.profile.MinimapTracking end
 	if Spy.db.profile.MinimapDetails == nil then Spy.db.profile.MinimapDetails = Default_Profile.profile.MinimapDetails end
 	if Spy.db.profile.DisplayOnMap == nil then Spy.db.profile.DisplayOnMap = Default_Profile.profile.DisplayOnMap end
-	if Spy.db.profile.SwitchToZone == nil then Spy.db.profile.SwitchToZone = Default_Profile.profile.SwitchToZone end	
+
 	if Spy.db.profile.MapDisplayLimit == nil then Spy.db.profile.MapDisplayLimit = Default_Profile.profile.MapDisplayLimit end
 	if Spy.db.profile.DisplayWinLossStatistics == nil then Spy.db.profile.DisplayWinLossStatistics = Default_Profile.profile.DisplayWinLossStatistics end
 	if Spy.db.profile.DisplayKOSReason == nil then Spy.db.profile.DisplayKOSReason = Default_Profile.profile.DisplayKOSReason end

@@ -1,4 +1,4 @@
-local addonName = ...
+﻿local addonName = ...
 local addon = _G[addonName]
 local colors = addon.Colors
 
@@ -241,11 +241,11 @@ end
 local function GetRealmsList()
 	-- returns the list of realms to check, either only this realm, or merged realms too.
 	local realms = {}
-	table.insert(realms, THIS_REALM)
+	realms[#realms+1] = THIS_REALM
 	
 	if addon:GetOption("UI.Tooltip.ShowMergedRealmsCount") then
 		for _, connectedRealm in pairs(DataStore:GetRealmsConnectedWith(THIS_REALM)) do
-			table.insert(realms, connectedRealm)
+			realms[#realms+1] = connectedRealm
 		end
 	end
 	
@@ -281,7 +281,7 @@ local function GetCharacterItemCount(character, searchedID)
 		local t = {}
 		for k, v in pairs(itemCounts) do
 			if v > 0 then	-- if there are more than 0 items in this container
-				table.insert(t, colors.white .. itemCountsLabels[k] .. ": "  .. colors.teal .. v)
+				t[#t+1] = colors.white .. itemCountsLabels[k] .. ": "  .. colors.teal .. v
 			end
 		end
 
@@ -410,7 +410,7 @@ function addon:GetRecipeOwners(professionName, link, recipeLevel)
 			local coloredName = DataStore:GetColoredCharacterName(character)
 			
 			if isKnownByChar then
-				table.insert(know, coloredName)
+				know[#know+1] = coloredName
 			else
 				local currentLevel = DataStore:GetProfessionInfo(DataStore:GetProfession(character, professionName))
 				if currentLevel > 0 then
@@ -455,9 +455,9 @@ local function AddGlyphOwners(itemID, tooltip)
 	for characterName, character in pairs(DataStore:GetCharacters()) do
 		knows, could = DataStore:IsGlyphKnown(character, itemID)
 		if knows then
-			table.insert(know, characterName)
+			know[#know+1] = characterName
 		elseif could then
-			table.insert(couldLearn, characterName)
+			couldLearn[#couldLearn+1] = characterName
 		end
 	end
 	

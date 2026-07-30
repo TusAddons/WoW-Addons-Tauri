@@ -1,5 +1,7 @@
 ## Interface: 70300
 ## Title: World Quest Tracker
+## Author: Artiom97es
+## Version: 1.1-Artiom97es
 ## Notes: Make more easy to see world quests
 ## SavedVariables: WQTrackerDB
 ## SavedVariablesPerCharacter: WQTrackerDBChr

@@ -1,6 +1,7 @@
 ## Interface: 70200
 ## Title: Lib: IconPath
+## Author: Artiom97es
 ## Notes: Database of IconPaths
-## Author: Ignifazius
+## Version: 1.1-Artiom97es
 
 Core.lua

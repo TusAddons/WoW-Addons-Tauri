@@ -133,6 +133,7 @@ function ItemFrame:Layout()
 
 	local revBags, revSlots = profile.reverseBags, profile.reverseSlots
 	local x, y = 0,0
+	local visualIndex = 1
 
 	for k = revBags and #self.bags or 1, revBags and 1 or #self.bags, revBags and -1 or 1 do
 		local bag = self.bags[k]
@@ -153,6 +154,41 @@ function ItemFrame:Layout()
 					button:SetScale(scale)
 
 					x = x + 1
+					
+					if self:GetFrame().frameID == "inventory" then
+						local curX = x - 1
+						local letter = nil
+						
+						if columns >= 11 then
+							local letters = {"C", "A", "R", "A", " ", "M", "Á", "X", "I", "M", "A"}
+							if y == 0 and curX < #letters then
+								letter = letters[curX + 1]
+							end
+						else
+							local row1 = {"C", "A", "R", "A"}
+							local row2 = {"M", "Á", "X", "I", "M", "A"}
+							if y == 0 and curX < #row1 then
+								letter = row1[curX + 1]
+							elseif y == 1 and curX < #row2 then
+								letter = row2[curX + 1]
+							end
+						end
+
+						if letter and letter ~= " " then
+							if not button.watermarkLetter then
+								button.watermarkLetter = button:CreateFontString(nil, "OVERLAY")
+								button.watermarkLetter:SetFont("Fonts\\FRIZQT__.TTF", 26, "OUTLINE")
+								button.watermarkLetter:SetPoint("CENTER", button, "CENTER", 1, 0)
+								button.watermarkLetter:SetTextColor(1, 0.8, 0, 0.45)
+							end
+							button.watermarkLetter:SetText(letter)
+							button.watermarkLetter:Show()
+						else
+							if button.watermarkLetter then
+								button.watermarkLetter:Hide()
+							end
+						end
+					end
 				end
 			end
 

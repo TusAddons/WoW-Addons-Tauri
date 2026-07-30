@@ -1,4 +1,16 @@
 achievereminderload=1
+
+-- C_Map Polyfill for WoW 7.3.5 (Legion)
+if not C_Map then
+    C_Map = {}
+    function C_Map.GetBestMapForUnit(unit)
+        return GetCurrentMapAreaID() or 0
+    end
+    function C_Map.GetMapInfo(mapID)
+        return { name = GetMapNameByID(mapID) or GetZoneText() or "Unknown Map" }
+    end
+end
+
 function out(text)
 DEFAULT_CHAT_FRAME:AddMessage(text)
 UIErrorsFrame:AddMessage(text, 1.0, 1.0, 0, 1, 10) 

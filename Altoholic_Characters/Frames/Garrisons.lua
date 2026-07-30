@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 
@@ -40,7 +40,7 @@ local function BuildView()
 	if not missions then return end
 	
 	for _, id in pairs(missions) do
-		table.insert(view, id)
+		view[#view+1] = id
 	end
 	
 	if mode == 2 or mode == 4 then

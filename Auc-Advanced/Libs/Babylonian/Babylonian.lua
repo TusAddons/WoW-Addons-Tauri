@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Babylonian - A sub-addon that manages the locales for other addons.
 	Version: 7.6.5736 (TasmanianThylacine)
 	Revision: $Id: Babylonian.lua 332 2012-09-02 22:14:59Z Esamynn $
@@ -90,7 +90,7 @@ end
 
 lib.notifyList = {}
 function lib:AddNotify(func)
-	table.insert(lib.notifyList, func)
+	lib.notifyList[#lib.notifyList+1] = func
 end
 
 local kit = {

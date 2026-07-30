@@ -1,4 +1,4 @@
------------------------------------------------------------------------
+﻿-----------------------------------------------------------------------
 -- Upvalued Lua API.
 -----------------------------------------------------------------------
 local _G = getfenv(0)
@@ -158,10 +158,10 @@ local L_TOAST_DESC = "Shows messages in a toast window."
 local LOCALE = _G.GetLocale()
 
 if LOCALE == "esMX" or LOCALE == "esES" then
-    L_TOAST = "Información emergente"
-    L_TOAST_DESC = "Muestra mensajes de información en una ventana emergente"
+    L_TOAST = "InformaciÃ³n emergente"
+    L_TOAST_DESC = "Muestra mensajes de informaciÃ³n en una ventana emergente"
 elseif LOCALE == "frFR" then
-    L_TOAST_DESC = "Montrer les messages dans une fenêtre \"toast\"."
+    L_TOAST_DESC = "Montrer les messages dans une fenÃªtre \"toast\"."
 elseif LOCALE == "deDE" then
     L_TOAST_DESC = "Zeigt Nachrichten in einem Toast-Fenster"
 elseif LOCALE == "itIT" then
@@ -172,14 +172,14 @@ elseif LOCALE == "ptBR" then
     L_TOAST = "Brinde"
     L_TOAST_DESC = "Mostrar mensagems em uma janela externa"
 elseif LOCALE == "ruRU" then
-    L_TOAST = "Всплывающее"
-    L_TOAST_DESC = "Показывать сообщения во всплывающем окне"
+    L_TOAST = "Ð’ÑÐ¿Ð»Ñ‹Ð²Ð°ÑŽÑ‰ÐµÐµ"
+    L_TOAST_DESC = "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ Ð²Ð¾ Ð²ÑÐ¿Ð»Ñ‹Ð²Ð°ÑŽÑ‰ÐµÐ¼ Ð¾ÐºÐ½Ðµ"
 elseif LOCALE == "zhCN" then
-    L_TOAST = "弹出窗口"
-    L_TOAST_DESC = "在弹出窗口显示信息。"
+    L_TOAST = "å¼¹å‡ºçª—å£"
+    L_TOAST_DESC = "åœ¨å¼¹å‡ºçª—å£æ˜¾ç¤ºä¿¡æ¯ã€‚"
 elseif LOCALE == "zhTW" then
-    L_TOAST = "彈出視窗"
-    L_TOAST_DESC = "在彈出視窗顯示訊息。"
+    L_TOAST = "å½ˆå‡ºè¦–çª—"
+    L_TOAST_DESC = "åœ¨å½ˆå‡ºè¦–çª—é¡¯ç¤ºè¨Šæ¯ã€‚"
 end
 
 -----------------------------------------------------------------------
@@ -313,7 +313,7 @@ local function _reclaimButton(button)
     button:ClearAllPoints()
     button:SetParent(nil)
     button:SetText(nil)
-    table.insert(ButtonHeap, button)
+    ButtonHeap[#ButtonHeap+1] = button
 end
 
 local function _reclaimToast(toast)
@@ -331,7 +331,7 @@ local function _reclaimToast(toast)
     toast.sound_file = nil
     toast:Hide()
 
-    table.insert(ToastHeap, toast)
+    ToastHeap[#ToastHeap+1] = toast
 
     local removalIndex
     for index = 1, #ActiveToasts do

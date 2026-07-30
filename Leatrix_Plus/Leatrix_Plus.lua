@@ -211,7 +211,7 @@
 		local memtime = -1
 		memframe:SetScript("OnUpdate", function(self, elapsed)
 			if memtime > 2 or memtime == -1 then
-				UpdateAddOnMemoryUsage();
+				-- UpdateAddOnMemoryUsage(); -- Disabled for performance
 				memtext = GetAddOnMemoryUsage("Leatrix_Plus")
 				memtext = math.floor(memtext + .5) .. " KB"
 				memstat:SetText(memtext);
@@ -655,13 +655,15 @@
 				aEB:SetBlinkSpeed(0)
 				aEB:SetJustifyH("RIGHT")
 				aEB:SetAutoFocus(false)
-				aEB:EnableKeyboard(false)
+				aEB:EnableKeyboard(true)
 				aEB:SetHitRectInsets(90, 0, 0, 0)
-				aEB:SetScript("OnKeyDown", function() end)
+				aEB:SetScript("OnEscapePressed", function() aEB:ClearFocus() end)
 				aEB:SetScript("OnMouseUp", function()
 					if aEB:IsMouseOver() then 
+						aEB:SetFocus()
 						aEB:HighlightText()
 					else
+						aEB:ClearFocus()
 						aEB:HighlightText(0, 0)
 					end
 				end)
@@ -747,13 +749,15 @@
 				eEB:SetFontObject("GameFontNormal")
 				eEB:SetBlinkSpeed(0)
 				eEB:SetAutoFocus(false)
-				eEB:EnableKeyboard(false)
+				eEB:EnableKeyboard(true)
 				eEB:SetHitRectInsets(0, 90, 0, 0)
-				eEB:SetScript("OnKeyDown", function() end)
+				eEB:SetScript("OnEscapePressed", function() eEB:ClearFocus() end)
 				eEB:SetScript("OnMouseUp", function()
 					if eEB:IsMouseOver() then 
+						eEB:SetFocus()
 						eEB:HighlightText()
 					else
+						eEB:ClearFocus()
 						eEB:HighlightText(0, 0)
 					end
 				end)
@@ -833,18 +837,20 @@
 			-- Create editbox
 			local mEB = CreateFrame("EditBox", nil, WorldMapFrame.BorderFrame)
 			mEB:ClearAllPoints()
-			mEB:SetPoint("TOPLEFT", 100, -4)
+			mEB:SetPoint("TOPLEFT", 260, -4)
 			mEB:SetHeight(16)
 			mEB:SetFontObject("GameFontNormal")
 			mEB:SetBlinkSpeed(0)
 			mEB:SetAutoFocus(false)
-			mEB:EnableKeyboard(false)
+			mEB:EnableKeyboard(true)
 			mEB:SetHitRectInsets(0, 90, 0, 0)
-			mEB:SetScript("OnKeyDown", function() end)
+			mEB:SetScript("OnEscapePressed", function() mEB:ClearFocus() end)
 			mEB:SetScript("OnMouseUp", function()
 				if mEB:IsMouseOver() then 
+					mEB:SetFocus()
 					mEB:HighlightText()
 				else
+					mEB:ClearFocus()
 					mEB:HighlightText(0, 0)
 				end
 			end)
@@ -6510,8 +6516,8 @@
 			local LevelString, LevelString2
 			if GameLocale == "ruRU" then
 				-- Level string for ruRU
-				LevelString = "уровня"
-				LevelString2 = "уровень"
+				LevelString = "ÑƒÑ€Ð¾Ð²Ð½Ñ"
+				LevelString2 = "ÑƒÑ€Ð¾Ð²ÐµÐ½ÑŒ"
 			else
 				-- Level string for all other locales
 				LevelString = string.lower(TOOLTIP_UNIT_LEVEL:gsub("%%s",".+"))
@@ -6520,16 +6526,16 @@
 
 			-- Tag locale (code construction from tiplang)
 			local ttLevel, ttBoss, ttElite, ttRare, ttRareElite, ttRareBoss, ttTarget
-			if 		GameLocale == "zhCN" then 	ttLevel = "等级"		; ttBoss = "首领"	; ttElite = "精英"	; ttRare = "精良"	; ttRareElite = "精良 精英"		; ttRareBoss = "精良 首领"		; ttTarget = "目标"
-			elseif 	GameLocale == "zhTW" then 	ttLevel = "等級"		; ttBoss = "首領"	; ttElite = "精英"	; ttRare = "精良"	; ttRareElite = "精良 精英"		; ttRareBoss = "精良 首領"		; ttTarget = "目標"
-			elseif 	GameLocale == "ruRU" then 	ttLevel = "Уровень"	; ttBoss = "босс"	; ttElite = "элита"	; ttRare = "Редкое"	; ttRareElite = "Редкое элита"	; ttRareBoss = "Редкое босс"	; ttTarget = "Цель"
-			elseif 	GameLocale == "koKR" then 	ttLevel = "레벨"		; ttBoss = "우두머리"	; ttElite = "정예"	; ttRare = "희귀"	; ttRareElite = "희귀 정예"		; ttRareBoss = "희귀 우두머리"		; ttTarget = "대상"
-			elseif 	GameLocale == "esMX" then 	ttLevel = "Nivel"	; ttBoss = "Jefe"	; ttElite = "Élite"	; ttRare = "Raro"	; ttRareElite = "Raro Élite"	; ttRareBoss = "Raro Jefe"		; ttTarget = "Objetivo"
-			elseif 	GameLocale == "ptBR" then 	ttLevel = "Nível"	; ttBoss = "Chefe"	; ttElite = "Elite"	; ttRare = "Raro"	; ttRareElite = "Raro Elite"	; ttRareBoss = "Raro Chefe"		; ttTarget = "Alvo"
+			if 		GameLocale == "zhCN" then 	ttLevel = "ç­‰çº§"		; ttBoss = "é¦–é¢†"	; ttElite = "ç²¾è‹±"	; ttRare = "ç²¾è‰¯"	; ttRareElite = "ç²¾è‰¯ ç²¾è‹±"		; ttRareBoss = "ç²¾è‰¯ é¦–é¢†"		; ttTarget = "ç›®æ ‡"
+			elseif 	GameLocale == "zhTW" then 	ttLevel = "ç­‰ç´š"		; ttBoss = "é¦–é ˜"	; ttElite = "ç²¾è‹±"	; ttRare = "ç²¾è‰¯"	; ttRareElite = "ç²¾è‰¯ ç²¾è‹±"		; ttRareBoss = "ç²¾è‰¯ é¦–é ˜"		; ttTarget = "ç›®æ¨™"
+			elseif 	GameLocale == "ruRU" then 	ttLevel = "Ð£Ñ€Ð¾Ð²ÐµÐ½ÑŒ"	; ttBoss = "Ð±Ð¾ÑÑ"	; ttElite = "ÑÐ»Ð¸Ñ‚Ð°"	; ttRare = "Ð ÐµÐ´ÐºÐ¾Ðµ"	; ttRareElite = "Ð ÐµÐ´ÐºÐ¾Ðµ ÑÐ»Ð¸Ñ‚Ð°"	; ttRareBoss = "Ð ÐµÐ´ÐºÐ¾Ðµ Ð±Ð¾ÑÑ"	; ttTarget = "Ð¦ÐµÐ»ÑŒ"
+			elseif 	GameLocale == "koKR" then 	ttLevel = "ë ˆë²¨"		; ttBoss = "ìš°ë‘ë¨¸ë¦¬"	; ttElite = "ì •ì˜ˆ"	; ttRare = "í¬ê·€"	; ttRareElite = "í¬ê·€ ì •ì˜ˆ"		; ttRareBoss = "í¬ê·€ ìš°ë‘ë¨¸ë¦¬"		; ttTarget = "ëŒ€ìƒ"
+			elseif 	GameLocale == "esMX" then 	ttLevel = "Nivel"	; ttBoss = "Jefe"	; ttElite = "Ã‰lite"	; ttRare = "Raro"	; ttRareElite = "Raro Ã‰lite"	; ttRareBoss = "Raro Jefe"		; ttTarget = "Objetivo"
+			elseif 	GameLocale == "ptBR" then 	ttLevel = "NÃ­vel"	; ttBoss = "Chefe"	; ttElite = "Elite"	; ttRare = "Raro"	; ttRareElite = "Raro Elite"	; ttRareBoss = "Raro Chefe"		; ttTarget = "Alvo"
 			elseif 	GameLocale == "deDE" then 	ttLevel = "Stufe"	; ttBoss = "Boss"	; ttElite = "Elite"	; ttRare = "Selten"	; ttRareElite = "Selten Elite"	; ttRareBoss = "Selten Boss"	; ttTarget = "Ziel"
-			elseif 	GameLocale == "esES" then	ttLevel = "Nivel"	; ttBoss = "Jefe"	; ttElite = "Élite"	; ttRare = "Raro"	; ttRareElite = "Raro Élite"	; ttRareBoss = "Raro Jefe"		; ttTarget = "Objetivo"
-			elseif 	GameLocale == "frFR" then 	ttLevel = "Niveau"	; ttBoss = "Boss"	; ttElite = "Élite"	; ttRare = "Rare"	; ttRareElite = "Rare Élite"	; ttRareBoss = "Rare Boss"		; ttTarget = "Cible"
-			elseif 	GameLocale == "itIT" then 	ttLevel = "Livello"	; ttBoss = "Boss"	; ttElite = "Élite"	; ttRare = "Raro"	; ttRareElite = "Raro Élite"	; ttRareBoss = "Raro Boss"		; ttTarget = "Bersaglio"
+			elseif 	GameLocale == "esES" then	ttLevel = "Nivel"	; ttBoss = "Jefe"	; ttElite = "Ã‰lite"	; ttRare = "Raro"	; ttRareElite = "Raro Ã‰lite"	; ttRareBoss = "Raro Jefe"		; ttTarget = "Objetivo"
+			elseif 	GameLocale == "frFR" then 	ttLevel = "Niveau"	; ttBoss = "Boss"	; ttElite = "Ã‰lite"	; ttRare = "Rare"	; ttRareElite = "Rare Ã‰lite"	; ttRareBoss = "Rare Boss"		; ttTarget = "Cible"
+			elseif 	GameLocale == "itIT" then 	ttLevel = "Livello"	; ttBoss = "Boss"	; ttElite = "Ã‰lite"	; ttRare = "Raro"	; ttRareElite = "Raro Ã‰lite"	; ttRareBoss = "Raro Boss"		; ttTarget = "Bersaglio"
 			else 								ttLevel = "Level"	; ttBoss = "Boss"	; ttElite = "Elite"	; ttRare = "Rare"	; ttRareElite = "Rare Elite"	; ttRareBoss = "Rare Boss"		; ttTarget = "Target"
 			end
 
@@ -7046,9 +7052,9 @@
 		if LeaPlusLC["NoRestedEmotes"] == "On" then
 
 			-- Zone table 		English					, French					, German					, Italian						, Russian					, S Chinese	, Spanish					, T Chinese	,
-			local zonetable = {	"The Halfhill Market"	, "Marché de Micolline"		, "Der Halbhügelmarkt"		, "Il Mercato di Mezzocolle"	, "Рынок Полугорья"			, "半山市集"	, "El Mercado del Alcor"	, "半丘市集"	,
-								"The Grim Guzzler"		, "Le Sinistre écluseur"	, "Zum Grimmigen Säufer"	, "Torvo Beone"					, "Трактир Угрюмый обжора"	, "黑铁酒吧"	, "Tragapenas"				, "黑鐵酒吧"	,
-								"The Summer Terrace"	, "La terrasse Estivale"	, "Die Sommerterrasse"		, "Terrazza Estiva"				, "Летняя терраса"			, "夏之台"	, "El Bancal del Verano"	, "夏日露臺"	,
+			local zonetable = {	"The Halfhill Market"	, "MarchÃ© de Micolline"		, "Der HalbhÃ¼gelmarkt"		, "Il Mercato di Mezzocolle"	, "Ð Ñ‹Ð½Ð¾Ðº ÐŸÐ¾Ð»ÑƒÐ³Ð¾Ñ€ÑŒÑ"			, "åŠå±±å¸‚é›†"	, "El Mercado del Alcor"	, "åŠä¸˜å¸‚é›†"	,
+								"The Grim Guzzler"		, "Le Sinistre Ã©cluseur"	, "Zum Grimmigen SÃ¤ufer"	, "Torvo Beone"					, "Ð¢Ñ€Ð°ÐºÑ‚Ð¸Ñ€ Ð£Ð³Ñ€ÑŽÐ¼Ñ‹Ð¹ Ð¾Ð±Ð¶Ð¾Ñ€Ð°"	, "é»‘é“é…’å§"	, "Tragapenas"				, "é»‘éµé…’å§"	,
+								"The Summer Terrace"	, "La terrasse Estivale"	, "Die Sommerterrasse"		, "Terrazza Estiva"				, "Ð›ÐµÑ‚Ð½ÑÑ Ñ‚ÐµÑ€Ñ€Ð°ÑÐ°"			, "å¤ä¹‹å°"	, "El Bancal del Verano"	, "å¤æ—¥éœ²è‡º"	,
 			}
 
 			-- Function to set rested state
@@ -8336,7 +8342,7 @@
 		----------------------------------------------------------------------
 
 		-- Update addon memory usage (speeds up initial value)
-		UpdateAddOnMemoryUsage();
+		-- UpdateAddOnMemoryUsage(); -- Disabled for performance
 
 		-- Release memory
 		LeaPlusLC.RunOnce = nil
@@ -8407,30 +8413,30 @@
 
 				-- Exclude Failure Detection Pylon
 				pylonLoc = "Failure Detection Pylon"
-				if 	   GameLocale == "zhCN" then pylonLoc = "故障检测晶塔"
-				elseif GameLocale == "zhTW" then pylonLoc = "滅團偵測水晶塔"
-				elseif GameLocale == "ruRU" then pylonLoc = "Пилон для обнаружения проблем"
-				elseif GameLocale == "koKR" then pylonLoc = "고장 감지 변환기"
-				elseif GameLocale == "esMX" then pylonLoc = "Pilón detector de errores"
+				if 	   GameLocale == "zhCN" then pylonLoc = "æ•…éšœæ£€æµ‹æ™¶å¡”"
+				elseif GameLocale == "zhTW" then pylonLoc = "æ»…åœ˜åµæ¸¬æ°´æ™¶å¡”"
+				elseif GameLocale == "ruRU" then pylonLoc = "ÐŸÐ¸Ð»Ð¾Ð½ Ð´Ð»Ñ Ð¾Ð±Ð½Ð°Ñ€ÑƒÐ¶ÐµÐ½Ð¸Ñ Ð¿Ñ€Ð¾Ð±Ð»ÐµÐ¼"
+				elseif GameLocale == "koKR" then pylonLoc = "ê³ ìž¥ ê°ì§€ ë³€í™˜ê¸°"
+				elseif GameLocale == "esMX" then pylonLoc = "PilÃ³n detector de errores"
 				elseif GameLocale == "ptBR" then pylonLoc = "Pilar Detector de Falhas"
 				elseif GameLocale == "deDE" then pylonLoc = "Fehlschlagdetektorpylon"
-				elseif GameLocale == "esES" then pylonLoc = "Pilón detector de errores"
-				elseif GameLocale == "frFR" then pylonLoc = "Pylône de détection des échecs"
+				elseif GameLocale == "esES" then pylonLoc = "PilÃ³n detector de errores"
+				elseif GameLocale == "frFR" then pylonLoc = "PylÃ´ne de dÃ©tection des Ã©checs"
 				elseif GameLocale == "itIT" then pylonLoc = "Pilone d'Individuazione Fallimenti"
 				end
 				if arg1 == pylonLoc then return	end
 
 				-- Exclude Brazier of Awakening
 				pylonLoc = "Brazier of Awakening"
-				if 	   GameLocale == "zhCN" then pylonLoc = "觉醒火盆"
-				elseif GameLocale == "zhTW" then pylonLoc = "覺醒火盆"
-				elseif GameLocale == "ruRU" then pylonLoc = "Жаровня пробуждения"
-				elseif GameLocale == "koKR" then pylonLoc = "각성의 화로"
-				elseif GameLocale == "esMX" then pylonLoc = "Blandón del Despertar"
+				if 	   GameLocale == "zhCN" then pylonLoc = "è§‰é†’ç«ç›†"
+				elseif GameLocale == "zhTW" then pylonLoc = "è¦ºé†’ç«ç›†"
+				elseif GameLocale == "ruRU" then pylonLoc = "Ð–Ð°Ñ€Ð¾Ð²Ð½Ñ Ð¿Ñ€Ð¾Ð±ÑƒÐ¶Ð´ÐµÐ½Ð¸Ñ"
+				elseif GameLocale == "koKR" then pylonLoc = "ê°ì„±ì˜ í™”ë¡œ"
+				elseif GameLocale == "esMX" then pylonLoc = "BlandÃ³n del Despertar"
 				elseif GameLocale == "ptBR" then pylonLoc = "Braseiro do Despertar"
 				elseif GameLocale == "deDE" then pylonLoc = "Kohlenbecken des Erwachens"
-				elseif GameLocale == "esES" then pylonLoc = "Blandón de Despertar"
-				elseif GameLocale == "frFR" then pylonLoc = "Brasero de l'Éveil"
+				elseif GameLocale == "esES" then pylonLoc = "BlandÃ³n de Despertar"
+				elseif GameLocale == "frFR" then pylonLoc = "Brasero de l'Ã‰veil"
 				elseif GameLocale == "itIT" then pylonLoc = "Braciere del Risveglio"
 				end
 				if arg1 == pylonLoc then return	end
@@ -8818,8 +8824,8 @@
 
 		if event == "PLAYER_ENTERING_WORLD" then
 			LeaPlusLC:Player();
-			collectgarbage()
-			return
+			-- collectgarbage() -- Disabled for performance
+		return
 		end
 
 		-- Save locals back to globals on logout
@@ -9156,7 +9162,7 @@
 
 		-- Make it a system frame
 		_G["LeaPlusGlobalPanel_" .. globref] = Side
-		table.insert(UISpecialFrames, "LeaPlusGlobalPanel_" .. globref)
+		UISpecialFrames[#UISpecialFrames+1] = "LeaPlusGlobalPanel_" .. globref
 
 		-- Store it in the configuration panel table
 		tinsert(LeaConfigList, Side)
@@ -9592,7 +9598,7 @@
 
 		-- Make it a system frame
 		_G["LeaPlusGlobalPanel"] = PageF
-		table.insert(UISpecialFrames, "LeaPlusGlobalPanel")
+		UISpecialFrames[#UISpecialFrames+1] = "LeaPlusGlobalPanel"
 
 		-- Set frame parameters
 		LeaPlusLC["PageF"] = PageF
@@ -9848,8 +9854,8 @@
 					end 
 					enumf = EnumerateFrames(enumf)
 				end
-				collectgarbage()
-				return
+				-- collectgarbage() -- Disabled for performance
+		return
 			elseif str == "soil" then
 				-- Enable dark soil scanning
 				if not LeaPlusLC["DarkScriptlEnabled"] then
@@ -10168,8 +10174,8 @@
 				if found == false then 
 					LeaPlusLC:Print("No media duplicates found.") 
 				end
-				collectgarbage()
-				return
+				-- collectgarbage() -- Disabled for performance
+		return
 			elseif str == "enigma" then
 				-- Enigma
 				if not LeaPlusLC.enimgaFrame then

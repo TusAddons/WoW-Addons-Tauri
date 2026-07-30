@@ -1,6 +1,7 @@
 ## Interface: 70300
-## Author: Resike
+## Version: 1.1-Artiom97es
 ## Title: Z-Perl |cffeda55fTarget's Target|r
+## Author: Artiom97es
 ## Title-itIT: Z-Perl |cffeda55fBersaglio del Bersaglio|r
 ## Title-ruRU: Z-Perl |cffeda55fЦель цели|r
 ## Title-deDE: Z-Perl |cffeda55fZiel des Ziels|r

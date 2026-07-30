@@ -1,4 +1,4 @@
---==============
+﻿--==============
 -- Global Variables
 --==============
 ACP = {}
@@ -54,32 +54,32 @@ local SEPARATE_LOD_LIST = "Separate LOD List"
 local GROUP_BY_NAME = "Group By Name"
 
 if (GetLocale() == "zhCN") then
-    DEFAULT = "默认"
-    TITLES = "名称"
+    DEFAULT = "é»˜è®¤"
+    TITLES = "åç§°"
     ACE2 = "Ace2"
-    AUTHOR = "作者"
-    SEPARATE_LOD_LIST = "按需求加载"
-    GROUP_BY_NAME = "按名称分组"
+    AUTHOR = "ä½œè€…"
+    SEPARATE_LOD_LIST = "æŒ‰éœ€æ±‚åŠ è½½"
+    GROUP_BY_NAME = "æŒ‰åç§°åˆ†ç»„"
 elseif (GetLocale() == "zhTW") then
-    DEFAULT = "預設"
-    TITLES = "名稱"
+    DEFAULT = "é è¨­"
+    TITLES = "åç¨±"
     ACE2 = "Ace2"
-    AUTHOR = "作者"
-    SEPARATE_LOD_LIST = "隨需求載入"
-    GROUP_BY_NAME = "以名稱分組"
+    AUTHOR = "ä½œè€…"
+    SEPARATE_LOD_LIST = "éš¨éœ€æ±‚è¼‰å…¥"
+    GROUP_BY_NAME = "ä»¥åç¨±åˆ†çµ„"
 elseif (GetLocale() == "koKR") then
-    DEFAULT = "기본"
-    TITLES = "제목"
+    DEFAULT = "ê¸°ë³¸"
+    TITLES = "ì œëª©"
     ACE2 = "Ace2"
-    AUTHOR = "제작자"
-    SEPARATE_LOD_LIST = "LOD 목록 분리"
-    GROUP_BY_NAME = "이름별 분류"
+    AUTHOR = "ì œìž‘ìž"
+    SEPARATE_LOD_LIST = "LOD ëª©ë¡ ë¶„ë¦¬"
+    GROUP_BY_NAME = "ì´ë¦„ë³„ ë¶„ë¥˜"
 elseif (GetLocale() == "frFR") then
-    DEFAULT = "Défaut"
+    DEFAULT = "DÃ©faut"
     TITLES = "Titres"
     ACE2 = "Ace2"
     AUTHOR = "Auteur"
-    SEPARATE_LOD_LIST = "Liste LOD séparée"
+    SEPARATE_LOD_LIST = "Liste LOD sÃ©parÃ©e"
     GROUP_BY_NAME = "Groupement par nom"
 elseif (GetLocale() == "esES") then
     DEFAULT = "Por Defecto"
@@ -89,12 +89,12 @@ elseif (GetLocale() == "esES") then
     SEPARATE_LOD_LIST = "Lista CaD por separado"
     GROUP_BY_NAME = "Agrupar por nombre"
 elseif (GetLocale() == "ruRU") then
-    DEFAULT = "По умолчанию"
-    TITLES = "Заголовкам"
+    DEFAULT = "ÐŸÐ¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ"
+    TITLES = "Ð—Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐ°Ð¼"
     ACE2 = "Ace2"
-    AUTHOR = "Автор"
-    SEPARATE_LOD_LIST = "Отдел. список ЗПТ"
-    GROUP_BY_NAME = "Группир. по имени"
+    AUTHOR = "ÐÐ²Ñ‚Ð¾Ñ€"
+    SEPARATE_LOD_LIST = "ÐžÑ‚Ð´ÐµÐ». ÑÐ¿Ð¸ÑÐ¾Ðº Ð—ÐŸÐ¢"
+    GROUP_BY_NAME = "Ð“Ñ€ÑƒÐ¿Ð¿Ð¸Ñ€. Ð¿Ð¾ Ð¸Ð¼ÐµÐ½Ð¸"
 end
 
 --==============
@@ -638,14 +638,14 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
             if IsAddOnLoaded(i) then
                 local name = GetAddOnInfo(i)
                 if name ~= ACP_ADDON_NAME then
-                    table.insert(ACP_DefaultSet, name)
+                    ACP_DefaultSet[#ACP_DefaultSet+1] = name
                 end
             end
         end
 
         if savedVar.scale then self.frame:SetScale(savedVar.scale) end
 
-        self:MakeFrameScalable(self.frame, -46, 16)
+        self:MakeFrameScalable(self.frame, -5, 5)
 
         self:ToggleRecursion(not savedVar.NoRecurse)
         _G[ACP_FRAME_NAME .. "_NoRecurseText"]:SetText(L["Recursive"])
@@ -791,10 +791,10 @@ addonListBuilders[DEFAULT] = function()
     end
     local numAddons = GetNumAddOns()
     for i=1,numAddons do
-        table.insert(masterAddonList, i)
+        masterAddonList[#masterAddonList+1] = i
     end
     for i=1,NUM_BLIZZARD_ADDONS do
-        table.insert(masterAddonList, numAddons + i)
+        masterAddonList[#masterAddonList+1] = numAddons + i
     end
 end
 
@@ -805,7 +805,7 @@ addonListBuilders[TITLES] = function()
 
     local numAddons = GetNumAddOns()
     for i=1,numAddons do
-        table.insert(masterAddonList, i)
+        masterAddonList[#masterAddonList+1] = i
     end
 
     -- Sort the addon list by Ace2 Categories.
@@ -816,7 +816,7 @@ addonListBuilders[TITLES] = function()
     end)
 
     for i=1,NUM_BLIZZARD_ADDONS do
-        table.insert(masterAddonList, numAddons + i)
+        masterAddonList[#masterAddonList+1] = numAddons + i
     end
 end
 
@@ -826,7 +826,7 @@ addonListBuilders[ACE2] = function()
 
     local numAddons = GetNumAddOns()
     for i=1,numAddons do
-        table.insert(t, i)
+        t[#t+1] = i
     end
 
     -- Sort the addon list by Ace2 Categories.
@@ -855,10 +855,10 @@ addonListBuilders[ACE2] = function()
         prevCategory = category
     end
 
-    table.insert(t, "Blizzard")
+    t[#t+1] = "Blizzard"
 
     for i=1,NUM_BLIZZARD_ADDONS do
-        table.insert(t, numAddons + i)
+        t[#t+1] = numAddons + i
     end
 
     -- Now build the masterAddonList.
@@ -871,10 +871,10 @@ addonListBuilders[ACE2] = function()
         if type(addon) == 'string' then
             local t = {}
             t.category = addon
-            table.insert(list, t)
+            list[#list+1] = t
             currPos = t
         else
-            table.insert(currPos, addon)
+            currPos[#currPos+1] = addon
         end
     end
 
@@ -887,7 +887,7 @@ addonListBuilders[AUTHOR] = function()
 
     local numAddons = GetNumAddOns()
     for i=1,numAddons do
-        table.insert(t, i)
+        t[#t+1] = i
     end
 
     -- Sort the addon list by Ace2 Categories.
@@ -916,10 +916,10 @@ addonListBuilders[AUTHOR] = function()
         prevCategory = category
     end
 
-    table.insert(t, "Blizzard")
+    t[#t+1] = "Blizzard"
 
     for i=1,NUM_BLIZZARD_ADDONS do
-        table.insert(t, numAddons + i)
+        t[#t+1] = numAddons + i
     end
 
     -- Now build the masterAddonList.
@@ -932,10 +932,10 @@ addonListBuilders[AUTHOR] = function()
         if type(addon) == 'string' then
             local t = {}
             t.category = addon
-            table.insert(list, t)
+            list[#list+1] = t
             currPos = t
         else
-            table.insert(currPos, addon)
+            currPos[#currPos+1] = addon
         end
     end
 
@@ -960,19 +960,19 @@ addonListBuilders[SEPARATE_LOD_LIST] = function()
     for i=1,numAddons do
         name = GetAddOnInfo(i)
         if not IsAddOnLoadOnDemand(name) then
-            table.insert(nonlods, i)
+            nonlods[#nonlods+1] = i
         else
-            table.insert(lods, i)
+            lods[#lods+1] = i
         end
     end
 
     for i=1,NUM_BLIZZARD_ADDONS do
-        table.insert(blizz, numAddons + i)
+        blizz[#blizz+1] = numAddons + i
     end
 
-    table.insert(masterAddonList, nonlods)
-    table.insert(masterAddonList, lods)
-    table.insert(masterAddonList, blizz)
+    masterAddonList[#masterAddonList+1] = nonlods
+    masterAddonList[#masterAddonList+1] = lods
+    masterAddonList[#masterAddonList+1] = blizz
 end
 
 
@@ -982,7 +982,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
 
     local numAddons = GetNumAddOns()
     for i=1,numAddons do
-        table.insert(t, i)
+        t[#t+1] = i
     end
 
     local libs = {}
@@ -1029,7 +1029,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
         local acecategory = GetAddOnMetadata(addonIndex, "X-Category")
 
         if (acecategory and acecategory:find("Library")) and not ACP:IsAddOnProtected(name) then
-            table.insert(libs, addonIndex)
+            libs[#libs+1] = addonIndex
         else
             local category, content = strsplit("_", name)
             if not content then
@@ -1037,10 +1037,10 @@ addonListBuilders[GROUP_BY_NAME] = function()
                 category = ""
             end
             if category:lower() ~= prevCategory:lower() then
-                table.insert(t, category)
+                t[#t+1] = category
             end
 
-            table.insert(t, addonIndex)
+            t[#t+1] = addonIndex
             prevCategory = category
         end
     end
@@ -1051,7 +1051,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
     blizz.category = "Blizzard Addons"
 
     for i=1,NUM_BLIZZARD_ADDONS do
-        table.insert(blizz, numAddons + i)
+        blizz[#blizz+1] = numAddons + i
     end
 
     -- Now build the masterAddonList.
@@ -1072,19 +1072,19 @@ addonListBuilders[GROUP_BY_NAME] = function()
                 if addonpos then
                     local addonname = ACP:SpecialCaseName(GetAddOnInfo(addonpos))
                     if (addonname == addon) then table.remove(currPos, #currPos) end
-                    table.insert(list, t)
+                    list[#list+1] = t
                     currPos = t
                 end
             end
         else
-            table.insert(currPos, addon)
+            currPos[#currPos+1] = addon
         end
     end
 
 
 
-    table.insert(masterAddonList, libs)
-    table.insert(masterAddonList, blizz)
+    masterAddonList[#masterAddonList+1] = libs
+    masterAddonList[#masterAddonList+1] = blizz
 end
 
 
@@ -1216,7 +1216,7 @@ function ACP:CollapseAll(collapse)
 
     for i,addon in ipairs(masterAddonList) do
         if type(addon) == 'table' and addon.category then
-            table.insert(categories, addon.category)
+            categories[#categories+1] = addon.category
         end
     end
 
@@ -1252,7 +1252,7 @@ function ACP:SaveSet(set)
         enabled = GetAddOnEnableState(UnitName("player"), name) > 0;
 
         if enabled and name ~= ACP_ADDON_NAME and not ACP:IsAddOnProtected(name) then
-            table.insert(addonSet, name)
+            addonSet[#addonSet+1] = name
         end
     end
 
@@ -1377,6 +1377,58 @@ end
 
 -- Rebuild sortedAddonList from masterAddonList
 
+
+ACP_SearchText = ""
+ACP_FilterCategory = "All"
+
+function ACP:Search_OnTextChanged(this)
+    ACP_SearchText = this:GetText():lower()
+    ACP:RebuildSortedAddonList()
+    ACP:AddonList_OnShow_Fast()
+end
+
+function ACP:CategoryDropDown_OnClick(self)
+    UIDropDownMenu_SetSelectedValue(ACPCategoryDropDown, self.value)
+    ACP_FilterCategory = self.value
+    ACP:RebuildSortedAddonList()
+    ACP:AddonList_OnShow_Fast()
+end
+
+function ACP:CategoryDropDown_OnShow(self)
+    UIDropDownMenu_Initialize(self, function(self, level)
+        local info = UIDropDownMenu_CreateInfo()
+        
+        info.text = "Todas las Categorias"
+        info.value = "All"
+        info.func = ACP.CategoryDropDown_OnClick
+        UIDropDownMenu_AddButton(info, level)
+
+        local categories = {}
+        for i, addon in ipairs(masterAddonList) do
+            if type(addon) == 'table' and addon.category then
+                table.insert(categories, addon.category)
+            end
+        end
+        
+        for _, cat in ipairs(categories) do
+            info.text = cat
+            info.value = cat
+            info.func = ACP.CategoryDropDown_OnClick
+            UIDropDownMenu_AddButton(info, level)
+        end
+    end)
+    UIDropDownMenu_SetSelectedValue(self, ACP_FilterCategory)
+    UIDropDownMenu_SetText(self, ACP_FilterCategory == "All" and "Categorias" or ACP_FilterCategory)
+end
+
+function ACP:MatchesSearch(addon)
+    if ACP_SearchText == "" then return true end
+    local name, title = GetAddOnInfo(addon)
+    if name and name:lower():find(ACP_SearchText) then return true end
+    if title and title:lower():find(ACP_SearchText) then return true end
+    return false
+end
+
 function ACP:RebuildSortedAddonList()
     for k in pairs(sortedAddonList) do
         sortedAddonList[k] = nil
@@ -1385,22 +1437,33 @@ function ACP:RebuildSortedAddonList()
     for i,addon in ipairs(masterAddonList) do
         if type(addon) == 'table' then
             local category = addon.category
-            if category then
-                table.insert(sortedAddonList, category)
-            end
-            if not category or not collapsedAddons[category] then
+            
+            -- Filter Category
+            if ACP_FilterCategory == "All" or ACP_FilterCategory == category then
+                local validSubAddons = {}
                 for j,subAddon in ipairs(addon) do
-                    table.insert(sortedAddonList, subAddon)
+                    if ACP:MatchesSearch(subAddon) then
+                        table.insert(validSubAddons, subAddon)
+                    end
+                end
+                
+                if #validSubAddons > 0 then
+                    if category and ACP_FilterCategory == "All" then
+                        sortedAddonList[#sortedAddonList+1] = category
+                    end
+                    if not category or not collapsedAddons[category] or ACP_FilterCategory ~= "All" or ACP_SearchText ~= "" then
+                        for j,subAddon in ipairs(validSubAddons) do
+                            sortedAddonList[#sortedAddonList+1] = subAddon
+                        end
+                    end
                 end
             end
         else
-        --addon = GetAddonIndex(addon)
-            table.insert(sortedAddonList, addon)
+            if ACP_FilterCategory == "All" and ACP:MatchesSearch(addon) then
+                sortedAddonList[#sortedAddonList+1] = addon
+            end
         end
     end
-
---	ACP.masterAddonList = masterAddonList
---	ACP.sortedAddonList = sortedAddonList
 end
 
 function ACP:SetMasterAddonBuilder(sorter)
@@ -1786,7 +1849,7 @@ function ACP:SetDropDown_Populate(level)
 
             info = UIDropDownMenu_CreateInfo()
             if savedVar.AddonSet and savedVar.AddonSet[i] then
-                count = table.getn(savedVar.AddonSet[i])
+                count = #(savedVar.AddonSet[i])
             else
                 count = 0
             end
@@ -1803,7 +1866,7 @@ function ACP:SetDropDown_Populate(level)
 
         -- Class set.
         if savedVar.AddonSet and savedVar.AddonSet[playerClass] then
-            count = table.getn(savedVar.AddonSet[playerClass])
+            count = #(savedVar.AddonSet[playerClass])
         else
             count = 0
         end
@@ -1816,7 +1879,7 @@ function ACP:SetDropDown_Populate(level)
 
         -- Default set.
         info = UIDropDownMenu_CreateInfo()
-        info.text = string.format("%s (%d)", L["Default"], table.getn(ACP_DefaultSet))
+        info.text = string.format("%s (%d)", L["Default"], #(ACP_DefaultSet))
         info.value = ACP_DEFAULT_SET
         info.hasArrow = 1
         info.notCheckable = 1

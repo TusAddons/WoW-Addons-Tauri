@@ -1,4 +1,4 @@
-if GetLocale() ~= "ruRU" then return end
+﻿if GetLocale() ~= "ruRU" then return end
 
 local L
 
@@ -267,6 +267,10 @@ L= DBM:GetModLocalization(688)
 -- Korlof --
 -----------------------
 L= DBM:GetModLocalization(671)
+
+L:SetOptionLocalization({
+	KickArrow	= "Показывать стрелку DBM, когда $spell:114487 около вас"
+})
 
 -----------------------
 -- Durand/High Inquisitor Whitemane --

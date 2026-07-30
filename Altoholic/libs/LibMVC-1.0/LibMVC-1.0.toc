@@ -1,8 +1,9 @@
 ## Interface: 70300
 
 ## Title: Lib: LibMVC
+## Author: Artiom97es
 ## Notes: LibMVC
-## Author: Thaoky (EU-Mar�cages de Zangar)
+## Version: 1.1-Artiom97es
 ## X-Category: Library
 ## X-License: Public Domain
 

@@ -3,7 +3,11 @@ function MinArch:UpdateArchaeologySkillBar()
 	if (arch) then
 		local name, _, rank, maxRank = GetProfessionInfo(arch);
 		
-		if (rank ~= 700) then
+		if (rank ~= 800) then
+			MinArchMain.skillBar:SetStatusBarTexture("Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar");
+			MinArchMain.skillBar:SetStatusBarColor(0.03125, 0.85, 0.0, 1);
+			local tex = MinArchMain.skillBar:GetStatusBarTexture();
+			if tex then tex:SetDrawLayer("ARTWORK", 7); end
 			MinArchMain.skillBar:SetMinMaxValues(0, maxRank);
 			MinArchMain.skillBar:SetValue(rank);
 			MinArchMain.skillBar.text:SetText(name.." "..rank.."/"..maxRank);
@@ -59,7 +63,7 @@ function MinArch:UpdateArtifact(RaceIndex)
 		local progress, modifier, total = GetArtifactProgress();
 		
 		MinArch['artifacts'][RaceIndex]['numKeystones'] = numKeystones;
-		MinArch['artifacts'][RaceIndex]['heldKeystones'] =  GetItemCount(rItemID, false, false);
+		MinArch['artifacts'][RaceIndex]['heldKeystones'] =  GetItemCount(rItemID, true, false);
 		MinArch['artifacts'][RaceIndex]['progress'] = progress;
 		MinArch['artifacts'][RaceIndex]['modifier'] = modifier;
 		MinArch['artifacts'][RaceIndex]['total'] = total;
@@ -85,18 +89,34 @@ function MinArch:UpdateArtifactBar(RaceIndex, ArtifactBar)
 		total = 200;
 	end
 	
+	ArtifactBar:SetStatusBarTexture("Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar");
+	ArtifactBar:SetStatusBarColor(0.8, 0.5, 0.1, 1);
+	local tex = ArtifactBar:GetStatusBarTexture();
+	if tex then tex:SetDrawLayer("ARTWORK", 7); end
 	ArtifactBar:SetMinMaxValues(0, total);
 	ArtifactBar:SetValue(min(artifact['progress']+artifact['modifier'], total));
 	
 	ArtifactBar.keystone.icon:SetTexture(runeStoneIconPath);
-	if (artifact['appliedKeystones'] == 0) then
-		ArtifactBar.keystone.icon:SetAlpha(0.1);
+	if (artifact['appliedKeystones'] > 0) then
+		ArtifactBar.keystone.icon:SetAlpha(1.0);
+		ArtifactBar.keystone.icon:SetVertexColor(1, 1, 1);
+	elseif (artifact['heldKeystones'] > 0) then
+		ArtifactBar.keystone.icon:SetAlpha(0.9);
+		ArtifactBar.keystone.icon:SetVertexColor(0.1, 1, 0.1);
 	else
-		ArtifactBar.keystone.icon:SetAlpha((artifact['appliedKeystones']/artifact['numKeystones']));
+		ArtifactBar.keystone.icon:SetAlpha(0.15);
+		ArtifactBar.keystone.icon:SetVertexColor(0.5, 0.5, 0.5);
 	end	
 	
 	if (artifact['numKeystones'] > 0 and artifact['total'] > 0) then
 		ArtifactBar.keystone.text:SetText(artifact['appliedKeystones'].."/"..artifact['numKeystones']);
+		if (artifact['appliedKeystones'] > 0) then
+			ArtifactBar.keystone.text:SetTextColor(1, 1, 1, 1);
+		elseif (artifact['heldKeystones'] > 0) then
+			ArtifactBar.keystone.text:SetTextColor(0.1, 1, 0.1, 1);
+		else
+			ArtifactBar.keystone.text:SetTextColor(0.6, 0.6, 0.6, 1);
+		end
 		ArtifactBar.keystone:Show();
 		ArtifactBar.keystone.icon:Show();
 	else
@@ -140,7 +160,7 @@ end
 function MinArch:UpdateMain()
 	local activeBarIndex = 0;
 	
-	for i=1,18 do
+	for i=1, GetNumArchaeologyRaces() do
 		if not MinArch:UpdateArtifact(i) then return end
 		
 		local artifact = MinArch['artifacts'][i];
@@ -156,8 +176,8 @@ function MinArch:UpdateMain()
 	
 	local MinArchFrameHeight = MinArch['frame']['height'];
 	
-	for i=activeBarIndex+1, 18 do
-		MinArch['artifactbars'][i]:Hide();
+	for i=activeBarIndex+1, GetNumArchaeologyRaces() do
+		if MinArch['artifactbars'][i] then MinArch['artifactbars'][i]:Hide(); end
 		MinArchFrameHeight = MinArchFrameHeight - 25;
 	end
 		
@@ -193,7 +213,7 @@ function MinArch:ShowArtifactTooltip(BarIndex)
 				GameTooltip:AddLine(" ", NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1);
 			end
 			discovereddate = date("*t", artifact["firstcomplete"]);
-			GameTooltip:AddDoubleLine("Discovered On: |cffffffff"..discovereddate["month"].."/"..discovereddate["day"].."/"..discovereddate["year"], "x"..artifact["totalcomplete"], NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b);
+			GameTooltip:AddDoubleLine("Descubierto el: |cffffffff"..discovereddate["day"].."/"..discovereddate["month"].."/"..discovereddate["year"], "x"..artifact["totalcomplete"], NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b);
 		end
 	end
 	
@@ -214,12 +234,7 @@ function MinArch:KeystoneTooltip(self)
 	
 	GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT");
 	
-	local plural = "s";
-	if (artifact['heldKeystones'] == 1) then
-		plural = "";
-	end
-	
-	GameTooltip:AddLine("You have "..artifact['heldKeystones'].." "..tostring(name)..plural, GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b, 1);
+	GameTooltip:AddLine("Tienes: "..artifact['heldKeystones'].." ("..tostring(name)..")", GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b, 1);
 	GameTooltip:Show();
 end
 

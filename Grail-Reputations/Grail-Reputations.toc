@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: Grail |r|cff69ccf0Reputations|r
-## Author: Scott M Harrison
+## Author: Artiom97es
 ## Notes: Provides reputation award information to Grail
-## Version: 007
+## Version: 8-Artiom97es
 ## Dependencies: Grail
 ## LoadOnDemand: 1
 

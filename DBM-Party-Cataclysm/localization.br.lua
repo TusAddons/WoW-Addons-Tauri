@@ -1,4 +1,4 @@
-if GetLocale() ~= "ptBR" then return end
+﻿if GetLocale() ~= "ptBR" then return end
 
 local L
 
@@ -95,6 +95,10 @@ L:SetTimerLocalization({
 -- General Umbriss --
 ---------------------
 L= DBM:GetModLocalization(131)
+
+L:SetOptionLocalization{
+	PingBlitz	= "Apontar no minimapa quando o General Umbriss está prestes a usar Ataque Relâmpago em você"
+}
 
 --------------------------
 -- Forgemaster Throngus --
@@ -281,6 +285,7 @@ L:SetOptionLocalization({
 	WarnSubmerge	= "Exibir aviso para submergir",
 	TimerEmerge		= "Exibir cronógrafo para emergir",
 	TimerSubmerge	= "Exibir cronógrafo para submergir",
+	CrystalArrow	= "Exibir seta do DBM quando $spell:81634 está próximo de você",
 	RangeFrame		= "Exibir medidor de distância (5 metros)"
 })
 
@@ -374,7 +379,8 @@ L= DBM:GetModLocalization(186)
 
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame	= "Exibir medidor de distância (10 metros)"
+	RangeFrame	= "Exibir medidor de distância (10 metros)",
+	StormArrow	= "Exibir seta do DBM para $spell:43648"
 }
 
 ---------------
@@ -490,7 +496,8 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(175)
 
 L:SetOptionLocalization{
-	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477)
+	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
+	LinkArrow			= "Exibir seta do quando você é afetado por $spell:96477"
 }
 
 ------------------------

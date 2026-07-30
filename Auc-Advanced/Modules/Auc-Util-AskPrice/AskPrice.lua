@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Auctioneer Addon for World of Warcraft(tm).
 	Version: 7.6.5736 (TasmanianThylacine)
 	Revision: $Id: AskPrice.lua 5599 2016-05-23 16:50:35Z brykrys $
@@ -324,7 +324,7 @@ function private.getItems(str)
 		table.insert(itemList, tonumber(number) or 1)
 
 		-- Use GetItemInfo to rebuild the link with color
-		table.insert(itemList, link)
+		itemList[#itemList+1] = link
 	end
 	return itemList
 end

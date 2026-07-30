@@ -1,6 +1,6 @@
 ## Interface: 60000
 ## Title: Astrolabe |cff224477(lib)
+## Author: Artiom97es
 ## Notes: A library for drawing icons on the Minimap and World Maps.
-## Version: 1.0
-## Author: Esamynn (James Carrothers)
+## Version: 1.1-Artiom97es
 Load.xml

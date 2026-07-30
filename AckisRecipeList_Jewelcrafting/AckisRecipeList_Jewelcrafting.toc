@@ -1,9 +1,9 @@
 ## Interface: 70300
 ## Title: Ackis Recipe List: Jewelcrafting
+## Author: Artiom97es
 ## Notes: Jewelcrafting data for Ackis Recipe List.
-## Author: Ackis, Pompy, Ressy, Torhal
-## Version: 7.3.0.2-2-g7033eb0
-## X-Revision: 7033eb0
+## Version: 7.3.0.3-Artiom97es
+## X-Revision: c4cea05
 ## X-Date: 2017-08-30T4:38:02Z
 ## Dependencies: AckisRecipeList
 ## LoadOnDemand: 1

@@ -1,7 +1,7 @@
-local mod	= DBM:NewMod(2147, "DBM-Uldir", nil, 1031)
+﻿local mod	= DBM:NewMod(2147, "DBM-Uldir", nil, 1031)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17601 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 17597 $"):sub(12, -3))
 mod:SetCreatureID(132998)
 mod:SetEncounterID(2122)
 mod:SetZone()
@@ -361,7 +361,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnPowerMatrix:Show()
 			specWarnPowerMatrix:Play("matrixyou")
-			yellPowerMatrix:Yell()
 		else
 			if self:IsMythic() then
 				warnPowerMatrix:CombinedShow(1, args.destName)
@@ -370,7 +369,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if not tContains(matrixTargets, args.destName) then
-			table.insert(matrixTargets, args.destName)
+			matrixTargets[#matrixTargets+1] = args.destName
 		end
 	elseif spellId == 270447 then
 		local amount = args.amount or 1
@@ -393,7 +392,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--specWarnBloodFeastMoveTo:Show(args.destName)
 		end
 		if not tContains(bloodFeastTarget, args.destName) then
-			table.insert(bloodFeastTarget, args.destName)
+			bloodFeastTarget[#bloodFeastTarget+1] = args.destName
 		end
 	elseif spellId == 270443 then
 		--Start wave timer when boss activates, vs when he's first stunned.

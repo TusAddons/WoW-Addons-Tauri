@@ -41,8 +41,47 @@ Gatherer_RegisterRevision("$URL: http://svn.norganna.org/gatherer/tags/REL_7.3.1
 	out after running, to ensure that it can only ever be run once.  
 ]]
 function Gatherer.SpecialCases.ProcessSpecialCases()
-	
-	
+	local db = (Gatherer.Storage and Gatherer.Storage.GetRawDataTable and Gatherer.Storage.GetRawDataTable()) or _G["GatherItems"]
+	if db then
+		db["GARRISON_ALLIANCE_TIER3"] = nil
+		db["GARRISON_ALLIANCE_TIER2"] = nil
+		db["GARRISON_ALLIANCE_TIER1"] = nil
+		db["GARRISON_HORDE_TIER3"] = nil
+		db["GARRISON_HORDE_TIER2"] = nil
+		db["GARRISON_HORDE_TIER1"] = nil
+		db[971] = nil
+		db[972] = nil
+		db[973] = nil
+	end
+	if db then
+		local smvList = {db["DRAENOR_SHADOWMOON_VALLEY"], db[947]}
+		for _, gZone in ipairs(smvList) do
+			if gZone then
+				for gType, gData in pairs(gZone) do
+					for i = #gData, 1, -1 do
+						local node = gData[i]
+						if node and not node[4] and ((node[1] >= 0.57 and node[1] <= 0.76 and node[2] >= 0.26 and node[2] <= 0.48) or (node[1] >= 57 and node[1] <= 76 and node[2] >= 26 and node[2] <= 48)) then
+							table.remove(gData, i)
+						end
+					end
+				end
+			end
+		end
+		local ffrList = {db["DRAENOR_FROSTFIRE_RIDGE"], db[941]}
+		for _, gZone in ipairs(ffrList) do
+			if gZone then
+				for gType, gData in pairs(gZone) do
+					for i = #gData, 1, -1 do
+						local node = gData[i]
+						if node and not node[4] and ((node[1] >= 0.44 and node[1] <= 0.60 and node[2] >= 0.45 and node[2] <= 0.68) or (node[1] >= 44 and node[1] <= 60 and node[2] >= 45 and node[2] <= 68)) then
+							table.remove(gData, i)
+						end
+					end
+				end
+			end
+		end
+	end
+
 	-- nil out this function so that it cannot be called again
 	Gatherer.SpecialCases.ProcessSpecialCases = nil
 end

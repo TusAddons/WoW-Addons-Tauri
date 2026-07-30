@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 local icons = addon.Icons
@@ -62,7 +62,7 @@ local function BuildView()
 	end
 	
 	for k, v in pairs(questList) do
-		table.insert(view, k)
+		view[#view+1] = k
 	end
 
 	table.sort(view, function(a,b) 

@@ -1,4 +1,4 @@
-Prat:AddModuleToLoad(function()
+﻿Prat:AddModuleToLoad(function()
     local PRAT_MODULE = Prat:RequestModuleName("Search")
 
     if PRAT_MODULE == nil then
@@ -93,18 +93,18 @@ Suche]=],
    L=
 {
 	["Search"] = {
-		["err_notfound"] = "찾을 수 없음",
-		["err_tooshort"] = "검색 구문이 너무 짧습니다",
-		["find_results"] = "검색 결과:",
-		["module_desc"] = "대화창 검색 기능을 추가합니다.",
-		["module_info"] = [=[이 모듈은 대화 기록을 검색하는 /find 와 /findall 명령어를 추가합니다
+		["err_notfound"] = "ì°¾ì„ ìˆ˜ ì—†ìŒ",
+		["err_tooshort"] = "ê²€ìƒ‰ êµ¬ë¬¸ì´ ë„ˆë¬´ ì§§ìŠµë‹ˆë‹¤",
+		["find_results"] = "ê²€ìƒ‰ ê²°ê³¼:",
+		["module_desc"] = "ëŒ€í™”ì°½ ê²€ìƒ‰ ê¸°ëŠ¥ì„ ì¶”ê°€í•©ë‹ˆë‹¤.",
+		["module_info"] = [=[ì´ ëª¨ë“ˆì€ ëŒ€í™” ê¸°ë¡ì„ ê²€ìƒ‰í•˜ëŠ” /find ì™€ /findall ëª…ë ¹ì–´ë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤
 
-사용법:
+ì‚¬ìš©ë²•:
 
-/find <문자열>
+/find <ë¬¸ìžì—´>
 
-/findall <문자열>]=],
-		["module_name"] = "검색",
+/findall <ë¬¸ìžì—´>]=],
+		["module_name"] = "ê²€ìƒ‰",
 	}
 }
 
@@ -133,18 +133,18 @@ Suche]=],
    L=
 {
 	["Search"] = {
-		["err_notfound"] = "Не Найденно",
-		["err_tooshort"] = "Критерий поиска слишком короток",
-		["find_results"] = "Найти Результаты:",
-		["module_desc"] = "Добавляет возможность поиска текста в чате.",
-		["module_info"] = [=[Этот модуль добавляет команды /find и /findall для поиска в истории чата
+		["err_notfound"] = "ÐÐµ ÐÐ°Ð¹Ð´ÐµÐ½Ð½Ð¾",
+		["err_tooshort"] = "ÐšÑ€Ð¸Ñ‚ÐµÑ€Ð¸Ð¹ Ð¿Ð¾Ð¸ÑÐºÐ° ÑÐ»Ð¸ÑˆÐºÐ¾Ð¼ ÐºÐ¾Ñ€Ð¾Ñ‚Ð¾Ðº",
+		["find_results"] = "ÐÐ°Ð¹Ñ‚Ð¸ Ð ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ñ‹:",
+		["module_desc"] = "Ð”Ð¾Ð±Ð°Ð²Ð»ÑÐµÑ‚ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ÑÑ‚ÑŒ Ð¿Ð¾Ð¸ÑÐºÐ° Ñ‚ÐµÐºÑÑ‚Ð° Ð² Ñ‡Ð°Ñ‚Ðµ.",
+		["module_info"] = [=[Ð­Ñ‚Ð¾Ñ‚ Ð¼Ð¾Ð´ÑƒÐ»ÑŒ Ð´Ð¾Ð±Ð°Ð²Ð»ÑÐµÑ‚ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹ /find Ð¸ /findall Ð´Ð»Ñ Ð¿Ð¾Ð¸ÑÐºÐ° Ð² Ð¸ÑÑ‚Ð¾Ñ€Ð¸Ð¸ Ñ‡Ð°Ñ‚Ð°
 
-Использование:
+Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ðµ:
 
-/find <текст>
+/find <Ñ‚ÐµÐºÑÑ‚>
 
-/findall <текст>]=],
-		["module_name"] = "Поиск",
+/findall <Ñ‚ÐµÐºÑÑ‚>]=],
+		["module_name"] = "ÐŸÐ¾Ð¸ÑÐº",
 	}
 }
 
@@ -153,18 +153,18 @@ Suche]=],
    L=
 {
 	["Search"] = {
-		["err_notfound"] = "没找到",
-		["err_tooshort"] = "搜索文字太短",
-		["find_results"] = "查找结果：",
-		["module_desc"] = "增加搜索聊天框的能力",
-		["module_info"] = [=[此模块增加 /find 和 /findall 命令搜索聊天历史
+		["err_notfound"] = "æ²¡æ‰¾åˆ°",
+		["err_tooshort"] = "æœç´¢æ–‡å­—å¤ªçŸ­",
+		["find_results"] = "æŸ¥æ‰¾ç»“æžœï¼š",
+		["module_desc"] = "å¢žåŠ æœç´¢èŠå¤©æ¡†çš„èƒ½åŠ›",
+		["module_info"] = [=[æ­¤æ¨¡å—å¢žåŠ  /find å’Œ /findall å‘½ä»¤æœç´¢èŠå¤©åŽ†å²
 
-用法:
+ç”¨æ³•:
 
- /find <文字>
+ /find <æ–‡å­—>
 
- /findall <文字>]=],
-		["module_name"] = "搜索",
+ /findall <æ–‡å­—>]=],
+		["module_name"] = "æœç´¢",
 	}
 }
 
@@ -193,14 +193,14 @@ Suche]=],
    L=
 {
 	["Search"] = {
-		["err_notfound"] = "找不到",
-		["err_tooshort"] = "尋找物品太短",
-		["find_results"] = "找到結果:",
+		["err_notfound"] = "æ‰¾ä¸åˆ°",
+		["err_tooshort"] = "å°‹æ‰¾ç‰©å“å¤ªçŸ­",
+		["find_results"] = "æ‰¾åˆ°çµæžœ:",
 		--[[Translation missing --]]
 		--[[ ["module_desc"] = "",--]] 
 		--[[Translation missing --]]
 		--[[ ["module_info"] = "",--]] 
-		["module_name"] = "尋找",
+		["module_name"] = "å°‹æ‰¾",
 	}
 }
 
@@ -287,7 +287,7 @@ Suche]=],
             for _,v in ipairs(scrapelines) do
                 if v.message:find(word) then
                     if all then
-                        table.insert(foundlines, v)
+                        foundlines[#foundlines+1] = v
                     else
                         return
                     end

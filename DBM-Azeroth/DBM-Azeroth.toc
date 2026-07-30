@@ -1,6 +1,8 @@
 ﻿## Interface: 70300
 ## X-Min-Interface: 70300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Azeroth|r
+## Author: Artiom97es
+## Version: 1.1-Artiom97es
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0艾澤拉斯|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core

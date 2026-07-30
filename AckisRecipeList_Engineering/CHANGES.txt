@@ -1,11 +1,5 @@
 Changes since tag 7.3.0.1
 
-commit 4782e450e6752462f3239879bbb6c1e19c7c7f1d
-Author: Ressy <resa1983@hotmail.com>
-Date:   Sun Jan 28 12:45:33 2018 -0500
-
-    To update for skill level changes made in 7.3.5
-
 commit b1321d06acbda60058fcf3fd7c7d1c1423446a70
 Author: Ressy <resa1983@hotmail.com>
 Date:   Sun Oct 1 21:47:22 2017 -0400

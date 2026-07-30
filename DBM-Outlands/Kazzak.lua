@@ -1,32 +1,32 @@
 local mod	= DBM:NewMod("Kazzak", "DBM-Outlands")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20240428104809")
+mod:SetRevision(("$Revision: 164 $"):sub(12, -3))
 mod:SetCreatureID(18728)
 mod:SetModelID(17887)
-mod:SetUsedIcons(8)
-mod:EnableWBEngageSync()--Enable syncing engage in outdoors
+mod:SetUsedIcons(7, 8)
+mod:SetZone()
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED 32960 32964 21063",
-	"SPELL_AURA_REMOVED 32960"
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED"
 )
 
 local warningFrenzy		= mod:NewSpellAnnounce(32964, 3)
-local warningMark		= mod:NewTargetNoFilterAnnounce(32960, 4)
+local warningMark		= mod:NewTargetAnnounce(32960, 4)
 local warningTwisted	= mod:NewTargetAnnounce(21063, 4)
 
 local specWarnMark		= mod:NewSpecialWarningYou(32960, nil, nil, nil, 1, 2)
-local specWarnTwisted	= mod:NewSpecialWarningDispel(21063, "RemoveMagic", nil, 2, 1, 2)
+local specWarnTwisted	= mod:NewSpecialWarningDispel(21063, "Healer", nil, nil, 1, 2)
 
 local timerFrenzy		= mod:NewBuffActiveTimer(10, 32964)
 local timerFrenzyCD		= mod:NewCDTimer(60, 32964, nil, nil, nil, 3)
---local timerTwistedCD	= mod:NewCDTimer(30, 21063, nil, nil, nil, 5, nil, DBM_COMMON_L.HEALER_ICON..DBM_COMMON_L.MAGIC_ICON)--Unknown, but would be nice to have
+--local timerTwistedCD	= mod:NewCDTimer(30, 21063, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON..DBM_CORE_MAGIC_ICON)--Unknown, but would be nice to have
 local timerMark			= mod:NewTargetTimer(10, 32960, nil, nil, nil, 3)
 
-mod:AddSetIconOption("SetIconOnMark", 32960, true, 0, {8})
+mod:AddBoolOption("SetIconOnMark", true)
 
 function mod:OnCombatStart(delay)
 	timerFrenzyCD:Start(-delay)

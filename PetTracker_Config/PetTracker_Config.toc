@@ -1,9 +1,9 @@
 ## Interface: 70300
 ## Title: PetTracker Config
+## Author: Artiom97es
 ## Notes: Load on demand options and tutorial.
-## Author: Jaliborc (João Cardoso)
 ## X-Category: Battle Pets
-## Version: 7.3.0
+## Version: 7.3.1-Artiom97es
 
 ## Dependencies: PetTracker
 ## LoadOnDemand: 1

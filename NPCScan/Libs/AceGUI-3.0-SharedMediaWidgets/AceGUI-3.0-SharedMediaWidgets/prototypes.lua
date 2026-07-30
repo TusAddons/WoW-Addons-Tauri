@@ -1,4 +1,4 @@
--- Widget created by Yssaril
+﻿-- Widget created by Yssaril
 local DataVersion = 9002
 local AGSMW = LibStub:NewLibrary("AceGUISharedMediaWidgets-1.0", DataVersion)
 
@@ -262,7 +262,7 @@ do
 		frame:Hide()
 		frame:SetBackdrop(frameBackdrop)
 		frame.bgTex:SetTexture(nil)
-		table.insert(DropDownCache, frame)
+		DropDownCache[#DropDownCache+1] = frame
 		return nil
 	end
 end

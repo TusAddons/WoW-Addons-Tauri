@@ -1,12 +1,12 @@
 ## Title: Configator |cff224477(lib)
+## Author: Artiom97es
 ## Notes: Configator allows authors to easily construct a graphical user configuration interface.
 ##
 ## Interface: 70300
 ## LoadOnDemand: 0
 ##
-## Version: 7.6.5736 (TasmanianThylacine)
+## Version: 7.6.5736 (TasmanianThylacine)_v2-Artiom97es
 ## Revision: $Id: Configator.toc 432 2017-09-02 11:52:14Z brykrys $
-## Author: Norganna's AddOns
 ## X-Part-Of: Libraries
 ## X-Category: Library
 ## X-Max-Interface: 70300

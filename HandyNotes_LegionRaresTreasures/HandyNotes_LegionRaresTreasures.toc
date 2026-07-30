@@ -1,5 +1,5 @@
-## Interface: 70100
-## Title: HandyNotes_Legion R & T
+## Interface: 70300
+## Title: HandyNotes_Legion R & T (Tauri 7.3.5)
 ## Version: 1.01b
 ## Notes: Shows location of treasures and rares in Legion
 ## Author: Katjes (Coronet - Dun Morogh(EU))

@@ -21,11 +21,9 @@ L= DBM:GetModLocalization(2197)
 L= DBM:GetModLocalization(2199)
 
 -----------------------
--- Doom's Howl/ Lion's Roar --
+-- Doom's Howl --
 -----------------------
 L= DBM:GetModLocalization(2213)
-
-L= DBM:GetModLocalization(2212)
 
 -----------------------
 -- Warbringer Yenajz --

@@ -1,7 +1,8 @@
 ## Interface: 70200
 ## Title: Lib: NoTaint_UIDropDownMenu
+## Author: Artiom97es
 ## Notes: Replacement for standard UIDropDownMenu
-## Version: 7.2.0.24015-r3
+## Version: 7.2.0.24015-r4-Artiom97es
 ## X-Category: Libraries
 ## OptionalDeps: LibStub
 

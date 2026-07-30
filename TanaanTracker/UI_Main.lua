@@ -21,11 +21,32 @@ end
 -- MAIN FRAME CREATION
 -------------------------------------------------------------
 function TanaanTracker.CreateMainFrame()
+    if InCombatLockdown() then
+        print("|cffff0000[TanaanTracker]|r Cannot initialize or show UI during combat lockdown.")
+        return
+    end
     if TanaanTracker.mainFrame and TanaanTracker.mainFrame:IsShown() then return end
     if TanaanTracker.mainFrame then
         TanaanTracker.mainFrame:Show()
         return
     end
+
+function TanaanTracker.ToggleMainFrame()
+    if InCombatLockdown() then
+        print("|cffff0000[TanaanTracker]|r Cannot toggle UI during combat lockdown.")
+        return
+    end
+    if not TanaanTracker.mainFrame then
+        if TanaanTracker.CreateMainFrame then TanaanTracker.CreateMainFrame() end
+    end
+    if not TanaanTracker.mainFrame then return end
+    if TanaanTracker.mainFrame:IsShown() then
+        TanaanTracker.mainFrame:Hide()
+    else
+        TanaanTracker.mainFrame:Show()
+        if TanaanTracker.UpdateUI then TanaanTracker.UpdateUI() end
+    end
+end
 
     local f = CreateFrame("Frame", "TanaanTracker_MainFrame", UIParent)
     f:SetSize(490, 260)
@@ -50,19 +71,19 @@ function TanaanTracker.CreateMainFrame()
     subtitle:SetText("|cff00ff00Trust in the Process.|r")
 
         -------------------------------------------------------------
-    -- Realm dropdown (view-only)
+    -- Realm Cycle Button (replaces UIDropDownMenu to fix taint)
     -------------------------------------------------------------
-    local realmDropdown = CreateFrame("Frame", "TanaanTrackerRealmDropdown", f, "UIDropDownMenuTemplate")
-    realmDropdown:SetPoint("TOP", f, "TOP", -17, -7)
-    f.realmDropdown = realmDropdown
+    local realmBtn = CreateFrame("Button", "TanaanTrackerRealmBtn", f, "UIPanelButtonTemplate")
+    realmBtn:SetPoint("TOP", f, "TOP", 0, -10)
+    realmBtn:SetSize(170, 24)
+    f.realmBtn = realmBtn
     f._titleFS = title
-    -- ElvUI skinning (inline)
+
     if ElvUI and ElvUI[1] and ElvUI[1].GetModule then
         local E = ElvUI[1]
         local S = E:GetModule("Skins", true)
-        if S and S.HandleDropDownBox then
-            S:HandleDropDownBox(realmDropdown, 170)
-            realmDropdown._elvSkinned = true
+        if S and S.HandleButton then
+            S:HandleButton(realmBtn, true)
         end
     end
 
@@ -77,41 +98,42 @@ function TanaanTracker.CreateMainFrame()
         return out
     end
 
-    -- Populate dropdown
-    f._PopulateRealms = function(self, level)
-        local info = UIDropDownMenu_CreateInfo()
+    local function UpdateRealmBtnText()
         local current = TanaanTracker.currentRealmView or (GetRealmName() or "Unknown Realm")
-        for _, realmName in ipairs(SortedRealmNames()) do
-            wipe(info)
-            info.text = realmName
-            info.checked = (realmName == current)
-            info.func = function()
-                TanaanTracker.currentRealmView = realmName
-                UIDropDownMenu_SetText(realmDropdown, realmName)
-                -- Update title if needed
-                if f._titleFS then
-                    f._titleFS:SetText("|cff66c0f4Tanaan Tracker|r")
-                end
-                -- Refresh UI slightly later (safe delay)
-                C_Timer.After(0.05, function()
-                    if TanaanTracker.UpdateUI then TanaanTracker.UpdateUI() end
-                end)
-            end
-            UIDropDownMenu_AddButton(info, level)
-        end
-    end
-
-    UIDropDownMenu_Initialize(realmDropdown, f._PopulateRealms)
-    UIDropDownMenu_SetWidth(realmDropdown, 170)
-    UIDropDownMenu_SetText(realmDropdown, TanaanTracker.currentRealmView or (GetRealmName() or "Unknown Realm"))
-
-    f:HookScript("OnShow", function()
-        local current = TanaanTracker.currentRealmView or (GetRealmName() or "Unknown Realm")
-        UIDropDownMenu_Initialize(realmDropdown, f._PopulateRealms)
-        UIDropDownMenu_SetText(realmDropdown, current)
+        realmBtn:SetText("Realm: " .. current)
         if f._titleFS then
             f._titleFS:SetText("|cff66c0f4Tanaan Tracker|r")
         end
+    end
+
+    realmBtn:SetScript("OnClick", function()
+        if InCombatLockdown() then return end
+        local realms = SortedRealmNames()
+        if #realms == 0 then return end
+        local current = TanaanTracker.currentRealmView or (GetRealmName() or "Unknown Realm")
+        local idx = 1
+        for i, r in ipairs(realms) do
+            if r == current then
+                idx = i
+                break
+            end
+        end
+        idx = idx + 1
+        if idx > #realms then idx = 1 end
+        
+        TanaanTracker.currentRealmView = realms[idx]
+        UpdateRealmBtnText()
+        
+        C_Timer.After(0.05, function()
+            if TanaanTracker.UpdateUI then TanaanTracker.UpdateUI() end
+        end)
+    end)
+
+    UpdateRealmBtnText()
+
+    f:HookScript("OnShow", function()
+        if InCombatLockdown() then return end
+        UpdateRealmBtnText()
         C_Timer.After(0.05, function()
             if TanaanTracker.UpdateUI then TanaanTracker.UpdateUI() end
         end)
@@ -269,7 +291,6 @@ function TanaanTracker.CreateMainFrame()
             local db = TanaanTracker:ViewedRealmDB()
             local t = db[name]
             local msgOut
-
             if t and type(t) == "number" then
                 local remaining = (t + data.respawn) - GetServerTime()
                 if remaining < 0 then remaining = 0 end
@@ -279,31 +300,6 @@ function TanaanTracker.CreateMainFrame()
                 msgOut = name .. ": no data yet"
             end
 
-            -------------------------------------------------------
-            -- SHIFT-MODIFIER LOGIC
-            -------------------------------------------------------
-            if IsShiftKeyDown() then
-                -- SHIFT + LMB = global channel announce
-                if btn == "LeftButton" then
-                    local chanId = GetChannelName("global")
-                    if chanId and chanId > 0 then
-                        SendChatMessage(msgOut, "CHANNEL", nil, chanId)
-                    else
-                        print("|cffff0000[TanaanTracker]|r You are not in channel 'global'.")
-                    end
-                    return
-                end
-
-                -- SHIFT + RMB = YELL
-                if btn == "RightButton" then
-                    SendChatMessage(msgOut, "YELL")
-                    return
-                end
-            end
-
-            -------------------------------------------------------
-            -- NORMAL (NON-SHIFT) BEHAVIOR
-            -------------------------------------------------------
             if btn == "LeftButton" then
                 if IsInGuild() then
                     SendChatMessage(msgOut, "GUILD")
@@ -314,7 +310,6 @@ function TanaanTracker.CreateMainFrame()
                 SendChatMessage(msgOut, "SAY")
             end
         end)
-
 
         -- Tooltip
         nameBtn:SetScript("OnEnter", function()
@@ -376,6 +371,10 @@ end
 -------------------------------------------------------------
 function TanaanTracker.UpdateUI()
     if not TanaanTracker.mainFrame then return end
+    if InCombatLockdown() then
+        TanaanTracker._pendingUpdateUI = true
+        return
+    end
 
     local db = TanaanTracker:ViewedRealmDB()
     local widgets = TanaanTracker.rareWidgets

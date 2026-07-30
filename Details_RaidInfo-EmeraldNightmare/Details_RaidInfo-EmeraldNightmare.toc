@@ -1,0 +1,8 @@
+## Interface: 70300
+## Title: Details: Emerald Nightmare
+## Author: Artiom97es
+## Version: 1.1-Artiom97es
+## Notes: Plugin for Details
+## RequiredDeps: Details
+
+Details_RaidInfo-EmeraldNightmare.lua

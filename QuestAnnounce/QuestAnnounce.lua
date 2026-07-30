@@ -65,10 +65,10 @@ function QuestAnnounce:UI_INFO_MESSAGE(event, id, msg)
 				if(stillNeeded == 0 and settings.every == 0) then
 					QuestAnnounce:SendMsg(L["Completed: "]..msg)
 				elseif(QuestAnnounce.db.profile.settings.every > 0) then
-					local every = math.fmod(iNumItems, settings.every)
-					QuestAnnounce:SendDebugMsg("Every fMod: "..every)
+					local currentQuartile = math.floor((iNumItems * 4) / iNumNeeded)
+					local prevQuartile = math.floor(((iNumItems - 1) * 4) / iNumNeeded)
 				
-					if(every == 0 and stillNeeded > 0) then
+					if(currentQuartile > prevQuartile and stillNeeded > 0) then
 						QuestAnnounce:SendMsg(L["Progress: "]..msg)
 					elseif(stillNeeded == 0) then
 						QuestAnnounce:SendMsg(L["Completed: "]..msg)

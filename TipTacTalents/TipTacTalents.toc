@@ -1,7 +1,7 @@
 ## Interface: 70300
-## Version: 17.10.10
+## Version: 17.10.11-Artiom97es
 ## Title: TipTacTalents
-## Author: Aezay (Earthen Ring EU)
+## Author: Artiom97es
 ## Notes: Adds Talent Spec to Player Tooltips
 ## OptionalDeps: TipTac
 core.lua

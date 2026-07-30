@@ -1,10 +1,10 @@
-﻿--[[
+--[[
 
 ****************************************************************************************
 LibAboutPanel
 
-File date: @file-date-iso@
-Project version: @project-version@
+File date: 2014-08-06T5:23:36Z
+Project version: v1.52
 
 Author: Tekkub, Ackis
 
@@ -67,19 +67,6 @@ elseif GAME_LOCALE == "zhCN" then
 elseif GAME_LOCALE == "zhTW" then
 	L["About"] = "關於"
 	L["Click and press Ctrl-C to copy"] = "左鍵點擊並按下 Ctrl-C 以複製字串"
-elseif GAME_LOCALE == "frFR" then
-	L["About"] = "À propos"
-	L["Author"] = "Auteur"
-	L["Category"] = "Catégorie"
-	L["Credits"] = "Crédits"
-	L["Email"] = "Email"
-	L["License"] = "License"
-	L["Localizations"] = "Traduction"
-	L["Version"] = "Version"
-	L["Website"] = "Site"
-	L["Click and press Ctrl-C to copy"] = "Clique puis Ctrl-C pour copier."
-	L["on"] = "sur"
-	L["BugReport"] = "Rapport de bug"
 end
 
 function lib.new(parent, addonname)
@@ -136,8 +123,8 @@ function lib.OpenEditbox(self)
 end
 
 
-local fields = { "Version", "Author", "X-Category", "X-License", "X-Email", "Email", "eMail", "X-Website", "X-Credits", "X-Localizations", "X-BugReport" }
-local haseditbox = { ["X-Website"] = true, ["X-Email"] = true, ["Email"] = true, ["eMail"] = true, ["x-BugReport"] = true }
+local fields = { "Version", "Author", "X-Category", "X-License", "X-Email", "Email", "eMail", "X-Website", "X-Credits", "X-Localizations" }
+local haseditbox = { ["X-Website"] = true, ["X-Email"] = true, ["Email"] = true, ["eMail"] = true }
 local fieldLabels = { ["eMail"] = "Email" }
 
 local function HideTooltip() GameTooltip:Hide() end
@@ -223,7 +210,7 @@ function lib.OnShow(frame)
 				end
 			elseif field == "Version" then
 				local addonversion = GetAddOnMetadata(frame.addonname, field)
-				-- Remove @project-revision@ and replace it with Repository
+				-- Remove 053887905abd9023c3bd666a2357336e958d8924 and replace it with Repository
 				addonversion = string.gsub(addonversion, "@project.revision@", "Repository") -- Curse
 				addonversion = string.gsub(addonversion, "wowi:revision", "Repository") -- WoWInterface
 				detail:SetText(addonversion)
@@ -235,8 +222,6 @@ function lib.OnShow(frame)
 					detail:SetText(val)
 				end
 			elseif field == "X-Website" then
-				detail:SetText((haseditbox[field] and "|cff77ccff" or "") .. gsub(val, "^https?://", ""))
-			elseif field == "X-BugReport" then
 				detail:SetText((haseditbox[field] and "|cff77ccff" or "") .. gsub(val, "^https?://", ""))
 			else
 				detail:SetText((haseditbox[field] and "|cff77ccff" or "") .. val)

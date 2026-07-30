@@ -1,8 +1,9 @@
 ## Interface: 70200
 ## LoadOnDemand: 1
 ## Title: Lib: LibPetJournal-2.0
+## Author: Artiom97es
 ## Notes: Provide a list of mini pets without filter interference.
-## Author: End
+## Version: 1.1-Artiom97es
 ## X-Email: end@cornhooves.org
 ## X-Category: Library
 LibStub.lua

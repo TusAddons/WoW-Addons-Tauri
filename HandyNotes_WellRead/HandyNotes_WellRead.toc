@@ -1,7 +1,8 @@
 ## Interface: 70300
-## Version: 7.3.5.0
+## Version: 7.3.5.1-Artiom97es
 
 ## Title: HandyNotes: Well Read
+## Author: Artiom97es
 ## Notes: Shows the books you still need to read for the Well Read achievement.
 ## Title-deDE: HandyNotes: Bücherwurm
 ## Notes-deDE: Zeigt die Bücher an, die Ihr für den Erfolg "Bücherwurm" noch lesen müsst.
@@ -10,7 +11,6 @@
 ## Title-esMX: HandyNotes: Erudito
 ## Notes-esMX: Muestra los libros que todavía debes que leer para el logro "Erudito".
 
-## Author: Phanx
 ## X-Email: addons@phanx.net
 ## X-Copyright: Copyright (c) 2014-2018 Phanx. All rights reserved.
 ## X-Website: https://github.com/Phanx/HandyNotes_WellRead

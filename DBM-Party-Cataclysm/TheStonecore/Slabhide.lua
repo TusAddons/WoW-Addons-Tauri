@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(111, "DBM-Party-Cataclysm", 7, 67)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 16 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 182 $"):sub(12, -3))
 mod:SetCreatureID(43214)
 mod:SetEncounterID(1059)
 mod:SetZone()
@@ -18,8 +18,8 @@ local warnGroundphase		= mod:NewAnnounce("WarnGroundphase", 2, "Interface\\AddOn
 local warnAirphase			= mod:NewAnnounce("WarnAirphase", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 local warnFissure			= mod:NewSpellAnnounce(80803, 3)
 
-local specWarnEruption 		= mod:NewSpecialWarningMove(80801, nil, nil, nil, 1, 2)
-local specWarnCrystalStorm 	= mod:NewSpecialWarning("specWarnCrystalStorm", nil, nil, nil, 2, 2)
+local specWarnEruption 		= mod:NewSpecialWarningMove(80801)
+local specWarnCrystalStorm 	= mod:NewSpecialWarning("specWarnCrystalStorm")
 
 local timerFissureCD		= mod:NewCDTimer(6.2, 80803, nil, nil, nil, 3)
 local timerCrystalStorm		= mod:NewBuffActiveTimer(8.5, 92265, nil, nil, nil, 2)
@@ -55,7 +55,6 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if (spellId == 80800 or spellId == 80801) and destGUID == UnitGUID("player") and self:AntiSpam() then
 		specWarnEruption:Show()
-		specWarnEruption:Play("runaway")
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
@@ -63,7 +62,6 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 92265 then
 		specWarnCrystalStorm:Show()
-		specWarnCrystalStorm:Play("findshelter")
 	end
 end
 
@@ -73,7 +71,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 80803 then--Lava Fissure
 		warnFissure:Show()
 		timerFissureCD:Start()

@@ -292,7 +292,7 @@ function Colors:EditColor(Branch, Name, Attach)
 	Cur_Name = Name
 
 	ColorPickerFrame:Hide()
-	PlaySound("igMainMenuOptionCheckBoxOn")
+	PlaySound(856)
 	local r, g, b = ColorPickerFrame:GetColorRGB()
 
 	local c = Colors:GetColor(Branch, Name)

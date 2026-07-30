@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 
@@ -112,7 +112,7 @@ local function BuildView()
 				id = tonumber(id)
 					
 				if not collected[id] then
-					table.insert(uncollected, id)
+					uncollected[#uncollected+1] = id
 				end
 			end
 		end
@@ -126,7 +126,7 @@ local function BuildView()
 	
 	if currentFollowers == 3 then		-- Not collected only
 		for k, id in pairs(uncollected) do
-			table.insert(view, id)
+			view[#view+1] = id
 		end
 		
 		-- table is already sorted.
@@ -138,11 +138,11 @@ local function BuildView()
 	-- in every other case (1, 2, 4 ,5) , we must add collected followers
 	for id, _ in pairs(collected) do
 		if currentFollowers <= 2 then				-- All (collected + uncollected) = 1, or 2 = collected only
-			table.insert(view, id)
+			view[#view+1] = id
 		elseif currentFollowers == 4 and not nonInnFollowers[id] then		-- All, but only from the inn
-			table.insert(view, id)
+			view[#view+1] = id
 		elseif currentFollowers == 5 and nonInnFollowers[id] then		-- All, but only NOT from the inn
-			table.insert(view, id)
+			view[#view+1] = id
 		end
 	end
 	table.sort(view, SortByFollowerName)
@@ -151,7 +151,7 @@ local function BuildView()
 	if currentFollowers == 1 then				-- All (collected + uncollected)
 		-- already sorted
 		for k, id in pairs(uncollected) do
-			table.insert(view, id)
+			view[#view+1] = id
 		end
 	end
 	

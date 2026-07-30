@@ -1,4 +1,4 @@
--- Z-Perl UnitFrames
+﻿-- Z-Perl UnitFrames
 -- Author: Resike
 -- License: GNU GPL v3, 18 October 2014
 
@@ -1374,8 +1374,8 @@ local xpStartupMemory = {}
 -- ZPerl_MinimapButton_Init
 function ZPerl_MinimapButton_Init(self)
 	self.time = 0
-	collectgarbage()
-	UpdateAddOnMemoryUsage()
+	-- collectgarbage() -- Disabled for performance
+		UpdateAddOnMemoryUsage()
 	local totalKB = 0
 	for k, v in pairs(xpModList) do
 		local usedKB = GetAddOnMemoryUsage(v)
@@ -1501,7 +1501,7 @@ function XPerl_MinimapButton_Details(tt, ldb)
 		end
 
 		-- Show X-Perl memory usage
-		UpdateAddOnMemoryUsage()
+		-- UpdateAddOnMemoryUsage() -- Disabled for performance
 		UpdateAddOnCPUUsage()
 		local totalKB, totalCPU, diffKB, diff = 0, 0, 0
 		local cpuText = ""

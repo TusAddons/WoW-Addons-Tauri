@@ -1,7 +1,7 @@
 ## Interface: 70300
-## Version: 17.10.10
+## Version: 17.10.11-Artiom97es
 ## Title: TipTac
-## Author: Aezay (Earthen Ring EU)
+## Author: Artiom97es
 ## Notes: Highly Customizable Tooltip Enhancement Addon
 ## SavedVariables: TipTac_Config
 core.lua

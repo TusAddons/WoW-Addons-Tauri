@@ -1,4 +1,4 @@
--- vim: ts=2 sw=2 ai et fenc=utf8
+﻿-- vim: ts=2 sw=2 ai et fenc=utf8
 
 --[[
 -- These events can be registered for using the regular CallbackHandler ways.
@@ -829,7 +829,7 @@ end
 function lib:QueuedInspections ()
   local q = {}
   for guid in pairs (self.state.mainq) do
-    table.insert (q, guid)
+    q[#q+1] = guid
   end
   return q
 end
@@ -838,7 +838,7 @@ end
 function lib:StaleInspections ()
   local q = {}
   for guid in pairs (self.state.staleq) do
-    table.insert (q, guid)
+    q[#q+1] = guid
   end
   return q
 end
@@ -893,8 +893,8 @@ local unitstrings = {
   party = { "player" }, -- Player not part of partyN
   player = { "player" }
 }
-for i = 1,40 do table.insert (unitstrings.raid, "raid"..i) end
-for i = 1,4  do table.insert (unitstrings.party, "party"..i) end
+for i = 1,40 do unitstrings.raid[#unitstrings.raid+1] = "raid"..i end
+for i = 1,4  do unitstrings.party[#unitstrings.party+1] = "party"..i end
 
 
 -- Returns an array with the set of unit ids for the current group

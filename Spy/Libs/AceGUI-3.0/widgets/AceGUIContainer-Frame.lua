@@ -1,4 +1,4 @@
---[[-----------------------------------------------------------------------------
+﻿--[[-----------------------------------------------------------------------------
 Frame Container
 -------------------------------------------------------------------------------]]
 local Type, Version = "Frame", 24
@@ -21,7 +21,7 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 Scripts
 -------------------------------------------------------------------------------]]
 local function Button_OnClick(frame)
-	PlaySound("gsTitleOptionExit")
+	PlaySound(856)
 	frame.obj:Hide()
 end
 

@@ -1,6 +1,7 @@
 ## Interface: 70300
-## Author: Sylvanaar
+## Version: 1.1-Artiom97es
 ## X-License: GPLv3
 
 
 eventfilters.lua
+## Author: Artiom97es

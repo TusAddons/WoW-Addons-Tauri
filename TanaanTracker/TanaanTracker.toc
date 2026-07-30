@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: TanaanTracker
+## Author: Artiom97es
 ## Notes: Track Tanaan Champions with Timers, TomTom waypoints, Guild Sync, Manual Sync, Per-realm Tracking.
-## Author: Reg
-## Version: 2.3
+## Version: 2.2.2-Artiom97es
 ## SavedVariables: TanaanTrackerDB
 
 TanaanTracker.lua
@@ -11,5 +11,4 @@ Sync.lua
 Sync_Manual.lua
 TomTomSupport.lua
 UI_Main.lua
-Sync_GlobalProbe.lua
 UI_Minimap.lua

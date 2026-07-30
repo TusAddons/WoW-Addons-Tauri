@@ -3,10 +3,10 @@
 koKR.lua
 koKR localization strings for Ackis Recipe List
 ************************************************************************
-File date: 2012-08-18T4:52:05Z 
+File date: 2012-08-18T9:52:05Z 
 File revision: 4d6b8e446c1381fe41575a671a6c54702932e4db 
-Project revision: 91a3a6169d0f9c5d597f01630a67df42a2703590
-Project version: 7.3.0.2-15-g91a3a616
+Project revision: e062c22807cdc0ea8ab367d74537384aaee9cb59
+Project version: 7.3.0.1
 ************************************************************************
 Original translated by: damjau, next96
 Currently maintained by:
@@ -1458,4 +1458,8 @@ L["Zorbin Fandazzle"] = "조브린 팬대즐"
 L["Zula Slagfury"] = "줄라 슬래그퓨리"
 L["Zurai"] = "주라이"
 L["Zurii"] = "주리"
+
+-- ToC
+L["Description"] = "Ackis Recipe List|1은;는; 당신의 전문 기술들을 훑어서 제조법들을 얻는 방법에 대한 정보를 제공할 애드온입니다. 룬 벼리기를 포함하여 모든 전문 기술들에 작용합니다."
+L["Title"] = "Ackis의 제조법 리스트 2.0"
 

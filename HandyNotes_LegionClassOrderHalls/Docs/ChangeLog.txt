@@ -1,9 +1,9 @@
-$Id: ChangeLog.txt 90 2018-04-25 02:36:22Z arith $
+$Id: ChangeLog.txt 88 2018-04-25 02:34:49Z arith $
 
 Revision History:
 =================
 
-* v1.26 (Apr. 25, 2018)
+* v1.26 (Apr. 25, 2017)
 -----------------------
 - Lib update: LibUIDropDownMenu
 - Localization update:

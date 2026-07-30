@@ -1,0 +1,7 @@
+## Interface: 60200
+## Version: 2.2-Artiom97es
+## Title: LibAnim
+## Author: Artiom97es
+## Notes: Animations!
+
+LibAnim.lua

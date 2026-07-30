@@ -1,4 +1,4 @@
-SpyStats = Spy:NewModule("SpyStats", "AceTimer-3.0")
+﻿SpyStats = Spy:NewModule("SpyStats", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Spy", true)
 
 local Spy = Spy
@@ -75,7 +75,7 @@ function SpyStats:OnInitialize()
     SpyStatsWinsLosesCheckboxText:SetText(L["Won/Lost"])	
     SpyStatsReasonCheckboxText:SetText(L["Reason"])		
     
-    table.insert(UISpecialFrames, "SpyStatsFrame")
+    UISpecialFrames[#UISpecialFrames+1] = "SpyStatsFrame"
 end
 
 function SpyStats:OnDisable()

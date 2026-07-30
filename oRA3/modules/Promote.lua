@@ -1,4 +1,4 @@
---------------------------------------------------------------------------------
+﻿--------------------------------------------------------------------------------
 -- Setup
 --
 
@@ -66,7 +66,7 @@ do
 	local function addCallback(widget, event, value)
 		if type(value) ~= "string" then return true end
 		if util.inTable(factionDb.promotes, value) then return true end
-		table.insert(factionDb.promotes, value)
+		factionDb.promotes[#factionDb.promotes+1] = value
 		add:SetText()
 		delete:SetList(factionDb.promotes)
 		delete:SetDisabled(factionDb.promoteAll or #factionDb.promotes < 1)

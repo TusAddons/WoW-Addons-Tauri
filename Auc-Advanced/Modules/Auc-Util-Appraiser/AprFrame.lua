@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Auctioneer - Appraisals and Auction Posting
 	Version: 7.6.5736 (TasmanianThylacine)
 	Revision: $Id: AprFrame.lua 5727 2017-09-23 12:11:17Z brykrys $
@@ -122,7 +122,7 @@ function private.CreateFrames()
 										if ignore then
 											item.ignore = true
 										end
-										table.insert(ItemList, item)
+										ItemList[#ItemList+1] = item
 									end
 								end
 							end
@@ -163,7 +163,7 @@ function private.CreateFrames()
 						if get('util.appraiser.item.'..sig..".ignore") then
 							item.ignore = true
 						end
-						table.insert(ItemList, item)
+						ItemList[#ItemList+1] = item
 					end
 				end
 			end

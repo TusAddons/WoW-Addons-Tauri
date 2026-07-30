@@ -1,4 +1,4 @@
--- Simple code profiler, inspired by Chapter 1.14 (p120-130) of Game Programming Gems 1 
+﻿-- Simple code profiler, inspired by Chapter 1.14 (p120-130) of Game Programming Gems 1 
 -- Ported from C++ to Lua by Thaoky. It will most likely evolve as my needs change.
 
 local addonName = "Altoholic"
@@ -64,7 +64,7 @@ function ns:Dump()
 	local view = {}
 	
 	for k, _ in pairs(samples) do
-		table.insert(view, k)
+		view[#view+1] = k
 	end
 	
 	sort(view, function(a, b)

@@ -45,6 +45,7 @@ function Objectives:Startup()
 	self.Header = header
 
 	hooksecurefunc('ObjectiveTracker_Update', function()
+		if InCombatLockdown() then return end
 		local off = self:GetUsedHeight()
 		local availableEntries = floor(((Parent.maxHeight or 0) - off - 45) / 20)
 
@@ -56,18 +57,15 @@ function Objectives:Startup()
 		self:SetPoint('TOPLEFT', Parent, -10, -off)
 	end)
 
-	HeaderButton:HookScript('OnHide', function()
-		if self:IsShown() then
-			HeaderButton:Show()
-		end
-	end)
+	-- Removed HeaderButton:HookScript('OnHide') to fix ObjectiveTracker taint
 end
 
 function Objectives:TrackingChanged()
+	if InCombatLockdown() then return end
 	self:Update()
 	self:SetShown(not Addon.Sets.HideTracker and self.Anchor:IsShown())
 
-	HeaderButton:SetShown(Parent.currentBlock or self:IsShown())
+	-- Removed HeaderButton:SetShown to fix ObjectiveTracker taint
 	OBJECTIVE_TRACKER_ADDONS[self.Index] = self:IsShown() and self:GetHeight() or 0
 end
 

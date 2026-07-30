@@ -3,10 +3,10 @@
 itIT.lua
 itIT localization strings for Ackis Recipe List
 ************************************************************************
-File date: 2012-08-18T4:52:05Z 
+File date: 2012-08-18T9:52:05Z 
 File revision: 4d6b8e446c1381fe41575a671a6c54702932e4db 
-Project revision: 91a3a6169d0f9c5d597f01630a67df42a2703590
-Project version: 7.3.0.2-15-g91a3a616
+Project revision: e062c22807cdc0ea8ab367d74537384aaee9cb59
+Project version: 7.3.0.1
 ************************************************************************
 Original translated by: Pettigrow
 Currently maintained by:
@@ -1518,4 +1518,8 @@ L["Zorbin Fandazzle"] = "Zorbin Saldaleva"
 L["Zula Slagfury"] = "Zula Spezzafuria"
 L["Zurai"] = true
 L["Zurii"] = true
+
+-- ToC
+L["Description"] = "Ackis Recipe List è un addon che scansiona le tue competenze nelle professioni e fornisce informazioni su come ottenere ricette. Funziona per tutte le professioni, inclusa Forgiarune."
+L["Title"] = "Ackis Recipe List"
 

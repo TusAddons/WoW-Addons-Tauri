@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: DataStore_Spells
+## Author: Artiom97es
 ## Notes: Stores information about character spells
-## Author: Thaoky (EU-Marécages de Zangar)
-## Version: r31
+## Version: r32-Artiom97es
 ## Dependencies: DataStore
 ## OptionalDeps: Ace3
 ## SavedVariables: DataStore_SpellsDB

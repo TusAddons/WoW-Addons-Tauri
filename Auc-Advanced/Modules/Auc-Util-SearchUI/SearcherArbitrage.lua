@@ -97,7 +97,7 @@ do -- limit scope of locals
 
 			-- insert all realms *including* our current realm
 			-- this is a workaround for problems with Selectboxes if the current saved setting is not in the list
-			table.insert(realmlist, realm)
+			realmlist[#realmlist+1] = realm
 		end
 	end
 end

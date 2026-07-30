@@ -615,6 +615,11 @@ end
 
 -- XPerl_Player_Pet_Set_Bits
 function XPerl_Player_Pet_Set_Bits(self)
+	if (InCombatLockdown()) then
+		XPerl_OutOfCombatQueue[XPerl_Player_Pet_Set_Bits] = self
+		return
+	end
+
 	if (not virtual) then
 		RegisterUnitWatch(self)
 	end

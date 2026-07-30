@@ -1,8 +1,9 @@
 ## Interface: 70300
 ## X-Min-Interface: 70300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Uldir|r
+## Author: Artiom97es
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0울디르|r
-## Author: MysticalOS
+## Version: 1.1-Artiom97es
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariables: DBMUldir_AllSavedVars
@@ -19,7 +20,6 @@ localization.en.lua
 localization.kr.lua
 localization.ru.lua
 localization.cn.lua
-localization.es.lua
 Taloc.lua
 Mother.lua
 FetidDevourer.lua

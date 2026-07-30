@@ -1,5 +1,5 @@
---[[	*** DataStore_Achievements ***
-Written by : Thaoky, EU-Marécages de Zangar
+﻿--[[	*** DataStore_Achievements ***
+Written by : Thaoky, EU-MarÃ©cages de Zangar
 June 21st, 2009
 --]]
 if not DataStore then return end
@@ -153,7 +153,7 @@ local function ScanSingleAchievement(id, isCompleted, month, day, year, flags, w
 	      table.insert(CriteriaCache, tostring(j))
 	   else
 	      if quantity and reqQuantity and quantity > 0 and reqQuantity > 1 then		-- a quantity of 0 = not started, don't save !
-	         table.insert(CriteriaCache, j .. ":" .. quantity)
+	         CriteriaCache[#CriteriaCache+1] = j .. ":" .. quantity
 	      end
 	   end
 	end

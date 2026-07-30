@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Auctioneer - Appraisals and Auction Posting
 	Version: 7.6.5736 (TasmanianThylacine)
 	Revision: $Id: AprSettings.lua 5665 2016-09-01 16:11:08Z brykrys $
@@ -227,7 +227,7 @@ function lib.UpdateList() -- dead code?
 		data = d.items[i]
 		if get("util.appraiser.item."..data[1]..".model") then
 			if not filter or data[2]:find(filter, 1, true) then
-				table.insert(scrollItems, data)
+				scrollItems[#scrollItems+1] = data
 			end
 		end
 	end

@@ -1,7 +1,7 @@
 ## Interface: 70300
 ## Title: SecureTabs-2.0
+## Author: Artiom97es
 ## Notes: Easly and securely add tabs to existing panels
-## Author: Jaliborc (João Cardoso)
 
 ## X-Licence: GNU General Public License - Version 3
 ## OptionalDeps: LibStub

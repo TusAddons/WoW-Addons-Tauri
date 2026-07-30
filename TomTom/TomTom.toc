@@ -1,13 +1,12 @@
 ## Interface: 70300
 ## Title: TomTom
-## Author: jnwhiteh
-## Version: v70300-1.0.1-beta
+## Author: Artiom97es
+## Version: v70300-1.0.1-beta_v2-Artiom97es
 ## License: All Rights Reserved
 ## Notes: Acts as your portable navigation assistant
 ## Notes-frFR: Agit comme un assistant de navigation portable
 ## Notes-zhCN:一个简单的导航助手。
 ## Notes-ruRU: Удобный портативный навигатор по игровой карте
-## Author: Cladhaire
 ## SavedVariables: TomTomDB, TomTomWaypoints, TomTomWaypointsMF
 ## OptionalDeps: HereBeDragons-1.0
 

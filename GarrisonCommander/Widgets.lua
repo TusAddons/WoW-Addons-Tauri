@@ -438,6 +438,11 @@ local function GMCMissionButton()
 		local frame=CreateFrame("Button",type..unique,nil,"GarrisonMissionListButtonTemplate") --"GarrisonCommanderMissionListButtonTemplate")
 		frame.Title:SetFontObject("QuestFont_Shadow_Small")
 		frame.Summary:SetFontObject("QuestFont_Shadow_Small")
+		frame.GetMissionFrame = function()
+			if OrderHallMissionFrame and OrderHallMissionFrame:IsShown() then return OrderHallMissionFrame end
+			if GarrisonShipyardFrame and GarrisonShipyardFrame:IsShown() then return GarrisonShipyardFrame end
+			return GarrisonMissionFrame
+		end
 		frame:SetScript("OnEnter",nil)
 		frame:SetScript("OnLeave",nil)
 		frame:RegisterForClicks("LeftButtonUp","RightButtonUp")

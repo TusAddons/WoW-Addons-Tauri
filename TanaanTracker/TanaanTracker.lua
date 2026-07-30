@@ -59,6 +59,7 @@ EF:RegisterEvent("PLAYER_LOGIN")
 EF:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 EF:RegisterEvent("LOOT_OPENED")
 EF:RegisterEvent("CHAT_MSG_ADDON")
+EF:RegisterEvent("PLAYER_REGEN_ENABLED")
 
 
 -- alerts setting helpers (default: enabled)
@@ -172,30 +173,37 @@ local function MaybeAlert(rareName, remaining)
         return string.format("|cffffd100%s|r", name)
     end
 
+function TanaanTracker.InitAlertFrame()
+    if TanaanTrackerAlertFrame then return end
+    local f = CreateFrame("Frame", "TanaanTrackerAlertFrame", UIParent)
+    f:SetSize(800, 100)
+    f:SetPoint("CENTER", UIParent, "CENTER", 0, 150)
+
+    local text = f:CreateFontString(nil, "OVERLAY", "GameFontNormalHuge")
+    text:SetAllPoints()
+    text:SetJustifyH("CENTER")
+    text:SetTextColor(1, 0.5, 0, 1)
+    text:SetFont("Fonts\\FRIZQT__.TTF", 26, "OUTLINE")
+    f.text = text
+
+    f.fade = f:CreateAnimationGroup()
+    local fade = f.fade:CreateAnimation("Alpha")
+    fade:SetFromAlpha(1)
+    fade:SetToAlpha(0)
+    fade:SetDuration(2.5)
+    fade:SetStartDelay(4)
+    fade:SetSmoothing("OUT")
+    f.fade:SetScript("OnFinished", function() f:Hide() end)
+    f:Hide()
+    TanaanTrackerAlertFrame = f
+end
+
     local function ShowCenterMessage(msg)
+        if InCombatLockdown() then return end
         if not TanaanTrackerAlertFrame then
-            local f = CreateFrame("Frame", "TanaanTrackerAlertFrame", UIParent)
-            f:SetSize(800, 100)
-            f:SetPoint("CENTER", UIParent, "CENTER", 0, 150)
-
-            local text = f:CreateFontString(nil, "OVERLAY", "GameFontNormalHuge")
-            text:SetAllPoints()
-            text:SetJustifyH("CENTER")
-            text:SetTextColor(1, 0.5, 0, 1)
-            text:SetFont("Fonts\\FRIZQT__.TTF", 26, "OUTLINE")
-            f.text = text
-
-            f.fade = f:CreateAnimationGroup()
-            local fade = f.fade:CreateAnimation("Alpha")
-            fade:SetFromAlpha(1)
-            fade:SetToAlpha(0)
-            fade:SetDuration(2.5)
-            fade:SetStartDelay(4)
-            fade:SetSmoothing("OUT")
-            f.fade:SetScript("OnFinished", function() f:Hide() end)
-            TanaanTrackerAlertFrame = f
+            TanaanTracker.InitAlertFrame()
         end
-
+        if not TanaanTrackerAlertFrame then return end
         local f = TanaanTrackerAlertFrame
         f.text:SetText(msg)
         f:SetAlpha(1)
@@ -361,7 +369,9 @@ updater:SetScript("OnUpdate", function(_, elapsed)
     if uiTicker >= (TanaanTracker.UI_UPDATE_INTERVAL or 1) then
         uiTicker = 0
         if TanaanTracker.mainFrame and TanaanTracker.mainFrame:IsShown() and TanaanTracker.UpdateUI then
-            TanaanTracker.UpdateUI()
+            if not InCombatLockdown() then
+                TanaanTracker.UpdateUI()
+            end
         end
     end
 end)
@@ -485,16 +495,14 @@ SlashCmdList["TAN"] = function(msg)
     -- DEFAULT: TOGGLE WINDOW (no argument)
     -------------------------------------------------
     if cmd == "" then
-        if not TanaanTracker.mainFrame and TanaanTracker.CreateMainFrame then
-            TanaanTracker.CreateMainFrame()
+        if InCombatLockdown() then
+            print("|cffff0000[TanaanTracker]|r Cannot toggle UI during combat lockdown.")
+            return
         end
-        if not TanaanTracker.mainFrame then return end
-
-        if TanaanTracker.mainFrame:IsShown() then
-            TanaanTracker.mainFrame:Hide()
-        else
-            TanaanTracker.mainFrame:Show()
-            if TanaanTracker.UpdateUI then TanaanTracker.UpdateUI() end
+        if TanaanTracker.ToggleMainFrame then
+            TanaanTracker.ToggleMainFrame()
+        elseif not TanaanTracker.mainFrame and TanaanTracker.CreateMainFrame then
+            TanaanTracker.CreateMainFrame()
         end
         return
     end
@@ -630,11 +638,17 @@ EF:SetScript("OnEvent", function(_, event, ...)
     if event == "PLAYER_LOGIN" then
         TanaanTrackerDB.debug = TanaanTrackerDB.debug or false
         TanaanTracker:DebugPrint("Loaded for realm:", currentRealm)
+        if TanaanTracker.InitAlertFrame then TanaanTracker.InitAlertFrame() end
         if TanaanTracker.CreateMinimapButton then TanaanTracker.CreateMinimapButton() end
         if TanaanTracker.CreateMainFrame then TanaanTracker.CreateMainFrame() end
         -- load alert toggle
         if TanaanTrackerDB.alertsEnabled == nil then
             TanaanTrackerDB.alertsEnabled = true
+        end
+    elseif event == "PLAYER_REGEN_ENABLED" then
+        if TanaanTracker._pendingUpdateUI and TanaanTracker.UpdateUI then
+            TanaanTracker._pendingUpdateUI = nil
+            TanaanTracker.UpdateUI()
         end
     elseif event == "CHAT_MSG_ADDON" then
         if TanaanTracker.OnAddonMessage then TanaanTracker.OnAddonMessage(...) end

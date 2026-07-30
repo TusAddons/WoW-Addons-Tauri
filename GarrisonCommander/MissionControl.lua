@@ -114,6 +114,16 @@ function module:CreateMissionList(workList)
 			if self:GetMissionData(missionID,'isRare') and addon:GetBoolean('GCSKIPRARE') then
 				break
 			end
+			if class == 'resources' and addon:GetBoolean('GCSKIPRESOURCE') then
+				local currency = self:GetMissionData(missionID, 'costCurrencyTypesID')
+				if not currency or currency == 0 then
+					currency = (OrderHallMissionFrame and OrderHallMissionFrame:IsShown()) and 1220 or 824
+				end
+				local available = select(2, GetCurrencyInfo(currency)) or 0
+				if available >= 6000 then
+					break
+				end
+			end
 			for _,testclass in ipairs(priority) do
 				if class==testclass or moreClasses[testclass] then
 					if self:AcceptMission(missionID,testclass,self:GetMissionData(missionID,testclass),name,choosenby) then
@@ -143,8 +153,12 @@ end
 -- @param #number missionID Optional, to run a single mission
 -- @param #boolean start Optional, tells that follower already are on mission and that we need just to start it
 function module:RunMission(missionID,start)
+	print("|cff00ccff[GC Debug]|r RunMission (Seguidores) llamado con missionID:", tostring(missionID), "start:", tostring(start))
 	local GMC=GMF.MissionControlTab
 	if (start) then
+		print("|cff00ccff[GC Debug]|r Ejecutando G.StartMission para missionID:", tostring(missionID))
+		local perc = select(4, G.GetPartyMissionInfo(missionID))
+		print("|cff00ccff[GC Debug]|r Probabilidad de éxito en huecos antes de StartMission:", perc and (perc.."%") or "0%")
 		G.StartMission(missionID)
 		PlaySound(SOUNDKIT.UI_GARRISON_COMMAND_TABLE_MISSION_START)
 		addon:RefreshFollowerStatus()
@@ -153,14 +167,19 @@ function module:RunMission(missionID,start)
 	for i=1,#GMC.list.Parties do
 		local party=GMC.list.Parties[i]
 		if (missionID and party.missionID==missionID or not missionID) then
+			print("|cff00ccff[GC Debug]|r Procesando misión:", party.missionID, "full:", tostring(party.full), "blacklist:", tostring(blacklist[party.missionID]))
 			GMC.list.widget:RemoveChild(party.missionID)
 			GMC.list.widget:DoLayout()
 			if (party.full and not blacklist[party.missionID]) then
 				for j=1,#party.members do
-					G.AddFollowerToMission(party.missionID, party.members[j])
+					local res = G.AddFollowerToMission(party.missionID, party.members[j])
+					local fname = G.GetFollowerName(party.members[j]) or tostring(party.members[j])
+					print("|cff00ccff[GC Debug]|r Añadiendo seguidor [" .. j .. "]:", fname, "("..tostring(party.members[j])..") -> Resultado:", tostring(res))
 				end
 				if (not missionID) then
 					coroutine.yield(true)
+					local perc = select(4, G.GetPartyMissionInfo(party.missionID))
+					print("|cff00ccff[GC Debug]|r Tras pausa (coroutine), prob. de éxito en misión", party.missionID, ":", perc and (perc.."%") or "0%")
 					G.StartMission(party.missionID)
 					PlaySound(SOUNDKIT.UI_GARRISON_COMMAND_TABLE_MISSION_START)
 					coroutine.yield(true)
@@ -169,6 +188,7 @@ function module:RunMission(missionID,start)
 					return
 				end
 			else
+				print("|cffff0000[GC Debug]|r Misión omitida porque party.full = false o está en blacklist.")
 				if not missionID then coroutine.yield(true) end
 			end
 		end
@@ -232,14 +252,9 @@ do
 					minimumChance=tonumber(settings.rewardChance[class]) or 100
 				end
 				local party={members={},perc=0}
-				--[===[@debug@
-				print(self:GetMissionData(missionID,"name"),missionID,"  Requested",class,minimumChance,party.perc,party.full)
-				--@end-debug@]===]
 				self:MCMatchMaker(missionID,party,settings.skipEpic,minimumChance)
 				if ( party.full and party.perc >= minimumChance) then
-					--[===[@debug@
-					print(missionID,"  Accepted",party.perc,minimumChance)
-					--@end-debug@]===]
+					print("|cff00ff00[GC Debug]|r Misión [" .. tostring(G.GetMissionName(missionID)) .. "] ACEPTADA: prob=" .. tostring(party.perc) .. "% (req: " .. tostring(minimumChance) .. "%)")
 					local mb=AceGUI:Create("GMCMissionButton")
 					if not blacklist[missionID] then
 						for i=1,#party.members do
@@ -254,6 +269,8 @@ do
 					mb:Blacklist(blacklist[missionID])
 					mb:SetCallback("OnClick",leftclick)
 					mb:SetCallback("OnRightClick",rightclick)
+				else
+					print("|cffff8800[GC Debug]|r Misión [" .. tostring(G.GetMissionName(missionID)) .. "] DESCARTADA en emparejamiento: party.full=" .. tostring(party.full) .. ", prob=" .. tostring(party.perc) .. "% (req: " .. tostring(minimumChance) .. "%)")
 				end
 				timeElapsed=0
 			end
@@ -292,11 +309,13 @@ function module:OnClick_Start(this,button)
 	local GMC=GMF.MissionControlTab
 	GMC.list.widget:ClearChildren()
 	if (self:GetTotFollowers(AVAILABLE) == 0) then
+		print("|cffff0000[GC Debug]|r Todos tus seguidores están ocupados.")
 		GMC.list.widget:SetTitle("All followers are busy")
 		GMC.list.widget:SetTitleColor(C.Orange())
 		return
 	end
 	if ( G.IsAboveFollowerSoftCap(1) ) then
+		print("|cffff0000[GC Debug]|r Excedes el límite máximo de seguidores activos.")
 		GMC.list.widget:SetTitle(GARRISON_MAX_FOLLOWERS_MISSION_TOOLTIP)
 		GMC.list.widget:SetTitleColor(C.Red())
 		return
@@ -307,9 +326,11 @@ function module:OnClick_Start(this,button)
 	wipe(GMCUsedFollowers)
 	wipe(GMC.list.Parties)
 	self:RefreshFollowerStatus()
+	print("|cff00ccff[GC Debug]|r Botón Calculate pulsado: se han encontrado " .. #aMissions .. " misiones aptas según tus filtros de recompensas.")
 	if (#aMissions>0) then
 		GMC.list.widget:SetFormattedTitle(L["Processing mission %d of %d"],1,#aMissions)
 	else
+		print("|cffff0000[GC Debug]|r 0 misiones coinciden con tus filtros del menú izquierdo.")
 		GMC.list.widget:SetTitle("No mission matches your criteria")
 		GMC.list.widget:SetTitleColor(C.Red())
 	end
@@ -761,8 +782,16 @@ function addon:ApplyGCSKIPEPIC(value)
 	toggleEpicWarning()
 	module:Refresh()
 end
+function addon:ApplyGCFILLEPIC(value)
+	settings.fillEpic=value
+	module:Refresh()
+end
 function addon:ApplyGCSKIPRARE(value)
 	settings.skipRare=value
+	module:Refresh()
+end
+function addon:ApplyGCSKIPRESOURCE(value)
+	settings.skipResource=value
 	module:Refresh()
 end
 function addon:ApplyMINXPLEVEL(value)
@@ -786,8 +815,16 @@ function module:BuildFlags()
 	addon:AddSlider("MINXPLEVEL",90,90,100,L["Minimum XP missions level"],L["Ignore XP missions under this level"])
 	addon:AddSlider("MINGOLD",50,1,1000,L["Minimum Gold Value"],L["Gold missions wich returns less than this amount are ignored"])
 	addon:AddToggle("GCSKIPEPIC",settings.skipEpic,L["Ignore epic for xp missions."],L["IF you have a Salvage Yard you probably dont want to have this one checked"])
+	addon:AddToggle("GCFILLEPIC",settings.fillEpic,L["Use epics to fill XP missions"],L["If an XP mission lacks non-epic followers to fill all slots, use epic followers for remaining slots"])
 	addon:AddToggle("GCSKIPRARE",settings.skipRare,L["Ignore rare missions"],L["Rare missions will not be considered"])
+	addon:AddToggle("GCSKIPRESOURCE",settings.skipResource,L["Ignore resource missions (>6000)"],L["Ignore resource missions if you already have more than 6000 resources"])
 	addon:AddToggle("AUTOLOGOUT",false,L["Auto Logout"],L["Automatically logout after sending missions"])
+	addon:Trigger('GCMINLEVEL')
+	addon:Trigger('GCMINUPGRADE')
+	addon:Trigger('GCSKIPEPIC')
+	addon:Trigger('GCFILLEPIC')
+	addon:Trigger('GCSKIPRARE')
+	addon:Trigger('GCSKIPRESOURCE')
 end
 function module:BuildDuration()
 	-- Duration

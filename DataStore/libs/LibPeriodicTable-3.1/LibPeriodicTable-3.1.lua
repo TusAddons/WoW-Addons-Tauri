@@ -1,4 +1,4 @@
---[[
+﻿--[[
 Name: PeriodicTable-3.1
 Revision: $Rev: 446 $
 Author: Nymbia (nymbia@gmail.com)
@@ -364,7 +364,7 @@ function PT3:ItemSearch(item)
 				end
 			end
 			if not have then
-				table.insert(matches, set)
+				matches[#matches+1] = set
 			end
 		end
 	end

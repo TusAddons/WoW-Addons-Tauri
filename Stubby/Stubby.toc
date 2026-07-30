@@ -1,13 +1,13 @@
 ## Title: Stubby |cff224477(lib)
+## Author: Artiom97es
 ## Notes: Allows AddOns to load automatically, and provides event handling support.
 ##
 ## Interface: 70300
 ## OptionalDeps: !nLog, DebugLib
 ## SavedVariables: StubbyConfig
 ##
-## Version: 7.6.5736 (TasmanianThylacine)
+## Version: 7.6.5736 (TasmanianThylacine)_v2-Artiom97es
 ## Revision: $Id: Stubby.toc 432 2017-09-02 11:52:14Z brykrys $
-## Author: Norganna's AddOns
 ## X-Part-Of: Libraries
 ## X-Category: Library
 ## X-Max-Interface: 70300

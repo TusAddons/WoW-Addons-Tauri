@@ -47,3 +47,32 @@ Gatherer.Var.UpdateWorldMap = -1
 Gatherer.Var.Skills = { }
 Gatherer.Var.ZoneData = { }
 Gatherer.Var.MainMapItem = { }
+
+SLASH_ESCLOG1 = "/esc"
+SlashCmdList["ESCLOG"] = function()
+    local blocking = false
+    for index, value in pairs(UISpecialFrames) do
+        local frame = _G[value]
+        if frame and frame:IsShown() then
+            print("|cffff0000[EscLog] Bloqueando ESC (Especial):|r " .. value)
+            blocking = true
+        end
+    end
+    local panels = {"left", "center", "right", "doublewide", "fullscreen"}
+    for _, pos in ipairs(panels) do
+        local frame = GetUIPanel(pos)
+        if frame and frame:IsShown() then
+            print("|cffff0000[EscLog] Bloqueando ESC (Panel " .. pos .. "):|r " .. (frame:GetName() or tostring(frame)))
+            blocking = true
+        end
+    end
+    if UIDROPDOWNMENU_OPEN_MENU then
+        print("|cffff0000[EscLog] Bloqueando ESC (Dropdown):|r " .. (UIDROPDOWNMENU_OPEN_MENU:GetName() or tostring(UIDROPDOWNMENU_OPEN_MENU)))
+        blocking = true
+    end
+    if not blocking then
+        print("|cff00ff00[EscLog]|r Ningún marco especial está bloqueando ESC ahora mismo.")
+    else
+        print("|cffffff00[EscLog]|r Uno de estos marcos se niega a cerrarse al pulsar ESC. (Fallo de AddOn / OnHide)")
+    end
+end

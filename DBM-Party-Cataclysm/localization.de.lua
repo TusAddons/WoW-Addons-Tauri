@@ -1,4 +1,4 @@
-if GetLocale() ~= "deDE" then return end
+﻿if GetLocale() ~= "deDE" then return end
 local L
 
 -------------------------
@@ -90,6 +90,10 @@ L:SetTimerLocalization({
 -- General Umbriss --
 ---------------------
 L= DBM:GetModLocalization(131)
+
+L:SetOptionLocalization{
+	PingBlitz	= "Pingt die Minimap, wenn General Umbriss dich anstürmt"
+}
 
 --------------------------
 -- Forgemaster Throngus --
@@ -276,6 +280,7 @@ L:SetOptionLocalization({
 	WarnSubmerge	= "Zeige Warnung für Abtauchen",
 	TimerEmerge		= "Zeige Zeit bis Auftauchen",
 	TimerSubmerge	= "Zeige Zeit bis Abtauchen",
+	CrystalArrow	= "Zeige DBM-Pfeil, wenn $spell:81634 in deiner Nähe ist",
 	RangeFrame		= "Zeige Abstandsfenster (5m)"
 })
 
@@ -372,7 +377,8 @@ L:SetOptionLocalization{
 L= DBM:GetModLocalization(186)
 
 L:SetOptionLocalization{
-	RangeFrame	= "Zeige Abstandsfenster (10m)"
+	RangeFrame	= "Zeige Abstandsfenster (10m)",
+	StormArrow	= "Zeige DBM-Pfeil für $spell:43648"
 }
 
 --------------
@@ -482,6 +488,7 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(175)
 
 L:SetOptionLocalization{
+	LinkArrow			= "Zeige DBM-Pfeil, wenn du von $spell:96477 betroffen bist"
 }
 
 ------------------------

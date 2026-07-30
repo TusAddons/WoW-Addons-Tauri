@@ -1,4 +1,4 @@
---[[ File
+﻿--[[ File
 NAME: TitanVariables.lua
 DESC: This file contains the routines to initialize, get, and set the basic data structures used by Titan. 
 It also sets the global variables and constants used by Titan.
@@ -472,7 +472,7 @@ local function TitanVariables_SyncSkins()
 		local skins = {}
 		-- insert all the Titan defaults
 		for idx, v in pairs(TitanSkinsDefault) do
-			table.insert (skins, TitanSkinsDefault[idx]) 
+			skins[#skins+1] = TitanSkinsDefault[idx] 
 --			table.sort(skins, function(a, b)
 --				return string.lower(skins[a] and skins[a].name or "") 
 --					< string.lower(skins[b] and skins[b].name or "")
@@ -496,7 +496,7 @@ local function TitanVariables_SyncSkins()
 					-- old Titan skin - let it drop
 				else
 					-- assume it is a user installed skin
-					table.insert (skins, TitanSkins[index])
+					skins[#skins+1] = TitanSkins[index]
 --					table.sort(skins, function(a, b)
 --						return string.lower(skins[a] and skins[a].name or "") 
 --							< string.lower(skins[b] and skins[b].name or "")

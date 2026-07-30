@@ -1,6 +1,7 @@
 ## Interface: 70300
 ## 
 ## Title: Gatherer
+## Author: Artiom97es
 ## 
 ## Notes: Gatherer is an addon that allows you to remember your gathering locations and view them on either or all of your main map, your minimap, or in an onscreen display HUD. It also allows you to share your finds with your guild, raid or your friends.
 ## Notes-itIT: Gatherer è un addon che ti consente di memorizzare i luoghi di raccolta e vederli tutti o alcuni sulla mappa principale, la tua minimappa, o su un'interfaccia a schermo. Consente inoltre di condividere le scoperte con la tua gilda, raid o i tuoi amici.
@@ -14,8 +15,7 @@
 ## Notes-trTR: Gatherer, sizin toplama bölgelerinizi hatırlayan ve bunları oyun içinde, haritanızda ve küçük haritanızda göstermeyi sağlayan bir eklentidir. Ayrıca bu bilgileri arkadaşlarınız, guild veya raid'de ki kişilerle paylaşır.
 ## Notes-esMX: Este es un accesorio que te permite rastrear los nodos de las profesiones de herboristeria y mineria.  'Lordnica'
 ## 
-## Version: 7.3.1
-## Author: Esamynn
+## Version: 7.3.2-Artiom97es
 ## 
 # myAddOns Support Metadata
 ## X-Date: 

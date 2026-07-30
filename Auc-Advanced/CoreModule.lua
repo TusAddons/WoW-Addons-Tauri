@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Auctioneer
 	Version: 7.6.5736 (TasmanianThylacine)
 	Revision: $Id: CoreModule.lua 5670 2016-09-03 11:59:41Z brykrys $
@@ -113,7 +113,7 @@ function lib.CoreModuleOnLoad(addon)
 								end
 							end
 						end
-						table.insert(fs, fCode)
+						fs[#fs+1] = fCode
 					end
 				elseif (tp=="function") then
 					if not coremoduleInternal[elem] then coremoduleInternal[elem] = {} end
@@ -128,7 +128,7 @@ function lib.CoreModuleOnLoad(addon)
 							end
 						end
 					end
-					table.insert(fs, dat)
+					fs[#fs+1] = dat
 				end
 			else
 				if nLog then

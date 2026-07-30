@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 
@@ -582,7 +582,7 @@ function ns:ClearResults()
 end
 
 function ns:AddResult(t)
-	table.insert(results, t)
+	results[#results+1] = t
 end
 
 function ns:GetNumResults()

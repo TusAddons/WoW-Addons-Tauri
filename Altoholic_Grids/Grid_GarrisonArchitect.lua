@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 
@@ -91,7 +91,7 @@ local function BuildView()
 	local currentBuildings = addon:GetOption(OPTION_BUILDINGS)
 	
 	for i, building in ipairs(Buildings[currentBuildings]) do
-		table.insert(view, building)	-- insert the table pointer
+		view[#view+1] = building	-- insert the table pointer
 	end
 	
 	isViewValid = true

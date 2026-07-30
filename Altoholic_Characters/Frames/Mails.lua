@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 
@@ -63,7 +63,7 @@ function ns:BuildView(field, ascending)
 	
 	local numMails = DS:GetNumMails(character) or 0
 	for i = 1, numMails do
-		table.insert(self.view, i)
+		self.view[#self.view+1] = i
 	end
 
 	if field == "name" then

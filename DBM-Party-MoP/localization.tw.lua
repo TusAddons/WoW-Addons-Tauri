@@ -1,4 +1,4 @@
-if GetLocale() ~= "zhTW" then return end
+﻿if GetLocale() ~= "zhTW" then return end
 local L
 
 -----------------------
@@ -268,6 +268,10 @@ L= DBM:GetModLocalization(688)
 -- Korlof --
 -----------------------
 L= DBM:GetModLocalization(671)
+
+L:SetOptionLocalization({
+	KickArrow	= "當$spell:114487在你附近時顯示DBM箭頭"
+})
 
 -----------------------
 -- Durand/High Inquisitor Whitemane --

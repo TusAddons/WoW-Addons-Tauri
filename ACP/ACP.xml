@@ -3,7 +3,7 @@
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ W:\WORLDO~1\BLIZZA~1\FrameXML\UI.xsd">
     <Button name="ACP_AddonListEntryTemplate" virtual="true">
         <Size>
-            <AbsDimension x="520" y="16"/>
+            <AbsDimension x="650" y="16"/>
         </Size>
         <Layers>
             <Layer level="BACKGROUND">
@@ -177,21 +177,54 @@
     <!--</Button>-->
     <Frame name="ACP_AddonList" hidden="true" toplevel="true" enableMouse="true" moveable="true" enableKeyboard="false">
         <Size>
-            <AbsDimension x="640" y="512"/>
+            <AbsDimension x="780" y="512"/>
         </Size>
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+            <BackgroundInsets>
+                <AbsInset left="11" right="12" top="12" bottom="11"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="32"/>
+            </EdgeSize>
+        </Backdrop>
         <HitRectInsets>
             <AbsInset left="0" right="44" top="0" bottom="13"/>
         </HitRectInsets>
         <Frames>
+            <EditBox name="ACPSearchBox" inherits="SearchBoxTemplate" autoFocus="false">
+                <Size x="150" y="20"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="40" y="-33"/>
+                </Anchors>
+                <Scripts>
+                    <OnTextChanged>
+                        SearchBoxTemplate_OnTextChanged(self)
+                        ACP:Search_OnTextChanged(self)
+                    </OnTextChanged>
+                </Scripts>
+            </EditBox>
+            <Button name="ACPCategoryDropDown" inherits="UIDropDownMenuTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="190" y="-30"/>
+                </Anchors>
+                <Scripts>
+                    <OnShow>
+                        ACP:CategoryDropDown_OnShow(self)
+                    </OnShow>
+                </Scripts>
+            </Button>
             <CheckButton name="ACPAddonListForceLoad">
                 <Size>
                     <AbsDimension x="32" y="32"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="TOP" x="85" y="-20"/>
+                    <Anchor point="TOPLEFT" x="620" y="-27"/>
                 </Anchors>
                 <Layers>
                     <Layer level="ARTWORK">
@@ -236,8 +269,7 @@
             </Button>
             <Button name="$parentSortDropDown" inherits="UIDropDownMenuTemplate">
                 <Anchors>
-                    <Anchor point="RIGHT" relativeTo="ACPAddonListForceLoad" relativePoint="LEFT" x="-120" y="0"/>
-
+                    <Anchor point="TOPLEFT" x="330" y="-30"/>
                 </Anchors>
                 <Scripts>
                     <OnShow>
@@ -247,12 +279,12 @@
             </Button>
             <Button name="$parentDisableAll" inherits="UIPanelButtonTemplate" text="Disable All">
                 <Size>
-                    <AbsDimension x="80" y="24"/>
+                    <AbsDimension x="110" y="24"/>
                 </Size>
                 <Anchors>
                     <Anchor point="BOTTOMLEFT">
                         <Offset>
-                            <AbsDimension x="90" y="20"/>
+                            <AbsDimension x="95" y="20"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -264,12 +296,12 @@
             </Button>
             <Button name="$parentEnableAll" inherits="UIPanelButtonTemplate" text="Enable All">
                 <Size>
-                    <AbsDimension x="80" y="24"/>
+                    <AbsDimension x="110" y="24"/>
                 </Size>
                 <Anchors>
                     <Anchor point="BOTTOMLEFT">
                         <Offset>
-                            <AbsDimension x="175" y="20"/>
+                            <AbsDimension x="210" y="20"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -301,7 +333,7 @@
             </Button>
             <Button name="$parentSetButton" inherits="UIPanelButtonTemplate" text="Sets">
                 <Size>
-                    <AbsDimension x="40" y="24"/>
+                    <AbsDimension x="70" y="24"/>
                 </Size>
                 <Anchors>
                     <Anchor point="BOTTOMLEFT">
@@ -321,9 +353,9 @@
                     <AbsDimension x="32" y="32"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentEnableAll" relativePoint="RIGHT">
+                    <Anchor point="TOPLEFT">
                         <Offset>
-                            <AbsDimension x="5" y="0"/>
+                            <AbsDimension x="480" y="-27"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -364,12 +396,12 @@
             </CheckButton>
             <Button name="$parent_ReloadUI" inherits="UIPanelButtonTemplate" text="ReloadUI">
                 <Size>
-                    <AbsDimension x="80" y="25"/>
+                    <AbsDimension x="100" y="25"/>
                 </Size>
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT">
                         <Offset>
-                            <AbsDimension x="-160" y="20"/>
+                            <AbsDimension x="-130" y="20"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -381,12 +413,12 @@
             </Button>
             <Button name="$parentBottomClose" inherits="UIPanelButtonTemplate" text="Close">
                 <Size>
-                    <AbsDimension x="80" y="24"/>
+                    <AbsDimension x="100" y="24"/>
                 </Size>
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT">
                         <Offset>
-                            <AbsDimension x="-50" y="20"/>
+                            <AbsDimension x="-25" y="20"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -578,7 +610,7 @@
             </Button>
             <ScrollFrame name="$parent_ScrollFrame" inherits="FauxScrollFrameTemplate">
                 <Size>
-                    <AbsDimension x="510" y="410"/>
+                    <AbsDimension x="650" y="410"/>
                 </Size>
                 <Anchors>
                     <Anchor point="TOPLEFT">
@@ -636,65 +668,7 @@
             </ScrollFrame>
         </Frames>
         <Layers>
-            <Layer level="BACKGROUND">
-                <Texture file="Interface\HelpFrame\HelpFrame-TopLeft">
-                    <Size>
-                        <AbsDimension x="256" y="256"/>
-                    </Size>
-                    <Anchors>
-                        <Anchor point="TOPLEFT"/>
-                    </Anchors>
-                </Texture>
-                <Texture file="Interface\HelpFrame\HelpFrame-Top">
-                    <Size>
-                        <AbsDimension x="256" y="256"/>
-                    </Size>
-                    <Anchors>
-                        <Anchor point="TOPLEFT">
-                            <Offset>
-                                <AbsDimension x="256" y="0"/>
-                            </Offset>
-                        </Anchor>
-                    </Anchors>
-                </Texture>
-                <Texture file="Interface\HelpFrame\HelpFrame-TopRight">
-                    <Size>
-                        <AbsDimension x="128" y="256"/>
-                    </Size>
-                    <Anchors>
-                        <Anchor point="TOPRIGHT"/>
-                    </Anchors>
-                </Texture>
-                <Texture file="Interface\HelpFrame\HelpFrame-BotLeft">
-                    <Size>
-                        <AbsDimension x="256" y="256"/>
-                    </Size>
-                    <Anchors>
-                        <Anchor point="BOTTOMLEFT"/>
-                    </Anchors>
-                </Texture>
-                <Texture file="Interface\HelpFrame\HelpFrame-Bottom">
-                    <Size>
-                        <AbsDimension x="256" y="256"/>
-                    </Size>
-                    <Anchors>
-                        <Anchor point="BOTTOMLEFT">
-                            <Offset>
-                                <AbsDimension x="256" y="0"/>
-                            </Offset>
-                        </Anchor>
-                    </Anchors>
-                </Texture>
-                <Texture file="Interface\HelpFrame\HelpFrame-BotRight">
-                    <Size>
-                        <AbsDimension x="128" y="256"/>
-                    </Size>
-                    <Anchors>
-                        <Anchor point="BOTTOMRIGHT"/>
-                    </Anchors>
-                </Texture>
-            </Layer>
-            <Layer level="ARTWORK">
+        <Layer level="ARTWORK">
                 <Texture name="$parentHeader" file="Interface\DialogFrame\UI-DialogBox-Header">
                     <Size>
                         <AbsDimension x="536" y="64"/>

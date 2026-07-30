@@ -3,10 +3,10 @@
 enUS.lua
 enUS localization strings for Ackis Recipe List
 ************************************************************************
-File date: 2012-08-18T4:52:05Z 
+File date: 2012-08-18T9:52:05Z 
 File revision: 4d6b8e446c1381fe41575a671a6c54702932e4db 
-Project revision: 91a3a6169d0f9c5d597f01630a67df42a2703590
-Project version: 7.3.0.2-15-g91a3a616
+Project revision: e062c22807cdc0ea8ab367d74537384aaee9cb59
+Project version: 7.3.0.1
 ************************************************************************
 Translation credits: http://www.wowace.com/addons/arl/localization/translators/
 
@@ -729,7 +729,6 @@ L["Himmik"] = true
 L["Hiwahi Three-Feathers"] = true
 L["Hobart Grapplehammer"] = true
 L["Hotoppik Copperpinch"] = true
-L["Hrul Sharphoof"] = true
 L["Hula'mahi"] = true
 L["Humphry"] = true
 L["Hurnak Grimmord"] = true
@@ -749,7 +748,6 @@ L["Inkmaster Wei"] = true
 L["Innkeeper Biribi"] = true
 L["Innkeeper Fizzgrimble"] = true
 L["Innkeeper Grilka"] = true
-L["Inquisitor Vethroz"] = true
 L["Inscription"] = true
 L["INSTANCE_DESC"] = "Recipes obtained from (5 man) instances should be included in the scan."
 L["Iranis Shadebloom"] = true
@@ -1603,4 +1601,8 @@ L["Zorbin Fandazzle"] = true
 L["Zula Slagfury"] = true
 L["Zurai"] = true
 L["Zurii"] = true
+
+-- ToC
+L["Description"] = "Ackis Recipe List is an addon which will scan your trade skills and provide information on how to obtain recipes. It works for all tradeskills including Runeforging."
+L["Title"] = "Ackis Recipe List"
 

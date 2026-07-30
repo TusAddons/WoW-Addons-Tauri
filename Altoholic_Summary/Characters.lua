@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 
@@ -222,13 +222,13 @@ local function AddRealmView(AccountName, RealmName)
 		if mod(line.linetype, 3) == INFO_REALM_LINE then
 			if (line.account == AccountName) and (line.realm == RealmName) then
 				-- insert index to current line (INFO_REALM_LINE)
-				table.insert(view, index)
+				view[#view+1] = index
 				index = index + 1
 
 				-- insert index to the rest of the realm 
 				local linetype = mod(characterList[index].linetype, 3)
 				while (linetype ~= INFO_REALM_LINE) do
-					table.insert(view, index)
+					view[#view+1] = index
 					index = index + 1
 					if index > #characterList then
 						return

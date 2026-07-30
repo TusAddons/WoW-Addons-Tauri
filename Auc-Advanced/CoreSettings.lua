@@ -244,7 +244,7 @@ local function setter(setting, value, silent)
 
 				-- If not, add it and then sort it
 				if (not found) then
-					table.insert(profiles, value)
+					profiles[#profiles+1] = value
 					table.sort(profiles)
 				end
 			else

@@ -1,6 +1,7 @@
 -- ----------------------------------------------------------------------------
 -- Localized Lua globals.
 -- ----------------------------------------------------------------------------
+
 local table = _G.table
 
 local pairs, ipairs = _G.pairs, _G.ipairs
@@ -44,12 +45,10 @@ local function Tab_OnClick(self, button, down)
 			tab:ToBack()
 		end
 	end
-
 	addon.db.profile.current_tab = tabID
 	MainPanel.current_tab = MainPanel.tabs[tabID]
-	MainPanel.list_frame:Update(nil, false)
 
-	_G.PlaySound(_G.SOUNDKIT.IG_CHARACTER_INFO_TAB, "Master")
+	MainPanel.list_frame:Update(nil, false)
 end
 
 local function CreateTab(id_num, text, ...)
@@ -463,11 +462,8 @@ local function InitializeLocationTab()
 
 				local listEntry = CreateListEntry("header")
                 listEntry:SetLocation(location)
---              private.Debug("location: %s", location)
---			local currentMapID = _G.C_Map.GetBestMapForUnit("player")
---			_G.WorldMapFrame:SetMapID(mapID)
 
-				if localizedLocationName == GetRealZoneText() then
+				if localizedLocationName == _G.GetRealZoneText() then
 					listEntry:Emphasize(true)
 					listEntry:SetText("%s (%d)",
 						SetTextColor(private.DIFFICULTY_COLORS.optimal.hex, localizedLocationName),

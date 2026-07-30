@@ -1,6 +1,7 @@
 ## Interface: 70300
-## Author: Resike
+## Version: 1.1-Artiom97es
 ## Title: Z-Perl |cffeda55fArcane Bars|r
+## Author: Artiom97es
 ## Title-itIT: Z-Perl |cffeda55fBarre Arcane|r
 ## Title-ruRU: Z-Perl |cffeda55fПолосы применений|r
 ## Title-zhCN: Z-Perl |cffeda55f施法条|r

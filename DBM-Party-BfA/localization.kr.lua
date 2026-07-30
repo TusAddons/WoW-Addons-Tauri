@@ -119,10 +119,6 @@ L= DBM:GetModLocalization(2154)
 -----------------------
 L= DBM:GetModLocalization(2155)
 
-L:SetMiscLocalization({
-	openingRP	= "It would seem you have guests, Lord Stormsong."
-})
-
 -----------------------
 -- Vol'zith the Whisperer --
 -----------------------
@@ -146,7 +142,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization(2173)
 
 -----------------------
--- Chopper Redhook / Sergeant Bainbridge --
+-- Chopper Redhook --
 -----------------------
 L= DBM:GetModLocalization(2132)
 
@@ -254,7 +250,7 @@ L= DBM:GetModLocalization(2131)
 L= DBM:GetModLocalization(2130)
 
 -----------------------
--- Taloc the Corrupted --
+-- Unbound Monstrosity --
 -----------------------
 L= DBM:GetModLocalization(2158)
 

@@ -1,0 +1,12 @@
+﻿## Interface: 70300
+## X-Min-Interface: 70300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0SmoothMcGroove Events Pack|r
+## Author: Artiom97es
+## DefaultState: enabled
+## RequiredDeps: DBM-Core
+## Version: 1.3-Artiom97es
+## X-DBM-VictoryPack: 1
+## X-DBM-VictoryPack-GlobalName: DBMVPSMGPack
+## X-DBM-MusicPack: 1
+## X-DBM-MusicPack-GlobalName: DBMMPSMGPack
+LoadList.lua

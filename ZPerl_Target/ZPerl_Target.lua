@@ -1717,6 +1717,11 @@ end
 
 -- XPerl_Target_Set_Bits
 function XPerl_Target_Set_Bits(self)
+	if (InCombatLockdown()) then
+		XPerl_OutOfCombatQueue[XPerl_Target_Set_Bits] = self
+		return
+	end
+
 	local _, playerClass = UnitClass("player")
 
 	--self.buffOptionString = nil

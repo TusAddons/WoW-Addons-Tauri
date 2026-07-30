@@ -1,5 +1,5 @@
---[[	*** DataStore_Garrisons ***
-Written by : Thaoky, EU-Marécages de Zangar
+﻿--[[	*** DataStore_Garrisons ***
+Written by : Thaoky, EU-MarÃ©cages de Zangar
 November 30th, 2014
 --]]
 if not DataStore then return end
@@ -550,7 +550,7 @@ local function ScanAvailableMissions(followerType, storage)
 
 	for k, mission in pairs(missionsList) do
 		SetMissionInfo(mission)
-		table.insert(missions, mission.missionID)
+		missions[#missions+1] = mission.missionID
 	end
 	
 	addon.ThisCharacter.lastUpdate = time()
@@ -566,7 +566,7 @@ local function ScanActiveMissions(followerType)
 	local missionsInfo = addon.ThisCharacter.MissionsInfo
 	
 	for k, mission in pairs(missionsList) do
-		table.insert(missions, mission.missionID)		-- add mission id to the list of active missions ..
+		missions[#missions+1] = mission.missionID		-- add mission id to the list of active missions ..
 		
 		-- .. then proceed with mission info.
 		local info = {}

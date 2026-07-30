@@ -3,10 +3,10 @@
 ptBR.lua
 ptBR localization strings for Ackis Recipe List
 ************************************************************************
-File date: 2012-08-18T4:52:05Z 
+File date: 2012-08-18T9:52:05Z 
 File revision: 4d6b8e446c1381fe41575a671a6c54702932e4db 
-Project revision: 91a3a6169d0f9c5d597f01630a67df42a2703590
-Project version: 7.3.0.2-15-g91a3a616
+Project revision: e062c22807cdc0ea8ab367d74537384aaee9cb59
+Project version: 7.3.0.1
 ************************************************************************
 Currently maintained by:
 http://www.wowace.com/addons/arl/localization/translators/
@@ -1448,4 +1448,8 @@ L["Zorbin Fandazzle"] = "Zorbin Cegasvista"
 L["Zula Slagfury"] = "Zula Furiana"
 L["Zurai"] = true
 L["Zurii"] = true
+
+-- ToC
+L["Description"] = "Ackis Recipe List é um addon que irá escanear suas profissões e lhe provirá informações de como obter receitas. Funciona com todas profissões incluindo Forja Rúnica"
+L["Title"] = "Ackis Recipe List"
 

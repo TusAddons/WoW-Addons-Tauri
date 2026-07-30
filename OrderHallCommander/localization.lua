@@ -1469,6 +1469,27 @@ return
 end
 L=l:NewLocale(me,"esMX")
 if (L) then
+L["Base Chance"] = "Probabilidad base"
+L["Bonus Chance"] = "Probabilidad extra"
+L["Counter kill Troops"] = "Evitar muerte de tropas"
+L["Don't use troops"] = "No usar tropas"
+L["Elite: Prefer overcap"] = "Élite: Preferir sobrecap"
+L["Empty missions sorted as last"] = "Misiones vacías al final"
+L["Ignore busy followers"] = "Ignorar seguidores ocupados"
+L["Ignore inactive followers"] = "Ignorar seguidores inactivos"
+L["Max champions"] = "Máx campeones"
+L["Never kill Troops"] = "Nunca matar tropas"
+L["Prefer high durability"] = "Alta durabilidad"
+L["Quick start first mission"] = "Inicio rápido de la 1ª misión"
+L["Remove no champions warning"] = "Ocultar aviso de sin campeones"
+L["Unlock all"] = "Desbloquear todo"
+L["Keep cost low"] = "Mantener coste bajo"
+L["Keep extra bonus"] = "Mantener bonificación extra"
+L["Keep time short"] = "Mantener tiempo corto"
+L["Always counter kill troops (ignored if we can only use troops with just 1 durability left)"] = "Evitar siempre baja de tropas (ignorado si solo podemos utilizar tropas con 1 punto de durabilidad)"
+L["and then by:"] = "y luego por:"
+end
+if (L) then
 --Translation missing 
 L["%1$d%% lower than %2$d%%. Lower %s"] = "%1$d%% lower than %2$d%%. Lower %s"
 --Translation missing 
@@ -1496,6 +1517,7 @@ L["Always counter increased time"] = "Siempre contrarreste el tiempo incrementad
 L["Always counter kill troops (ignored if we can only use troops with just 1 durability left)"] = "Siempre contra las tropas de matar (ignorado si sólo podemos utilizar tropas con sólo 1 durabilidad a la izquierda)"
 --Translation missing 
 L["Always counter no bonus loot threat"] = "Always counter no bonus loot threat"
+L["and then by:"] = "y luego por:"
 --Translation missing 
 L["Artifact shown value is the base value without considering knowledge multiplier"] = "Artifact shown value is the base value without considering knowledge multiplier"
 --Translation missing 
@@ -2282,21 +2304,21 @@ L["%s, please review the tutorial\\n(Click the icon to dismiss this message)"] =
 L["Allow to start a mission directly from the mission list page (no single mission page shown)"] = "Allow to start a mission directly from the mission list page (no single mission page shown)"
 L["Always counter increased resource cost"] = "Siempre contrarreste el mayor costo de recursos"
 L["Always counter increased time"] = "Siempre contrarreste el tiempo incrementado"
-L["Always counter kill troops (ignored if we can only use troops with just 1 durability left)"] = "Siempre contrarrestar la muerte de tropas (ignorado si sólo podemos utilizar tropas con un solo punto de durabilidad)"
+L["Always counter kill troops (ignored if we can only use troops with just 1 durability left)"] = "Evitar siempre baja de tropas (ignorado si solo podemos utilizar tropas con 1 punto de durabilidad)"
 L["Always counter no bonus loot threat"] = "Siempre contrarresta la falta de bonificación de botín"
 --Translation missing 
 L["Artifact shown value is the base value without considering knowledge multiplier"] = "Artifact shown value is the base value without considering knowledge multiplier"
 --Translation missing 
 L["Attempting %s"] = "Attempting %s"
 --Translation missing 
-L["Base Chance"] = "Base Chance"
+L["Base Chance"] = "Probabilidad base"
 L["Better parties available in next future"] = "Mejores fiestas disponibles en el próximo futuro"
 --Translation missing 
 L["Blacklisted"] = "Blacklisted"
 --Translation missing 
 L["Blacklisted missions are ignored in Mission Control"] = "Blacklisted missions are ignored in Mission Control"
 --Translation missing 
-L["Bonus Chance"] = "Bonus Chance"
+L["Bonus Chance"] = "Probabilidad extra"
 L["Building Final report"] = "Informe final del edificio"
 --Translation missing 
 L["but using troops with just one durability left"] = "but using troops with just one durability left"
@@ -2311,7 +2333,7 @@ L["Cost reduced"] = "Cost reduced"
 --Translation missing 
 L["Could not fulfill mission, aborting"] = "Could not fulfill mission, aborting"
 --Translation missing 
-L["Counter kill Troops"] = "Counter kill Troops"
+L["Counter kill Troops"] = "Evitar muerte de tropas"
 --Translation missing 
 L["Customization options (non mission related)"] = "Customization options (non mission related)"
 --Translation missing 
@@ -2319,15 +2341,15 @@ L["Disables warning: "] = "Disables warning: "
 --Translation missing 
 L["Dont use this slot"] = "Dont use this slot"
 --Translation missing 
-L["Don't use troops"] = "Don't use troops"
+L["Don't use troops"] = "No usar tropas"
 L["Duration reduced"] = "Duración reducida"
 L["Duration Time"] = "Duración"
 --Translation missing 
-L["Elite: Prefer overcap"] = "Elite: Prefer overcap"
+L["Elite: Prefer overcap"] = "Élite: Preferir sobrecap"
 --Translation missing 
 L["Elites mission mode"] = "Elites mission mode"
 --Translation missing 
-L["Empty missions sorted as last"] = "Empty missions sorted as last"
+L["Empty missions sorted as last"] = "Misiones vacías al final"
 --Translation missing 
 L["Empty or 0% success mission are sorted as last. Does not apply to \"original\" method"] = "Empty or 0% success mission are sorted as last. Does not apply to \"original\" method"
 --Translation missing 
@@ -2350,12 +2372,12 @@ L[ [=[If you %s, you will lose them
 Click on %s to abort]=] ] = [=[If you %s, you will lose them
 Click on %s to abort]=]
 --Translation missing 
-L["Ignore busy followers"] = "Ignore busy followers"
+L["Ignore busy followers"] = "Ignorar seguidores ocupados"
 --Translation missing 
-L["Ignore inactive followers"] = "Ignore inactive followers"
-L["Keep cost low"] = "Mantenga el costo bajo"
+L["Ignore inactive followers"] = "Ignorar seguidores inactivos"
+L["Keep cost low"] = "Mantener coste bajo"
 L["Keep extra bonus"] = "Mantener bonificación extra"
-L["Keep time short"] = "Mantenga el tiempo corto"
+L["Keep time short"] = "Mantener tiempo corto"
 L["Keep time VERY short"] = "Mantener el tiempo muy corto"
 --Translation missing 
 L[ [=[Launch the first filled mission with at least one locked follower.
@@ -2376,7 +2398,7 @@ L["Make Order Hall Mission Panel movable"] = "Hacer pedido Hall Misión Panel m�
 --Translation missing 
 L["Makes sure that no troops will be killed"] = "Makes sure that no troops will be killed"
 --Translation missing 
-L["Max champions"] = "Max champions"
+L["Max champions"] = "Máx campeones"
 L["Maximize xp gain"] = "Maximizar la ganancia de xp"
 --Translation missing 
 L["Mission duration reduced"] = "Mission duration reduced"
@@ -2384,7 +2406,7 @@ L["Mission duration reduced"] = "Mission duration reduced"
 L["Mission was capped due to total chance less than"] = "Mission was capped due to total chance less than"
 L["Missions"] = "Misiones"
 --Translation missing 
-L["Never kill Troops"] = "Never kill Troops"
+L["Never kill Troops"] = "Nunca matar tropas"
 L["No follower gained xp"] = "Ningún seguidor ganó xp"
 --Translation missing 
 L["No suitable missions. Have you reserved at least one follower?"] = "No suitable missions. Have you reserved at least one follower?"
@@ -2410,11 +2432,11 @@ If instead you like OrderHallCommander remember to add it to Curse client and ke
 L["Original method"] = "Método original"
 L["Position is not saved on logout"] = "La posición no se guarda al cerrar la sesión"
 --Translation missing 
-L["Prefer high durability"] = "Prefer high durability"
+L["Prefer high durability"] = "Alta durabilidad"
 --Translation missing 
-L["Quick start first mission"] = "Quick start first mission"
+L["Quick start first mission"] = "Inicio rápido de la 1ª misión"
 --Translation missing 
-L["Remove no champions warning"] = "Remove no champions warning"
+L["Remove no champions warning"] = "Ocultar aviso de sin campeones"
 --Translation missing 
 L["Restart tutorial from beginning"] = "Restart tutorial from beginning"
 --Translation missing 
@@ -2438,7 +2460,7 @@ L["Unable to fill missions. Check your switches"] = "Unable to fill missions. Ch
 --Translation missing 
 L["Unable to start mission, aborting"] = "Unable to start mission, aborting"
 --Translation missing 
-L["Unlock all"] = "Unlock all"
+L["Unlock all"] = "Desbloquear todo"
 --Translation missing 
 L["Unlock this follower"] = "Unlock this follower"
 --Translation missing 

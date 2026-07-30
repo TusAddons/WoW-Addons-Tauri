@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: DataStore_Characters
+## Author: Artiom97es
 ## Notes: Stores information about characters (race, level, etc..)
-## Author: Thaoky (EU-Marécages de Zangar)
-## Version: r41
+## Version: r42-Artiom97es
 ## Dependencies: DataStore
 ## OptionalDeps: Ace3
 ## SavedVariables: DataStore_CharactersDB

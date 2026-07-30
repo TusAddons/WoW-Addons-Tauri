@@ -1,0 +1,9 @@
+## Interface: 50001
+## Title: oUF Trinkets
+## Author: Artiom97es
+## Notes: Adds PvP trinket status to oUF frames.
+## Version: 1.1-Artiom97es
+## X-Category: oUF
+## Dependencies: oUF
+
+oUF_Trinkets.lua

@@ -1,4 +1,4 @@
---[[
+﻿--[[
 Name: LibGraph-2.0
 Revision: $Rev: 54 $
 Author(s): Cryect (cryect@gmail.com), Xinhuan
@@ -673,7 +673,7 @@ function GraphFunctions:AddDataSeries(points, color, n2, linetexture)
 	if n2 == nil then
 		n2 = false
 	end
-	if n2 or (table.getn(points) == 2 and table.getn(points[1]) ~= 2) then
+	if n2 or (#(points) == 2 and #(points[1]) ~= 2) then
 		data = {}
 		for k, v in ipairs(points[1]) do
 			tinsert(data, {v, points[2][k]})
@@ -703,7 +703,7 @@ function GraphFunctions:AddFilledDataSeries(points, color, n2)
 		n2 = false
 	end
 
-	if n2 or (table.getn(points) == 2 and table.getn(points[1]) ~= 2) then
+	if n2 or (#(points) == 2 and #(points[1]) ~= 2) then
 		data = {}
 		for k, v in ipairs(points[1]) do
 			tinsert(data, {v, points[2][k]})

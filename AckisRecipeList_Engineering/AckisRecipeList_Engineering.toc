@@ -1,10 +1,10 @@
 ## Interface: 70300
 ## Title: Ackis Recipe List: Engineering
+## Author: Artiom97es
 ## Notes: Engineering data for Ackis Recipe List.
-## Author: Ackis, Pompy, Ressy, Torhal
-## Version: 7.3.0.1-3-g4782e45
-## X-Revision: 4782e45
-## X-Date: 2017-08-29T23:36:24Z
+## Version: 7.3.0.1-2-gb1321d1-Artiom97es
+## X-Revision: b1321d0
+## X-Date: 2017-08-30T4:36:24Z
 ## Dependencies: AckisRecipeList
 ## LoadOnDemand: 1
 

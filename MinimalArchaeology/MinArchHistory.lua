@@ -147,7 +147,7 @@ function MinArch:CreateHistoryList(RaceID, caller)
 
 	if (not MinArch:IsItemDetailsLoaded(RaceID)) then
 		local allGood = true
-		for i = 1, 18 do
+		for i=1, GetNumArchaeologyRaces() do
 			allGood = MinArch:LoadItemDetails(i, nextcaller .. "{i=" .. i .. "}") and allGood
 		end
 
@@ -163,7 +163,7 @@ function MinArch:CreateHistoryList(RaceID, caller)
 	local PADDING = 5;
 	local width = 280; -- fixme get parent width
 	
-	for i=1, 18 do
+	for i=1, GetNumArchaeologyRaces() do
 		if (MinArchScroll[i]) then
 			MinArchScroll[i]:Hide();
 		end
@@ -277,17 +277,17 @@ function MinArch:CreateHistoryList(RaceID, caller)
 					currentFontString:SetJustifyH("RIGHT")
 					currentFontString:SetJustifyV("TOP")
 					if not details.firstcomplete then
-						currentFontString:SetText("Incomplete")
+						currentFontString:SetText("Incompleto")
 						currentFontString:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b, 1)
 					elseif MinArch.artifacts[RaceID].project == details.artifactname then
 						if not details.totalcomplete or details.totalcomplete == 0 then
-							currentFontString:SetText("In Progress")
+							currentFontString:SetText("En progreso")
 						else
-							currentFontString:SetText("#" .. (details.totalcomplete + 1) .. " In Progress")
+							currentFontString:SetText("#" .. (details.totalcomplete + 1) .. " En progreso")
 						end
 						currentFontString:SetTextColor(1.0, 0.8, 0.0, 1.0)
 					else
-						currentFontString:SetText(details.totalcomplete .. " Completed")
+						currentFontString:SetText(details.totalcomplete .. " Completados")
 						currentFontString:SetTextColor(0.0, 1.0, 0.0, 1.0)
 					end
 				
@@ -462,7 +462,7 @@ function MinArch:HistoryTooltip(self, RaceID, ItemID)
 			end
 		end
 		discovereddate = date("*t", artifact["firstcomplete"]);
-		GameTooltip:AddDoubleLine("Discovered On: |cffffffff"..discovereddate["month"].."/"..discovereddate["day"].."/"..discovereddate["year"], "x"..artifact["totalcomplete"], NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b);
+		GameTooltip:AddDoubleLine("Descubierto el: |cffffffff"..discovereddate["day"].."/"..discovereddate["month"].."/"..discovereddate["year"], "x"..artifact["totalcomplete"], NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b);
 	end
 	
 	

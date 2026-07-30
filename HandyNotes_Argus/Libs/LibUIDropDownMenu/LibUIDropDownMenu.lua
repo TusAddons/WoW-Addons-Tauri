@@ -1,4 +1,4 @@
--- $Id: LibUIDropDownMenu.lua 30 2018-04-24 06:44:39Z arith $
+﻿-- $Id: LibUIDropDownMenu.lua 30 2018-04-24 06:44:39Z arith $
 -- ----------------------------------------------------------------------------
 -- Localized Lua globals.
 -- ----------------------------------------------------------------------------
@@ -631,7 +631,7 @@ end
 
 function L_UIDropDownMenu_RegisterCustomFrame(self, customFrame)
 	self.customFrames = self.customFrames or {}
-	table.insert(self.customFrames, customFrame);
+	self.customFrames[#self.customFrames+1] = customFrame;
 end
 
 function L_UIDropDownMenu_GetMaxButtonWidth(self)

@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 
@@ -113,7 +113,7 @@ local function BuildView()
 				end
 				
 				if not hideLine then
-					table.insert(view, index)
+					view[#view+1] = index
 				end
 			end
 		end

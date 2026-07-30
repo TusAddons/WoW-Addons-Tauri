@@ -515,6 +515,59 @@ function addon:OnInitialized()
 
 	--return true
 end
+-- [NUEVA FUNCIÓN ÚTIL]: Resumen instantáneo de recursos y campeones (Garrison + Order Hall)
+-- Comando propio: /garrstats o /misiones (independiente de AceConsole)
+SLASH_GARRSTATS1 = "/garrstats"
+SLASH_GARRSTATS2 = "/misiones"
+SlashCmdList["GARRSTATS"] = function(msg)
+    local p = _G.print
+    -- Garrison 6.0 followers
+    local g6followers = C_Garrison.GetFollowers(LE_FOLLOWER_TYPE_GARRISON_6_0) or {}
+    local g6active, g6mission, g6avail = 0, 0, 0
+    for _, f in pairs(g6followers) do
+        if f.isCollected and not f.isTroop then
+            if f.status ~= GARRISON_FOLLOWER_INACTIVE then
+                g6active = g6active + 1
+                if f.status == GARRISON_FOLLOWER_ON_MISSION then
+                    g6mission = g6mission + 1
+                else
+                    g6avail = g6avail + 1
+                end
+            end
+        end
+    end
+    -- Legion 7.0 followers
+    local g7followers = C_Garrison.GetFollowers(LE_FOLLOWER_TYPE_GARRISON_7_0) or {}
+    local g7champs, g7mission, g7avail, g7troops = 0, 0, 0, 0
+    for _, f in pairs(g7followers) do
+        if f.isCollected then
+            if f.isTroop then
+                g7troops = g7troops + 1
+            elseif f.status ~= GARRISON_FOLLOWER_INACTIVE then
+                g7champs = g7champs + 1
+                if f.status == GARRISON_FOLLOWER_ON_MISSION then
+                    g7mission = g7mission + 1
+                else
+                    g7avail = g7avail + 1
+                end
+            end
+        end
+    end
+    -- Currencies
+    local grName, grAmount = GetCurrencyInfo(824)   -- Garrison Resources (WoD)
+    local oilName, oilAmount = GetCurrencyInfo(1101) -- Oil
+    local ohName, ohAmount = GetCurrencyInfo(1220)   -- Order Hall Resources
+    local sealName, sealAmount = GetCurrencyInfo(1273) -- Seal of Broken Fate
+    p("|cff00ccff=== [GarrisonCommander: Estado de tu Base] ===|r")
+    p("|cffFFD700--- Garrison (WoD) ---|r")
+    p("  |cff00FF00" .. (grName or "Garrison Resources") .. ":|r " .. (grAmount or 0) .. "  |  |cff00FF00" .. (oilName or "Oil") .. ":|r " .. (oilAmount or 0))
+    p("  |cff00FF00Seguidores Activos:|r " .. g6active .. " (" .. g6avail .. " disponibles, " .. g6mission .. " en mision)")
+    p("|cffFFD700--- Sede de Clase (Legion) ---|r")
+    p("  |cff00FF00" .. (ohName or "Order Resources") .. ":|r " .. (ohAmount or 0) .. "  |  |cff00FF00" .. (sealName or "Seal of Broken Fate") .. ":|r " .. (sealAmount or 0) .. "/3")
+    p("  |cff00FF00Campeones Activos:|r " .. g7champs .. " (" .. g7avail .. " disponibles, " .. g7mission .. " en mision)")
+    p("  |cff00FF00Tropas:|r " .. g7troops)
+    p("  |cff00FF00Oro:|r " .. GetCoinTextureString(GetMoney()))
+end
 function addon:showdata(fullargs,action,missionid)
 	self:Print(fullargs,",",missionid)
 	missionid=tonumber(missionid)
@@ -856,6 +909,7 @@ function addon:SetDbDefaults(default)
 		maxDuration = 24,
 		epicExp = false,
 		skipRare=true,
+		skipResource=false,
 		skipEpic=not addon:HasSalvageYard(),
 		minLevel=540,
 		minUpgrade=600
@@ -875,6 +929,7 @@ function addon:SetDbDefaults(default)
 		maxDuration = 24,
 		epicExp = false,
 		skipRare=true,
+		skipResource=false,
 		skipEpic=true,
 		minLevel=540,
 		minUpgrade=600
@@ -911,6 +966,7 @@ function addon:CreatePrivateDb()
 					maxDuration = 24,
 					epicExp = false,
 					skipRare=true,
+					skipResource=false,
 					skipEpic=not addon:HasSalvageYard(),
 					minLevel=540,
 					minUpgrade=600
@@ -1108,7 +1164,7 @@ function addon:AddOptionToOptionsLayer(o,flag,maxsize)
 			widget:SetValue(value)
 			local color=value and "Green" or "Silver"
 			widget:SetLabel(C(info.name,color))
-			widget:SetWidth(min(widget.text:GetStringWidth()+40,maxsize))
+			widget:SetWidth(max(widget.text:GetStringWidth()+45, maxsize))
 		elseif(info.type=="select") then
 			widget=AceGUI:Create("Dropdown")
 			widget:SetValue(addon:GetVar(flag))
@@ -1129,7 +1185,7 @@ function addon:AddOptionToOptionsLayer(o,flag,maxsize)
 			widget:SetLabel(info.name)
 			widget:SetValue(value)
 			widget:SetSliderValues(info.min,info.max,info.step)
-			widget:SetWidth(maxsize)
+			widget:SetWidth(maxsize == 160 and 210 or maxsize)
 			widget:SetCallback("OnClick",function(widget,event,value)
 				self[info.func](self,data,value)
 			end)
@@ -1182,7 +1238,7 @@ function addon:CreateHeader(module,MOVEPANEL,PIN)
 	local main=module:GetMain()
 	GCF:SetFrameStrata(main:GetFrameStrata())
 	GCF:SetFrameLevel(max(0,main:GetFrameLevel()-2))
-	if module == self then GCF:SetHeight(130) end
+	if module == self then GCF:SetHeight(145) end
 	baseHeight=GCF:GetHeight()
 	minHeight=47
 	GCF.CloseButton:SetScript("OnClick",nil)
@@ -1677,7 +1733,7 @@ function addon:AddMenu()
 		self:RenderFollowerPageMissionList(nil,GMF.FollowerTab.followerID)
 	elseif GMF.MissionControlTab:IsVisible() then
 		self.currentmenu=GMF.MissionControlTab
-		menu,size=self:CreateOptionsLayer('BIGSCREEN','GCMINLEVEL','GCMINUPGRADE','MINXPLEVEL','MINGOLD','GCSKIPRARE','GCSKIPEPIC','USEFUL','NOTOOLTIP','AUTOLOGOUT')
+		menu,size=self:CreateOptionsLayer('BIGSCREEN','GCMINLEVEL','GCMINUPGRADE','MINXPLEVEL','MINGOLD','GCSKIPRARE','GCSKIPEPIC','GCFILLEPIC','GCSKIPRESOURCE','USEFUL','NOTOOLTIP','AUTOLOGOUT')
 	else
 		self.currentmenu=nil
 		menu,size=self:CreateOptionsLayer('BIGSCREEN')
@@ -2854,7 +2910,11 @@ function addon:AddStandardDataToButton(source,button,mission,missionID,bigscreen
 		button.Overlay:Hide();
 	end
 
-	button.Title:SetWidth(0);
+	if mission.followerTypeID == LE_FOLLOWER_TYPE_SHIPYARD_6_2 then
+		button.Title:SetWidth(200); -- Ancho limitado para que no pise los barcos
+	else
+		button.Title:SetWidth(0);
+	end
 	button.Title:SetText(mission.name)
 	local seconds=self:GetMissionData(missionID,'improvedDurationSeconds')
 	local duration=SecondsToTime(seconds)
@@ -3290,3 +3350,171 @@ addon:SafeSecureHook(GMF,"SelectTab","GarrisonMissionFrame_SelectTab")
 addon:SafeRawHookScript(GMF.MissionTab.MissionPage.CloseButton,"OnClick","GarrisonMissionPageOnClose")
 _G.GarrisonCommander=addon
 _G.GAC=addon
+-- =========================================================================
+-- PARCHE ARTIOM 7.3.5: Fix Crash en GarrisonBuildingUI (SelectBuilding info nil)
+-- =========================================================================
+local fallbackInfo = { buildingID = -1 }
+
+local function ProtectButton(btn)
+    if btn and type(btn) == "table" then
+        if not btn.info or type(btn.info) ~= "table" then
+            btn.info = fallbackInfo
+        end
+        if not btn.info.buildingID then
+            btn.info.buildingID = -1
+        end
+    end
+    return btn
+end
+
+local buttonsMT = {
+    __index = function(t, k)
+        local val = rawget(t, k)
+        if val and type(val) == "table" then
+            return ProtectButton(val)
+        end
+        if type(k) == "number" then
+            local dummyBtn = rawget(t, "_dummyBtn")
+            if not dummyBtn then
+                dummyBtn = CreateFrame("Button")
+                dummyBtn.info = fallbackInfo
+                dummyBtn.Name = dummyBtn:CreateFontString()
+                dummyBtn.Icon = dummyBtn:CreateTexture()
+                dummyBtn.BG = dummyBtn:CreateTexture()
+                dummyBtn.SelectedBG = dummyBtn:CreateTexture()
+                dummyBtn.Plans = dummyBtn:CreateTexture()
+                rawset(t, "_dummyBtn", dummyBtn)
+            end
+            return dummyBtn
+        end
+        return val
+    end,
+    __newindex = function(t, k, v)
+        if v and type(v) == "table" then
+            ProtectButton(v)
+        end
+        rawset(t, k, v)
+    end
+}
+
+local function SanitizeGarrisonBuildingButtons()
+    local frame = GarrisonBuildingFrame
+    if not frame or not frame.BuildingList then return end
+
+    if not frame.BuildingList.buttons then
+        frame.BuildingList.buttons = {}
+    end
+
+    local lists = { frame.BuildingList.buttons, frame.BuildingList.Buttons }
+    for _, list in ipairs(lists) do
+        if type(list) == "table" then
+            for i = 1, #list do
+                ProtectButton(list[i])
+            end
+            for _, btn in pairs(list) do
+                ProtectButton(btn)
+            end
+            if getmetatable(list) ~= buttonsMT then
+                setmetatable(list, buttonsMT)
+            end
+        end
+    end
+end
+
+local wrappedFunctions = {}
+
+local function InstallGarrisonBuildingUIHooks()
+    local frame = GarrisonBuildingFrame
+    if not frame or not frame.BuildingList then return end
+
+    SanitizeGarrisonBuildingButtons()
+
+    -- 1. Envolver GarrisonBuildingFrame_OnShow
+    local orig_FrameOnShow = _G.GarrisonBuildingFrame_OnShow or (frame.GetScript and frame:GetScript("OnShow"))
+    if type(orig_FrameOnShow) == "function" and not wrappedFunctions[orig_FrameOnShow] then
+        local safe_FrameOnShow = function(selfOrArg, ...)
+            SanitizeGarrisonBuildingButtons()
+            local res = orig_FrameOnShow(selfOrArg, ...)
+            SanitizeGarrisonBuildingButtons()
+            return res
+        end
+        wrappedFunctions[orig_FrameOnShow] = true
+        wrappedFunctions[safe_FrameOnShow] = true
+        _G.GarrisonBuildingFrame_OnShow = safe_FrameOnShow
+        if frame.SetScript then
+            frame:SetScript("OnShow", safe_FrameOnShow)
+        end
+    end
+
+    -- 2. Envolver y asegurar GarrisonBuildingList_SelectBuilding (en _G y en frame.BuildingList.SelectBuilding)
+    local orig_SelectBuilding = _G.GarrisonBuildingList_SelectBuilding or frame.BuildingList.SelectBuilding
+    if type(orig_SelectBuilding) == "function" and not wrappedFunctions[orig_SelectBuilding] then
+        local safe_SelectBuilding = function(selfOrArg, ...)
+            SanitizeGarrisonBuildingButtons()
+            return orig_SelectBuilding(selfOrArg, ...)
+        end
+        wrappedFunctions[orig_SelectBuilding] = true
+        wrappedFunctions[safe_SelectBuilding] = true
+        _G.GarrisonBuildingList_SelectBuilding = safe_SelectBuilding
+        if type(frame.BuildingList.SelectBuilding) == "function" then
+            frame.BuildingList.SelectBuilding = safe_SelectBuilding
+        end
+    end
+
+    -- 3. Envolver y asegurar GarrisonBuildingList_Update (en _G y en frame.BuildingList.Update)
+    local orig_Update = _G.GarrisonBuildingList_Update or frame.BuildingList.Update
+    if type(orig_Update) == "function" and not wrappedFunctions[orig_Update] then
+        local safe_Update = function(selfOrArg, ...)
+            SanitizeGarrisonBuildingButtons()
+            local res = orig_Update(selfOrArg, ...)
+            SanitizeGarrisonBuildingButtons()
+            return res
+        end
+        wrappedFunctions[orig_Update] = true
+        wrappedFunctions[safe_Update] = true
+        _G.GarrisonBuildingList_Update = safe_Update
+        if type(frame.BuildingList.Update) == "function" then
+            frame.BuildingList.Update = safe_Update
+        end
+    end
+
+    -- 4. Envolver y asegurar GarrisonBuildingList_Show (en _G y en frame.BuildingList.Show)
+    local orig_Show = _G.GarrisonBuildingList_Show or frame.BuildingList.Show
+    if type(orig_Show) == "function" and not wrappedFunctions[orig_Show] then
+        local safe_Show = function(selfOrArg, ...)
+            SanitizeGarrisonBuildingButtons()
+            local res = orig_Show(selfOrArg, ...)
+            SanitizeGarrisonBuildingButtons()
+            return res
+        end
+        wrappedFunctions[orig_Show] = true
+        wrappedFunctions[safe_Show] = true
+        _G.GarrisonBuildingList_Show = safe_Show
+        if type(frame.BuildingList.Show) == "function" then
+            frame.BuildingList.Show = safe_Show
+        end
+    end
+end
+
+InstallGarrisonBuildingUIHooks()
+if type(GarrisonBuildingList_Update) == "function" and not wrappedFunctions["hooked_Update"] then
+    wrappedFunctions["hooked_Update"] = true
+    hooksecurefunc("GarrisonBuildingList_Update", SanitizeGarrisonBuildingButtons)
+end
+
+local loaderFrame = CreateFrame("Frame")
+loaderFrame:RegisterEvent("ADDON_LOADED")
+loaderFrame:RegisterEvent("GARRISON_SHOW_LANDING_PAGE")
+loaderFrame:RegisterEvent("GARRISON_BUILDING_UPDATE")
+loaderFrame:SetScript("OnEvent", function(self, event, arg1)
+    if event == "ADDON_LOADED" and arg1 == "Blizzard_GarrisonUI" then
+        InstallGarrisonBuildingUIHooks()
+        if type(GarrisonBuildingList_Update) == "function" and not wrappedFunctions["hooked_Update"] then
+            wrappedFunctions["hooked_Update"] = true
+            hooksecurefunc("GarrisonBuildingList_Update", SanitizeGarrisonBuildingButtons)
+        end
+    elseif event ~= "ADDON_LOADED" then
+        InstallGarrisonBuildingUIHooks()
+    end
+end)
+-- =========================================================================

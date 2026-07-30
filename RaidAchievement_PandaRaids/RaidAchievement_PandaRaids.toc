@@ -1,7 +1,8 @@
 ﻿## Interface: 70300
 ## Title: Raid|cff7fff7fAchievement|r - Pandaria raids
+## Author: Artiom97es
 ## Title-ruRU: Raid|cff7fff7fAchievement|r - Рейды Пандарии
-## Author: Shurshik
+## Version: 1.1-Artiom97es
 ## Notes: RaidAchievement Pandaria Raids Module
 ## Notes-ruRU: Модуль RaidAchievement - Рейды Пандарии
 ## Dependencies: RaidAchievement

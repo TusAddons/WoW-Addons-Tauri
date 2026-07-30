@@ -1,4 +1,4 @@
--- Simplified Chinese by Diablohu(diablohudream@gmail.com)
+﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
 -- Last update: 1/4/2013
 
 if GetLocale() ~= "zhCN" then return end
@@ -270,6 +270,10 @@ L= DBM:GetModLocalization(688)
 -- Korlof --
 -----------------------
 L= DBM:GetModLocalization(671)
+
+L:SetOptionLocalization({
+	KickArrow	= "DBM箭头：$spell:114487接近你时"
+})
 
 -----------------------
 -- Durand/High Inquisitor Whitemane --

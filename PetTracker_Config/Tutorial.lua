@@ -35,6 +35,7 @@ function Tutorial:Split()
 	self:Trigger('Journal', 1)
 
 	WorldMapFrame:HookScript('OnShow', function()
+		if InCombatLockdown() then return end
 		self:Trigger('Main', 6)
 	end)
 
@@ -53,10 +54,12 @@ function Tutorial:HookJournal()
 	self.HookJournal = function() end
 
 	CollectionsJournal:HookScript('OnShow', function()
+		if InCombatLockdown() then return end
 		self:Trigger('Journal', 2)
 	end)
 
 	PetJournal:HookScript('OnShow', function()
+		if InCombatLockdown() then return end
 		self:Trigger('Journal', 2)
 		self:Trigger('Journal', 4)
 	end)

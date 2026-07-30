@@ -1,10 +1,10 @@
 ## Interface: 70300
 ## Title: Postal
-## Version: v3.5.9
+## Author: Artiom97es
+## Version: v3.5.10-Artiom97es
 ## X-Build: 406
 ## X-ReleaseDate: 2018-05-10T20:59:49Z
 ## X-Revision: $Revision: 405 $
-## Author: Xinhuan
 ## X-Credits: Ammo, Rabbit, Grennon, Mikk, oscarucb
 ## X-Category: Mail
 ## Notes: Postal: Enhanced Mailbox support

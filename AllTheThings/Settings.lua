@@ -1,4 +1,4 @@
-local app = AllTheThings;
+﻿local app = AllTheThings;
 set = {}
 app.Settings = set
 local name = app:GetName();
@@ -80,7 +80,7 @@ local function createTab(parent, id, name, height)
 	parent.tabs = parent.tabs or {}
 	
 	local t = CreateFrame('Button', parent:GetName() .. 'Tab' .. (#parent.tabs + 1), parent, 'OptionsFrameTabButtonTemplate')
-	table.insert(parent.tabs, t)
+	parent.tabs[#parent.tabs+1] = t
 
 	--t.panel = panel
 	t.id = id
@@ -1939,7 +1939,7 @@ local function createAboutFrame(parent)
 	
 	local text = {}
 	text.introString = "|CFFADD8E6\nDo you find yourself completing old content just so that you can get literally everything for your Collections? Say no more! ALL THE THINGS will help you with your endeavor by giving you the ability to track your completion for everything.|r";
-	text.featureString = "|CFFADD8E6Features: \n • Supports tracking of Achievements, Appearances, Illusions, Mounts, Music Rolls, Pets, Quests, Titles & Toys \n • Primary Collections Window is moveable and resizeable \n • Auto Minilist \n • Datatext Support \n • Filters to allow you to customize the addon to your preferences \n • Extra tooltip information (Models, Icons, Descriptions, etc) \n • Fanfare music when you learn anything new. \n|r";
+	text.featureString = "|CFFADD8E6Features: \n â€¢ Supports tracking of Achievements, Appearances, Illusions, Mounts, Music Rolls, Pets, Quests, Titles & Toys \n â€¢ Primary Collections Window is moveable and resizeable \n â€¢ Auto Minilist \n â€¢ Datatext Support \n â€¢ Filters to allow you to customize the addon to your preferences \n â€¢ Extra tooltip information (Models, Icons, Descriptions, etc) \n â€¢ Fanfare music when you learn anything new. \n|r";
 	text.endString = "|CFFADD8E6Author -- Imoldgregg \nContributers -- Lucetia, Daktar, Slumber, Avella, Oiche, Gold, Aiue, Blueyleader, Iyanden, and Eiltherune \nDiscord -- https://discord.gg/Uv9XAr |r";
 		
 	local about = child:CreateFontString(nil, "ARTWORK", "GameFontNormal");

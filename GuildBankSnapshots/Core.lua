@@ -1,5 +1,15 @@
-local addon, ns = ...
+﻿local addon, ns = ...
 
+		GuildBankSnapshotsDB = GuildBankSnapshotsDB or {
+			["Transactions"] = {},
+			["Active"] = {},
+			["Settings"] = {
+				ShowOnScan = true,
+				AutoScan = false,
+				ShowOnAuto = false,
+			},
+			["Database"] = 2
+		}
 local f = CreateFrame("Frame", addon .. "Frame", UIParent)
 f:SetScript("OnEvent", function(self, event, ...)
 	return self[event] and self[event](self, event, ...)
@@ -169,7 +179,7 @@ f.pairsByKeys = function(_, t, f)
 	local a = {}
 
 	for n in pairs(t) do
-		table.insert(a, n)
+		a[#a+1] = n
 	end
 
 	table.sort(a, f)
@@ -202,16 +212,7 @@ function f:ADDON_LOADED(event, Addon, ...)
 			GuildBankSnapshotsDB = nil
 		end
 
-		GuildBankSnapshotsDB = GuildBankSnapshotsDB or {
-			["Transactions"] = {},
-			["Active"] = {},
-			["Settings"] = {
-				ShowOnScan = true,
-				AutoScan = false,
-				ShowOnAuto = false,
-			},
-			["Database"] = 2
-		}
+
 
 		local db = GuildBankSnapshotsDB
 		db.Active = {

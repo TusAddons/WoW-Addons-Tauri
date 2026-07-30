@@ -1,4 +1,4 @@
---[[--------------------------------------------------------------------------
+﻿--[[--------------------------------------------------------------------------
 --  TomTom - A navigational assistant for World of Warcraft
 --
 --  This file contains the internal implementation of TomTom's waypoints.
@@ -83,7 +83,7 @@ function TomTom:SetWaypoint(waypoint, callbacks, show_minimap, show_world)
         minimap:RegisterForClicks("RightButtonUp")
 
         -- Add to the "All points" table so we can reparent easily
-        table.insert(all_points, minimap)
+        all_points[#all_points+1] = minimap
 
         minimap.icon = minimap:CreateTexture("BACKGROUND")
         minimap.icon:SetTexture("Interface\\AddOns\\TomTom\\Images\\GoldGreenDot")
@@ -145,7 +145,7 @@ function TomTom:SetWaypoint(waypoint, callbacks, show_minimap, show_world)
         point.dlist = {}
 
         for k,v in pairs(callbacks.distance) do
-            table.insert(point.dlist, k)
+            point.dlist[#point.dlist+1] = k
         end
 
         table.sort(point.dlist)
@@ -229,7 +229,7 @@ function TomTom:ClearWaypoint(uid)
 
         point.dlist = nil
         point.uid = nil
-        table.insert(pool, point)
+        pool[#pool+1] = point
         waypointMap[uid] = nil
     end
 end

@@ -1,5 +1,5 @@
---[[	*** DataStore_Talents ***
-Written by : Thaoky, EU-Marécages de Zangar
+﻿--[[	*** DataStore_Talents ***
+Written by : Thaoky, EU-MarÃ©cages de Zangar
 June 23rd, 2009
 --]]
 if not DataStore then return end
@@ -220,7 +220,7 @@ local function ScanTalentReference()
 			local talentID = GetTalentInfo(tier, column, 1)		-- param 3 = spec group, always 1 since 7.0
 			-- Retrieve info with : GetTalentInfoByID(talentID)
 			
-			table.insert(specRef.talents, talentID)
+			specRef.talents[#specRef.talents+1] = talentID
 		end
 	end
 end

@@ -568,6 +568,205 @@ LPTargusRares = {
 	}
 }
 
+-- Broken Isles Rares (Azsuna, Stormheim, Val'sharah, Highmountain, Suramar)
+-- Solo cuentan la primera vez (tracked via quest flag)
+LPTbrokenIslesRares = {
+	-- ==========================================
+	-- Azsuna
+	-- ==========================================
+	[89016] = { ["questId"] = 37537 }, --Ravyn-Drath
+	[89650] = { ["questId"] = 37726 }, --Valiyaka the Stormbringer
+	[89816] = { ["questId"] = 37820 }, --Golza the Iron Fin
+	[89846] = { ["questId"] = 37821 }, --Captain Volo'ren
+	[89850] = { ["questId"] = 37822 }, --The Oracle
+	[89865] = { ["questId"] = 37823 }, --Mrrgrl the Tide Reaver
+	[89884] = { ["questId"] = 37824 }, --Flog the Captain-Eater
+	[90057] = { ["questId"] = 37869 }, --Daggerbeak
+	[90164] = { ["questId"] = 37909 }, --Warbringer Mox'na
+	[90217] = { ["questId"] = 37928 }, --Normantis the Deposed
+	[90244] = { ["questId"] = 37932 }, --Arcavellus
+	[90505] = { ["questId"] = 37989 }, --Syphonus
+	[90803] = { ["questId"] = 38037 }, --Infernal Lord
+	[90901] = { ["questId"] = 38061 }, --Pridelord Meowl
+	[91100] = { ["questId"] = 38212 }, --Brogozog
+	[91113] = { ["questId"] = 38217 }, --Tide Behemoth
+	[91114] = { ["questId"] = 38217 }, --Tide Behemoth
+	[91115] = { ["questId"] = 38217 }, --Tide Behemoth
+	[91187] = { ["questId"] = 38238 }, --Beacher
+	[91289] = { ["questId"] = 38268 }, --Cailyn Paledoom
+	[91579] = { ["questId"] = 38352 }, --Doomlord Kazrok
+	[93622] = { ["questId"] = 45516 }, --Mortiferous
+	[101596] = { ["questId"] = 40766 }, --Charfeather
+	[102064] = { ["questId"] = 44035 }, --Torrentius
+	[103975] = { ["questId"] = 43957 }, --Jade Darkhaven
+	[105938] = { ["questId"] = 42069 }, --Felwing
+	[106990] = { ["questId"] = 42221 }, --Chief Bitterbrine
+	[107105] = { ["questId"] = 44670 }, --Broodmother Lizax
+	[107113] = { ["questId"] = 42280 }, --Vorthax
+	[107127] = { ["questId"] = 42450 }, --Brawlgoth
+	[107136] = { ["questId"] = 42286 }, --Houndmaster Stroxis
+	[107266] = { ["questId"] = 44673 }, --Commander Soraax
+	[107269] = { ["questId"] = 42376 }, --Inquisitor Tivos
+	[107327] = { ["questId"] = 42417 }, --Bilebrain
+	[107657] = { ["questId"] = 42505 }, --Arcanist Shal'iman
+	[108136] = { ["questId"] = 44671 }, --The Muscle
+	[108255] = { ["questId"] = 42699 }, --Coura, Mistress of Arcana
+	[109504] = { ["questId"] = 44108 }, --Ragemaw
+	[109575] = { ["questId"] = 45515 }, --Valakar the Thirsty
+	[109584] = { ["questId"] = 45499 }, --Fjordun
+	[109594] = { ["questId"] = 45497 }, --Stormfeather
+	[109620] = { ["questId"] = 45496 }, --The Whisperer
+	[109630] = { ["questId"] = 45495 }, --Immolian
+	[109641] = { ["questId"] = 45494 }, --Arcanor Prime
+	[109653] = { ["questId"] = 45492 }, --Marblub the Massive
+	[109677] = { ["questId"] = 45491 }, --Chief Treasurer Jabrill
+	[109702] = { ["questId"] = 45489 }, --Deepclaw
+	[111434] = { ["questId"] = 44039 }, --Sea King Tidross
+	[111454] = { ["questId"] = 43961 }, --Bestrix
+	[111939] = { ["questId"] = 43956 }, --Lysanis Shadesoul
+	[112636] = { ["questId"] = 44081 }, --Sinister Leyrunner
+	[112637] = { ["questId"] = 44081 }, --Devious Sunrunner
+	-- ==========================================
+	-- Stormheim
+	-- ==========================================
+	[90139] = { ["questId"] = 37908 }, --Inquisitor Ernstenbok
+	[91529] = { ["questId"] = 38333 }, --Glimar Ironfist
+	[91780] = { ["questId"] = 38422 }, --Mother Clacker
+	[91795] = { ["questId"] = 38423 }, --Stormwing Matriarch
+	[91803] = { ["questId"] = 38425 }, --Fathnyr
+	[91874] = { ["questId"] = 38431 }, --Bladesquall
+	[91892] = { ["questId"] = 38424 }, --Thane Irglov the Merciless
+	[92152] = { ["questId"] = 38472 }, --Whitewater Typhoon
+	[92599] = { ["questId"] = 38626 }, --Bloodstalker Alpha
+	[92682] = { ["questId"] = 38642 }, --Helmouth Raider
+	[92685] = { ["questId"] = 38642 }, --Captain Brvet
+	[92751] = { ["questId"] = 39031 }, --Ivory Sentinel
+	[92763] = { ["questId"] = 38685 }, --The Nameless King
+	[93166] = { ["questId"] = 38774 }, --Tiptog the Lost
+	[93371] = { ["questId"] = 38837 }, --Mordvigbjorn
+	[93401] = { ["questId"] = 38847 }, --Urgev the Flayer
+	[94413] = { ["questId"] = 39120 }, --Isel the Hammer
+	[98188] = { ["questId"] = 40068 }, --Egyl the Enduring
+	[98268] = { ["questId"] = 40081 }, --Tarben
+	[98421] = { ["questId"] = 40109 }, --Kottr Vondyr
+	[98503] = { ["questId"] = 40113 }, --Grrvrgull the Conqueror
+	[107487] = { ["questId"] = 42437 }, --Starbuck
+	[107926] = { ["questId"] = 42591 }, --Hannval the Butcher
+	[108827] = { ["questId"] = 45507 }, --Fjorlag, the Grave's Chill
+	[109113] = { ["questId"] = 40067 }, --Boulderfall, the Eroded
+	[110363] = { ["questId"] = 43342 }, --Roteye
+	[92040] = { ["questId"] = 38461 }, --Fenri (Helheim)
+	[97630] = { ["questId"] = 39870 }, --Soulthirster (Helheim)
+	-- ==========================================
+	-- Val'sharah
+	-- ==========================================
+	[92104] = { ["questId"] = 38466 }, --Thistleleaf Rascal
+	[92117] = { ["questId"] = 38468 }, --Gorebeak
+	[92180] = { ["questId"] = 38479 }, --Seersei
+	[92423] = { ["questId"] = 38772 }, --Theryssia
+	[92965] = { ["questId"] = 38767 }, --Darkshade
+	[93030] = { ["questId"] = 40080 }, --Ironbranch
+	[93205] = { ["questId"] = 38780 }, --Thondrax
+	[93654] = { ["questId"] = 38887 }, --Skul'vrax (Elindya Featherlight)
+	[93679] = { ["questId"] = 44070 }, --Gathenak the Subjugator
+	[93686] = { ["questId"] = 38889 }, --Jinikki the Puncturer (Shivering Ashmaw Cub)
+	[93758] = { ["questId"] = 38900 }, --Antydas Nightcaller
+	[94414] = { ["questId"] = 39121 }, --Kiranys Duskwhisper
+	[94485] = { ["questId"] = 39130 }, --Pollous the Fetid
+	[95123] = { ["questId"] = 40126 }, --Grelda the Hag
+	[95221] = { ["questId"] = 39357 }, --Mad Henryk
+	[95318] = { ["questId"] = 39596 }, --Perrexx the Corruptor
+	[97504] = { ["questId"] = 39856 }, --Wraithtalon
+	[97517] = { ["questId"] = 39858 }, --Dreadbog
+	[98241] = { ["questId"] = 40079 }, --Lyrath Moonfeather
+	[104523] = { ["questId"] = 45500 }, --Shalas'aman
+	[109125] = { ["questId"] = 42870 }, --Kathaw the Savage
+	[109281] = { ["questId"] = 45501 }, --Malisandra
+	[109648] = { ["questId"] = 45493 }, --Witchdoctor Grgl-Brgl
+	[109692] = { ["questId"] = 45490 }, --Lytheron
+	[109708] = { ["questId"] = 43176 }, --Undergrell Ringleader
+	[109990] = { ["questId"] = 45488 }, --Nylaathria the Forgotten
+	[110342] = { ["questId"] = 45487 }, --Rabxach
+	[110361] = { ["questId"] = 45484 }, --Harbinger of Screams
+	[110367] = { ["questId"] = 45483 }, --Ealdis
+	[110562] = { ["questId"] = 43446 }, --Bahagar
+	-- ==========================================
+	-- Highmountain
+	-- ==========================================
+	[94877] = { ["questId"] = 39235 }, --Brogrul the Mighty
+	[95204] = { ["questId"] = 39435 }, --Oubdob da Smasher
+	[95872] = { ["questId"] = 39465 }, --Skullhat
+	[96072] = { ["questId"] = 45508 }, --Durguth
+	[96410] = { ["questId"] = 39646 }, --Majestic Elderhorn
+	[96590] = { ["questId"] = 40347 }, --Gurbog da Basher
+	[96621] = { ["questId"] = 40242 }, --Mellok, Son of Torok
+	[97093] = { ["questId"] = 39762 }, --Shara Felbreath
+	[97102] = { ["questId"] = 39766 }, --Ram'Pag
+	[97203] = { ["questId"] = 39782 }, --Tenpak Flametotem
+	[97220] = { ["questId"] = 39784 }, --Arru (Beastmaster Pao'lek)
+	[97326] = { ["questId"] = 39802 }, --Hartli the Snatcher
+	[97345] = { ["questId"] = 39806 }, --Crawshuk the Hungry
+	[97449] = { ["questId"] = 40405 }, --Bristlemaul
+	[97593] = { ["questId"] = 39866 }, --Mynta Talonscreech
+	[97653] = { ["questId"] = 39872 }, --Taurson
+	[97793] = { ["questId"] = 39963 }, --Flamescale
+	[97933] = { ["questId"] = 39994 }, --Crab Rider Grmlrml
+	[98024] = { ["questId"] = 40406 }, --Luggut the Eggeater
+	[98299] = { ["questId"] = 40084 }, --Bodash the Hoarder
+	[98311] = { ["questId"] = 40096 }, --Mrrklr
+	[98890] = { ["questId"] = 40175 }, --Slumber
+	[100230] = { ["questId"] = 40413 }, --"Sure-Shot" Arnie (Amateur Hunters)
+	[100495] = { ["questId"] = 40414 }, --Devouring Darkness
+	[101077] = { ["questId"] = 40681 }, --Sekhan
+	[101649] = { ["questId"] = 40773 }, --Frostshard
+	[104481] = { ["questId"] = 45514 }, --Ala'washte
+	[104484] = { ["questId"] = 45511 }, --Olokk the Shipbreaker
+	[104513] = { ["questId"] = 45513 }, --Defilia
+	[104517] = { ["questId"] = 45512 }, --Mawat'aki
+	[104524] = { ["questId"] = 45510 }, --Ormagrogg
+	-- ==========================================
+	-- Suramar
+	-- ==========================================
+	[99610] = { ["questId"] = 40897 }, --Garvrulg
+	[99792] = { ["questId"] = 41319 }, --Elfbane
+	[100864] = { ["questId"] = 41135 }, --Cora'kar
+	[102303] = { ["questId"] = 40905 }, --Lieutenant Strathmar
+	[103183] = { ["questId"] = 40680 }, --Rok'nash
+	[103203] = { ["questId"] = 41134 }, --Jetsam
+	[103214] = { ["questId"] = 41136 }, --Har'kess the Insatiable
+	[103223] = { ["questId"] = 43993 }, --Hertha Grimdottir
+	[103575] = { ["questId"] = 44003 }, --Reef Lord Raj'his
+	[103827] = { ["questId"] = 41786 }, --King Morgalash
+	[103841] = { ["questId"] = 43996 }, --Shadowquill
+	[105547] = { ["questId"] = 43484 }, --Rauren
+	[105728] = { ["questId"] = 45505 }, --Scythemaster Cil'raman
+	[105899] = { ["questId"] = 45506 }, --Oglok the Furious
+	[106351] = { ["questId"] = 43717 }, --Artificer Lothaire
+	[106526] = { ["questId"] = 44675 }, --Lady Rivantas
+	[106532] = { ["questId"] = 44569 }, --Inquisitor Volitix
+	[107846] = { ["questId"] = 43968 }, --Pinchshank
+	[109054] = { ["questId"] = 42831 }, --Shal'an
+	[109954] = { ["questId"] = 43348 }, --Magister Phaedris
+	[110024] = { ["questId"] = 43351 }, --Mal'Dreth the Corruptor
+	[110340] = { ["questId"] = 43358 }, --Myonix
+	[110438] = { ["questId"] = 43369 }, --Siegemaster Aedrin
+	[110577] = { ["questId"] = 43449 }, --Oreth the Vile
+	[110656] = { ["questId"] = 43481 }, --Arcanist Lylandre
+	[110726] = { ["questId"] = 43495 }, --Cadraeus
+	[110832] = { ["questId"] = 43992 }, --Gorgroth
+	[110870] = { ["questId"] = 43580 }, --Apothecary Faldren
+	[110944] = { ["questId"] = 43597 }, --Guardian Thor'el
+	[111007] = { ["questId"] = 43603 }, --Randril
+	[111197] = { ["questId"] = 43954 }, --Anax
+	[111329] = { ["questId"] = 43718 }, --Matron Hagatha
+	[111649] = { ["questId"] = 43794 }, --Ambassador D'vwinn
+	[111651] = { ["questId"] = 43792 }, --Degren
+	[111653] = { ["questId"] = 43793 }, --Miasu
+	[112497] = { ["questId"] = 44072 }, --Maia the White
+	[112802] = { ["questId"] = 44124 }, --Mar'tura
+	[113368] = { ["questId"] = 44676 }, --Llorian
+}
+
 function LPT:setArgusRares()
 	for i,id in pairs(LPTargusRares) do
 		LPTargusRares[i]["killed"] = IsQuestFlaggedCompleted(id["questId"])
@@ -577,6 +776,12 @@ end
 function LPT:setIslandRares()
 	for i,id in pairs(LPTisleRares) do
 		LPTisleRares[i]["killed"] = IsQuestFlaggedCompleted(id["questId"])
+	end
+end
+
+function LPT:setBrokenIslesRares()
+	for i,id in pairs(LPTbrokenIslesRares) do
+		LPTbrokenIslesRares[i]["killed"] = IsQuestFlaggedCompleted(id["questId"])
 	end
 end
 --[[

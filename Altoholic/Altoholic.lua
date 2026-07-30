@@ -1,5 +1,5 @@
---[[	*** Altoholic ***
-Written by : Thaoky, EU-Marécages de Zangar
+﻿--[[	*** Altoholic ***
+Written by : Thaoky, EU-MarÃ©cages de Zangar
 --]]
 
 local addonName = ...
@@ -54,14 +54,14 @@ local function BuildUnsafeItemList()
 	for _, itemID in pairs(unsafeItems) do
 		local itemName = GetItemInfo(itemID)
 		if not itemName then							-- if the item is really unsafe .. save it
-			table.insert(TmpUnsafe, itemID)
+			TmpUnsafe[#TmpUnsafe+1] = itemID
 		end
 	end
 	
 	wipe(unsafeItems)	-- clear the DB table
 	
 	for _, itemID in pairs(TmpUnsafe) do
-		table.insert(unsafeItems, itemID)	-- save the confirmed unsafe ids back in the db
+		unsafeItems[#unsafeItems+1] = itemID	-- save the confirmed unsafe ids back in the db
 	end
 end
 
@@ -731,7 +731,7 @@ end
 -- ** Unsafe Items **
 function addon:SaveUnsafeItem(itemID)
 	if not addon:IsItemUnsafe(itemID) then			-- if the item is not a known unsafe item, save it in the db
-		table.insert(Altoholic.db.global.unsafeItems, itemID)
+		Altoholic.db.global.unsafeItems[#Altoholic.db.global.unsafeItems+1] = itemID
 	end
 end
 

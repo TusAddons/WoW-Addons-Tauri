@@ -223,11 +223,16 @@ Prat:AddModuleToLoad(function()
 		--[[ ["customGratsText_desc"] = "",--]] 
 		--[[Translation missing --]]
 		--[[ ["customGratsText_name"] = "",--]] 
-		["grats_donthave_1"] = "Parabéns %s",
-		["grats_donthave_10"] = "Não vejo a hora de ter esse, %s",
-		["grats_donthave_2"] = "Boa %s, eu ainda preciso desse",
-		["grats_donthave_3"] = "Eu também quero esse, %s. Parabéns!",
-		["grats_donthave_4"] = "Nossa %s, brilhante",
+		--[[Translation missing --]]
+		--[[ ["grats_donthave_1"] = "",--]] 
+		--[[Translation missing --]]
+		--[[ ["grats_donthave_10"] = "",--]] 
+		--[[Translation missing --]]
+		--[[ ["grats_donthave_2"] = "",--]] 
+		--[[Translation missing --]]
+		--[[ ["grats_donthave_3"] = "",--]] 
+		--[[Translation missing --]]
+		--[[ ["grats_donthave_4"] = "",--]] 
 		--[[Translation missing --]]
 		--[[ ["grats_donthave_5"] = "",--]] 
 		--[[Translation missing --]]
@@ -488,72 +493,39 @@ Prat:AddModuleToLoad(function()
   L=
 {
 	["Achievements"] = {
-		--[[Translation missing --]]
-		--[[ ["completed"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["customGrats_defualt"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["customGrats_desc"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["customGrats_name"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["customGratsText_desc"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["customGratsText_name"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_1"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_10"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_2"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_3"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_4"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_5"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_6"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_7"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_8"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_9"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_1"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_10"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_2"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_3"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_4"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_5"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_6"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_7"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_8"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_9"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_link"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["module_desc"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["module_name"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["showCompletedDate_desc"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["showCompletedDate_name"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["showGratsLink_desc"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["showGratsLink_name"] = "",--]] 
+		["completed"] = "Completado %s",
+		["customGrats_defualt"] = "Felicidades %s",
+		["customGrats_desc"] = "Usar un mensaje de felicitación personalizado en lugar de uno aleatorio",
+		["customGrats_name"] = "Usar Mensaje de Felicitación Personalizado",
+		["customGratsText_desc"] = "Mensaje de felicitación personalizado. Escribe el texto que desees para tu mensaje. Para incluir el nombre del jugador, usa '%s' como marcador de posición",
+		["customGratsText_name"] = "Mensaje de Felicitación",
+		["grats_donthave_1"] = "Gz %s",
+		["grats_donthave_10"] = "¡Enhorabuena %s!",
+		["grats_donthave_2"] = "Felicidades %s",
+		["grats_donthave_3"] = "Gz %s",
+		["grats_donthave_4"] = "¡Enhorabuena %s!",
+		["grats_donthave_5"] = "Felicidades %s",
+		["grats_donthave_6"] = "Gz %s",
+		["grats_donthave_7"] = "¡Enhorabuena %s!",
+		["grats_donthave_8"] = "Felicidades %s",
+		["grats_donthave_9"] = "Gz %s",
+		["grats_have_1"] = "Gz %s",
+		["grats_have_10"] = "¡Enhorabuena %s!",
+		["grats_have_2"] = "Felicidades %s",
+		["grats_have_3"] = "Gz %s",
+		["grats_have_4"] = "¡Enhorabuena %s!",
+		["grats_have_5"] = "Felicidades %s",
+		["grats_have_6"] = "Gz %s",
+		["grats_have_7"] = "¡Enhorabuena %s!",
+		["grats_have_8"] = "Felicidades %s",
+		["grats_have_9"] = "Gz %s",
+		["grats_link"] = "Felicitar",
+		["module_desc"] = "Personalizaciones relacionadas con los Logros",
+		["module_name"] = "Logros",
+		["showCompletedDate_desc"] = "Muestra la fecha en que completaste el logro junto al enlace",
+		["showCompletedDate_name"] = "Mostrar fecha de finalización",
+		["showGratsLink_desc"] = "Muestra un enlace clickeable que envía un mensaje de felicitación",
+		["showGratsLink_name"] = "Mostrar enlace de felicitación",
 	}
 }
   PL:AddLocale(PRAT_MODULE, "esMX",  L)
@@ -674,72 +646,39 @@ Prat:AddModuleToLoad(function()
   L=
 {
 	["Achievements"] = {
-		--[[Translation missing --]]
-		--[[ ["completed"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["customGrats_defualt"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["customGrats_desc"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["customGrats_name"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["customGratsText_desc"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["customGratsText_name"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_1"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_10"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_2"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_3"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_4"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_5"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_6"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_7"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_8"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_donthave_9"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_1"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_10"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_2"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_3"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_4"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_5"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_6"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_7"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_8"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_have_9"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["grats_link"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["module_desc"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["module_name"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["showCompletedDate_desc"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["showCompletedDate_name"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["showGratsLink_desc"] = "",--]] 
-		--[[Translation missing --]]
-		--[[ ["showGratsLink_name"] = "",--]] 
+		["completed"] = "Completado %s",
+		["customGrats_defualt"] = "Felicidades %s",
+		["customGrats_desc"] = "Usar un mensaje de felicitación personalizado en lugar de uno aleatorio",
+		["customGrats_name"] = "Usar Mensaje de Felicitación Personalizado",
+		["customGratsText_desc"] = "Mensaje de felicitación personalizado. Escribe el texto que desees para tu mensaje. Para incluir el nombre del jugador, usa '%s' como marcador de posición",
+		["customGratsText_name"] = "Mensaje de Felicitación",
+		["grats_donthave_1"] = "Gz %s",
+		["grats_donthave_10"] = "¡Enhorabuena %s!",
+		["grats_donthave_2"] = "Felicidades %s",
+		["grats_donthave_3"] = "Gz %s",
+		["grats_donthave_4"] = "¡Enhorabuena %s!",
+		["grats_donthave_5"] = "Felicidades %s",
+		["grats_donthave_6"] = "Gz %s",
+		["grats_donthave_7"] = "¡Enhorabuena %s!",
+		["grats_donthave_8"] = "Felicidades %s",
+		["grats_donthave_9"] = "Gz %s",
+		["grats_have_1"] = "Gz %s",
+		["grats_have_10"] = "¡Enhorabuena %s!",
+		["grats_have_2"] = "Felicidades %s",
+		["grats_have_3"] = "Gz %s",
+		["grats_have_4"] = "¡Enhorabuena %s!",
+		["grats_have_5"] = "Felicidades %s",
+		["grats_have_6"] = "Gz %s",
+		["grats_have_7"] = "¡Enhorabuena %s!",
+		["grats_have_8"] = "Felicidades %s",
+		["grats_have_9"] = "Gz %s",
+		["grats_link"] = "Felicitar",
+		["module_desc"] = "Personalizaciones relacionadas con los Logros",
+		["module_name"] = "Logros",
+		["showCompletedDate_desc"] = "Muestra la fecha en que completaste el logro junto al enlace",
+		["showCompletedDate_name"] = "Mostrar fecha de finalización",
+		["showGratsLink_desc"] = "Muestra un enlace clickeable que envía un mensaje de felicitación",
+		["showGratsLink_name"] = "Mostrar enlace de felicitación",
 	}
 }
   PL:AddLocale(PRAT_MODULE, "esES",  L)
@@ -918,7 +857,7 @@ Prat:AddModuleToLoad(function()
 
         local text, theirId, theirPlayerGuid, theirDone, theirMonth, theirDay, theirYear, _, _, _, _, theirAchievmentName = ...
 
-        if not theirPlayerGuid or theirDone == "0" then return end
+        if not theirPlayerGuid or theirPlayerGuid == "" or theirDone == "0" then return end
 
         local id, name, points, completed, month, day, year, description, flags, icon, rewardText, isGuildAch, wasEarnedByMe, earnedBy = GetAchievementInfo(theirId)
 

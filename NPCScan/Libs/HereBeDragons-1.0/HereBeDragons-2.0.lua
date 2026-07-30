@@ -1,4 +1,4 @@
--- HereBeDragons is a data API for the World of Warcraft mapping system
+﻿-- HereBeDragons is a data API for the World of Warcraft mapping system
 
 -- HereBeDragons-2.0 is not supported on WoW 7.x or earlier
 if select(4, GetBuildInfo()) < 80000 then
@@ -272,7 +272,7 @@ end
 function HereBeDragons:GetAllMapIDs()
     local t = {}
     for id in pairs(mapData) do
-        table.insert(t, id)
+        t[#t+1] = id
     end
     return t
 end

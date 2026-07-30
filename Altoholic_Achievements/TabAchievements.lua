@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 
@@ -25,7 +25,7 @@ local function BuildView()
 			for _, subCatID in ipairs(cats) do
 				local _, subCatParentID = GetCategoryInfo(subCatID)
 				if subCatParentID == categoryID then
-					table.insert(view, subCatID )
+					view[#view+1] = subCatID 
 				end
 			end
 		end
@@ -99,7 +99,7 @@ addon:Controller("AltoholicUI.TabAchievements", {
 				-- for _, subCatID in ipairs(cats) do
 					-- local _, subCatParentID = GetCategoryInfo(subCatID)
 					-- if subCatParentID == categoryID then
-						-- table.insert(view, subCatID )
+						-- view[#view+1] = subCatID 
 					-- end
 				-- end
 			-- end

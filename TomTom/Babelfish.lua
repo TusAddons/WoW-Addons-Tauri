@@ -1,4 +1,4 @@
-#!/usr/local/bin/lua
+﻿#!/usr/local/bin/lua
 
 local strings = {}
 
@@ -14,7 +14,7 @@ end
 
 local work = {}
 
-for k,v in pairs(strings) do table.insert(work, k) end
+for k,v in pairs(strings) do work[#work+1] = k end
 table.sort(work)
 
 print("--Localization.enUS.lua\n")

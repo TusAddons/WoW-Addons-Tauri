@@ -1,7 +1,7 @@
-local mod	= DBM:NewMod(2009, "DBM-AntorusBurningThrone", nil, 946)
+﻿local mod	= DBM:NewMod(2009, "DBM-AntorusBurningThrone", nil, 946)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17603 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 17507 $"):sub(12, -3))
 mod:SetCreatureID(124158)--or 124158 or 125692
 mod:SetEncounterID(2082)
 mod:SetZone()
@@ -305,7 +305,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		updateRangeFrame(self)
 		if not tContains(empoweredPulseTargets, args.destName) then
-			table.insert(empoweredPulseTargets, args.destName)
+			empoweredPulseTargets[#empoweredPulseTargets+1] = args.destName
 		end
 		if self.Options.SetIconOnEmpPulse2 and #empoweredPulseTargets < 7 then
 			self:SetIcon(args.destName, #empoweredPulseTargets+2)
@@ -433,8 +433,7 @@ do
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
-	local spellId = legacySpellId or bfaSpellId
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 248995 or spellId == 248194 then
 		timerSeverCD:Stop()
 		timerChargedBlastsCD:Stop()

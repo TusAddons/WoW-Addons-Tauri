@@ -172,7 +172,16 @@ function Gatherer.MiniNotes.UpdateMinimapNotes(timeDelta, force)
 		local mapID, mapFloor = Gatherer.ZoneTokens.GetZoneMapIDAndFloor(zoneToken)
 		for i, nodeZoneToken, gType, nodeIndex, nodeDist, nodeX, nodeY, nodeIndoors, nodeInspected
 		in Gatherer.Storage.ClosestNodesInfo(zoneToken, px, py, getNumber, getDist, Gatherer.Config.DisplayFilter_MiniMap) do
-			if ( numNotesUsed < displayNumber ) then
+			local zText = GetRealZoneText() or ""
+			local sText = GetSubZoneText() or ""
+			local isMine = sText:find("Excava") or sText:find("Mina") or zText:find("Excava") or zText:find("Mina")
+			local ignoreNode = false
+			if not isMine and (nodeZoneToken == "DRAENOR_SHADOWMOON_VALLEY" or nodeZoneToken == 947 or nodeZoneToken == 971 or nodeZoneToken == 972 or nodeZoneToken == 973) and (nodeIndoors or (nodeX >= 0.57 and nodeX <= 0.76 and nodeY >= 0.26 and nodeY <= 0.48)) then
+				ignoreNode = true
+			elseif not isMine and (nodeZoneToken == "DRAENOR_FROSTFIRE_RIDGE" or nodeZoneToken == 941 or nodeZoneToken == 976 or nodeZoneToken == 977 or nodeZoneToken == 978) and (nodeIndoors or (nodeX >= 0.44 and nodeX <= 0.60 and nodeY >= 0.45 and nodeY <= 0.68)) then
+				ignoreNode = true
+			end
+			if ( not ignoreNode and numNotesUsed < displayNumber ) then
 				numNotesUsed = numNotesUsed + 1
 				-- need to position and label the corresponding button
 				local gatherNote = GetMinimapNote(numNotesUsed)
@@ -188,7 +197,7 @@ function Gatherer.MiniNotes.UpdateMinimapNotes(timeDelta, force)
 					numNotesUsed = numNotesUsed - 1
 				end
 			end
-			if ( Gatherer_HUD and nodeDist <= setting("plugin.gatherer_hud.yards") ) then
+			if ( not ignoreNode and Gatherer_HUD and nodeDist <= setting("plugin.gatherer_hud.yards") ) then
 				Gatherer_HUD.PlaceIcon(zoneToken, gType, nodeIndex, nodeX, nodeY)
 			end
 		end

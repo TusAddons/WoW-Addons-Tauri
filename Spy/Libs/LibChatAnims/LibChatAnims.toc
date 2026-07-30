@@ -1,7 +1,8 @@
 ## Interface: 60100
 ## Title: Lib: ChatAnims
+## Author: Artiom97es
 ## Notes: UIFrameFlash to Animation conversion library for Floating Chat Frame functions.
-## Author: Funkydude
+## Version: 1.1-Artiom97es
 ## X-Category: Library
 ## OptionalDeps: LibStub
 ## X-License: CC BY-NC-SA 3.0

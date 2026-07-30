@@ -1,0 +1,9 @@
+## Interface: 70300
+## Title: |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Interrupts|r
+## Author: Artiom97es
+## Version: 7.3.1-Artiom97es
+## Notes: Adds Interrupt Timers To DBM
+## X-DBM-Mod-Category: General
+## X-DBM-Mod-Name: DBM-Interrupts
+
+Interrupt.lua

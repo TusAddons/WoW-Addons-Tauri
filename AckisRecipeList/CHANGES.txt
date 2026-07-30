@@ -1,94 +1,24 @@
-Changes since tag 7.3.0.2
+tag d76a4ac4c903650fbef76014fc0485bc949fc31d 7.3.0.1
+Author:	Ressy <resa1983@hotmail.com>
+Date:	Tue Aug 29 19:39:48 2017 -0400
 
-commit 91a3a6169d0f9c5d597f01630a67df42a2703590
+7.3.0 release
+
+commit e062c22807cdc0ea8ab367d74537384aaee9cb59
 Author: Ressy <resa1983@hotmail.com>
-Date:   Thu Jan 31 15:36:06 2019 -0500
+Date:   Tue Aug 29 19:31:18 2017 -0400
 
-    Fix MOB ids & removal of empty
+    Add Locations, Reputations, Boss Encounters, various vendors
 
-commit 325e280e489292258ff4f3e0f20083fa6169fcd4
+commit 821f857ee967730fc0c90c16e827ab0668912251
 Author: Ressy <resa1983@hotmail.com>
-Date:   Thu Jan 31 15:35:43 2019 -0500
+Date:   Tue Aug 29 19:28:58 2017 -0400
 
-    Fixes for map API changes - work in progress
+    Bump ToC
 
-commit 8fb06d22fe70a4a7ccab5f495784d1de129b0783
+commit a1b4ab915b8e9bd7014b78805725880a5dd6efba
 Author: Ressy <resa1983@hotmail.com>
-Date:   Thu Jan 31 15:31:10 2019 -0500
+Date:   Tue Jul 4 20:01:31 2017 -0400
 
-    Removal of Order of the Awakened since it wasn't used
-
-commit 03c21857dd56802c3b8d256d743cd0b760236a6a
-Author: Teresa <resa1983@hotmail.com>
-Date:   Mon Jan 14 14:54:18 2019 -0500
-
-    GetMapNameByID replacement
-
-commit 0941c2ef92eb63a53004f8a5ea934990a2d16eae
-Author: Ressy <resa1983@hotmail.com>
-Date:   Fri Jan 11 20:18:32 2019 -0500
-
-    Trade_skill_update removed
-
-commit 0c5da74d3f66e9c8b2f674546dc86f140ddcdef4
-Author: Ressy <resa1983@hotmail.com>
-Date:   Fri Jan 11 20:17:40 2019 -0500
-
-    SetMapToCurrentZone removed
-
-commit 72af32ad57dfc7806210ab8871397699be7a6e9a
-Author: Ressy <resa1983@hotmail.com>
-Date:   Fri Jan 11 20:15:46 2019 -0500
-
-    SetMapToCurrentZone removed
-
-commit 5e99454b3103611660964a728ada49b3bbadeea4
-Author: Ressy <resa1983@hotmail.com>
-Date:   Fri Jan 11 20:14:55 2019 -0500
-
-    GetPlayerMapPosition removed
-
-commit ee4cb2d159a43ecd61891a3a22651de0d672feb2
-Author: Ressy <resa1983@hotmail.com>
-Date:   Fri Jan 11 20:13:53 2019 -0500
-
-    GetSpell results flipped
-
-commit bf6ec33dbb88ed769926bf80bf583fa090c4f009
-Author: Ressy <resa1983@hotmail.com>
-Date:   Fri Jan 11 20:12:56 2019 -0500
-
-    GetMapNamrById replacement
-
-commit 0d4e4f4389bd1ddf963c9ca462b87235e2f7fc41
-Author: Ressy <resa1983@hotmail.com>
-Date:   Fri Jan 11 20:09:07 2019 -0500
-
-    BFA support
-
-commit 31e630f73bf3d47e9cbf1141a51d91f6274bfd9f
-Author: Ressy <resa1983@hotmail.com>
-Date:   Sun Jan 6 11:49:34 2019 -0500
-
-    First aid removed
-
-commit 22c95fb7a33b14356d280451dab385d5dbddc113
-Author: Ressy <resa1983@hotmail.com>
-Date:   Mon May 7 14:03:52 2018 -0400
-
-    Add localization
-
-commit 2ea2b46ee4983e2ad2b695ecc3ddd4b2a8435807
-Author: James D. Callahan III <jcallahan@curse.com>
-Date:   Fri Sep 22 21:46:01 2017 -0500
-
-    Fix restored sound code to work with the WoW 7.3 API because fixing shit is always better than saying ¯\_(ツ)_/¯ and ripping it out.
-
-commit 7064802941d197f524de4df4898b7fb11ec0da86
-Author: James D. Callahan III <jcallahan@curse.com>
-Date:   Fri Sep 22 21:24:43 2017 -0500
-
-    Revert "Ripping out sound code, bugged in 7.3. ARL doesn't need sound effects."
-    
-    This reverts commit a1b4ab915b8e9bd7014b78805725880a5dd6efba.
+    Ripping out sound code, bugged in 7.3. ARL doesn't need sound effects.
 

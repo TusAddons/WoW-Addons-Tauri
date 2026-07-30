@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 
@@ -415,7 +415,7 @@ local function CharactersIcon_Initialize(self, level)
 		
 		local nameList = {}		-- we want to list characters alphabetically
 		for _, character in pairs(DataStore:GetCharacters(menuRealm, menuAccount)) do
-			table.insert(nameList, character)	-- we can add the key instead of just the name, since they will all be like account.realm.name, where account & realm are identical
+			nameList[#nameList+1] = character	-- we can add the key instead of just the name, since they will all be like account.realm.name, where account & realm are identical
 		end
 		table.sort(nameList)
 		

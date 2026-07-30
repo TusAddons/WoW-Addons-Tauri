@@ -1,6 +1,7 @@
 ﻿## Interface: 70300
 ## LoadOnDemand: 1
 ## Title: Lib: Babble-SubZone-3.0
+## Author: Artiom97es
 ## Title-frFR: Lib: Babble-SubZone-3.0
 ## Title-itIT: Lib: Babble-SubZone-3.0
 ## Title-koKR: Lib: Babble-SubZone-3.0
@@ -11,7 +12,7 @@
 ## Notes-koKR: 게임 내 세부 지역 이름의 지역화로 도움을 주는 라이브러리 입니다.
 ## Notes-zhCN: 一个帮助游戏内子区域名称本地化的库。
 ## Notes-zhTW: 為本地化服務的函式庫 [副區域名稱]
-## Author: Arith
+## Version: 1.1-Artiom97es
 ## X-eMail: arithmandarjp at yahoo.co.jp
 ## X-Category: Library
 ## X-License: MIT

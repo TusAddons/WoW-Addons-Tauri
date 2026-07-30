@@ -1,5 +1,7 @@
 ## Interface: 70000
 ## Title: Lib: LibStub
+## Author: Artiom97es
+## Version: 1.1-Artiom97es
 ## Notes: Universal Library Stub
 ## Credits: Kaelten, Cladhaire, ckknight, Mikk, Ammo, Nevcairiel
 ## X-Website: http://www.wowace.com/addons/libstub/

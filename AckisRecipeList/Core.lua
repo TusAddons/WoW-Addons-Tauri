@@ -24,9 +24,9 @@ addon.constants.addon_name = private.addon_name
 addon.Name = FOLDER_NAME -- For cases when ARL needs to act as one of its modules.
 _G.AckisRecipeList = addon
 
---@alpha@
+--[===[@alpha@
 _G.ARL = addon
---@end-alpha@
+--@end-alpha@]===]
 
 local L = LibStub("AceLocale-3.0"):GetLocale(private.addon_name)
 local Toast = LibStub("LibToast-1.0")
@@ -354,9 +354,9 @@ function addon:OnInitialize()
 	debug_version = true
 	--@end-debug@]===]
 
-	--@alpha@
+	--[===[@alpha@
 	alpha_version = true
-	--@end-alpha@
+	--@end-alpha@]===]
 
 	version = debug_version and "Devel" or (alpha_version and version .. "-Alpha") or version
 
@@ -418,7 +418,7 @@ function addon:OnEnable()
 
 	self:RegisterEvent("TRADE_SKILL_SHOW")
 	self:RegisterEvent("TRADE_SKILL_CLOSE")
-	self:RegisterEvent("TRADE_SKILL_LIST_UPDATE")
+	self:RegisterEvent("TRADE_SKILL_UPDATE")
 
 	if addon.db.profile.scantrainers then
 		self:RegisterEvent("TRAINER_SHOW")
@@ -611,7 +611,7 @@ do
 		end
 	end)
 
-	function addon:TRADE_SKILL_LIST_UPDATE()
+	function addon:TRADE_SKILL_UPDATE()
 		if not self.Frame or not self.Frame:IsVisible() then
 			return
 		end
@@ -621,7 +621,6 @@ do
 			updater:Show()
 		end
 	end
-
 end
 
 -- ----------------------------------------------------------------------------

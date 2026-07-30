@@ -1,10 +1,10 @@
 ## Interface: 70300
 ## Title: GarrisonCommander-Broker
+## Author: Artiom97es
 ## Notes: Data-Broker for GarrisonCommander
 ## Notes-itIT: Data-Broker per GarrisonCommander
 ## Notes-frFR: Data-Broker pour GarrisonCommander
-## Author: Alar of Runetotem
-## Version: 2.18.5 1.1.0
+## Version: 2.18.5 1.1.1-Artiom97es
 ## X-Revision: 797379e
 ## eMail: alar@aspide.it
 ## URL: http://wow.aspide.it

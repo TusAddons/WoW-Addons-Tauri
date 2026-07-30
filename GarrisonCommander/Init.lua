@@ -17,13 +17,27 @@ local tostringall=tostringall
 local tostring=tostring
 local tonumber=tonumber
 local type=type
+local function smartPrint(...)
+	for i = 1, NUM_CHAT_WINDOWS do
+		local name = GetChatWindowInfo(i)
+		if name == "Addons" or name == "Logs" or name == "Debug" then
+			local cf = _G["ChatFrame" .. i]
+			if cf then
+				cf:AddMessage(strjoin(" ", tostringall(...)))
+				return
+			end
+		end
+	end
+	_G.print(...)
+end
+
 --[===[@debug@
 LoadAddOn("Blizzard_DebugTools")
 LoadAddOn("LibDebug")
-if LibDebug then LibDebug() ns.print=print else ns.print=function() end end
+if LibDebug then LibDebug() ns.print=smartPrint else ns.print=smartPrint end end
 --@end-debug@]===]
 --@non-debug@
-ns.print=function() end
+ns.print=smartPrint
 --@end-non-debug@
 ns.addon=LibInit:NewAddon(me,{profile='Default',enhancedProfile=true},'AceHook-3.0','AceTimer-3.0','AceEvent-3.0','AceBucket-3.0','AceSerializer-3.0')
 local addon=ns.addon --#addon

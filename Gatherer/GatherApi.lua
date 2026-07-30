@@ -45,6 +45,13 @@ local Astrolabe = DongleStub(Gatherer.AstrolabeVersion)
 --   gatherLoot (table): a table of loot: { { link, count }, ...}
 --   wasGathered (boolean): was this object actually opened by the player
 function Gatherer.Api.AddGather(objectId, gatherType, indoorNode, gatherSource, gatherCoins, gatherLoot, wasGathered, gatherC, gatherZ, gatherX, gatherY)
+	local zText = GetRealZoneText() or ""
+	local sText = GetSubZoneText() or ""
+	local isMine = sText:find("Excava") or sText:find("Mina") or zText:find("Excava") or zText:find("Mina")
+	if not isMine and (zText:find("Bajaluna") or zText:find("Bajahelada") or zText:find("Lunarfall") or zText:find("Frostwall") or sText:find("Bajaluna") or sText:find("Bajahelada") or sText:find("Lunarfall") or sText:find("Frostwall")) then
+		return
+	end
+
 	local success, gatherZoneToken
 	
 	if not (((gatherC and gatherZ) or (gatherC==nil and gatherZ)) and gatherX and gatherY) then
@@ -59,6 +66,12 @@ function Gatherer.Api.AddGather(objectId, gatherType, indoorNode, gatherSource, 
 	
 	if not (gatherZoneToken and gatherX and gatherY) then
 		--print("Gatherer could not get zone information")
+		return
+	end
+
+	if not isMine and (gatherZoneToken == "DRAENOR_SHADOWMOON_VALLEY" or gatherZoneToken == 947 or gatherZoneToken == 971 or gatherZoneToken == 972 or gatherZoneToken == 973) and (gatherX >= 0.57 and gatherX <= 0.76 and gatherY >= 0.26 and gatherY <= 0.48) then
+		return
+	elseif not isMine and (gatherZoneToken == "DRAENOR_FROSTFIRE_RIDGE" or gatherZoneToken == 941 or gatherZoneToken == 976 or gatherZoneToken == 977 or gatherZoneToken == 978) and (gatherX >= 0.44 and gatherX <= 0.60 and gatherY >= 0.45 and gatherY <= 0.68) then
 		return
 	end
 	

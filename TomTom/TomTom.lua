@@ -1241,7 +1241,7 @@ local function lowergsub(s) return s:lower():gsub("[^%a%d]", "") end
 SlashCmdList["TOMTOM_WAY"] = function(msg)
     msg = msg:gsub("(%d)[%.,] (%d)", "%1 %2"):gsub(wrongseparator, rightseparator)
     local tokens = {}
-    for token in msg:gmatch("%S+") do table.insert(tokens, token) end
+    for token in msg:gmatch("%S+") do tokens[#tokens+1] = token end
 
     -- Lower the first token
     local ltoken = tokens[1] and tokens[1]:lower()
@@ -1274,7 +1274,7 @@ SlashCmdList["TOMTOM_WAY"] = function(msg)
                     matches = {name}
                     break
                 elseif lname:match(lzone) then
-                    table.insert(matches, name)
+                    matches[#matches+1] = name
                 end
             end
 
@@ -1350,7 +1350,7 @@ SlashCmdList["TOMTOM_WAY"] = function(msg)
                 matches = {name}
                 break
             elseif lname:match(lzone) then
-                table.insert(matches, name)
+                matches[#matches+1] = name
             end
         end
 

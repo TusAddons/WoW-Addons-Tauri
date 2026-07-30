@@ -1,4 +1,4 @@
---[[ File
+﻿--[[ File
 NAME: TitanPanel.lua
 DESC: Contains the basic routines of Titan. All the event handler routines, initialization routines, Titan menu routines, and select plugin handler routines.
 --]]
@@ -1479,7 +1479,7 @@ VAR: index - the index of the plugin removed so the list can be updated
 OUT:  None
 --]]
 function TitanPanel_ReOrder(index)
-	for i = index, table.getn(TitanPanelSettings.Buttons) do
+	for i = index, #(TitanPanelSettings.Buttons) do
 		TitanPanelSettings.Location[i] = TitanPanelSettings.Location[i+1]
 	end
 end
@@ -1522,12 +1522,12 @@ OUT: index of the plugin in the Titan plugin list or the end of the list. The ro
 --]]
 function TitanPanel_GetButtonNumber(id)
 	if (TitanPanelSettings) then
-		for i = 1, table.getn(TitanPanelSettings.Buttons) do
+		for i = 1, #(TitanPanelSettings.Buttons) do
 			if(TitanPanelSettings.Buttons[i] == id) then
 				return i;
 			end
 		end
-		return table.getn(TitanPanelSettings.Buttons)+1;
+		return #(TitanPanelSettings.Buttons)+1;
 	else
 		return 0;
 	end
@@ -1541,7 +1541,7 @@ OUT:  None
 --]]
 function TitanPanel_RefreshPanelButtons()
 	if (TitanPanelSettings) then
-		for i = 1, table.getn(TitanPanelSettings.Buttons) do
+		for i = 1, #(TitanPanelSettings.Buttons) do
 			TitanPanelButton_UpdateButton(TitanPanelSettings.Buttons[i], 1);
 		end
 	end
@@ -1802,7 +1802,7 @@ local function TitanPanel_ServerSettingsMenu()
 			
 			if TitanUtils_GetCurrentIndex(servers, server) == nil then
 				if server ~= TITAN_CUSTOM_PROFILE_POSTFIX then
-					table.insert(servers, server);
+					servers[#servers+1] = server;
 					info = {};
 					info.notCheckable = true
 					info.text = server;

@@ -669,6 +669,11 @@ end
 
 -- XPerl_TargetTarget_Set_Bits
 function XPerl_TargetTarget_Set_Bits()
+	if (InCombatLockdown()) then
+		XPerl_OutOfCombatQueue[XPerl_TargetTarget_Set_Bits] = false
+		return
+	end
+
 	if not XPerl_TargetTarget then
 		return
 	end

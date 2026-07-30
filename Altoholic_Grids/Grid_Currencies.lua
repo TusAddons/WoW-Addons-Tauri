@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 local colors = addon.Colors
 
@@ -11,7 +11,7 @@ local OPTION_TOKEN = "UI.Tabs.Grids.Currencies.CurrentTokenType"
 local function HashToSortedArray(hash)
 	local array = {}		-- order them
 	for k, _ in pairs(hash) do
-		table.insert(array, k)
+		array[#array+1] = k
 	end
 	table.sort(array)
 	return array

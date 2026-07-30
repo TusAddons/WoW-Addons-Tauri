@@ -1,8 +1,8 @@
 ## Interface: 70200
 ## Title: Lib: ChatThrottleLib
+## Author: Artiom97es
 ## Notes: Embeddable chat throttling library with traffic shaping and priorities
-## Author: Mikk
-## Version: 20
+## Version: 21-Artiom97es
 ## eMail: dpsgnome@mail.com
 ### DISABLED FOR 3.0.2 LoadOnDemand: 1
 ## X-Category: Library

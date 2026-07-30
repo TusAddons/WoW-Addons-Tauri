@@ -56,7 +56,15 @@ function Addon:PLAYER_ENTERING_WORLD()
 	Listener:UnregisterEvent('PLAYER_ENTERING_WORLD')
 	Listener:RegisterEvent('PET_JOURNAL_LIST_UPDATE')
 	Listener:RegisterEvent('WORLD_MAP_UPDATE')
-	SetMapToCurrentZone()
+	Listener:RegisterEvent('PLAYER_REGEN_ENABLED')
+	if not InCombatLockdown() then SetMapToCurrentZone() end
+end
+
+function Addon:PLAYER_REGEN_ENABLED()
+	if self.pendingTrackingUpdate then
+		self.pendingTrackingUpdate = nil
+		self:ForAllModules('TrackingChanged')
+	end
 end
 
 function Addon:WORLD_MAP_UPDATE()
@@ -67,7 +75,11 @@ function Addon:WORLD_MAP_UPDATE()
 		if zone ~= self.zone or level ~= self.level then
 			self.zone = zone
 			self.level = level
-			self:ForAllModules('TrackingChanged')
+			if InCombatLockdown() then
+				self.pendingTrackingUpdate = true
+			else
+				self:ForAllModules('TrackingChanged')
+			end
 		end
 	end
 end

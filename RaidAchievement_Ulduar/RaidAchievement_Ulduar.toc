@@ -1,7 +1,8 @@
 ﻿## Interface: 70300
 ## Title: Raid|cff7fff7fAchievement|r - Ulduar
+## Author: Artiom97es
 ## Title-ruRU: Raid|cff7fff7fAchievement|r - Ульдуар
-## Author: Shurshik
+## Version: 1.1-Artiom97es
 ## Notes: RaidAchievement Ulduar Module
 ## Notes-ruRU: Модуль RaidAchievement - Ульдуар
 ## Dependencies: RaidAchievement

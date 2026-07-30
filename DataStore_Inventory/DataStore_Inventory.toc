@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: DataStore_Inventory
+## Author: Artiom97es
 ## Notes: Stores information about character inventory
-## Author: Thaoky (EU-Marécages de Zangar)
-## Version: r51
+## Version: r52-Artiom97es
 ## Dependencies: DataStore
 ## OptionalDeps: Ace3
 ## SavedVariables: DataStore_InventoryDB

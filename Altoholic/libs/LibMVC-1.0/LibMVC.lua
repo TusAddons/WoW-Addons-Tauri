@@ -1,5 +1,5 @@
---[[	*** LibMVC ***
-Written by : Thaoky, EU-Mar�cages de Zangar
+﻿--[[	*** LibMVC ***
+Written by : Thaoky, EU-Marï¿½cages de Zangar
 April 30th, 2017
 
 License: Public Domain
@@ -35,7 +35,7 @@ local function GetDependencies(name, objectArgs)
 		local service = registeredServices[objectArgs[i]]
 		
 		if service then
-			table.insert(dependencies, service)
+			dependencies[#dependencies+1] = service
 		else
 			print(format("LibMVC: Invalid dependency found for %s.", name))
 		end

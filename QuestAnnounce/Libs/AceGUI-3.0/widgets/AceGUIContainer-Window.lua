@@ -1,4 +1,4 @@
-local AceGUI = LibStub("AceGUI-3.0")
+﻿local AceGUI = LibStub("AceGUI-3.0")
 
 -- Lua APIs
 local pairs, assert, type = pairs, assert, type
@@ -28,7 +28,7 @@ do
 	end
 	
 	local function closeOnClick(this)
-		PlaySound("gsTitleOptionExit")
+		PlaySound(856)
 		this.obj:Hide()
 	end
 	

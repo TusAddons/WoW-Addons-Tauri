@@ -1,8 +1,9 @@
 ## Interface: 70200
 ## LoadOnDemand: 1
 ## Title: Lib: DataBrokerIcon-1.0
+## Author: Artiom97es
 ## Notes: Allows addons to easily create a lightweight minimap icon as an alternative to heavier LDB displays.
-## Author: Funkydude
+## Version: 1.1-Artiom97es
 ## X-Category: Library
 ## X-License: GPLv2 or later
 ## X-Credits: Rabbit, copystring

@@ -1,9 +1,9 @@
 ## Interface: 20200
 
 ## Title: AceGUITest 
+## Author: Artiom97es
 
-## Author: Nargiddley
-## Version: Alpha
+## Version: Alpha_v2-Artiom97es
 ## OptionalDeps:  LibStub, Ace3
 
 LibStub.lua

@@ -1,4 +1,4 @@
---[[-----------------------------------------------------------------------------
+﻿--[[-----------------------------------------------------------------------------
 TabGroup Container
 Container that uses tabs on top to switch between groups.
 -------------------------------------------------------------------------------]]
@@ -63,7 +63,7 @@ Scripts
 -------------------------------------------------------------------------------]]
 local function Tab_OnClick(frame)
 	if not (frame.selected or frame.disabled) then
-		PlaySound("igCharacterInfoTab")
+		PlaySound(856)
 		frame.obj:SelectTab(frame.value)
 	end
 end

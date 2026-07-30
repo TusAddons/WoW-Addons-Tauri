@@ -1,14 +1,12 @@
-Changes since tag 7.3.0.2
+tag a0781d4959cf0b4a3f185a9c0645ac334bdefb48 7.3.0.2
+Author:	Ressy <resa1983@hotmail.com>
+Date:	Sun Sep 10 11:20:32 2017 -0400
 
-commit 7033eb0d6a6757c3859f743050a54f7921bd1c5f
+7.3.0.2
+
+commit c4cea05adddc11e361b713c645b37737e43cc9f2
 Author: Ressy <resa1983@hotmail.com>
-Date:   Sat Sep 23 19:31:53 2017 -0400
+Date:   Sun Sep 10 11:20:05 2017 -0400
 
-    Add RecipeItem lines for most Legion recipes. Whoops
-
-commit 967293b4effc9b60b7302dcc48bba6abaf4d3df1
-Author: Ressy <resa1983@hotmail.com>
-Date:   Thu Sep 14 21:42:55 2017 -0400
-
-    Bug fix!
+    Update various recipes
 

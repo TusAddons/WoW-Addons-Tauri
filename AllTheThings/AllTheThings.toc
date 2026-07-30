@@ -1,20 +1,30 @@
-## Author: Crieve-Sargeras
 ## Interface: 70300
 ## Title: AllTheThings
+## Author: Artiom97es
 ## Name: AllTheThings
 ## SavedVariables: AllTheThingsAD, AllTheThingsHarvestItems
 ## SavedVariablesPerCharacter: AllTheThingsPCD
 ## Notes: Addon for Tracking Collections & Account Completion
-## Version: 1.6.3
+## Version: 1.6.4-Artiom97es
 lib\LibStub\LibStub.lua
 lib\CallbackHandler-1.0\CallbackHandler-1.0.lua
 lib\LibDataBroker-1.1\LibDataBroker-1.1.lua
 lib\!NoTaint_UIDropDownMenu\UIDropDownMenu.xml
 AllTheThings.lua
-locales\enUS.lua
 db\Presets.lua
 db\RaceDB.lua
 db\NPCDB.lua
 db\Categories.lua
 Settings.lua
 ScrollFrame.xml
+locales\enUS.lua
+locales\frFR.lua
+locales\deDE.lua
+locales\zhCN.lua
+locales\zhTW.lua
+locales\ruRU.lua
+locales\esMX.lua
+locales\koKR.lua
+locales\ptBR.lua
+locales\itIT.lua
+locales\esES.lua

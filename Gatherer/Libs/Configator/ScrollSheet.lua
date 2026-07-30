@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ScrollSheet
 	Version: 7.3.1 (<%codename%>)
 	Revision: $Id: ScrollSheet.lua 406 2016-07-31 13:26:09Z brykrys $
@@ -852,7 +852,7 @@ function lib.dataToColumn(self, data, style)
 	if #newData > 0 then --if no data to render skip it all
 		for i = 1, #newData[1] do
 			for index = 1, #newData do
-				table.insert(data, newData[index][i][1])
+				data[#data+1] = newData[index][i][1]
 				style[#data] = newData[index][i].style
 			end
 		end

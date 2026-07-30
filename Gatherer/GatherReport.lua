@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Gatherer Addon for World of Warcraft(tm).
 	Version: 7.3.1 (<%codename%>)
 	Revision: $Id: GatherReport.lua 1031 2012-09-28 04:54:31Z Esamynn $
@@ -120,7 +120,7 @@ frame:SetBackdrop({
 	})
 frame:SetBackdropColor(0,0,0, 0.95)
 frame:SetScript("OnShow", function() public.NeedsUpdate() end)
-table.insert(UISpecialFrames, "GathererReportFrame") -- make frames Esc Sensitive by default
+UISpecialFrames[#UISpecialFrames+1] = "GathererReportFrame" -- make frames Esc Sensitive by default
 
 frame.Updater = CreateFrame("Button", "", UIParent)
 frame.Updater:SetScript("OnUpdate", function(self, delay) private.UpdateHandler(delay) end)
@@ -411,7 +411,7 @@ local function setStatus(status, noTip)
 	frame.Actions.SendStatus:SetText(status)
 	if (noTip == true) then return end
 	while #tip > 25 do table.remove(tip, 1) end
-	table.insert(tip, status)
+	tip[#tip+1] = status
 	frame.Actions.MarkTip:SetText(strjoin("\n", unpack(tip)))
 end
 frame.Actions.SendStatus = frame.Actions:CreateFontString("", "OVERLAY", "GameFontHighlight")
@@ -542,7 +542,7 @@ function private.UpdateResults()
 			result.Region:SetText(Gatherer.ZoneTokens.ZoneNames[z])
 			result.X:SetText(string.format("%0.01f", x*100))
 			result.Y:SetText(string.format("%0.01f", y*100))
-			result.Dist:SetText(d and string.format("%d", d) or "∞")
+			result.Dist:SetText(d and string.format("%d", d) or "âˆž")
 			result.Source:SetText(s)
 			result.Type.Icon:SetTexture(t)
 			if (private.results.mark[strjoin(":", z,n,i,g,tostring(indoor))]) then
@@ -710,7 +710,7 @@ function public.SendFeedback(who, action, result)
 			setStatus(_tr("MASS_SHARING_SENDING"))
 			local list = {}
 			for sig, data in pairs(private.results.mark) do
-				table.insert(list, sig..":"..data)
+				list[#list+1] = sig..":"..data
 			end
 			table.insert(private.queue, { to = who, list = list, pos = 1 })
 		elseif (action == "REJECT") then

@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: Grail
-## Author: Scott M Harrison
+## Author: Artiom97es
 ## Notes: Knows about quests
-## Version: 095
+## Version: 96-Artiom97es
 ## SavedVariables: GrailDatabase
 ## SavedVariablesPerCharacter: GrailDatabasePlayer
 

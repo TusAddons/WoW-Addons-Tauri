@@ -1,4 +1,4 @@
-local addonName = "Altoholic"
+﻿local addonName = "Altoholic"
 local addon = _G[addonName]
 
 local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
@@ -176,24 +176,24 @@ local function UpdateAllInOne()
 
 	if addon:GetOption("UI.Tabs.Characters.ViewBags") then
 		for i = 0, 4 do
-			table.insert(containerList, i)
+			containerList[#containerList+1] = i
 		end
 	end
 	
 	if addon:GetOption("UI.Tabs.Characters.ViewBank") then
 		for i = 5, 11 do
-			table.insert(containerList, i)
+			containerList[#containerList+1] = i
 		end
-		table.insert(containerList, 100)
+		containerList[#containerList+1] = 100
 	end
 	
 	if addon:GetOption("UI.Tabs.Characters.ViewVoidStorage") then
-		table.insert(containerList, "VoidStorage.Tab1")
-		table.insert(containerList, "VoidStorage.Tab2")
+		containerList[#containerList+1] = "VoidStorage.Tab1"
+		containerList[#containerList+1] = "VoidStorage.Tab2"
 	end
 	
 	if addon:GetOption("UI.Tabs.Characters.ViewReagentBank") then
-		table.insert(containerList, REAGENTBANK_CONTAINER)
+		containerList[#containerList+1] = REAGENTBANK_CONTAINER
 	end
 	
 	local itemButton

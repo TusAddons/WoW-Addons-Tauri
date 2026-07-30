@@ -1,0 +1,12 @@
+## Interface: 70300
+## Title: oUF
+## Author: Artiom97es
+## Version: @project-version@_v2-Artiom97es
+## Notes: Unit frame framework. Does nothing by itself.
+## OptionalDeps: Clique
+## X-oUF: oUF
+
+## X-Curse-Project-ID: 21187
+## X-WoWI-ID: 9994
+
+oUF.xml

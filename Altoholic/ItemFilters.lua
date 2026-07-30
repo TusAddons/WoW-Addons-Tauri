@@ -1,4 +1,4 @@
-local addonName = ...
+﻿local addonName = ...
 local addon = _G[addonName]
 
 local filters = {}
@@ -98,8 +98,8 @@ local NAMES = {}
 function ns:EnableFilter(filter)
 	if filterFunctions[filter] then
 		filters.list = filters.list or {}
-		table.insert(filters.list, filterFunctions[filter])
-		table.insert(NAMES, filter)
+		filters.list[#filters.list+1] = filterFunctions[filter]
+		NAMES[#NAMES+1] = filter
 	end
 end
 

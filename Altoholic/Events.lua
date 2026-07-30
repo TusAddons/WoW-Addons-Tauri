@@ -1,4 +1,4 @@
--- This file manages the events (calendar, cooldowns, etc..) supported by the addon
+﻿-- This file manages the events (calendar, cooldowns, etc..) supported by the addon
 
 local addonName = ...
 local addon = _G[addonName]
@@ -155,13 +155,13 @@ local eventTypes = {
 				local attendeesTable = { strsplit(",", attendees) }
 				
 				if #attendeesTable > 0 then
-					table.insert(eventTable, "")
-					table.insert(eventTable, colors.white..L["Attendees: "].."|r")
+					eventTable[#eventTable+1] = ""
+					eventTable[#eventTable+1] = colors.white..L["Attendees: "].."|r"
 					for _, name in pairs(attendeesTable) do
-						table.insert(eventTable, " " .. name )
+						eventTable[#eventTable+1] = " " .. name 
 					end
-					table.insert(eventTable, "")
-					table.insert(eventTable, colors.green .. L["Left-click to invite attendees"])
+					eventTable[#eventTable+1] = ""
+					eventTable[#eventTable+1] = colors.green .. L["Left-click to invite attendees"]
 				end
 				
 				return title, table.concat(eventTable, "\n")
@@ -327,12 +327,12 @@ local function ToggleWarningThreshold(self)
 	for v in warnings:gmatch("(%d+)") do
 		v = tonumber(v)
 		if v ~= self.value then		-- add all values except the one that was clicked
-			table.insert(t, v)
+			t[#t+1] = v
 		end
 	end
 	
 	if not IsNumberInString(self.value, warnings) then		-- if number is not yet in the string, save it (we're checking it, otherwise we're unchecking)
-		table.insert(t, self.value)
+		t[#t+1] = self.value
 	end
 	
 	addon:SetOption("WarningType"..id, table.concat(t, "|"))		-- Sets something like "15|5|10|1"

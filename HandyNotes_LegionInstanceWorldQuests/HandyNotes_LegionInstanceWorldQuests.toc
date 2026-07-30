@@ -1,6 +1,7 @@
 ## Interface: 70300
 #@non-debug@
 ## Title: HandyNotes - Legion Instance World Quests
+## Author: Artiom97es
 ## Title-koKR: HandyNotes - 군단 인스턴스 전역 퀘스트
 ## Title-ruRU: HandyNotes - Локальные задания подземелий Легиона
 ## Title-zhTW: HandyNotes - 軍臨天下副本世界任務
@@ -21,8 +22,7 @@
 # ## Notes-ruRU: Показывает местоположения локальных заданий, редких боссов и задания, в подземельях Легиона
 # ## Notes-zhTW: 顯示軍臨天下副本裡的世界任務相關稀有菁英位置與任務的資訊
 #@end-debug@
-## Author: arith
-## Version: v1.12
+## Version: v1.13-Artiom97es
 ## RequiredDeps: HandyNotes
 ## OptionalDeps: LibUIDropDownMenu
 ## DefaultState: enabled

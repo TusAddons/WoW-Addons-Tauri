@@ -77,6 +77,10 @@ end)
 btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
 btn:SetScript("OnClick", function()
+    if InCombatLockdown() then
+        print("|cffff0000[TanaanTracker]|r Cannot toggle UI during combat lockdown.")
+        return
+    end
     -- try to toggle main frame safely
     if TanaanTracker.ToggleMainFrame and type(TanaanTracker.ToggleMainFrame) == "function" then
         TanaanTracker.ToggleMainFrame()

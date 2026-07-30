@@ -1,5 +1,5 @@
---[[	*** DataStore ***
-Written by : Thaoky, EU-Marécages de Zangar
+﻿--[[	*** DataStore ***
+Written by : Thaoky, EU-MarÃ©cages de Zangar
 July 15th, 2009
 
 This is the main DataStore module, its purpose is to be a single point of contact for common operations between client addons and other DataStore modules.
@@ -54,7 +54,7 @@ local AddonDB_Defaults = {
 		ConnectedRealms = nil,
 		ShortToLongRealmNames = {
 			-- relationship between "short" and "long" realm names, 
-			-- ex: ["MarécagedeZangar"] = "Marécage de Zangar"
+			-- ex: ["MarÃ©cagedeZangar"] = "MarÃ©cage de Zangar"
 			-- necessary for guild banks on other realms..
 		},
 	}
@@ -120,7 +120,7 @@ local function GetAlts(guild)
 			if realmKey and realmKey == GetRealmName() then			-- same realm
 				if charKey and charKey ~= UnitName("player") then	-- skip current char
 					if v.guildName and v.guildName == guild then		-- same guild (to send only guilded alts, privacy concern, do not change this)
-						table.insert(out, charKey)
+						out[#out+1] = charKey
 					end
 				end
 			end
@@ -869,7 +869,7 @@ function addon:GetRealmsConnectedWith(realm)
 			local longName = realms[shortName]
 			
 			if longName and longName ~= THIS_REALM then
-				table.insert(out, longName)
+				out[#out+1] = longName
 			end
 		end
 	end

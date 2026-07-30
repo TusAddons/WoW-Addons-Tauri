@@ -1,6 +1,7 @@
 ## Interface: 70300
 ## Title: Prat |cff8080ff3.0|r |r[|cffeda55fLibraries|r]
-## Author: Sylvanaar
+## Author: Artiom97es
+## Version: 1.1-Artiom97es
 ## X-License: GPLv3
 ## DefaultState: enabled
 

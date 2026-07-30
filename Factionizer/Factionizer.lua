@@ -5,6 +5,21 @@
 -- _00_ Variables Set up --
 ---------------------------
 
+function FIZ_PlaySound(soundKitID, ...)
+	if type(soundKitID) == "string" then
+		if soundKitID == "igMainMenuOptionCheckBoxOn" then
+			return PlaySound(SOUNDKIT and SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON or 856, ...)
+		elseif soundKitID == "igMainMenuOptionCheckBoxOff" then
+			return PlaySound(SOUNDKIT and SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF or 857, ...)
+		elseif SOUNDKIT and SOUNDKIT[string.upper(soundKitID)] then
+			return PlaySound(SOUNDKIT[string.upper(soundKitID)], ...)
+		else
+			return PlaySound(856, ...)
+		end
+	end
+	return PlaySound(soundKitID, ...)
+end
+
 FIZ_ToExalted = {}
 FIZ_ToExalted[0] = 84000;
 FIZ_ToExalted[1] = 48000;	-- working on Hated -> Hostile, base offset 21k+12k+6k+3k+3k+3k
@@ -128,19 +143,19 @@ function FIZ_OnLoad(self)
 	SlashCmdList.FIZ = FIZ_SlashHandler
 
 	FIZ_Orig_GetFactionInfo = GetFactionInfo;  -- api function
-	GetFactionInfo = FIZ_GetFactionInfo;  -- api function
+	-- Do NOT globally override GetFactionInfo! Overriding C API globally taints secure frames and blocks Logout()!
 
 	FIZ_Orig_ReputationFrame_Update = ReputationFrame_Update -- rfl function
-	ReputationFrame_Update = FIZ_ReputationFrame_Update -- rfl function
+	hooksecurefunc("ReputationFrame_Update", FIZ_ReputationFrame_Update)
 
 	FIZ_Orig_ReputationBar_OnClick = ReputationBar_OnClick -- rfl function
-	ReputationBar_OnClick = FIZ_ReputationBar_OnClick -- rfl function
+	hooksecurefunc("ReputationBar_OnClick", FIZ_ReputationBar_OnClick)
 
 	FIZ_Orig_ExpandFactionHeader = ExpandFactionHeader
-	ExpandFactionHeader = FIZ_ExpandFactionHeader
+	hooksecurefunc("ExpandFactionHeader", FIZ_ExpandFactionHeader)
 
 	FIZ_Orig_CollapseFactionHeader = CollapseFactionHeader
-	CollapseFactionHeader = FIZ_CollapseFactionHeader
+	hooksecurefunc("CollapseFactionHeader", FIZ_CollapseFactionHeader)
 
 	--FIZ_Orig_ChatFrame_OnEvent = ChatFrame_OnEvent
 	--ChatFrame_OnEvent = FIZ_ChatFrame_OnEvent
@@ -966,7 +981,7 @@ function FIZ_InitFactor(FIZ_IsHuman,faction)
 			local factionIndex = factionOffset + i;
 			if (factionIndex <= numFactions) then
 				local name, hasBonusRepGain;
-				local name, _, _, _, _, _, _, _, _, _, _, _, _, _, hasBonusRepGain, _ = GetFactionInfo(factionIndex);
+				local name, _, _, _, _, _, _, _, _, _, _, _, _, _, hasBonusRepGain, _ = FIZ_GetFactionInfo(factionIndex);
 				if (faction==name) then
 				--- f_if	FIZ_Printtest(faction,name,"test")
 					if (hasBonusRepGain) then
@@ -1384,17 +1399,32 @@ end
 -- _10_ New Hook Functions --
 -----------------------------------
 function FIZ_GetFactionInfo(factionIndex)
+	if not factionIndex or type(factionIndex) ~= "number" or factionIndex <= 0 then return end
 
 	-- get original information
 	local name, description, standingID, barMin, barMax, barValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = FIZ_Orig_GetFactionInfo(factionIndex)
+	if not name then return end
 
 	-- Normalize Values to within standing
-	local normMax = barMax-barMin
-	local normCurrent = barValue-barMin
+	local normMax = (barMax or 0) - (barMin or 0)
+	local normCurrent = (barValue or 0) - (barMin or 0)
 
 	-- add missing reputation
-	if (FIZ_Data.ShowMissing and isHeader and not hasRep and ((normMax-normCurrent)>0)) then
+	if (FIZ_Data and FIZ_Data.ShowMissing and isHeader and not hasRep and ((normMax-normCurrent)>0)) then
 		name = name.." ("..normMax-normCurrent..")"
+	end
+
+	-- Support Legion 7.3.5 Paragon reputations right in the faction name!
+	if factionID and standingID == 8 and C_Reputation and C_Reputation.IsFactionParagon and C_Reputation.IsFactionParagon(factionID) then
+		local currentValue, threshold, _, hasRewardPending = C_Reputation.GetFactionParagonInfo(factionID)
+		if currentValue and threshold and threshold > 0 then
+			local paraCur = currentValue % threshold
+			if hasRewardPending then
+				name = name .. " |cff00ff00[COFRE PARAGON LISTO!]|r"
+			else
+				name = name .. string.format(" |cff00ccff[Paragon: %d/%d]|r", paraCur, threshold)
+			end
+		end
 	end
 
 	-- return Values
@@ -1467,21 +1497,11 @@ end
 -- ^ rfl 1
 
 function FIZ_ExpandFactionHeader(index)
-	-- replaces ExpandFactionHeader
-	---fpt f_efh	FIZ_Printtest(index,"","f_efh_1")							---fpt f_efh
 	if not FIZ_Entries then return end
 	if FIZ_Data.SortByStanding then
 		if not FIZ_Entries[index] then return end
 		FIZ_Collapsed[FIZ_Entries[index].i] = nil
 		FIZ_ReputationFrame_Update()
-	else
-		FIZ_Orig_ExpandFactionHeader(index)
-		--[[
-		local name = FIZ_Orig_GetFactionInfo(index);
-		FIZ_Data.OriginalCollapsed[name] = nil
-		--FIZ_Print("Expanding original index "..tostring(index).." which is ["..tostring(name).."]")
-		FIZ_ShowCollapsedList()
-		]]--
 	end
 end
 
@@ -1539,48 +1559,29 @@ function FIZ_ReputationFrame_SetRowType(factionRow, isChild, isHeader, hasRep)
 	end
 end
 function FIZ_CollapseFactionHeader(index)
-	-- replaces CollapseFactionHeader
-	---fpt f_efh	FIZ_Printtest(index,"","f_cfh_1")							---fpt f_efh
 	if not FIZ_Entries then return end
-
 	if FIZ_Data.SortByStanding then
 		if not FIZ_Entries[index] then return end
 		FIZ_Collapsed[FIZ_Entries[index].i] = true
 		FIZ_ReputationFrame_Update()
-	else
-		FIZ_Orig_CollapseFactionHeader(index)
-		--[[
-		local name = FIZ_Orig_GetFactionInfo(index);
-		FIZ_Data.OriginalCollapsed[name] = true
-		--FIZ_Print("Collapsing original index "..tostring(index).." which is ["..tostring(name).."]")
-		FIZ_ShowCollapsedList()
-		]]--
 	end
 end
 
 function FIZ_ReputationBar_OnClick(self)
-	--fpt hed frb_oc	FIZ_Printtest("","","frb_oc 1")
-	if ((ReputationDetailFrame:IsVisible() or FIZ_ReputationDetailFrame:IsVisible()) and (GetSelectedFaction() == self.index) ) then
-		ReputationDetailFrame:Hide();
-		FIZ_ReputationDetailFrame:Hide();
-		PlaySound("igMainMenuOptionCheckBoxOff");
+	if not (FIZ_Data and FIZ_Data.ExtendDetails) then return end
+	if not self.hasRep then return end
+	if (FIZ_ReputationDetailFrame:IsVisible() and FIZ_SelectedBarIndex == self.index) then
+		FIZ_ReputationDetailFrame:Hide()
+		ReputationDetailFrame:Hide()
+		FIZ_SelectedBarIndex = nil
 	else
-		if (self.hasRep) then
-			SetSelectedFaction(self.index);
-			if (FIZ_Data.ExtendDetails) then
-				FIZ_ReputationDetailFrame:Show();
-				ReputationDetailFrame:Hide();
-				FIZ_OptionsFrame:Hide()
-
-				FIZ_BuildUpdateList()
-				FIZ_UpdateList_Update()
-			else
-				ReputationDetailFrame:Show();
-				FIZ_ReputationDetailFrame:Hide();
-				FIZ_OptionsFrame:Hide()
-			end
-			PlaySound("igMainMenuOptionCheckBoxOn");
-			ReputationFrame_Update(); -- rfl Event
+		if GetSelectedFaction() == self.index then
+			FIZ_SelectedBarIndex = self.index
+			ReputationDetailFrame:Hide()
+			FIZ_ReputationDetailFrame:Show()
+			FIZ_OptionsFrame:Hide()
+			FIZ_BuildUpdateList()
+			FIZ_UpdateList_Update()
 		end
 	end
 end
@@ -1793,7 +1794,7 @@ function FIZ_SupressNone(allFactions)
 		FIZ_BuildUpdateList()
 	else
 		local factionIndex = GetSelectedFaction()
-		local faction = GetFactionInfo(factionIndex)
+		local faction = FIZ_GetFactionInfo(factionIndex)
 
 		if (faction) then
 			faction = string.lower(faction)
@@ -1905,7 +1906,7 @@ function FIZ_BuildUpdateList() --xxx
 --- fpt pbc	FIZ_ParseBagContent()
 
 	local factionIndex = GetSelectedFaction()
-	local faction, description, standingId, barMin, barMax, barValue = GetFactionInfo(factionIndex)
+	local faction, description, standingId, barMin, barMax, barValue = FIZ_GetFactionInfo(factionIndex)
 
 	if (faction) then
 		origFaction = faction
@@ -2902,7 +2903,7 @@ function FIZ_DumpReputationChangesToChat(initOnly)
 	watchedIndex = 0
 	watchName = nil
 	for factionIndex=1, numFactions, 1 do
-		name, _, standingID, barMin, barMax, barValue, _, _, isHeader, _, hasRep, isWatched = GetFactionInfo(factionIndex)
+		name, _, standingID, barMin, barMax, barValue, _, _, isHeader, _, hasRep, isWatched = FIZ_GetFactionInfo(factionIndex)
 
 		--if (not isHeader) then
 		if (not isHeader or hasRep) then
@@ -2955,13 +2956,13 @@ function FIZ_DumpReputationChangesToChat(initOnly)
 		end
 		-- choose Faction to show
 		SetWatchedFactionIndex(watchIndex)
-		ReputationWatchBar_Update(); -- rfl functions
+		if ReputationWatchBar_Update then ReputationWatchBar_Update() end -- rfl functions
 	end
 end
 
 function FIZ_ClearSessionGain()
 	local factionIndex = GetSelectedFaction()
-	local name, _, standingID, barMin, barMax, barValue, _, _, isHeader, _, hasRep, isWatched = GetFactionInfo(factionIndex)
+	local name, _, standingID, barMin, barMax, barValue, _, _, isHeader, _, hasRep, isWatched = FIZ_GetFactionInfo(factionIndex)
 
 	if (name) then
 		FIZ_StoredRep[name] = {}
@@ -3329,7 +3330,7 @@ function FIZ_StandingSort()
 	local numFactions = GetNumFactions();
 
 	for i=1,numFactions do
-		local name, description, standingID, _, barMax, barValue, _, _, isHeader, _, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus= GetFactionInfo(i);
+		local name, description, standingID, _, barMax, barValue, _, _, isHeader, _, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus= FIZ_GetFactionInfo(i);
 
 		--if (not isHeader) then only list factions, not faction groups headers
 		if (not isHeader or hasRep) then
@@ -3390,7 +3391,7 @@ function FIZ_StandingSort()
 end
 -- ^ 2 rfl ptr v R_D_F_IS
 function FIZ_ReputationDetailFrame_IsShown(faction,flag,flag2,i)
-	local name, description = GetFactionInfo(faction);
+	local name, description, standingID, barMin, barMax, barValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched = FIZ_GetFactionInfo(faction);
 -- v rfl _16_
 	ReputationDetailFactionName:SetText(name);
 	ReputationDetailFactionDescription:SetText(description);
@@ -3438,32 +3439,53 @@ function FIZ_ReputationDetailFrame_IsShown(faction,flag,flag2,i)
 end
 -- ^ R_D_F_IS v R_D_F
 function FIZ_Rep_Detail_Frame(faction,colorID,barValue,barMax,origBarValue,standingID,toExalted,factionStandingtext)
-	local name, description, _, _, _, _, atWarWith, canToggleAtWar, _, _, _, _, _, _, _, _ = GetFactionInfo(faction);
+	local name, description, standingID, barMin, barMax, barValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = FIZ_GetFactionInfo(faction);
 	local gender = UnitSex("player");
 	FIZ_BuildUpdateList()
 
-	FIZ_ReputationDetailFactionName:SetText(name);
-	FIZ_ReputationDetailFactionDescription:SetText(description);
+	FIZ_ReputationDetailFactionName:SetText(name or "");
+	FIZ_ReputationDetailFactionDescription:SetText(description or "");
 
-	FIZ_ReputationDetailStandingName:SetText(factionStandingtext)
-	local color = FACTION_BAR_COLORS[colorID]
+	FIZ_ReputationDetailStandingName:SetText(factionStandingtext or "")
+	local color = FACTION_BAR_COLORS[colorID] or {r=1, g=1, b=1}
 	FIZ_ReputationDetailStandingName:SetTextColor(color.r, color.g, color.b)
 
-	FIZ_ReputationDetailStandingCurrent:SetText(FIZ_TXT.currentRep)
-	FIZ_ReputationDetailStandingNeeded:SetText(FIZ_TXT.neededRep)
-	FIZ_ReputationDetailStandingMissing:SetText(FIZ_TXT.missingRep)
-	FIZ_ReputationDetailStandingBag:SetText(FIZ_TXT.repInBag)
-	FIZ_ReputationDetailStandingBagBank:SetText(FIZ_TXT.repInBagBank)
-	FIZ_ReputationDetailStandingQuests:SetText(FIZ_TXT.repInQuest)
-	FIZ_ReputationDetailStandingGained:SetText(FIZ_TXT.factionGained)
+	FIZ_ReputationDetailStandingCurrent:SetText(FIZ_TXT.currentRep or "")
+	FIZ_ReputationDetailStandingNeeded:SetText(FIZ_TXT.neededRep or "")
+	FIZ_ReputationDetailStandingMissing:SetText(FIZ_TXT.missingRep or "")
+	FIZ_ReputationDetailStandingBag:SetText(FIZ_TXT.repInBag or "")
+	FIZ_ReputationDetailStandingBagBank:SetText(FIZ_TXT.repInBagBank or "")
+	FIZ_ReputationDetailStandingQuests:SetText(FIZ_TXT.repInQuest or "")
+	FIZ_ReputationDetailStandingGained:SetText(FIZ_TXT.factionGained or "")
 
-	FIZ_ReputationDetailStandingCurrentValue:SetText(barValue)
-	FIZ_ReputationDetailStandingNeededValue:SetText(barMax)
-	FIZ_ReputationDetailStandingMissingValue:SetText(barMax-barValue)
-	FIZ_ReputationDetailStandingBagValue:SetText(FIZ_CurrentRepInBag)
-	FIZ_ReputationDetailStandingBagBankValue:SetText(FIZ_CurrentRepInBagBank)
-	FIZ_ReputationDetailStandingQuestsValue:SetText(FIZ_CurrentRepInQuest)
-	if (FIZ_StoredRep and FIZ_StoredRep[name] and FIZ_StoredRep[name].origRep) then
+	local barValueNum = tonumber(barValue) or 0
+	local barMaxNum = tonumber(barMax) or 0
+	local missingNum = barMaxNum - barValueNum
+
+	if standingID == 8 and factionID and C_Reputation and C_Reputation.IsFactionParagon and C_Reputation.IsFactionParagon(factionID) then
+		local currentValue, threshold, _, hasRewardPending = C_Reputation.GetFactionParagonInfo(factionID)
+		if currentValue and threshold and threshold > 0 then
+			local paraCur = currentValue % threshold
+			barValueNum = paraCur
+			barMaxNum = threshold
+			missingNum = threshold - paraCur
+			if hasRewardPending then
+				FIZ_ReputationDetailStandingName:SetText((factionStandingtext or "Exaltado") .. " (PARAGON LISTO!)")
+				FIZ_ReputationDetailStandingName:SetTextColor(0, 1, 0)
+			else
+				FIZ_ReputationDetailStandingName:SetText((factionStandingtext or "Exaltado") .. string.format(" (Paragon: %d%%)", math.floor(paraCur/threshold*100)))
+				FIZ_ReputationDetailStandingName:SetTextColor(0, 0.8, 1)
+			end
+		end
+	end
+
+	FIZ_ReputationDetailStandingCurrentValue:SetText(barValueNum)
+	FIZ_ReputationDetailStandingNeededValue:SetText(barMaxNum)
+	FIZ_ReputationDetailStandingMissingValue:SetText(missingNum)
+	FIZ_ReputationDetailStandingBagValue:SetText(FIZ_CurrentRepInBag or 0)
+	FIZ_ReputationDetailStandingBagBankValue:SetText(FIZ_CurrentRepInBagBank or 0)
+	FIZ_ReputationDetailStandingQuestsValue:SetText(FIZ_CurrentRepInQuest or 0)
+	if (name and FIZ_StoredRep and FIZ_StoredRep[name] and FIZ_StoredRep[name].origRep and origBarValue) then
 		FIZ_ReputationDetailStandingGainedValue:SetText(string.format("%d", origBarValue-FIZ_StoredRep[name].origRep))
 	else
 		FIZ_ReputationDetailStandingGainedValue:SetText("")
@@ -3543,7 +3565,7 @@ function FIZ_ListByStanding(standing)
 
 	-- get factions by standing
 	for i=1, numFactions do
-		name, description, standingID, barMin, barMax, barValue, _, _, isHeader, _, hasRep = GetFactionInfo(i)
+		name, description, standingID, barMin, barMax, barValue, _, _, isHeader, _, hasRep = FIZ_GetFactionInfo(i)
 		--if (not isHeader) then
 		if (not isHeader or hasRep) then
 			if ((standing == nil) or (standing==standingID)) then
@@ -3815,7 +3837,7 @@ function FIZ_SortByStanding(i,factionIndex,factionRow,factionBar,factionBarPrevi
 	else
 -- v rfl SBS 1
 		-- get the info for this Faction
-		local name, description, standingID, barMin, barMax, barValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfo(OBS_fi_i);
+		local name, description, standingID, barMin, barMax, barValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = FIZ_GetFactionInfo(OBS_fi_i);
 		factionTitle:SetText(name);
 -- ^ rfl SBS 1
 -- v rfl _16_
@@ -3904,7 +3926,7 @@ function FIZ_SortByStanding(i,factionIndex,factionRow,factionBar,factionBarPrevi
 -- ^ rfl SBS 6
 				if ( canToggleAtWar ) then local flag = 1 end
 -- v rfl _16_
-				FIZ_ReputationDetailFrame_IsShown(OBS_fi_I,flag,1,i)
+				FIZ_ReputationDetailFrame_IsShown(OBS_fi_i,flag,1,i)
 -- ^ rfl _16_
 			end
 
@@ -3927,7 +3949,7 @@ function FIZ_OriginalRepOrder(i,factionIndex,factionRow,factionBar,factionBarPre
 
 
 -- v rfl ORO 1
-	local name, description, standingID, barMin, barMax, barValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfo(factionIndex);
+	local name, description, standingID, barMin, barMax, barValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = FIZ_GetFactionInfo(factionIndex);
 	factionTitle:SetText(name);
 -- ^ rfl ORO 1
 -- v rfl ORO 2

@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod(682, "DBM-MogushanVaults", nil, 317)
+﻿local mod	= DBM:NewMod(682, "DBM-MogushanVaults", nil, 317)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 67 $"):sub(12, -3))
@@ -225,7 +225,7 @@ function mod:OnSync(msg, guid)
 				end
 			end
 			if not foundDuplicate then
-				table.insert(voodooDollTargetIcons, targetUnitID)
+				voodooDollTargetIcons[#voodooDollTargetIcons+1] = targetUnitID
 			end
 			self:UnscheduleMethod("SetVoodooIcons")
 			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.

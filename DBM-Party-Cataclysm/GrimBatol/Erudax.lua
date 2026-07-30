@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(134, "DBM-Party-Cataclysm", 3, 71)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 16 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 175 $"):sub(12, -3))
 mod:SetCreatureID(40484)
 mod:SetEncounterID(1049)
 mod:SetZone()
@@ -18,9 +18,9 @@ local warnBinding		= mod:NewTargetAnnounce(75861, 3)
 local warnFeeble		= mod:NewTargetAnnounce(75792, 3, nil, "Tank|Healer", 2)
 local warnUmbralMending	= mod:NewSpellAnnounce(75763, 4)
 
-local specWarnMending	= mod:NewSpecialWarningInterrupt(75763, nil, nil, nil, 1, 2)
-local specWarnGale		= mod:NewSpecialWarningSpell(75664, nil, nil, nil, 2, 2)
-local specWarnAdds		= mod:NewSpecialWarningSwitch("ej3378", "Dps", nil, nil, 3, 2)
+local specWarnMending	= mod:NewSpecialWarningInterrupt(75763)
+local specWarnGale		= mod:NewSpecialWarningSpell(75664, nil, nil, nil, 2)
+local specWarnAdds		= mod:NewSpecialWarningSwitch("ej3378", "Dps", nil, nil, 3)
 
 local timerFeebleCD		= mod:NewCDTimer(26, 75792, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerFeeble		= mod:NewTargetTimer(3, 75792, nil, "Tank|Healer", 2, 5)
@@ -50,22 +50,19 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(75763, 79467) and self:CheckInterruptFilter(args.sourceGUID, false, true) then
+	if args:IsSpellID(75763, 79467) and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnMending:Show()
-		specWarnMending:Play("kickcast")
 	end
 end
 
 --Sometimes boss fails to cast gale so no SPELL_CAST_START event. This ensures we still detect cast and start timers
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 75656 then
 		specWarnGale:Show()
-		specWarnGale:Play("findshelter")
 		timerGale:Start()
 		timerGaleCD:Start()
 	elseif spellId == 75704 then
 		specWarnAdds:Show()
-		specWarnAdds:Play("killmob")
 		timerAddsCD:Start()
 	end
 end

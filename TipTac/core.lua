@@ -181,7 +181,7 @@ local tipBackdrop = { tile = false, insets = {} };
 
 -- String Constants
 local TT_LevelMatch = "^"..TOOLTIP_UNIT_LEVEL:gsub("%%s",".+"); -- Was changed to match other localizations properly, used to match: "^"..LEVEL.." .+" -- Az: doesn't actually match the level line on the russian client! 14.02.24: Doesn't match for Italian client either.
-local TT_LevelMatchPet = "^"..TOOLTIP_WILDBATTLEPET_LEVEL_CLASS:gsub("%%s",".+");
+local TT_LevelMatchPet = "^"..TOOLTIP_WILDBATTLEPET_LEVEL_CLASS:gsub("%%%d%$s","%%s"):gsub("%%s",".+");
 local TT_NotSpecified = "Not specified";
 local TT_Targeting = BINDING_HEADER_TARGETING;
 local TT_Reaction = {

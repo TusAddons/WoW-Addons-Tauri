@@ -1,6 +1,7 @@
 ﻿## Interface: 70300
-## Author: Shurshik
+## Version: 1.1-Artiom97es
 ## Title: Raid|cff7fff7fAchievement|r_OldModules
+## Author: Artiom97es
 ## Notes: Raid|cff7fff7fAchievement|r_OldModules
 ## Dependencies: RaidAchievement
 RaidAchievement_OldModules.lua

@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: Lib: Dialog-1.0
+## Author: Artiom97es
 ## Notes: Replacement for the default UI's StaticPopup dialogs.
-## Author: Torhal
-## Version: @project-version@
+## Version: @project-version@_v2-Artiom97es
 ## LoadOnDemand: 1
 ## X-Date: @project-date-iso@
 ## X-Category: Libraries

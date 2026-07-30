@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	Auctioneer
 	Version: 7.6.5736 (TasmanianThylacine)
 	Revision: $Id: CoreScan.lua 5733 2018-01-26 12:37:05Z brykrys $
@@ -606,7 +606,8 @@ local function processBeginEndStats(processors, operation, querySizeInfo, Tempcu
 			local f = x.Func
 			local pOK, errormsg = pcall(f, operation, querySizeInfo, TempcurScanStats)
 			if (not pOK) then
-				collectgarbage() -- ### trial to see if this helps recover from Memory Allocation Errors
+				-- collectgarbage() -- Disabled for performance
+		-- ### trial to see if this helps recover from Memory Allocation Errors
 				local text = ("Error trapped for ScanProcessor '%s' in module %s:\n%s"):format(operation, x.Name, errormsg)
 				if (_G.nLog) then _G.nLog.AddMessage("Auctioneer", "Scan", _G.N_ERROR, "ScanProcessor Error", text) end
 				geterrorhandler()(text)
@@ -642,7 +643,8 @@ local function processStats(processors, operation, curItem, oldItem)
 					break
 				end
 			else
-				collectgarbage() -- ### trial to see if this helps recover from Memory Allocation Errors
+				-- collectgarbage() -- Disabled for performance
+		-- ### trial to see if this helps recover from Memory Allocation Errors
 				local text = ("Error trapped for AuctionFilter in module %s:\n%s"):format(x.Name, result)
 				if (_G.nLog) then _G.nLog.AddMessage("Auctioneer", "Scan", _G.N_ERROR, "AuctionFilter Error", text) end
 				geterrorhandler()(text)
@@ -663,7 +665,8 @@ local function processStats(processors, operation, curItem, oldItem)
 			local f = x.Func
 			local pOK, errormsg = pcall(f, operation, statItem, oldItem and statItemOld or nil)
 			if (not pOK) then
-				collectgarbage() -- ### trial to see if this helps recover from Memory Allocation Errors
+				-- collectgarbage() -- Disabled for performance
+		-- ### trial to see if this helps recover from Memory Allocation Errors
 				local text = ("Error trapped for ScanProcessor '%s' in module %s:\n%s"):format(operation, x.Name, errormsg)
 				if (_G.nLog) then _G.nLog.AddMessage("Auctioneer", "Scan", _G.N_ERROR, "ScanProcessor Error", text) end
 				geterrorhandler()(text)
@@ -1370,8 +1373,8 @@ local Commitfunction = function()
 			local doYield = false
 			if garbageinterval and index % garbageinterval == 0 then
 				coroutine.yield() -- yield before and after collectgarbage to smooth things a little, as it tends to cause small freezes
-				collectgarbage()
-				doYield = true
+				-- collectgarbage() -- Disabled for performance
+		doYield = true
 			else
 				local checkprofile = debugprofilestop()
 				if checkprofile > nextPause then
@@ -1536,7 +1539,7 @@ local Commitfunction = function()
 
 	-- optionally do a final collection here (as above, we want it surrounded by yields)
 	if get("core.scan.stage5garbage") then
-		collectgarbage()
+		-- collectgarbage() -- Disabled for performance
 		coroutine.yield()
 	end
 
@@ -1747,7 +1750,8 @@ local CoCommit, CoStore
 local function CoroutineResume(...)
 	local status, result = coroutine.resume(...)
 	if not status and result then
-		collectgarbage() -- ### trial to see if this helps recover from Memory Allocation Errors
+		-- collectgarbage() -- Disabled for performance
+		-- ### trial to see if this helps recover from Memory Allocation Errors
 		local msg = "Error occurred in coroutine: "..result
 		if Swatter then
 			Swatter.OnError(msg, nil, debugstack((...)))

@@ -2537,7 +2537,7 @@ function oilvlcfgbutton(btnParent)
 		elseif button == "LeftButton" or button == "LeftButtonDown" then
 				otooltip7func()
 		else
-			--PlaySound("igMainMenuOption");
+			--PlaySound(856);
 			InterfaceOptionsFrameTab2:Click();
 			InterfaceOptionsFrame_OpenToCategory("O Item Level (OiLvL)")		
 		end
@@ -5441,7 +5441,8 @@ function oilvlSaveItemLevel(n)
 			end
 		end
 	end
-	if n > 0 then OILVL:UnregisterEvent("INSPECT_READY") end
+	if n > 0 then ClearInspectPlayer();
+		OILVL:UnregisterEvent("INSPECT_READY") end
 end
 
 local events = {}
@@ -5449,7 +5450,7 @@ local LastInspectTime = GetTime()
 
 function events:INSPECT_READY(guid)
 	local tempoc, tempoc2, tempoc3 = GetUnitIDbyGuid(guid)
-	if GetTime() - LastInspectTime > 2.5 and tempoc then
+	if GetTime() - LastInspectTime > 2.0 and tempoc then
 		OILVL_Unit = tempoc2
 		OTCurrent=tempoc; -- current raid frame
 		OTCurrent2=tempoc2; -- current unit id
@@ -5547,6 +5548,7 @@ function events:INSPECT_READY(guid)
 				Oilvltimer:ScheduleTimer(OMouseover,1);
 			end
 		end
+		ClearInspectPlayer();
 		OILVL:UnregisterEvent("INSPECT_READY")
 	end
 end
@@ -5746,7 +5748,7 @@ end
 function events:PLAYER_ENTERING_WORLD(...)
 	OILVL:UnregisterEvent("BAG_UPDATE")
 	bagupdatesw=false
-	collectgarbage()
+	-- collectgarbage() -- Disabled for performance
 	if not repeatsw then
 		repeatsw = true
 		OilvlCheckFrame();
@@ -5766,7 +5768,7 @@ function events:PLAYER_ENTERING_WORLD(...)
 		hooksecurefunc("ToggleAllBags",function() oilvlShowBagItemLevel() C_Timer.After(0.3, oilvlShowBagItemLevel) end)
 		hooksecurefunc("ToggleBag",function() oilvlShowBagItemLevel() C_Timer.After(0.3, oilvlShowBagItemLevel) end)
 		hooksecurefunc("OpenBag",function() oilvlShowBagItemLevel() C_Timer.After(0.3, oilvlShowBagItemLevel) end)
-		if Bagnon then
+		if Bagnon and BagnonFrameinventory then
 			BagnonFrameinventory:HookScript('onShow', function()
 				oilvlShowBagItemLevel()
 				C_Timer.After(0.3, oilvlShowBagItemLevel)
@@ -6171,7 +6173,7 @@ function OilvlConfigFrame()
 	dp:SetScript("OnEscapePressed",function(self) dp:SetNumber(cfg.oilvldp) dp:ClearFocus() end)	
 
 	-- upgrade number
-	local upgradenumbercb = createCheckbutton(cfg.frame, 16+25, -350, "oilvlupgradeno",ITEM_UPGRADE_TOOLTIP_FORMAT:gsub(": %%d/%%d",""):gsub("：",""):gsub("%%d/%%d",""));
+	local upgradenumbercb = createCheckbutton(cfg.frame, 16+25, -350, "oilvlupgradeno",ITEM_UPGRADE_TOOLTIP_FORMAT:gsub(": %%d/%%d",""):gsub("Ã¯Â¼Å¡",""):gsub("%%d/%%d",""));
 	upgradenumbercb:SetSize(30,30);
 	upgradenumbercb:SetScript("PostClick", function() cfg.oilvlun = oilvlupgradeno:GetChecked() OiLvlPlayer_Update() end);
 	if cfg.oilvlun then upgradenumbercb:SetChecked(true) end
@@ -6194,7 +6196,7 @@ function LDB:OnClick(button)
 		end
 	end
 	if button == "RightButton" then
-		--PlaySound("igMainMenuOption");
+		--PlaySound(856);
 		InterfaceOptionsFrameTab2:Click();
 		InterfaceOptionsFrame_OpenToCategory("O Item Level (OiLvL)")
 	end

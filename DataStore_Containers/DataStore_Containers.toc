@@ -1,8 +1,8 @@
 ## Interface: 70300
 ## Title: DataStore_Containers
+## Author: Artiom97es
 ## Notes: Stores information about character bags, bank, and guild banks
-## Author: Thaoky (EU-Marécages de Zangar)
-## Version: r57
+## Version: r58-Artiom97es
 ## Dependencies: DataStore
 ## OptionalDeps: Ace3
 ## SavedVariables: DataStore_ContainersDB
