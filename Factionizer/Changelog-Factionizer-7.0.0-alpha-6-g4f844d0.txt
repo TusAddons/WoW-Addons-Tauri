@@ -1,0 +1,7 @@
+gOOvER:
+	- more Fixes
+	- more Legion Fixes
+	- more fixes
+	- Legion Fixes
+	- small fixes
+	- * Fixed toc, * added LibBabble-faction * added Pat Nagle

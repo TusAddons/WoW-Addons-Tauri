@@ -1,0 +1,14 @@
+﻿## Interface: 70200
+## X-Min-Interface: 70200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Voicepack JoluSpanish|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Demo 语音包|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Demo 語音包|r
+## DefaultState: enabled
+## RequiredDeps: DBM-Core
+## Author: Jolugon
+## Version: 7.3.0
+## X-DBM-Voice: 1
+## X-DBM-Voice-Name: Spanish (Spain) by Jolugon
+## X-DBM-Voice-ShortName: JoluSpanish
+## X-DBM-Voice-Version: 7
+## X-DBM-Voice-HasCount: 1

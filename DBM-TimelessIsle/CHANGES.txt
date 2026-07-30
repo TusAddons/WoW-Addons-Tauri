@@ -1,0 +1,32 @@
+------------------------------------------------------------------------
+r40 | mysticalos@icloud.com | 2018-01-28 00:29:40 +0000 (Sun, 28 Jan 2018) | 1 line
+Changed paths:
+   M /trunk/DBM-TimelessIsle.toc
+
+Mod sort updates
+------------------------------------------------------------------------
+r39 | mysticalos@icloud.com | 2018-01-27 04:47:40 +0000 (Sat, 27 Jan 2018) | 1 line
+Changed paths:
+   M /trunk/IsleTimeless.lua
+
+Die BossHealth
+------------------------------------------------------------------------
+r38 | mysticalos@icloud.com | 2018-01-04 23:40:45 +0000 (Thu, 04 Jan 2018) | 1 line
+Changed paths:
+   M /trunk/IsleTimeless.lua
+
+Eliminated redundant stuff and reduced spam
+------------------------------------------------------------------------
+r37 | mysticalos@icloud.com | 2017-08-29 08:58:06 +0000 (Tue, 29 Aug 2017) | 1 line
+Changed paths:
+   M /trunk/DBM-TimelessIsle.toc
+
+Bump TOCs
+------------------------------------------------------------------------
+r36 | mysticalos@icloud.com | 2017-03-28 09:16:43 +0000 (Tue, 28 Mar 2017) | 1 line
+Changed paths:
+   M /trunk/DBM-TimelessIsle.toc
+
+Toc
+------------------------------------------------------------------------
+

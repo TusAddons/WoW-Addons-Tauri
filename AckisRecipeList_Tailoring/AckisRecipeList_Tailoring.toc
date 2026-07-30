@@ -1,0 +1,20 @@
+## Interface: 70300
+## Title: Ackis Recipe List: Tailoring
+## Notes: Tailoring data for Ackis Recipe List.
+## Author: Ackis, Pompy, Ressy, Torhal
+## Version: 7.3.0.1-4-g41c63c4
+## X-Revision: 41c63c4
+## X-Date: 2017-08-29T23:39:02Z
+## Dependencies: AckisRecipeList
+## LoadOnDemand: 1
+
+Core.lua
+Filters.lua
+Discoveries.lua
+MobDrops.lua
+Quests.lua
+Trainers.lua
+Vendors.lua
+Recipes.lua
+
+

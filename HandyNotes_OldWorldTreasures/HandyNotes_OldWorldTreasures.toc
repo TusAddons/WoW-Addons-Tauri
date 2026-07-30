@@ -1,0 +1,15 @@
+## Interface: 90100
+## Title: HandyNotes_OldWorldTreasures
+## Notes: chest nodes in old world
+## Author: Knroptl
+## Version: 0.99a
+## DefaultState: enabled
+## X-Category: Quests & Leveling
+## X-eMail: godmise@gmail.com
+## X-Curse-Project-ID: 501499
+## SavedVariables: HandyNotes_OldWorldTreasuresDB
+## RequiredDeps: HandyNotes
+
+handler.lua
+config.lua
+nodes.lua

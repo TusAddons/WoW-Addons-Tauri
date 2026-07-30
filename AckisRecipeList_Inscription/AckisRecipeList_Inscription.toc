@@ -1,0 +1,18 @@
+## Interface: 70300
+## Title: Ackis Recipe List: Inscription
+## Notes: Inscription data for Ackis Recipe List.
+## Author: Ackis, Pompy, Ressy, Torhal
+## Version: 7.3.0.2-1-ge87386a
+## X-Revision: e87386a
+## X-Date: 2017-08-29T23:37:33Z
+## Dependencies: AckisRecipeList
+## LoadOnDemand: 1
+
+Core.lua
+Filters.lua
+Discoveries.lua
+MobDrops.lua
+Quests.lua
+Trainers.lua
+Vendors.lua
+Recipes.lua

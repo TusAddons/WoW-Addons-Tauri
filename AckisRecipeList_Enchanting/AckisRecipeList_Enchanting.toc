@@ -1,0 +1,17 @@
+## Interface: 70300
+## Title: Ackis Recipe List: Enchanting
+## Notes: Enchanting data for Ackis Recipe List.
+## Author: Ackis, Pompy, Ressy, Torhal
+## Version: 7.3.0.2-1-geb0032a
+## X-Revision: eb0032a
+## X-Date: 2017-08-29T23:35:02Z
+## Dependencies: AckisRecipeList
+## LoadOnDemand: 1
+
+Core.lua
+Filters.lua
+MobDrops.lua
+Quests.lua
+Trainers.lua
+Vendors.lua
+Recipes.lua

@@ -1,0 +1,26 @@
+Changes since tag 7.3.0.1
+
+commit 3358ce4d7f80c7ea59d4fdd07c6bf24ee693a6aa
+Author: Ressy <resa1983@hotmail.com>
+Date:   Tue Feb 26 19:47:12 2019 -0500
+
+    BFA update. Its working, but missing data!
+
+commit 323d7ded878637b1f827ebc74a26d72875cb8693
+Author: Ressy <resa1983@hotmail.com>
+Date:   Mon May 7 14:05:14 2018 -0400
+
+    Add trainer
+
+commit 1adc1505efab802343051a765046eec351d24691
+Author: Ressy <resa1983@hotmail.com>
+Date:   Mon May 7 11:16:48 2018 -0400
+
+    Add Trainer
+
+commit 9820f948e376ab18c0ba9ba67e1eea29b6b7aa76
+Author: Ressy <resa1983@hotmail.com>
+Date:   Mon May 7 11:05:23 2018 -0400
+
+    Fixing Recipe skill levels - they were dropped
+

@@ -1,0 +1,69 @@
+Legendary Progress Tracker Changelog
+v0.3.11
+Fixed message upon completing old raid boss
+LPT will no longer trigger upon clicking BoA tokens sometimes
+Purified Titan Essence should no longer trigger LPT
+
+v0.3.10
+Antorus launch! Removed redundant checks to see if Antorus was out yet.
+Fixed bug in resetting tracked events after obtaining a legendary.
+Fix to upgrade to item level 1000 items triggering LPT.
+
+v0.3.9
+Fix of mythic 0 bosses tracking incorrectly as old raids.
+
+v0.3.8
+Fix of very rare argus rare tracking issue.
+
+v0.3.7
+Added Antorus bosses to tracked events.
+
+v0.3.6
+Modified bad luck protection cap formula.
+Reworked broken shore rare tracking to be more accurate.
+Created a new tracked event of old raids, this includes any raid that is not current content.
+
+v0.3.5
+Fixed bug that allowed for incorrect tracking of argus rares that have already been killed earlier in the day.
+
+v0.3.4
+Fixed incorrect triggering of new BoA legendary tokens (hopefully).
+Drastically improved the tracking of historical legendaries obtained.
+
+v0.3.3
+Time walking kills should no longer trigger heroic dungeon events.
+
+v0.3.2
+Fixed crafted legendaries triggering LPT.
+
+v0.3.1
+Fixed Heroic dungeon tracking. 
+Updated bad luck protection cap values with newer data.
+
+v0.3.0
+First attempt at bad luck protection cap prediction!
+
+v0.2.7
+Added Mythic 0 and Heroic 5 man dungeon tracking.
+
+v0.2.6
+Fixed bug regarding raid kill tracking.
+
+v0.2.5
+Fixed several tracking events.
+
+v0.2.4
+Added Greater Invasion Point tracking.
+Fixed several greater Argus chest tracking.
+
+v0.2.3
+Added several missing tracking events.
+
+v0.2.2
+Bug fixes.
+
+v0.2.1
+Added Argus invasion tracking. Separated Argus chests into lesser and greater events.
+
+v0.2.0
+Added Argus chests and rare events.  Reduced addon footprint inside dungeons and raids.

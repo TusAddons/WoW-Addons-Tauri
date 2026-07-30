@@ -1,0 +1,186 @@
+------------------------------------------------------------------------
+r31 | mysticalos@icloud.com | 2019-03-08 21:01:31 +0000 (Fri, 08 Mar 2019) | 1 line
+Changed paths:
+   M /trunk/DBM-Party-WoD/Auchindoun/Azzakel.lua
+   M /trunk/DBM-Party-WoD/Auchindoun/ProtectorOfAuch.lua
+   M /trunk/DBM-Party-WoD/BloodmaulSlagMines/Gugrokk.lua
+   M /trunk/DBM-Party-WoD/BloodmaulSlagMines/Roltall.lua
+   M /trunk/DBM-Party-WoD/EverBloom/AncientProtectors.lua
+   M /trunk/DBM-Party-WoD/EverBloom/ArchmageSol.lua
+   M /trunk/DBM-Party-WoD/EverBloom/Witherbark.lua
+   M /trunk/DBM-Party-WoD/EverBloom/Xeritac.lua
+   M /trunk/DBM-Party-WoD/GrimRailDepot/BlackrockAssaultCommander.lua
+   M /trunk/DBM-Party-WoD/GrimRailDepot/ThunderlordGeneral.lua
+   M /trunk/DBM-Party-WoD/IronDocks/Nokgar.lua
+   M /trunk/DBM-Party-WoD/SMBurialGrounds/Bonemaw.lua
+   M /trunk/DBM-Party-WoD/SMBurialGrounds/Nerzhul.lua
+   M /trunk/DBM-Party-WoD/SMBurialGrounds/Nhallish.lua
+   M /trunk/DBM-Party-WoD/SMBurialGrounds/SadanaBloodfury.lua
+   M /trunk/DBM-Party-WoD/Skyreach/Araknath.lua
+   M /trunk/DBM-Party-WoD/Skyreach/Ranjit.lua
+   M /trunk/DBM-Party-WoD/Skyreach/Rukhran.lua
+   M /trunk/DBM-Party-WoD/Skyreach/Viryx.lua
+   M /trunk/DBM-Party-WoD/UBRS/Gorashan.lua
+   M /trunk/DBM-Party-WoD/UBRS/Kyrak.lua
+   M /trunk/DBM-Party-WoD/UBRS/Ragewing.lua
+   M /trunk/DBM-Party-WoD/UBRS/Tharbek.lua
+   M /trunk/DBM-Party-WoD/UBRS/UBRSTrash.lua
+
+Finished updates of WoD mods with voice pack support, and improve overall message redundancy/spam reductions
+------------------------------------------------------------------------
+r30 | mysticalos@icloud.com | 2019-03-01 20:10:20 +0000 (Fri, 01 Mar 2019) | 2 lines
+Changed paths:
+   M /trunk/DBM-Party-BC/MagistersTerrace/Kael'thas.lua
+   M /trunk/DBM-Party-WoD/Auchindoun/Terongor.lua
+   M /trunk/DBM-Party-WoD/BloodmaulSlagMines/Magmolatus.lua
+   M /trunk/DBM-Party-WoD/GrimRailDepot/BlackrockAssaultCommander.lua
+   M /trunk/DBM-Party-WoD/GrimRailDepot/GRDTrash.lua
+   M /trunk/DBM-Party-WoD/GrimRailDepot/ThunderlordGeneral.lua
+   M /trunk/DBM-Party-WoD/IronDocks/GrimrailEnforcers.lua
+   M /trunk/DBM-Party-WoD/IronDocks/Nokgar.lua
+   M /trunk/DBM-Party-WoD/IronDocks/Oshir.lua
+   M /trunk/DBM-Party-WoD/IronDocks/Skulloc.lua
+
+Fix lua error on KT mod in Magisters
+Continued updates of WoD mods with voice pack support, and improve overall message redundancy/spam reductions
+------------------------------------------------------------------------
+r29 | mysticalos@icloud.com | 2019-02-28 00:42:55 +0000 (Thu, 28 Feb 2019) | 1 line
+Changed paths:
+   M /trunk/DBM-Party-BC/Auct_Crypts/Maladaar.lua
+   M /trunk/DBM-Party-BC/Auct_SethekkHalls/Ikiss.lua
+   M /trunk/DBM-Party-BC/Auct_ShadowLabyrinth/Hellmaw.lua
+   M /trunk/DBM-Party-BC/Auct_ShadowLabyrinth/Inciter.lua
+   M /trunk/DBM-Party-BC/Auct_Tombs/Pandemonius.lua
+   M /trunk/DBM-Party-BC/Auct_Tombs/Tavarok.lua
+   M /trunk/DBM-Party-BC/CoT_BlackMorass/Temporus.lua
+   M /trunk/DBM-Party-BC/CoT_OldHillsbrad/Skarloc.lua
+   M /trunk/DBM-Party-BC/Coil_Steamvault/Steamrigger.lua
+   M /trunk/DBM-Party-BC/Coil_Steamvault/Thespia.lua
+   M /trunk/DBM-Party-BC/Hellfire_Ramp/Vazruden.lua
+   M /trunk/DBM-Party-BC/TK_Botanica/Freywinn.lua
+   M /trunk/DBM-Party-BC/TK_Botanica/Laj.lua
+   M /trunk/DBM-Party-BC/TK_Botanica/Thorngrin.lua
+   M /trunk/DBM-Party-BC/TK_Mechanar/Capacitus.lua
+   M /trunk/DBM-Party-BC/TK_Mechanar/Gyrokill.lua
+   M /trunk/DBM-Party-BC/TK_Mechanar/Ironhand.lua
+   M /trunk/DBM-Party-BC/TK_Mechanar/Pathaleon.lua
+   M /trunk/DBM-Party-WoD/BloodmaulSlagMines/Gugrokk.lua
+   M /trunk/DBM-Party-WoD/BloodmaulSlagMines/Magmolatus.lua
+   M /trunk/DBM-Party-WoD/EverBloom/AncientProtectors.lua
+   M /trunk/DBM-Party-WoD/GrimRailDepot/RocketAndBorka.lua
+   M /trunk/DBM-Party-WoD/Skyreach/Viryx.lua
+   M /trunk/DBM-Party-WoD/UBRS/Kyrak.lua
+   M /trunk/DBM-Party-WoD/UBRS/UBRSTrash.lua
+
+Fix some dispels and interrupts to use modern filters across a few dungeons. fixed one bad unitbuff usage not updated for bfa, added some voice pack and other modern support to some mods
+------------------------------------------------------------------------
+r28 | mysticalos@icloud.com | 2019-02-28 00:10:29 +0000 (Thu, 28 Feb 2019) | 1 line
+Changed paths:
+   M /trunk/DBM-Party-WoD/EverBloom/AncientProtectors.lua
+   M /trunk/DBM-Party-WoD/EverBloom/ArchmageSol.lua
+   M /trunk/DBM-Party-WoD/EverBloom/Witherbark.lua
+   M /trunk/DBM-Party-WoD/EverBloom/Xeritac.lua
+   M /trunk/DBM-Party-WoD/EverBloom/Yalnu.lua
+
+Everbloom update for modern features and improvements, in prep for timewalking
+------------------------------------------------------------------------
+r27 | mysticalos@icloud.com | 2019-02-26 21:07:28 +0000 (Tue, 26 Feb 2019) | 1 line
+Changed paths:
+   M /trunk/DBM-Party-BC/TK_Arcatraz/Dalliah.lua
+   M /trunk/DBM-Party-BC/TK_Arcatraz/Skyriss.lua
+   M /trunk/DBM-Party-BC/TK_Arcatraz/Soccothrates.lua
+   M /trunk/DBM-Party-BC/TK_Arcatraz/Zereketh.lua
+
+Some Arcatraz updates
+------------------------------------------------------------------------
+r26 | mysticalos@icloud.com | 2019-02-26 20:38:51 +0000 (Tue, 26 Feb 2019) | 1 line
+Changed paths:
+   M /trunk/DBM-Party-BC/Auct_Tombs/Tavarok.lua
+   M /trunk/DBM-Party-BC/MagistersTerrace/Delrissa.lua
+   M /trunk/DBM-Party-BC/MagistersTerrace/Kael'thas.lua
+
+minor magisters terrace update for more modern code
+------------------------------------------------------------------------
+r25 | mysticalos@icloud.com | 2019-02-26 02:15:28 +0000 (Tue, 26 Feb 2019) | 1 line
+Changed paths:
+   M /trunk/DBM-Party-MoP/ScarletCathedral/Korlof.lua
+   M /trunk/DBM-Party-MoP/localization.cn.lua
+   M /trunk/DBM-Party-MoP/localization.de.lua
+   M /trunk/DBM-Party-MoP/localization.en.lua
+   M /trunk/DBM-Party-MoP/localization.es.lua
+   M /trunk/DBM-Party-MoP/localization.fr.lua
+   M /trunk/DBM-Party-MoP/localization.kr.lua
+   M /trunk/DBM-Party-MoP/localization.ru.lua
+   M /trunk/DBM-Party-MoP/localization.tw.lua
+   M /trunk/DBM-Party-WoD/Auchindoun/AuchTrash.lua
+   M /trunk/DBM-Party-WoD/Auchindoun/Azzakel.lua
+   M /trunk/DBM-Party-WoD/Auchindoun/ProtectorOfAuch.lua
+   M /trunk/DBM-Party-WoD/Auchindoun/Terongor.lua
+   M /trunk/DBM-Party-WoD/BloodmaulSlagMines/BSMTrash.lua
+   M /trunk/DBM-Party-WoD/BloodmaulSlagMines/Crushto.lua
+   M /trunk/DBM-Party-WoD/BloodmaulSlagMines/Gugrokk.lua
+   M /trunk/DBM-Party-WoD/BloodmaulSlagMines/Magmolatus.lua
+   M /trunk/DBM-Party-WoD/BloodmaulSlagMines/Roltall.lua
+
+Two TW WoD dungeons updated with modern features and APIs
+------------------------------------------------------------------------
+r24 | mysticalos@icloud.com | 2019-02-25 22:29:29 +0000 (Mon, 25 Feb 2019) | 1 line
+Changed paths:
+   M /trunk/DBM-Party-WoD/DBM-Party-WoD.toc
+
+Enable TW stats on Wod dungeons
+------------------------------------------------------------------------
+r23 | mysticalos@icloud.com | 2019-02-24 21:15:04 +0000 (Sun, 24 Feb 2019) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+
+Test Commit
+------------------------------------------------------------------------
+r22 | mysticalos@icloud.com | 2019-02-24 21:13:33 +0000 (Sun, 24 Feb 2019) | 1 line
+Changed paths:
+   A /trunk/.pkgmeta
+
+Test Commit
+------------------------------------------------------------------------
+r21 | mysticalos@icloud.com | 2019-02-24 21:08:38 +0000 (Sun, 24 Feb 2019) | 1 line
+Changed paths:
+   D /trunk/DBM-Party
+
+Test Commit
+------------------------------------------------------------------------
+r20 | mysticalos@icloud.com | 2019-02-24 21:08:19 +0000 (Sun, 24 Feb 2019) | 1 line
+Changed paths:
+   D /trunk/.pkgmeta
+   D /trunk/DBM-Party/DBM-Party-BC
+   D /trunk/DBM-Party/DBM-Party-Cataclysm
+   D /trunk/DBM-Party/DBM-Party-Classic
+   D /trunk/DBM-Party/DBM-Party-Legion
+   D /trunk/DBM-Party/DBM-Party-MoP
+   D /trunk/DBM-Party/DBM-Party-WoD
+   D /trunk/DBM-Party/DBM-Party-WotLK
+   A /trunk/DBM-Party-BC (from /trunk/DBM-Party/DBM-Party-BC:19)
+   A /trunk/DBM-Party-Cataclysm (from /trunk/DBM-Party/DBM-Party-Cataclysm:19)
+   A /trunk/DBM-Party-Classic (from /trunk/DBM-Party/DBM-Party-Classic:19)
+   A /trunk/DBM-Party-Legion (from /trunk/DBM-Party/DBM-Party-Legion:19)
+   A /trunk/DBM-Party-MoP (from /trunk/DBM-Party/DBM-Party-MoP:19)
+   A /trunk/DBM-Party-WoD (from /trunk/DBM-Party/DBM-Party-WoD:19)
+   A /trunk/DBM-Party-WotLK (from /trunk/DBM-Party/DBM-Party-WotLK:19)
+
+Test Commit
+------------------------------------------------------------------------
+r19 | mysticalos@icloud.com | 2019-02-24 21:02:37 +0000 (Sun, 24 Feb 2019) | 1 line
+Changed paths:
+   M /trunk/DBM-Party/DBM-Party-Cataclysm/HourOfTwilight/Arcurion.lua
+   M /trunk/DBM-Party/DBM-Party-Cataclysm/HourOfTwilight/AsiraDawnslayer.lua
+   M /trunk/DBM-Party/DBM-Party-Cataclysm/WellOfEternity/Perotharn.lua
+   M /trunk/DBM-Party/DBM-Party-WotLK/HallsOfStone/BrannBronzebeard.lua
+   M /trunk/DBM-Party/DBM-Party-WotLK/PitofSaron/ForgemasterGarfrost.lua
+   M /trunk/DBM-Party/DBM-Party-WotLK/PitofSaron/Ick.lua
+   M /trunk/DBM-Party/DBM-Party-WotLK/PitofSaron/ScourgelordTyrannus.lua
+   M /trunk/DBM-Party/DBM-Party-WotLK/TheOculus/MageLordUrom.lua
+   M /trunk/DBM-Party/DBM-Party-WotLK/TrialoftheChampion/Champions.lua
+   M /trunk/DBM-Party/DBM-Party-WotLK/UtgardePinnacle/SkadiTheRuthless.lua
+
+Test Commit
+------------------------------------------------------------------------
+

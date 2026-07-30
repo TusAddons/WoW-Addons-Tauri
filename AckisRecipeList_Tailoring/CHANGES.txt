@@ -1,0 +1,26 @@
+Changes since tag 7.3.0.1
+
+commit 41c63c4219defe0d9944c54229b4add3f122b716
+Author: Ressy <resa1983@hotmail.com>
+Date:   Tue Feb 26 19:46:18 2019 -0500
+
+    BFA update. Its working, but missing data!
+
+commit f3b99ad2d4d4c7219e09b6bc82fc015740c19677
+Author: Ressy <resa1983@hotmail.com>
+Date:   Mon Feb 4 19:08:19 2019 -0500
+
+    Add BFA data
+
+commit 72136e68a8e62c3755d6f80d7aa3a408f6ecb714
+Author: Ressy <resa1983@hotmail.com>
+Date:   Mon Feb 4 19:08:05 2019 -0500
+
+    Update skill levels
+
+commit 31f2a3b0f34af6c22801f5c7716a4200e319c209
+Author: Ressy <resa1983@hotmail.com>
+Date:   Sun Jan 28 12:25:53 2018 -0500
+
+    To update for skill level changes for 7.3.5
+

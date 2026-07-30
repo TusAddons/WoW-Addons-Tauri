@@ -1,0 +1,37 @@
+------------------------------------------------------------------------
+r103 | mulamboo | 2018-07-05 14:14:49 +0000 (Thu, 05 Jul 2018) | 1 line
+Changed paths:
+   M /trunk/MinimalArchaeology.toc
+
+Bumped version for release
+------------------------------------------------------------------------
+r102 | Mulamboo | 2018-06-27 14:01:48 +0000 (Wed, 27 Jun 2018) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/MATemplates.xml
+   M /trunk/MATemplatesHistory.xml
+   M /trunk/MinArchDigsiteDB.lua
+   M /trunk/MinArchDigsites.lua
+   M /trunk/MinArchEvents.lua
+   M /trunk/MinArchHistory.lua
+   M /trunk/MinArchHistory.xml
+   M /trunk/MinArchHistoryDB.lua
+   M /trunk/MinArchInit.lua
+   M /trunk/MinimalArchaeology.toc
+   A /trunk/libs/LibBabble-DigSites-3.0
+   A /trunk/libs/LibBabble-DigSites-3.0/LibBabble-3.0.lua
+   A /trunk/libs/LibBabble-DigSites-3.0/LibBabble-DigSites-3.0.lua
+   A /trunk/libs/LibBabble-DigSites-3.0/LibBabble-DigSites-3.0.toc
+   A /trunk/libs/LibBabble-DigSites-3.0/LibStub
+   A /trunk/libs/LibBabble-DigSites-3.0/LibStub/LibStub.lua
+   A /trunk/libs/LibBabble-DigSites-3.0/LibStub/LibStub.toc
+   A /trunk/libs/LibBabble-DigSites-3.0/LibStub/tests
+   A /trunk/libs/LibBabble-DigSites-3.0/LibStub/tests/test.lua
+   A /trunk/libs/LibBabble-DigSites-3.0/LibStub/tests/test2.lua
+   A /trunk/libs/LibBabble-DigSites-3.0/LibStub/tests/test3.lua
+   A /trunk/libs/LibBabble-DigSites-3.0/LibStub/tests/test4.lua
+   A /trunk/libs/LibBabble-DigSites-3.0/lib.xml
+
+Merged the work of "joevt" (#46) for an alpha release. LibBable Digsites is now included in the repo instead of auto-packaging as it is no longer developed. I'll include a full changelog in the RELEASE tag.
+------------------------------------------------------------------------
+

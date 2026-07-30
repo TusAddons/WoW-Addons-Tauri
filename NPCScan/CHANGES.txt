@@ -1,0 +1,16 @@
+tag 3f7640aaadd76a0748457ac10683bd05308c9ea9 7.3.5.19
+Author:	James D. Callahan III <jcallahan@curse.com>
+Date:	Sat Jul 14 17:15:02 2018 -0500
+
+commit e4c2c1308f8582c5ed3a796e6dfc4e5184b8223c
+Author: James D. Callahan III <jcallahan@curse.com>
+Date:   Sat Jul 14 17:14:17 2018 -0500
+
+    Add support for the Millions of Years of Evolution vs. My Fist achievement for Oondasta.
+
+commit 648319c7d4a86e247f33bc2f73f2dffe7e2fb8d2
+Author: James D. Callahan III <jcallahan@curse.com>
+Date:   Sat Jul 14 17:12:48 2018 -0500
+
+    Add mount and pet data for Galleon, Sha of Anger, Oondasta, and War-God Dokah. Fixes https://www.wowace.com/projects/npcscan/issues/226
+

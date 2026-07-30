@@ -1,0 +1,13 @@
+lightweight tag 4b26fafeb5d1a48564de63f8fb3d233854783b95 1.7
+Author:	exochron <exochron@gamerstate.de>
+Date:	Sat Feb 17 14:39:19 2018 +0100
+
+commit 4b26fafeb5d1a48564de63f8fb3d233854783b95
+Author: exochron <exochron@gamerstate.de>
+Date:   Sat Feb 17 14:39:19 2018 +0100
+
+    1.7
+    - replaced icon name based family filter with generated id list
+    - removed LibIconPath -> less idle memory consumption
+    - added item db and preview functionality for all those items
+

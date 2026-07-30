@@ -1,0 +1,8 @@
+Changes since tag 7.3.0.2
+
+commit eb0032aefb53751f6a3739211a7d0c642e2a2491
+Author: Ressy <resa1983@hotmail.com>
+Date:   Sun Jan 28 12:29:27 2018 -0500
+
+    To update for skill level changes and removal of profession spells with 7.3.5
+
