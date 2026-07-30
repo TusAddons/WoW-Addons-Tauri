@@ -13,10 +13,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Zip Addons
+      - name: Flatten and Zip Addons
         run: |
-          # Compress all addons into a single zip file, excluding Git folders
-          zip -r WoW_Addons_Modificados.zip . -x "*.git*" -x ".github/*" -x "README.md"
+          # Aplanar la estructura de Proyectos para que WoW pueda leerlos
+          mkdir flat_addons
+          find Proyectos -mindepth 2 -maxdepth 2 -type d -exec cp -r {} flat_addons/ \;
+          cd flat_addons
+          zip -r ../WoW_Addons_Modificados.zip .
+          cd ..
 
       - name: Upload to Google Drive
         uses: adityak74/google-drive-upload-git-action@main
