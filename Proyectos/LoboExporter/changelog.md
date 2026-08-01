@@ -15,3 +15,14 @@ Gente, os presento un addon propio que he estado desarrollando y puliendo: LoboE
 👇 ¡Descargadlo aquí abajo y me contáis qué os parece! Cualquier idea o logro que queráis que añada al mapa en el futuro, decídmelo.
 
 ---
+
+## Actualización 7.3.5 - Exportador BiS y Correcciones
+
+⚔️ **NUEVA FUNCIÓN: EXPORTADOR DE BOTÍN DE BANDA (BiS)**
+¡LoboExporter ahora es capaz de extraer automáticamente toda la base de datos de botín de las bandas!
+- Añadido el comando `/lex raidloot` o `/loboexport raidloot`.
+- Al usarlo, el addon escaneará el Diario de Aventuras y generará un JSON masivo con todos los objetos de todas las dificultades de las bandas de Legion.
+- Esta exportación alimenta directamente al planificador BiS de TusAddonsBot en Discord.
+
+🛠️ **CORRECCIÓN DE ERRORES**
+- **Fix de IDs de Objetos**: Corregido un fallo crítico donde el addon exportaba accidentalmente el ID interno del icono (textura) en lugar del ID real del objeto al extraer el botín. A partir de ahora, todas las exportaciones tendrán los ItemIDs correctos, evitando colisiones o errores en la base de datos externa.
