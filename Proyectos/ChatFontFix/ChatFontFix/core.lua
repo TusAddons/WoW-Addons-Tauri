@@ -97,9 +97,23 @@ local function ChatFilter(self, event, msg, sender, ...)
     end
 
     local newMsg = RomanizeString(msg)
+    local newSender = sender and RomanizeString(sender) or sender
     
-    if newMsg ~= msg then
-        return false, newMsg, sender, ...
+    if newSender ~= sender then
+        RealNames[newSender] = sender
+        RealNames[newSender:lower()] = sender
+        
+        -- Also store without realm name for local whispers
+        local rawSender = sender:match("([^%-]+)")
+        local rawNewSender = newSender:match("([^%-]+)")
+        if rawSender and rawNewSender then
+            RealNames[rawNewSender] = rawSender
+            RealNames[rawNewSender:lower()] = rawSender
+        end
+    end
+    
+    if newMsg ~= msg or newSender ~= sender then
+        return false, newMsg, newSender, ...
     end
     return false, msg, sender, ...
 end

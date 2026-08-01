@@ -293,6 +293,7 @@ function addon:SetDirtyFlags(event,missionType,missionID,...)
 		or event=="GARRISON_FOLLOWER_XP_CHANGED"
 		or event=="GARRISON_FOLLOWER_UPGRADED"
 		or event=="GARRISON_FOLLOWER_DURABILITY_CHANGED"
+		or event=="GARRISON_MISSION_STARTED"
 		or event=="FORCED"
 	then
 		addon:PushRefresher("RefillParties")
