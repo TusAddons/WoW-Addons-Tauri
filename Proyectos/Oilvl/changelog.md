@@ -32,3 +32,7 @@ La versión que todos usamos normalmente tiene un fallo de diseño bastante mole
 @here **PACK DE ADDONS MÁXIMOS QUE DAN UTILIDAD**
 
 ---
+
+## v2.2 - Parche \"Entidad Desconocida\"
+- Se ha inyectado un filtro en el motor de escaneo (GetUnitName) para ignorar los nombres temporales de la API de Blizzard ("Entidad desconocida", "Unknown").
+- Esto soluciona el bug en el que, debido a la velocidad extrema de escaneo de la versi�n 2.0, el addon guardaba y congelaba de forma permanente el texto "Entidaddesconocida" en la lista de jugadores.

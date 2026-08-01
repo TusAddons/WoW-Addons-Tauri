@@ -706,9 +706,13 @@ function ORfbIlvl(ounit)
 			OTCurrent = "OILVLRAIDFRAME"..ounit;		
 			OTCurrent2 = "raid"..ounit;
 			if _G[OTCurrent] == nil then return -1 end
-			if GetUnitName(OTCurrent2,"") ~= nil then
-				--_G[OTCurrent]:SetText(oClassColor(OTCurrent2)..GetUnitName(OTCurrent2,""):gsub("%-.+", ""));
-				oilvlframedata.name[tonumber(ounit)] = GetUnitName(OTCurrent2,""):gsub("%-.+", "");
+			local _tempName = GetUnitName(OTCurrent2,"")
+			if _tempName ~= nil then
+			    local _cleanName = _tempName:gsub("%-.+", "")
+			    if _cleanName ~= "Entidad desconocida" and _cleanName ~= "Unknown" and _cleanName ~= "Entidaddesconocida" then
+			        oilvlframedata.name[tonumber(ounit)] = _cleanName;
+			    end
+			end
 				--oilvlframedata.ilvl[tonumber(ounit)][1] = ""
 				oilvl(OTCurrent2)
 			end
@@ -717,9 +721,13 @@ function ORfbIlvl(ounit)
 				OTCurrent = "OILVLRAIDFRAME1";
 				OTCurrent2 = "player";
 				if _G[OTCurrent] == nil then return -1 end
-				if GetUnitName(OTCurrent2,"") ~= nil then
-					--_G[OTCurrent]:SetText(oClassColor(OTCurrent2)..GetUnitName(OTCurrent2,""):gsub("%-.+", ""));
-					oilvlframedata.name[1] = GetUnitName(OTCurrent2,""):gsub("%-.+", "");
+				local _tempName = GetUnitName(OTCurrent2,"")
+				if _tempName ~= nil then
+				    local _cleanName = _tempName:gsub("%-.+", "")
+				    if _cleanName ~= "Entidad desconocida" and _cleanName ~= "Unknown" and _cleanName ~= "Entidaddesconocida" then
+				        oilvlframedata.name[1] = _cleanName;
+				    end
+				end
 					--oilvlframedata.ilvl[1][1] = ""
 					oilvl(OTCurrent2)
 				end
@@ -727,9 +735,13 @@ function ORfbIlvl(ounit)
 				OTCurrent = "OILVLRAIDFRAME"..ounit;
 				OTCurrent2 = "party"..(tonumber(ounit)-1);
 				if _G[OTCurrent] == nil then return -1 end
-				if GetUnitName(OTCurrent2,"") ~= nil then
-					--_G[OTCurrent]:SetText(oClassColor(OTCurrent2)..GetUnitName(OTCurrent2,""):gsub("%-.+", ""));
-					oilvlframedata.name[tonumber(ounit)] = GetUnitName(OTCurrent2,""):gsub("%-.+", "");
+				local _tempName = GetUnitName(OTCurrent2,"")
+				if _tempName ~= nil then
+				    local _cleanName = _tempName:gsub("%-.+", "")
+				    if _cleanName ~= "Entidad desconocida" and _cleanName ~= "Unknown" and _cleanName ~= "Entidaddesconocida" then
+				        oilvlframedata.name[tonumber(ounit)] = _cleanName;
+				    end
+				end
 					--oilvlframedata.ilvl[tonumber(ounit)][1] = ""
 					oilvl(OTCurrent2)
 				end
@@ -739,9 +751,13 @@ function ORfbIlvl(ounit)
 				OTCurrent = "OILVLRAIDFRAME1";
 				OTCurrent2 = "player";
 				if _G[OTCurrent] == nil then return -1 end
-				if GetUnitName(OTCurrent2,"") ~= nil then
-					--_G[OTCurrent]:SetText(oClassColor(OTCurrent2)..GetUnitName(OTCurrent2,""):gsub("%-.+", ""));
-					oilvlframedata.name[1] = GetUnitName(OTCurrent2,""):gsub("%-.+", "");
+				local _tempName = GetUnitName(OTCurrent2,"")
+				if _tempName ~= nil then
+				    local _cleanName = _tempName:gsub("%-.+", "")
+				    if _cleanName ~= "Entidad desconocida" and _cleanName ~= "Unknown" and _cleanName ~= "Entidaddesconocida" then
+				        oilvlframedata.name[1] = _cleanName;
+				    end
+				end
 					--oilvlframedata.ilvl[1][1] = ""
 					oilvl(OTCurrent2)
 				end
@@ -749,9 +765,13 @@ function ORfbIlvl(ounit)
 				OTCurrent = "OILVLRAIDFRAME"..ounit;
 				OTCurrent2 = "party"..(tonumber(ounit)-1);
 				if _G[OTCurrent] == nil then return -1 end
-				if GetUnitName(OTCurrent2,"") ~= nil then
-					--_G[OTCurrent]:SetText(oClassColor(OTCurrent2)..GetUnitName(OTCurrent2,""):gsub("%-.+", ""));
-					oilvlframedata.name[tonumber(ounit)] = GetUnitName(OTCurrent2,""):gsub("%-.+", "");
+				local _tempName = GetUnitName(OTCurrent2,"")
+				if _tempName ~= nil then
+				    local _cleanName = _tempName:gsub("%-.+", "")
+				    if _cleanName ~= "Entidad desconocida" and _cleanName ~= "Unknown" and _cleanName ~= "Entidaddesconocida" then
+				        oilvlframedata.name[tonumber(ounit)] = _cleanName;
+				    end
+				end
 					--oilvlframedata.ilvl[tonumber(ounit)][1] = ""
 					oilvl(OTCurrent2)
 				end
@@ -760,9 +780,13 @@ function ORfbIlvl(ounit)
 			OTCurrent = "OILVLRAIDFRAME1";
 			OTCurrent2 = "player";
 			if _G[OTCurrent] == nil then return -1 end
-			if GetUnitName(OTCurrent2,"") ~= nil then
-				--_G[OTCurrent]:SetText(oClassColor(OTCurrent2)..GetUnitName(OTCurrent2,""):gsub("%-.+", ""));
-				oilvlframedata.name[1] = GetUnitName(OTCurrent2,""):gsub("%-.+", "");
+			local _tempName = GetUnitName(OTCurrent2,"")
+			if _tempName ~= nil then
+			    local _cleanName = _tempName:gsub("%-.+", "")
+			    if _cleanName ~= "Entidad desconocida" and _cleanName ~= "Unknown" and _cleanName ~= "Entidaddesconocida" then
+			        oilvlframedata.name[1] = _cleanName;
+			    end
+			end
 				--oilvlframedata.ilvl[1][1] = ""
 				oilvl(OTCurrent2)
 			end
