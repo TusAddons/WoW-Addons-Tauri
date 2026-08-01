@@ -1,3 +1,0 @@
-local GlobalAddonName, LTS = ...
-
-_G.LTSData = LTS

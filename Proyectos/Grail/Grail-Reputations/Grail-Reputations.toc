@@ -1,9 +1,0 @@
-## Interface: 70300
-## Title: Grail |r|cff69ccf0Reputations|r
-## Author: Artiom97es
-## Notes: Provides reputation award information to Grail
-## Version: 8-Artiom97es
-## Dependencies: Grail
-## LoadOnDemand: 1
-
-Grail-Reputations.lua
