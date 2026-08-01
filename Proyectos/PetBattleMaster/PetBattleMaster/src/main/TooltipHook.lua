@@ -52,8 +52,8 @@ local function OnShow(self, tooltip)
 	self.isShowing = true
 	
 	if (tooltip and tooltip.GetUnit) then
-		local name, unit = tooltip:GetUnit()
-		if (unit and UnitIsWildBattlePet(unit)) then
+		local success, name, unit = pcall(tooltip.GetUnit, tooltip)
+		if (success and unit and UnitIsWildBattlePet(unit)) then
 			local guid = UnitGUID(unit)
 			local creatureId = tonumber(strsub(guid, 6, 10), 16)
 			local msg = _CreateMessage(creatureId, function(pet, arg)
