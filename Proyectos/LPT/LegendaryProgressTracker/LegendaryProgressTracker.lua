@@ -387,7 +387,7 @@ function LPT:CHAT_MSG_LOOT(event, message, _, _, _, looter)
 		["Purified Titan Essence"] = true
 		}
 		
-	if quality == 5 and (iLevel == LEG_ILVL ) and craftedOrQuest[name] == nil then
+	if quality == 5 and (iLevel >= 895) and craftedOrQuest[name] == nil then
 		local boaLeg = {
 			["Bone-Wrought Coffer of the Damned"] = true,
 			["Demonslayer's Soul-Sealed Satchel"] = true,
