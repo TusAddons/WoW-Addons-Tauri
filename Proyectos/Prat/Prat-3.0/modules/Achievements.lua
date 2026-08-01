@@ -861,7 +861,13 @@ Prat:AddModuleToLoad(function()
 
         local id, name, points, completed, month, day, year, description, flags, icon, rewardText, isGuildAch, wasEarnedByMe, earnedBy = GetAchievementInfo(theirId)
 
-        local _, _, _, _, _, theirName, _ = GetPlayerInfoByGUID(theirPlayerGuid)
+        local theirName = "Unknown"
+        if type(theirPlayerGuid) == "string" then
+            local success, _, _, _, _, _, name = pcall(GetPlayerInfoByGUID, theirPlayerGuid)
+            if success and name then
+                theirName = name
+            end
+        end
         local group = Prat.CurrentMessage.CHATGROUP
         local channelNum = Prat.CurrentMessage.CHATTARGET
 
