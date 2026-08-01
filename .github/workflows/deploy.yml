@@ -1,4 +1,4 @@
-name: Deploy Addons to Google Drive
+name: Deploy Addons to GitHub Releases
 
 on:
   push:
@@ -6,26 +6,34 @@ on:
       - main
       - master
 
+permissions:
+  contents: write
+
 jobs:
-  build-and-upload:
+  build-and-release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Flatten and Zip Addons
+      - name: Create Individual Zips
         run: |
-          # Aplanar la estructura de Proyectos para que WoW pueda leerlos
-          mkdir flat_addons
-          find Proyectos -mindepth 2 -maxdepth 2 -type d -exec cp -r {} flat_addons/ \;
-          cd flat_addons
-          zip -r ../WoW_Addons_Modificados.zip .
-          cd ..
-
-      - name: Upload to Google Drive
-        uses: adityak74/google-drive-upload-git-action@main
+          mkdir release_assets
+          cd Proyectos
+          for proj in */; do
+            proj_name=$(basename "$proj")
+            cd "$proj"
+            # Comprimimos solo las carpetas de datos (ignoramos changelog.md y archivos extra)
+            zip -r "../../release_assets/${proj_name}.zip" */
+            cd ..
+          done
+          
+      - name: Upload to GitHub Releases
+        uses: ncipollo/release-action@v1
         with:
-          credentials: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
-          filename: "WoW_Addons_Modificados.zip"
-          folderId: ${{ secrets.GDRIVE_FOLDER_ID }}
-          overwrite: "true"
+          allowUpdates: true
+          replacesArtifacts: true
+          tag: "latest"
+          name: "Última Versión"
+          artifacts: "release_assets/*.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
