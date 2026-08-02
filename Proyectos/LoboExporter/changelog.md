@@ -1,3 +1,8 @@
+## [v2.0.4] - 2026-08-02
+### Arreglado
+- Parcheado un problema por el cual, al terminar de exportar los objetos, el filtro de la Guía de Aventuras se quedaba atascado en la clase "Cazador de Demonios". Ahora el AddOn recuerda tu filtro original y lo restaura al terminar.
+- Solucionado un problema en el JSON exportado donde el campo `slot` aparecía vacío para objetos que no son equipables de forma convencional (Reliquias de Artefacto, Monturas, Mascotas, etc.). Ahora se extraerá correctamente su subtipo (ej. "Reliquia de artefacto de Fuego") o su tipo nativo si carecen de ranura.
+
 ## [v2.0.3] - 2026-08-02
 ### Arreglado
 - Parcheado un cuelgue del cliente de WoW (freeze/crasheo) que ocurría al intentar imprimir más de 1 Megabyte de texto JSON de golpe en el cuadro de texto (`EditBox`) tras usar los botones de copiado de mazmorras/bandas.

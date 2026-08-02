@@ -360,6 +360,7 @@ local function ExportRaidLootAsync(progressCallback, callback)
         
         local bossesProcessed = 0
         
+        local origClass, origSpec = EJ_GetLootFilter()
         local raidIndex = 1
         while true do
             local instanceID, raidName = EJ_GetInstanceByIndex(raidIndex, true)
@@ -383,42 +384,31 @@ local function ExportRaidLootAsync(progressCallback, callback)
                         EJ_SetLootFilter(classID, 0)
                         local numLoot = EJ_GetNumLoot()
                         for j = 1, numLoot do
-                            local vals = { EJ_GetLootInfoByIndex(j) }
-                            local itemID = 0
-                            local itemLink = nil
-                            local backupName = ""
-                            local backupSlot = ""
-                            
-                            for _, v in ipairs(vals) do
-                                if type(v) == "string" then
-                                    if string.find(v, "Hitem:") then
-                                        itemLink = v
-                                    elseif string.find(v, "Interface") then
-                                        -- ignorar icono
-                                    elseif v == "Tela" or v == "Placas" or v == "Malla" or v == "Cuero" or v == "Reliquia" or v == "Cloth" or v == "Plate" or v == "Mail" or v == "Leather" or v == "Relic" then
-                                        -- ignorar armorType
-                                    elseif string.len(v) > 2 then
-                                        if backupName == "" then backupName = v else backupSlot = v end
-                                    end
-                                end
-                            end
-                            
-                            if itemLink then
-                                local foundID = string.match(itemLink, "item:(%d+)")
+                            local infoName, _, infoSlot, _, infoItemID, infoLink = EJ_GetLootInfoByIndex(j)
+                            local itemID = infoItemID or 0
+                            if infoLink and itemID == 0 then
+                                local foundID = string.match(infoLink, "item:(%d+)")
                                 if foundID then itemID = tonumber(foundID) end
                             end
                             
-                            local query = itemLink or itemID
+                            local query = infoLink or itemID
                             if query and query ~= 0 and not seenItems[itemID] then
-                                local itemName, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(query)
-                                if not itemName then itemName = backupName end
-                                if not itemEquipLoc then itemEquipLoc = backupSlot end
+                                local itemName, _, _, _, _, _, itemSubType, _, itemEquipLoc = GetItemInfo(query)
+                                if not itemName or itemName == "" then itemName = infoName end
+                                
+                                local finalSlot = itemEquipLoc
+                                if not finalSlot or finalSlot == "" then
+                                    finalSlot = infoSlot
+                                end
+                                if not finalSlot or finalSlot == "" then
+                                    finalSlot = itemSubType
+                                end
                                 
                                 if itemName and itemName ~= "" then
                                     seenItems[itemID] = true
                                     results[#results+1] = string.format(
                                         '    {"raid": "%s", "boss": "%s", "difficulty": "%s", "itemName": "%s", "itemID": %d, "slot": "%s"}',
-                                        EscapeJSON(raidName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(itemEquipLoc or "")
+                                        EscapeJSON(raidName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(finalSlot or "")
                                     )
                                 end
                             end
@@ -433,6 +423,7 @@ local function ExportRaidLootAsync(progressCallback, callback)
             end
             raidIndex = raidIndex + 1
         end
+        if origClass then EJ_SetLootFilter(origClass, origSpec or 0) end
         callback("{\n  \"raidLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}", #results)
     end)
     RunCoroutine(co)
@@ -459,6 +450,7 @@ local function ExportDungeonLootAsync(progressCallback, callback)
         
         local bossesProcessed = 0
         
+        local origClass, origSpec = EJ_GetLootFilter()
         local dungeonIndex = 1
         while true do
             local instanceID, instanceName = EJ_GetInstanceByIndex(dungeonIndex, false)
@@ -532,6 +524,7 @@ local function ExportDungeonLootAsync(progressCallback, callback)
             end
             dungeonIndex = dungeonIndex + 1
         end
+        if origClass then EJ_SetLootFilter(origClass, origSpec or 0) end
         callback("{\n  \"dungeonLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}", #results)
     end)
     RunCoroutine(co)
