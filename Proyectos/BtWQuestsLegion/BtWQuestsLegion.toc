@@ -1,0 +1,42 @@
+## Interface: 70300
+## Title: BtWQuests: Legion
+## Version: 2.1-tauri
+## Author: Breen
+## Dependencies: BtWQuests
+
+Defines.lua
+Quests.deDE.lua
+Quests.esES.lua
+Quests.esMX.lua
+Quests.frFR.lua
+Quests.itIT.lua
+Quests.koKR.lua
+Quests.lua
+Quests.ptBR.lua
+Quests.ruRU.lua
+Quests.zhTW.lua
+AlliedRaces.lua
+Argus.lua
+Artifact.lua
+Azsuna.lua
+BrokenShore.lua
+DeathKnight.lua
+DemonHunter.lua
+Druid.lua
+Extras.lua
+Hidden.lua
+HighMountain.lua
+Hunter.lua
+Mage.lua
+Monk.lua
+Orderhall.lua
+Paladin.lua
+Priest.lua
+Professions.lua
+Rogue.lua
+Shaman.lua
+Stormheim.lua
+Suramar.lua
+ValSharah.lua
+Warlock.lua
+Warror.lua

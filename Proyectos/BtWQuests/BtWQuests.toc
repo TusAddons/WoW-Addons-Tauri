@@ -1,0 +1,12 @@
+## Interface: 70300
+## Title: BtWQuests
+## Version: 2.1-tauri
+## Author: Breen
+## SavedVariables: BtWQuests_Characters
+## SavedVariablesPerCharacter: BtWQuests_Settings
+
+Defines.lua
+Localization.lua
+BtWQuests.lua
+BtWQuests.xml
+Compat.lua
