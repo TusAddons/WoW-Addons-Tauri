@@ -23,8 +23,8 @@ jobs:
           for proj in */; do
             proj_name=$(basename "$proj")
             cd "$proj"
-            # Comprimimos solo las carpetas de datos (ignoramos changelog.md y archivos extra)
-            zip -r "../../release_assets/${proj_name}.zip" */
+            # Compress all addon files (lua, toc, xml, tga, md, etc.)
+            zip -r "../../release_assets/${proj_name}.zip" . -x "changelog.md"
             cd ..
           done
           
