@@ -328,6 +328,7 @@ local function GetRaidLootDataJSON()
     
     -- Seleccionar Tier 7 (Legion en 7.3.5)
     EJ_SelectTier(7)
+    EJ_SetLootFilter(0, 0) -- Forzar exportación de TODAS las clases
     
     local raidIndex = 1
     while true do
@@ -397,6 +398,82 @@ local function GetRaidLootDataJSON()
         raidIndex = raidIndex + 1
     end
     return "{\n  \"raidLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}"
+end
+
+local function GetDungeonLootDataJSON()
+    local results = {}
+    
+    EJ_SelectTier(7)
+    EJ_SetLootFilter(0, 0) -- Forzar exportación de TODAS las clases
+    
+    local dungeonIndex = 1
+    while true do
+        local instanceID, instanceName = EJ_GetInstanceByIndex(dungeonIndex, false) -- false = mazmorra
+        if not instanceID then break end
+        
+        EJ_SelectInstance(instanceID)
+        local i = 1
+        while true do
+            local bossName, description, bossID = EJ_GetEncounterInfoByIndex(i)
+            if not bossName then break end
+            
+            EJ_SelectEncounter(bossID)
+            
+            local diffs = { {1, "Normal"}, {2, "Heroico"}, {23, "Mítico"} }
+            
+            for _, diff in ipairs(diffs) do
+                EJ_SetDifficulty(diff[1])
+                local numLoot = EJ_GetNumLoot()
+                for j = 1, numLoot do
+                    local vals = { EJ_GetLootInfoByIndex(j) }
+                    local itemID = 0
+                    local itemLink = nil
+                    local backupName = ""
+                    local backupSlot = ""
+                    
+                    for _, v in ipairs(vals) do
+                        if type(v) == "string" then
+                            if string.find(v, "Hitem:") then
+                                itemLink = v
+                            elseif string.find(v, "Interface") then
+                                -- ignorar icono
+                            elseif v == "Tela" or v == "Placas" or v == "Malla" or v == "Cuero" or v == "Reliquia" or v == "Cloth" or v == "Plate" or v == "Mail" or v == "Leather" or v == "Relic" then
+                                -- ignorar armorType
+                            elseif string.len(v) > 2 then
+                                if backupName == "" then
+                                    backupName = v
+                                else
+                                    backupSlot = v
+                                end
+                            end
+                        end
+                    end
+                    
+                    if itemLink then
+                        local foundID = string.match(itemLink, "item:(%d+)")
+                        if foundID then itemID = tonumber(foundID) end
+                    end
+                    
+                    local query = itemLink or itemID
+                    if query and query ~= 0 then
+                        local itemName, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(query)
+                        if not itemName then itemName = backupName end
+                        if not itemEquipLoc then itemEquipLoc = backupSlot end
+                        
+                        if itemName and itemName ~= "" then
+                            results[#results+1] = string.format(
+                                '    {"dungeon": "%s", "boss": "%s", "difficulty": "%s", "itemName": "%s", "itemID": %d, "slot": "%s"}',
+                                EscapeJSON(instanceName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(itemEquipLoc or "")
+                            )
+                        end
+                    end
+                end
+            end
+            i = i + 1
+        end
+        dungeonIndex = dungeonIndex + 1
+    end
+    return "{\n  \"dungeonLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}"
 end
 
 local function GenerateExport()
@@ -1005,6 +1082,19 @@ SlashCmdList["LOBOEXPORTER"] = function(msg)
             EditBox:SetFocus()
             EditBox:HighlightText()
             print("|cffFF7D0A[LoboExporter]|r Exportación de Raid BiS Lista (" .. string.len(json) .. " caracteres). Pulsa |cff00FF00CTRL + C|r.")
+        end)
+        return
+    end
+    if msg == "dungeonloot" then
+        if not UIFrame:IsShown() then UIFrame:Show() end
+        EditBox:SetText("Extrayendo objetos de las mazmorras de Legion... (Esto puede tardar unos segundos)")
+        
+        C_Timer.After(0.5, function()
+            local json = GetDungeonLootDataJSON()
+            EditBox:SetText(json)
+            EditBox:SetFocus()
+            EditBox:HighlightText()
+            print("|cffFF7D0A[LoboExporter]|r Exportación de Dungeon BiS Lista (" .. string.len(json) .. " caracteres). Pulsa |cff00FF00CTRL + C|r.")
         end)
         return
     end
