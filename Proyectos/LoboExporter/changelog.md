@@ -1,3 +1,7 @@
+## [v2.0.7] - 2026-08-02
+### Arreglado
+- Parcheado un problema por el cual el `itemID` que se guardaba en el archivo podía ser la ID del encuentro/jefe (ej: 252172) en lugar de la ID real del objeto (ej: 147756). Ahora el sistema de extracción utiliza el enlace interno del objeto (link) como fuente de máxima prioridad y fiabilidad para extraer su ID correcta.
+
 ## [v2.0.6] - 2026-08-02
 ### Arreglado
 - Parcheado un error provocado por la API nativa de WoW 7.3.5 al leer el botín, la cual devolvía el `itemID` disfrazado de nombre. Esto provocaba que algunos abalorios y reliquias extraños tuvieran de nombre su ID (ej. `139325`) y el `slot` estuviese ocupado erróneamente por el nombre real (`Apéndices espontáneos`). La lógica de lectura ha sido reconstruida de manera 100% robusta contra los caprichos del cliente antiguo de WoW.

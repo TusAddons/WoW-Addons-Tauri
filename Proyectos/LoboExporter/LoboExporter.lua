@@ -408,7 +408,7 @@ local function ExportRaidLootAsync(progressCallback, callback)
                                 end
                             end
                             
-                            if itemLink and itemID == 0 then
+                            if itemLink then
                                 local foundID = string.match(itemLink, "item:(%d+)")
                                 if foundID then itemID = tonumber(foundID) end
                             end
@@ -494,14 +494,13 @@ local function ExportDungeonLootAsync(progressCallback, callback)
                     if origClass and origClass > 0 then
                         EJ_SetLootFilter(origClass, 0) -- Todas las especializaciones de la clase actual
                     end
-                    
-                    local numLoot = EJ_GetNumLoot()
+                        local numLoot = EJ_GetNumLoot()
                         for j = 1, numLoot do
                             local vals = { EJ_GetLootInfoByIndex(j) }
                             local itemID = 0
                             local itemLink = nil
-                            local backupName = ""
-                            local backupSlot = ""
+                            local infoName = nil
+                            local infoSlot = nil
                             
                             for _, v in ipairs(vals) do
                                 if type(v) == "string" then
@@ -511,9 +510,11 @@ local function ExportDungeonLootAsync(progressCallback, callback)
                                         -- ignorar icono
                                     elseif v == "Tela" or v == "Placas" or v == "Malla" or v == "Cuero" or v == "Reliquia" or v == "Cloth" or v == "Plate" or v == "Mail" or v == "Leather" or v == "Relic" then
                                         -- ignorar armorType
-                                    elseif string.len(v) > 2 then
-                                        if backupName == "" then backupName = v else backupSlot = v end
+                                    elseif string.len(v) > 2 and string.match(v, "[%a%s]+") then
+                                        if not infoName then infoName = v else infoSlot = v end
                                     end
+                                elseif type(v) == "number" and v > 1000 then
+                                    itemID = v
                                 end
                             end
                             
@@ -524,15 +525,22 @@ local function ExportDungeonLootAsync(progressCallback, callback)
                             
                             local query = itemLink or itemID
                             if query and query ~= 0 and not seenItems[itemID] then
-                                local itemName, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(query)
-                                if not itemName then itemName = backupName end
-                                if not itemEquipLoc then itemEquipLoc = backupSlot end
+                                local itemName, _, _, _, _, _, itemSubType, _, itemEquipLoc = GetItemInfo(query)
+                                if not itemName or itemName == "" then itemName = infoName end
+                                
+                                local finalSlot = itemEquipLoc
+                                if not finalSlot or finalSlot == "" then
+                                    finalSlot = infoSlot
+                                end
+                                if not finalSlot or finalSlot == "" then
+                                    finalSlot = itemSubType
+                                end
                                 
                                 if itemName and itemName ~= "" then
                                     seenItems[itemID] = true
                                     results[#results+1] = string.format(
                                         '    {"dungeon": "%s", "boss": "%s", "difficulty": "%s", "itemName": "%s", "itemID": %d, "slot": "%s"}',
-                                        EscapeJSON(instanceName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(itemEquipLoc or "")
+                                        EscapeJSON(dungeonName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(finalSlot or "")
                                     )
                                 end
                             end
