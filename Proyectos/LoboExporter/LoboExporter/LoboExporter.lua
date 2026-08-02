@@ -825,7 +825,7 @@ end
 -- INTERFAZ GRÁFICA (UI)
 -- ==========================================================
 local UIFrame = CreateFrame("Frame", "LoboExporterFrame", UIParent)
-UIFrame:SetSize(640, 640)
+UIFrame:SetSize(640, 680)
 UIFrame:SetPoint("CENTER")
 UIFrame:SetBackdrop({
     bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
@@ -915,9 +915,24 @@ ExportDungeonBtn:SetSize(200, 30)
 ExportDungeonBtn:SetPoint("LEFT", ExportRaidBtn, "RIGHT", 10, 0)
 ExportDungeonBtn:SetText("🏰 Exportar Botín de Mazmorras")
 
+local BikiniBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
+BikiniBtn:SetSize(200, 30)
+BikiniBtn:SetPoint("LEFT", ExportDungeonBtn, "RIGHT", 10, 0)
+BikiniBtn:SetText("👙 Exportar Bikini Plate")
+
+local ProgresoBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
+ProgresoBtn:SetSize(210, 30)
+ProgresoBtn:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -175)
+ProgresoBtn:SetText("📊 Mostrar Progreso (Chat)")
+
+local DebugBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
+DebugBtn:SetSize(200, 30)
+DebugBtn:SetPoint("LEFT", ProgresoBtn, "RIGHT", 10, 0)
+DebugBtn:SetText("⚙️ Info Mapa (Debug)")
+
 -- Caja de Texto Scrollable
 local ScrollFrame = CreateFrame("ScrollFrame", "LoboExporterScrollFrame", UIFrame, "UIPanelScrollFrameTemplate")
-ScrollFrame:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -220)
+ScrollFrame:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -255)
 ScrollFrame:SetPoint("BOTTOMRIGHT", UIFrame, "BOTTOMRIGHT", -45, 25)
 
 local ScrollBG = CreateFrame("Frame", nil, UIFrame)
@@ -942,7 +957,7 @@ ScrollFrame:SetScrollChild(EditBox)
 
 -- Create Search Label
 local SearchLabel = UIFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-SearchLabel:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -183)
+SearchLabel:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -218)
 SearchLabel:SetText("Buscar Logro o Ítem:")
 
 -- Create Search EditBox
@@ -1062,6 +1077,30 @@ ExportDungeonBtn:SetScript("OnClick", function()
         EditBox:SetFocus()
         print("|cffFF7D0A[LoboExporter]|r Exportación de Dungeon BiS guardada en LoboExporterDB. ¡Pon /reload en el chat para guardar a disco!")
     end)
+end)
+
+BikiniBtn:SetScript("OnClick", function()
+    EditBox:SetText("Consultando la base de datos de Blizzard... (Forzando caché de objetos, espera 1.5s)")
+    for _, ids in pairs(BIKINI_PLATES_IDS) do
+        for _, itemID in ipairs(ids) do
+            GetItemInfo(itemID)
+        end
+    end
+    C_Timer.After(1.5, function()
+        local result = GetBikiniDataJSON()
+        EditBox:SetText(result)
+        EditBox:SetFocus()
+        EditBox:HighlightText()
+        print("|cffFF7D0A[LoboExporter]|r Datos de transfiguración (Bikini Plate) listos para copiar.")
+    end)
+end)
+
+ProgresoBtn:SetScript("OnClick", function()
+    SlashCmdList["LOBOEXPORTER"]("progreso")
+end)
+
+DebugBtn:SetScript("OnClick", function()
+    SlashCmdList["LOBOEXPORTER"]("debug")
 end)
 
 -- Carga inicial del estado
