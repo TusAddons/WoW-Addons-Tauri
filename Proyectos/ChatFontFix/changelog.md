@@ -1,3 +1,7 @@
+## [v1.1.0] - 2026-08-02
+### Arreglado
+- Parcheado un bug crítico por el cual el addon traducía y romanizaba correctamente el texto del mensaje, pero ignoraba por completo el **nombre del autor** del mensaje (el sender). Ahora los nombres de jugadores en chino, cirílico o coreano también aparecerán con su correspondiente etiqueta o transliteración.
+
 
 ## Recuperado del Historial de Discord
 💬 NUEVA ACTUALIZACIÓN: CHATFONTFIX v3 (Edición Anti-Muteos) 💬
