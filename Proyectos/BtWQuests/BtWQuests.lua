@@ -377,6 +377,10 @@ local function BtWQuests_EvalRequirement(requirement, item, one)
         end
     elseif type(requirement) == "function" then
         return requirement(item)
+    elseif type(requirement) == "number" then
+        return requirement ~= 0
+    elseif type(requirement) == "string" then
+        return requirement ~= ""
     end
     
     assert(requirement == nil, "Invalid requirement type " .. type(requirement))
@@ -1232,6 +1236,32 @@ function BtWQuests_EvalChainItem(item)
         local completed = UnitLevel("player") >= item.level
         
         status = completed and "complete" or "active"
+    elseif item.type == "npc" or item.type == "kill" then
+        local npc = BtWQuests_NPCs and BtWQuests_NPCs[item.id or item.ids[1]] or {}
+        name = name or npc.name or ("NPC #" .. tostring(item.id or item.ids[1]))
+        active = active == nil and true or active
+        completed = completed == nil and false or completed
+        breadcrumb = true
+        
+        onClick = onClick or function (self)
+            if not ChatEdit_TryInsertChatLink(self.userdata.link) then
+                BtWQuestsTooltip:Hide()
+            end
+        end
+        userdata.link = format("\124cffffff00\124Hbtwquests:npc:%d\124h[%s]\124h\124r", tonumber(item.id or item.ids[1]), name)
+    elseif item.type == "object" then
+        local obj = BtWQuests_Objects and BtWQuests_Objects[item.id or item.ids[1]] or {}
+        name = name or obj.name or ("Object #" .. tostring(item.id or item.ids[1]))
+        active = active == nil and true or active
+        completed = completed == nil and false or completed
+        breadcrumb = true
+        
+        onClick = onClick or function (self)
+            if not ChatEdit_TryInsertChatLink(self.userdata.link) then
+                BtWQuestsTooltip:Hide()
+            end
+        end
+        userdata.link = format("\124cffffff00\124Hbtwquests:object:%d\124h[%s]\124h\124r", tonumber(item.id or item.ids[1]), name)
     elseif item.type ~= nil then
         assert(false, "Invalid item type: " .. tostring(item.type))
     end
