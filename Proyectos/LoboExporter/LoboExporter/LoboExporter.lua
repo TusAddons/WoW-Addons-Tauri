@@ -1100,10 +1100,11 @@ SlashCmdList["LOBOEXPORTER"] = function(msg)
         EditBox:SetText("Extrayendo objetos de las bandas de Legion... (Esto puede tardar unos segundos, el juego no se congelará)")
         
         ExportRaidLootAsync(function(json)
-            EditBox:SetText(json)
+            if not LoboExporterDB then LoboExporterDB = {} end
+            LoboExporterDB.RaidLoot = json
+            EditBox:SetText("¡Completado! La lista es demasiado grande (" .. string.len(json) .. " caracteres) para mostrarse aquí.\n\nSe ha guardado automáticamente en la base de datos del AddOn.\n\nSimplemente pon /reload en el chat para que el juego lo guarde en el disco (WTF).")
             EditBox:SetFocus()
-            EditBox:HighlightText()
-            print("|cffFF7D0A[LoboExporter]|r Exportación de Raid BiS Lista (" .. string.len(json) .. " caracteres). Pulsa |cff00FF00CTRL + C|r.")
+            print("|cffFF7D0A[LoboExporter]|r Exportación de Raid BiS guardada en LoboExporterDB. ¡Pon /reload en el chat para guardar a disco!")
         end)
         return
     end
@@ -1112,10 +1113,11 @@ SlashCmdList["LOBOEXPORTER"] = function(msg)
         EditBox:SetText("Extrayendo objetos de las mazmorras de Legion... (Esto puede tardar unos segundos, el juego no se congelará)")
         
         ExportDungeonLootAsync(function(json)
-            EditBox:SetText(json)
+            if not LoboExporterDB then LoboExporterDB = {} end
+            LoboExporterDB.DungeonLoot = json
+            EditBox:SetText("¡Completado! La lista es demasiado grande (" .. string.len(json) .. " caracteres) para mostrarse aquí.\n\nSe ha guardado automáticamente en la base de datos del AddOn.\n\nSimplemente pon /reload en el chat para que el juego lo guarde en el disco (WTF).")
             EditBox:SetFocus()
-            EditBox:HighlightText()
-            print("|cffFF7D0A[LoboExporter]|r Exportación de Dungeon BiS Lista (" .. string.len(json) .. " caracteres). Pulsa |cff00FF00CTRL + C|r.")
+            print("|cffFF7D0A[LoboExporter]|r Exportación de Dungeon BiS guardada en LoboExporterDB. ¡Pon /reload en el chat para guardar a disco!")
         end)
         return
     end
