@@ -6,7 +6,7 @@ local WorldBossTracker = WorldBossTracker or {}
 -------------------------------------------------
 -- CONFIG
 -------------------------------------------------
-local SYNC_PREFIX          = "WorldBossTracker"
+local SYNC_PREFIX          = "TanaanTracker"
 local GLOBAL_CHANNEL_NAME  = "global"      
 local COOLDOWN_SECONDS     = 3600          -- 1 hour between probes
 local DISCOVERY_WINDOW     = 5.0           

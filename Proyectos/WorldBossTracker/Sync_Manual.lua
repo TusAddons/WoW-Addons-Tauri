@@ -7,7 +7,7 @@ WorldBossTracker = WorldBossTracker or {}
 -------------------------------------------------
 -- CONFIG
 -------------------------------------------------
-local SYNC_PREFIX = "WorldBossTracker"
+local SYNC_PREFIX = "TanaanTracker"
 local SYNC_REPLY_INTERVAL = 0.20
 local SYNC_THROTTLE = 3
 local lastManualSent = {}
