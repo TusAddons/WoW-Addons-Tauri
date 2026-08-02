@@ -825,7 +825,7 @@ end
 -- INTERFAZ GRÁFICA (UI)
 -- ==========================================================
 local UIFrame = CreateFrame("Frame", "LoboExporterFrame", UIParent)
-UIFrame:SetSize(640, 600)
+UIFrame:SetSize(640, 640)
 UIFrame:SetPoint("CENTER")
 UIFrame:SetBackdrop({
     bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
@@ -905,9 +905,19 @@ CopyAllBtn:SetSize(200, 30)
 CopyAllBtn:SetPoint("LEFT", GenerateBtn, "RIGHT", 10, 0)
 CopyAllBtn:SetText("📋 Seleccionar Todo (CTRL+C)")
 
+local ExportRaidBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
+ExportRaidBtn:SetSize(210, 30)
+ExportRaidBtn:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -140)
+ExportRaidBtn:SetText("⚔️ Exportar Botín de Bandas")
+
+local ExportDungeonBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
+ExportDungeonBtn:SetSize(200, 30)
+ExportDungeonBtn:SetPoint("LEFT", ExportRaidBtn, "RIGHT", 10, 0)
+ExportDungeonBtn:SetText("🏰 Exportar Botín de Mazmorras")
+
 -- Caja de Texto Scrollable
 local ScrollFrame = CreateFrame("ScrollFrame", "LoboExporterScrollFrame", UIFrame, "UIPanelScrollFrameTemplate")
-ScrollFrame:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -185)
+ScrollFrame:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -220)
 ScrollFrame:SetPoint("BOTTOMRIGHT", UIFrame, "BOTTOMRIGHT", -45, 25)
 
 local ScrollBG = CreateFrame("Frame", nil, UIFrame)
@@ -932,8 +942,8 @@ ScrollFrame:SetScrollChild(EditBox)
 
 -- Create Search Label
 local SearchLabel = UIFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-SearchLabel:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -148)
-SearchLabel:SetText("Buscar Logro:")
+SearchLabel:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -183)
+SearchLabel:SetText("Buscar Logro o Ítem:")
 
 -- Create Search EditBox
 local SearchEditBox = CreateFrame("EditBox", "LoboExporterSearchEditBox", UIFrame, "InputBoxTemplate")
@@ -1030,6 +1040,28 @@ CopyAllBtn:SetScript("OnClick", function()
     EditBox:SetFocus()
     EditBox:HighlightText()
     print("|cffFF7D0A[LoboExporter]|r Texto seleccionado. Pulsa |cff00FF00CTRL + C|r para copiar en tu portapapeles.")
+end)
+
+ExportRaidBtn:SetScript("OnClick", function()
+    EditBox:SetText("Extrayendo objetos de las bandas de Legion... (Esto puede tardar unos segundos, el juego no se congelará)")
+    ExportRaidLootAsync(function(json)
+        if not LoboExporterDB then LoboExporterDB = {} end
+        LoboExporterDB.RaidLoot = json
+        EditBox:SetText("¡Completado! La lista es demasiado grande (" .. string.len(json) .. " caracteres) para mostrarse aquí.\n\nSe ha guardado automáticamente en la base de datos del AddOn.\n\nSimplemente pon /reload en el chat para que el juego lo guarde en el disco (WTF).")
+        EditBox:SetFocus()
+        print("|cffFF7D0A[LoboExporter]|r Exportación de Raid BiS guardada en LoboExporterDB. ¡Pon /reload en el chat para guardar a disco!")
+    end)
+end)
+
+ExportDungeonBtn:SetScript("OnClick", function()
+    EditBox:SetText("Extrayendo objetos de las mazmorras de Legion... (Esto puede tardar unos segundos, el juego no se congelará)")
+    ExportDungeonLootAsync(function(json)
+        if not LoboExporterDB then LoboExporterDB = {} end
+        LoboExporterDB.DungeonLoot = json
+        EditBox:SetText("¡Completado! La lista es demasiado grande (" .. string.len(json) .. " caracteres) para mostrarse aquí.\n\nSe ha guardado automáticamente en la base de datos del AddOn.\n\nSimplemente pon /reload en el chat para que el juego lo guarde en el disco (WTF).")
+        EditBox:SetFocus()
+        print("|cffFF7D0A[LoboExporter]|r Exportación de Dungeon BiS guardada en LoboExporterDB. ¡Pon /reload en el chat para guardar a disco!")
+    end)
 end)
 
 -- Carga inicial del estado
