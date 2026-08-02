@@ -612,19 +612,18 @@ local activeTab = 1
 
 local function SelectTab(id)
     activeTab = id
+    PanelTemplates_SetTab(UIFrame, id)
     for i = 1, #tabs do
         if i == id then
-            PanelTemplates_SelectTab(tabs[i])
             panels[i]:Show()
         else
-            PanelTemplates_DeselectTab(tabs[i])
             panels[i]:Hide()
         end
     end
 end
 
 local function CreateTab(id, name, xOffset)
-    local tab = CreateFrame("Button", "LoboExporterTab"..id, UIFrame, "CharacterFrameTabButtonTemplate")
+    local tab = CreateFrame("Button", "LoboExporterFrameTab"..id, UIFrame, "CharacterFrameTabButtonTemplate")
     tab:SetID(id)
     tab:SetText(name)
     if id == 1 then
@@ -782,8 +781,18 @@ ExportDungeonBtn:SetSize(280, 40)
 ExportDungeonBtn:SetPoint("TOPRIGHT", PanelLoot, "TOPRIGHT", -30, -20)
 ExportDungeonBtn:SetText("🏰 Extraer Botín de MAZMORRAS")
 
+local ExportRaidCopyBtn = CreateFrame("Button", nil, PanelLoot, "UIPanelButtonTemplate")
+ExportRaidCopyBtn:SetSize(280, 30)
+ExportRaidCopyBtn:SetPoint("TOPLEFT", PanelLoot, "TOPLEFT", 30, -65)
+ExportRaidCopyBtn:SetText("📋 Generar Texto de BANDAS para Copiar")
+
+local ExportDungeonCopyBtn = CreateFrame("Button", nil, PanelLoot, "UIPanelButtonTemplate")
+ExportDungeonCopyBtn:SetSize(280, 30)
+ExportDungeonCopyBtn:SetPoint("TOPRIGHT", PanelLoot, "TOPRIGHT", -30, -65)
+ExportDungeonCopyBtn:SetText("📋 Generar Texto de MAZMORRAS para Copiar")
+
 local DbDesc = PanelLoot:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-DbDesc:SetPoint("TOP", PanelLoot, "TOP", 0, -90)
+DbDesc:SetPoint("TOP", PanelLoot, "TOP", 0, -110)
 DbDesc:SetText("Las extracciones recorrerán todas las instancias, jefes, dificultades\ny las 12 clases para garantizar que no se pierda ningún objeto.\nPuede tardar unos 10-15 segundos. El juego NO se congelará.")
 
 local function OnProgress(processed, total)
@@ -793,9 +802,22 @@ local function OnProgress(processed, total)
     ProgressBar.text:SetText(string.format("Progreso: %d/%d Jefes (%d%%)", processed, total, pct))
 end
 
+local function SetButtonsEnabled(enabled)
+    if enabled then
+        ExportRaidBtn:Enable()
+        ExportDungeonBtn:Enable()
+        ExportRaidCopyBtn:Enable()
+        ExportDungeonCopyBtn:Enable()
+    else
+        ExportRaidBtn:Disable()
+        ExportDungeonBtn:Disable()
+        ExportRaidCopyBtn:Disable()
+        ExportDungeonCopyBtn:Disable()
+    end
+end
+
 ExportRaidBtn:SetScript("OnClick", function()
-    ExportRaidBtn:Disable()
-    ExportDungeonBtn:Disable()
+    SetButtonsEnabled(false)
     EditBox:SetText("Iniciando extracción de bandas... (Revisando clases 1-12 por cada jefe)")
     ProgressBar:SetMinMaxValues(0, 100)
     ProgressBar:SetValue(0)
@@ -811,16 +833,14 @@ ExportRaidBtn:SetScript("OnClick", function()
         UpdateStatusUI()
         
         ProgressBar:Hide()
-        ExportRaidBtn:Enable()
-        ExportDungeonBtn:Enable()
+        SetButtonsEnabled(true)
         EditBox:SetText("¡Completado! ("..count.." objetos)\n\nLa base de datos se ha guardado en la memoria de LoboExporter.\n\nRecuerda escribir /reload en el chat para guardarlo al disco (WTF).")
         print("|cffFF7D0A[LoboExporter]|r Botín de Bandas exportado con éxito.")
     end)
 end)
 
 ExportDungeonBtn:SetScript("OnClick", function()
-    ExportRaidBtn:Disable()
-    ExportDungeonBtn:Disable()
+    SetButtonsEnabled(false)
     EditBox:SetText("Iniciando extracción de mazmorras... (Revisando clases 1-12 por cada jefe)")
     ProgressBar:SetMinMaxValues(0, 100)
     ProgressBar:SetValue(0)
@@ -836,10 +856,45 @@ ExportDungeonBtn:SetScript("OnClick", function()
         UpdateStatusUI()
         
         ProgressBar:Hide()
-        ExportRaidBtn:Enable()
-        ExportDungeonBtn:Enable()
+        SetButtonsEnabled(true)
         EditBox:SetText("¡Completado! ("..count.." objetos)\n\nLa base de datos se ha guardado en la memoria de LoboExporter.\n\nRecuerda escribir /reload en el chat para guardarlo al disco (WTF).")
         print("|cffFF7D0A[LoboExporter]|r Botín de Mazmorras exportado con éxito.")
+    end)
+end)
+
+ExportRaidCopyBtn:SetScript("OnClick", function()
+    SetButtonsEnabled(false)
+    EditBox:SetText("Iniciando extracción de bandas para copiar...")
+    ProgressBar:SetMinMaxValues(0, 100)
+    ProgressBar:SetValue(0)
+    ProgressBar.text:SetText("Progreso: 0%")
+    ProgressBar:Show()
+    
+    ExportRaidLootAsync(OnProgress, function(json, count)
+        ProgressBar:Hide()
+        SetButtonsEnabled(true)
+        EditBox:SetText(json)
+        EditBox:SetFocus()
+        EditBox:HighlightText()
+        print("|cffFF7D0A[LoboExporter]|r Texto generado, listo para CTRL+C.")
+    end)
+end)
+
+ExportDungeonCopyBtn:SetScript("OnClick", function()
+    SetButtonsEnabled(false)
+    EditBox:SetText("Iniciando extracción de mazmorras para copiar...")
+    ProgressBar:SetMinMaxValues(0, 100)
+    ProgressBar:SetValue(0)
+    ProgressBar.text:SetText("Progreso: 0%")
+    ProgressBar:Show()
+    
+    ExportDungeonLootAsync(OnProgress, function(json, count)
+        ProgressBar:Hide()
+        SetButtonsEnabled(true)
+        EditBox:SetText(json)
+        EditBox:SetFocus()
+        EditBox:HighlightText()
+        print("|cffFF7D0A[LoboExporter]|r Texto generado, listo para CTRL+C.")
     end)
 end)
 

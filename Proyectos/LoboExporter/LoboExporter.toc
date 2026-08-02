@@ -2,7 +2,7 @@
 ## Title: |cffFF7D0ALobo|r Exporter
 ## Author: Artiom97es
 ## Notes: Exportador gráfico universal de datos de tu personaje (Logros, Equipo, Reputación, Monedas) para IA y herramientas.
-## Version: 2.0.1-Artiom97es
+## Version: 2.0.2-Artiom97es
 ## SavedVariables: LoboExporterDB
 
 LoboExporter.lua

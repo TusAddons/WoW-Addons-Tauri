@@ -1,3 +1,8 @@
+## [v2.0.2] - 2026-08-02
+### Añadido
+- Añadidos dos nuevos botones a la pestaña "Bases de Datos (BiS)" ("Generar Texto de BANDAS/MAZMORRAS para Copiar").
+- Estos botones permiten extraer directamente el texto JSON al cuadro de resultados para poder copiarlo (`CTRL+C`) de inmediato sin necesidad de recargar la interfaz y buscar el archivo `.lua` en la carpeta WTF.
+
 ## [v2.0.1] - 2026-08-02
 ### Arreglado
 - Solucionado un error grave que impedía la carga completa del Addon (`attempt to index local 'tab' (a nil value)`) debido a un conflicto de nombres con el sistema nativo de pestañas de la interfaz (PanelTemplates). El addon vuelve a cargar perfectamente al escribir `/lex`.
