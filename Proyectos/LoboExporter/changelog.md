@@ -1,3 +1,10 @@
+## [v2.0.8] - 2026-08-02
+### Añadido
+- Añadida una casilla "Cargar todo (Riesgo crash)" encima de los botones de paginación. Si se activa, desactivará la división del texto en páginas.
+
+### Arreglado
+- Arreglado un problema visual (solapamiento de marcos) que impedía hacer clic en los botones de "Siguiente/Anterior" y "Seleccionar Todo" cuando se desplazaba el texto.
+
 ## [v2.0.7] - 2026-08-02
 ### Arreglado
 - Parcheado un problema por el cual el `itemID` que se guardaba en el archivo podía ser la ID del encuentro/jefe (ej: 252172) en lugar de la ID real del objeto (ej: 147756). Ahora el sistema de extracción utiliza el enlace interno del objeto (link) como fuente de máxima prioridad y fiabilidad para extraer su ID correcta.

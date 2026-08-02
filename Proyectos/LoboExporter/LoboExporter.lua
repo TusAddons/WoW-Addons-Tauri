@@ -709,6 +709,7 @@ local currentPageIdx = 1
 local CopyAllBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
 CopyAllBtn:SetSize(160, 24)
 CopyAllBtn:SetPoint("BOTTOMRIGHT", ScrollFrame, "TOPRIGHT", 0, 5)
+CopyAllBtn:SetFrameLevel(ScrollFrame:GetFrameLevel() + 10)
 CopyAllBtn:SetText("📋 Seleccionar Todo")
 CopyAllBtn:SetScript("OnClick", function()
     EditBox:SetFocus()
@@ -722,12 +723,29 @@ PageText:SetText("Pág. 1/1")
 local NextPageBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
 NextPageBtn:SetSize(30, 24)
 NextPageBtn:SetPoint("RIGHT", PageText, "LEFT", -5, 0)
+NextPageBtn:SetFrameLevel(ScrollFrame:GetFrameLevel() + 10)
 NextPageBtn:SetText(">")
 
 local PrevPageBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
 PrevPageBtn:SetSize(30, 24)
 PrevPageBtn:SetPoint("RIGHT", NextPageBtn, "LEFT", -5, 0)
+PrevPageBtn:SetFrameLevel(ScrollFrame:GetFrameLevel() + 10)
 PrevPageBtn:SetText("<")
+
+local cbDisablePagination = CreateFrame("CheckButton", nil, UIFrame, "UICheckButtonTemplate")
+cbDisablePagination:SetSize(24, 24)
+cbDisablePagination:SetPoint("BOTTOMLEFT", ScrollFrame, "TOPLEFT", -5, 5)
+cbDisablePagination:SetFrameLevel(ScrollFrame:GetFrameLevel() + 10)
+cbDisablePagination.text = cbDisablePagination:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+cbDisablePagination.text:SetPoint("LEFT", cbDisablePagination, "RIGHT", 4, 1)
+cbDisablePagination.text:SetText("Cargar todo (Riesgo crash)")
+cbDisablePagination:SetScript("OnShow", function(self)
+    if LoboExporterDB then self:SetChecked(LoboExporterDB.disablePagination) end
+end)
+cbDisablePagination:SetScript("OnClick", function(self)
+    if not LoboExporterDB then LoboExporterDB = {} end
+    LoboExporterDB.disablePagination = self:GetChecked()
+end)
 
 local function UpdatePaginationUI()
     if #currentPages <= 1 then
@@ -763,7 +781,12 @@ end)
 function LoboExporter_ShowTextPaginated(text)
     currentPages = {}
     currentPageIdx = 1
+    
     local limit = 40000
+    if LoboExporterDB and LoboExporterDB.disablePagination then
+        limit = 99999999
+    end
+    
     if #text <= limit then
         table.insert(currentPages, text)
     else
