@@ -1,0 +1,15 @@
+## Interface: 70300
+## Title: WorldBossTracker
+## Author: Artiom97es
+## Notes: Track World Bosses across Draenor and Legion.
+## Version: 3.0.0
+## SavedVariables: WorldBossTrackerDB
+
+DraenorTracker.lua
+LegionTracker.lua
+Config.lua
+Sync.lua
+Sync_Manual.lua
+TomTomSupport.lua
+UI_Main.lua
+UI_Minimap.lua

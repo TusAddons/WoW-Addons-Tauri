@@ -1,10 +1,10 @@
--- TanaanTracker: Sync.lua
-TanaanTracker = TanaanTracker or {}
+-- WorldBossTracker: Sync.lua
+WorldBossTracker = WorldBossTracker or {}
 
 -------------------------------------------------
 -- CONFIG
 -------------------------------------------------
-local SYNC_PREFIX         = "TanaanTracker"
+local SYNC_PREFIX         = "WorldBossTracker"
 local SYNC_THROTTLE       = 3
 local SYNC_REPLY_INTERVAL = 0.20
 local lastSent = {}
@@ -21,8 +21,8 @@ end
 
 -- debug helper
 local function TTDebug(msg)
-  if TanaanTrackerDB and TanaanTrackerDB.debug then
-    print("|cff66ff66[TanaanTracker]|r " .. tostring(msg))
+  if WorldBossTrackerDB and WorldBossTrackerDB.debug then
+    print("|cff66ff66[WorldBossTracker]|r " .. tostring(msg))
   end
 end
 
@@ -36,22 +36,22 @@ frame:SetScript("OnEvent", function()
 
         -- delay slightly more to ensure other guildies' addons are ready, lag compensation goes brrrr
         C_Timer.After(math.random(5, 10), function()
-            if TanaanTracker.RequestGuildSync and (GetServerTime() - lastSyncTime > 30) then
+            if WorldBossTracker.RequestGuildSync and (GetServerTime() - lastSyncTime > 30) then
                 lastSyncTime = GetServerTime()
 
                 local loginRealm = GetRealmName() or "Unknown Realm"
-                TanaanTracker._syncRealmAtLogin = loginRealm
+                WorldBossTracker._syncRealmAtLogin = loginRealm
 
-                local oldRealmDB = TanaanTracker.RealmDB
-                TanaanTracker.RealmDB = function()
-                    return TanaanTrackerDB.realms[loginRealm]
+                local oldRealmDB = WorldBossTracker.RealmDB
+                WorldBossTracker.RealmDB = function()
+                    return WorldBossTrackerDB.realms[loginRealm]
                 end
 
-                TanaanTracker.RequestGuildSync()
+                WorldBossTracker.RequestGuildSync()
 
                 C_Timer.After(5, function()
-                    TanaanTracker.RealmDB = oldRealmDB
-                    TanaanTracker._syncRealmAtLogin = nil
+                    WorldBossTracker.RealmDB = oldRealmDB
+                    WorldBossTracker._syncRealmAtLogin = nil
                 end)
             end
         end)
@@ -61,15 +61,15 @@ end)
 -------------------------------------------------
 -- RESPOND TO SYNC REQUESTS (now sends ALL realms)
 -------------------------------------------------
-function TanaanTracker.HandleSyncRequest(sender)
+function WorldBossTracker.HandleSyncRequest(sender)
     if not IsInGuild() or sender == UnitName("player") then return end
     if not SendAddonMessage then return end
-    if not TanaanTrackerDB or not TanaanTrackerDB.realms then return end
+    if not WorldBossTrackerDB or not WorldBossTrackerDB.realms then return end
 
     TTDebug(("Guild sync request from %s — sending all realm data..."):format(sender or "?"))
 
     local i = 0
-    for realmName, realmDB in pairs(TanaanTrackerDB.realms) do
+    for realmName, realmDB in pairs(WorldBossTrackerDB.realms) do
         for rareName, t in pairs(realmDB) do
             if type(t) == "number" and rareName then
                 i = i + 1
@@ -84,13 +84,13 @@ function TanaanTracker.HandleSyncRequest(sender)
 end
 
 -- Broadcast my full (multi-realm) dataset to the guild
-function TanaanTracker.BroadcastAllRealms(reason)
+function WorldBossTracker.BroadcastAllRealms(reason)
     if not IsInGuild() or not SendAddonMessage then return end
-    if not TanaanTrackerDB or not TanaanTrackerDB.realms then return end
+    if not WorldBossTrackerDB or not WorldBossTrackerDB.realms then return end
 
     local who = UnitName("player") or "Unknown"
     local i = 0
-    for realmName, realmDB in pairs(TanaanTrackerDB.realms) do
+    for realmName, realmDB in pairs(WorldBossTrackerDB.realms) do
         for rareName, t in pairs(realmDB) do
             if type(t) == "number" then
                 i = i + 1
@@ -102,8 +102,8 @@ function TanaanTracker.BroadcastAllRealms(reason)
         end
     end
 
-    if TanaanTrackerDB.debug and reason == "SELF" then
-        print("|cff66ff66[TanaanTracker]|r Sent my full dataset to guild (login broadcast).")
+    if WorldBossTrackerDB.debug and reason == "SELF" then
+        print("|cff66ff66[WorldBossTracker]|r Sent my full dataset to guild (login broadcast).")
     end
 end
 
@@ -111,7 +111,7 @@ end
 -------------------------------------------------
 -- SEND SYNC (broadcast on kill)
 -------------------------------------------------
-function TanaanTracker.SendGuildSync(rareName, timestamp)
+function WorldBossTracker.SendGuildSync(rareName, timestamp)
     if not rareName or not timestamp then return end
     if not IsInGuild() or not SendAddonMessage then return end
 
@@ -138,7 +138,7 @@ do
         return sender == myName or sender == (myName .. "-" .. myRealm)
     end
 
-    function TanaanTracker.OnAddonMessage(prefix, message, channel, sender)
+    function WorldBossTracker.OnAddonMessage(prefix, message, channel, sender)
         if prefix ~= SYNC_PREFIX then return end
         if not message or message == "" or IsSelf(sender) then return end
 
@@ -148,7 +148,7 @@ do
         if msgType == "REQ" then
             if channel == "GUILD" then
                 local _, reqSender = strsplit("|", message)
-                TanaanTracker.HandleSyncRequest(reqSender)
+                WorldBossTracker.HandleSyncRequest(reqSender)
             end
             return
         end
@@ -161,27 +161,27 @@ do
             -- Format: SYNC|rareName|timestamp|origin|realmName
             local _, rareName, ts, origin, realmName = strsplit("|", message)
             local tnum = tonumber(ts)
-            local rares = TanaanTracker.rares
+            local rares = WorldBossTracker.rares
             local targetRealm = realmName or GetRealmName() or "Unknown"
 
             if rareName and tnum and rares and rares[rareName] then
-                TanaanTrackerDB.realms = TanaanTrackerDB.realms or {}
-                TanaanTrackerDB.realms[targetRealm] = TanaanTrackerDB.realms[targetRealm] or {}
-                local dbTarget = TanaanTrackerDB.realms[targetRealm]
+                WorldBossTrackerDB.realms = WorldBossTrackerDB.realms or {}
+                WorldBossTrackerDB.realms[targetRealm] = WorldBossTrackerDB.realms[targetRealm] or {}
+                local dbTarget = WorldBossTrackerDB.realms[targetRealm]
                 local old = dbTarget[rareName]
 
                 if not old or tnum > old then
                     dbTarget[rareName] = tnum
                     TTDebug(("Updated %s (%s) from %s."):format(rareName, targetRealm, origin or sender))
 
-                    if TanaanTracker.currentRealmView == targetRealm and TanaanTracker.UpdateUI then
-                        TanaanTracker.UpdateUI()
+                    if WorldBossTracker.currentRealmView == targetRealm and WorldBossTracker.UpdateUI then
+                        WorldBossTracker.UpdateUI()
                     end
 
                     -- progress tracker for auto-summaries
-                    if TanaanTracker._syncStartTime then
-                        TanaanTracker._syncGotUpdate = true
-                        TanaanTracker._syncUpdatesCount = (TanaanTracker._syncUpdatesCount or 0) + 1
+                    if WorldBossTracker._syncStartTime then
+                        WorldBossTracker._syncGotUpdate = true
+                        WorldBossTracker._syncUpdatesCount = (WorldBossTracker._syncUpdatesCount or 0) + 1
                     end
                 end
             end
@@ -194,24 +194,24 @@ do
         -------------------------------------------------
         local rareName, ts, origin, realm = strsplit("|", message)
         local tnum = tonumber(ts)
-        local rares = TanaanTracker.rares
+        local rares = WorldBossTracker.rares
 
         if rareName and tnum and rares and rares[rareName] then
             local targetRealm = realm or GetRealmName() or "Unknown"
-            TanaanTrackerDB.realms = TanaanTrackerDB.realms or {}
-            TanaanTrackerDB.realms[targetRealm] = TanaanTrackerDB.realms[targetRealm] or {}
-            local dbTarget = TanaanTrackerDB.realms[targetRealm]
+            WorldBossTrackerDB.realms = WorldBossTrackerDB.realms or {}
+            WorldBossTrackerDB.realms[targetRealm] = WorldBossTrackerDB.realms[targetRealm] or {}
+            local dbTarget = WorldBossTrackerDB.realms[targetRealm]
             local myTs = dbTarget[rareName]
 
             if not myTs or tnum > myTs then
                 dbTarget[rareName] = tnum
                 TTDebug(("Updated %s (%s) from %s."):format(rareName, targetRealm, origin or sender))
-                if TanaanTracker.currentRealmView == targetRealm and TanaanTracker.UpdateUI then
-                    TanaanTracker.UpdateUI()
+                if WorldBossTracker.currentRealmView == targetRealm and WorldBossTracker.UpdateUI then
+                    WorldBossTracker.UpdateUI()
                 end
-                if TanaanTracker._syncStartTime then
-                    TanaanTracker._syncGotUpdate = true
-                    TanaanTracker._syncUpdatesCount = (TanaanTracker._syncUpdatesCount or 0) + 1
+                if WorldBossTracker._syncStartTime then
+                    WorldBossTracker._syncGotUpdate = true
+                    WorldBossTracker._syncUpdatesCount = (WorldBossTracker._syncUpdatesCount or 0) + 1
                 end
 
             elseif myTs and myTs > (tnum + 5) and channel == "GUILD" then
@@ -231,7 +231,7 @@ end
 -------------------------------------------------
 -- REQUEST GUILD SYNC
 -------------------------------------------------
-function TanaanTracker.RequestGuildSync()
+function WorldBossTracker.RequestGuildSync()
     if not IsInGuild() or not SendAddonMessage then return end
     local who = UnitName("player") or "Unknown"
 
@@ -240,29 +240,29 @@ function TanaanTracker.RequestGuildSync()
     TTDebug("Requesting guild sync...")
 
     -- Track whether we received any updates within 5 seconds
-    TanaanTracker._syncStartTime = GetTime()
-    TanaanTracker._syncGotUpdate = false
-    TanaanTracker._syncUpdatesCount = 0
+    WorldBossTracker._syncStartTime = GetTime()
+    WorldBossTracker._syncGotUpdate = false
+    WorldBossTracker._syncUpdatesCount = 0
 
     -- After 5 seconds, summarize sync result
     C_Timer.After(5, function()
-        if TanaanTracker._syncGotUpdate then
-            print(string.format("|cff66ff66[TanaanTracker]|r %d timer%s updated from guild.",
-                TanaanTracker._syncUpdatesCount,
-                TanaanTracker._syncUpdatesCount == 1 and "" or "s"))
+        if WorldBossTracker._syncGotUpdate then
+            print(string.format("|cff66ff66[WorldBossTracker]|r %d timer%s updated from guild.",
+                WorldBossTracker._syncUpdatesCount,
+                WorldBossTracker._syncUpdatesCount == 1 and "" or "s"))
         else
-            print("|cff66ff66[TanaanTracker]|r timers up to date!")
+            print("|cff66ff66[WorldBossTracker]|r timers up to date!")
         end
-        TanaanTracker._syncStartTime = nil
-        TanaanTracker._syncGotUpdate = nil
-        TanaanTracker._syncUpdatesCount = nil
+        WorldBossTracker._syncStartTime = nil
+        WorldBossTracker._syncGotUpdate = nil
+        WorldBossTracker._syncUpdatesCount = nil
     end)
 
     -- Also send my data so guildies with empty DB get populated immediately
     -- (small delay lets other clients finish prefix/event init)
     C_Timer.After(1.0 + math.random(), function()
-        if TanaanTracker.BroadcastAllRealms then
-            TanaanTracker.BroadcastAllRealms("SELF")
+        if WorldBossTracker.BroadcastAllRealms then
+            WorldBossTracker.BroadcastAllRealms("SELF")
         end
     end)
 end

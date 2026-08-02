@@ -1,41 +1,41 @@
--- TanaanTracker: Core.lua
+-- WorldBossTracker: Core.lua
 local ADDON_NAME = ...
-TanaanTracker = TanaanTracker or {}
-TanaanTrackerDB = TanaanTrackerDB or {}
-TanaanTrackerCharDB = TanaanTrackerCharDB or {}
+WorldBossTracker = WorldBossTracker or {}
+WorldBossTrackerDB = WorldBossTrackerDB or {}
+WorldBossTrackerCharDB = WorldBossTrackerCharDB or {}
 
 -------------------------------------------------------------
 -- Realm-based data separation (per-realm SavedVariables)
 -------------------------------------------------------------
 local currentRealm = GetRealmName() or "Unknown"
-TanaanTracker.activeRealm = GetRealmName() or "Unknown"
+WorldBossTracker.activeRealm = GetRealmName() or "Unknown"
 
 -- Ensure top-level SavedVariables exist
-if type(TanaanTrackerDB) ~= "table" then TanaanTrackerDB = {} end
-if type(TanaanTrackerDB.realms) ~= "table" then TanaanTrackerDB.realms = {} end
+if type(WorldBossTrackerDB) ~= "table" then WorldBossTrackerDB = {} end
+if type(WorldBossTrackerDB.realms) ~= "table" then WorldBossTrackerDB.realms = {} end
 
 -- Ensure this realm’s subtable exists (never overwrite existing data)
-if type(TanaanTrackerDB.realms[currentRealm]) ~= "table" then
-    TanaanTrackerDB.realms[currentRealm] = {}
+if type(WorldBossTrackerDB.realms[currentRealm]) ~= "table" then
+    WorldBossTrackerDB.realms[currentRealm] = {}
 end
 
 -- always resolve the live realm table (lag / odd load order proof)
-function TanaanTracker:RealmDB()
-    local realm = TanaanTracker.activeRealm or GetRealmName() or "Unknown"
-    if type(TanaanTrackerDB.realms) ~= "table" then
-        TanaanTrackerDB.realms = {}
+function WorldBossTracker:RealmDB()
+    local realm = WorldBossTracker.activeRealm or GetRealmName() or "Unknown"
+    if type(WorldBossTrackerDB.realms) ~= "table" then
+        WorldBossTrackerDB.realms = {}
     end
-    if type(TanaanTrackerDB.realms[realm]) ~= "table" then
-        TanaanTrackerDB.realms[realm] = {}
+    if type(WorldBossTrackerDB.realms[realm]) ~= "table" then
+        WorldBossTrackerDB.realms[realm] = {}
     end
-    return TanaanTrackerDB.realms[realm]
+    return WorldBossTrackerDB.realms[realm]
 end
 
 -- Returns whichever realm the user is viewing in the dropdown
-function TanaanTracker:ViewedRealmDB()
-    local realm = TanaanTracker.currentRealmView or TanaanTracker.activeRealm or GetRealmName() or "Unknown"
-    if type(TanaanTrackerDB.realms) ~= "table" then return {} end
-    return TanaanTrackerDB.realms[realm] or {}
+function WorldBossTracker:ViewedRealmDB()
+    local realm = WorldBossTracker.currentRealmView or WorldBossTracker.activeRealm or GetRealmName() or "Unknown"
+    if type(WorldBossTrackerDB.realms) ~= "table" then return {} end
+    return WorldBossTrackerDB.realms[realm] or {}
 end
 
 
@@ -43,10 +43,10 @@ end
 -- Backward compatibility shim for pre-realm data
 -- (copies old flat keys into this realm table; never deletes)
 -------------------------------------------------------------
-for rareName in pairs(TanaanTracker.rares or {}) do
-    local oldValue = TanaanTrackerDB[rareName]
-    if type(oldValue) == "number" and not TanaanTracker:RealmDB()[rareName] then
-        TanaanTracker:RealmDB()[rareName] = oldValue
+for rareName in pairs(WorldBossTracker.rares or {}) do
+    local oldValue = WorldBossTrackerDB[rareName]
+    if type(oldValue) == "number" and not WorldBossTracker:RealmDB()[rareName] then
+        WorldBossTracker:RealmDB()[rareName] = oldValue
         -- do NOT nil the old key; harmless to leave for old clients
     end
 end
@@ -63,33 +63,33 @@ EF:RegisterEvent("PLAYER_REGEN_ENABLED")
 
 
 -- alerts setting helpers (default: enabled)
-function TanaanTracker.GetAlertsEnabled()
-    if TanaanTrackerDB.alertsEnabled == nil then
-        TanaanTrackerDB.alertsEnabled = true
+function WorldBossTracker.GetAlertsEnabled()
+    if WorldBossTrackerDB.alertsEnabled == nil then
+        WorldBossTrackerDB.alertsEnabled = true
     end
-    return TanaanTrackerDB.alertsEnabled
+    return WorldBossTrackerDB.alertsEnabled
 end
 
-function TanaanTracker.SetAlertsEnabled(enabled)
-    TanaanTrackerDB.alertsEnabled = not not enabled
+function WorldBossTracker.SetAlertsEnabled(enabled)
+    WorldBossTrackerDB.alertsEnabled = not not enabled
 end
 
 
 -------------------------------------------------------------
 -- Per-character daily kill tracking
 -------------------------------------------------------------
-function TanaanTracker.GetCharKey()
+function WorldBossTracker.GetCharKey()
     local name, realm = UnitFullName("player")
     realm = realm or GetRealmName() or "Unknown"
     return name .. "-" .. realm
 end
 
-function TanaanTracker.GetServerDayKey()
+function WorldBossTracker.GetServerDayKey()
     local now = GetServerTime()
     return math.floor(now / 86400)
 end
 
-function TanaanTracker.MarkCharKillToday(rareName)
+function WorldBossTracker.MarkCharKillToday(rareName)
     if not rareName then return end
     local realmOffset = (date("!%m") >= "03" and date("!%m") < "11") and 2 or 1
     local nowUTC = time(date("!*t"))
@@ -105,13 +105,13 @@ function TanaanTracker.MarkCharKillToday(rareName)
     local key = string.format("%04d-%02d-%02d", dateTbl.year, dateTbl.month, dateTbl.day)
     local charKey = UnitName("player") .. "-" .. GetRealmName()
 
-    TanaanTrackerDB.charKills = TanaanTrackerDB.charKills or {}
-    TanaanTrackerDB.charKills[charKey] = TanaanTrackerDB.charKills[charKey] or {}
-    TanaanTrackerDB.charKills[charKey][key] = TanaanTrackerDB.charKills[charKey][key] or {}
-    TanaanTrackerDB.charKills[charKey][key][rareName] = true
+    WorldBossTrackerDB.charKills = WorldBossTrackerDB.charKills or {}
+    WorldBossTrackerDB.charKills[charKey] = WorldBossTrackerDB.charKills[charKey] or {}
+    WorldBossTrackerDB.charKills[charKey][key] = WorldBossTrackerDB.charKills[charKey][key] or {}
+    WorldBossTrackerDB.charKills[charKey][key][rareName] = true
 end
 
-function TanaanTracker.CharKilledToday(rareName)
+function WorldBossTracker.CharKilledToday(rareName)
     if not rareName then return false end
     local realmOffset = (date("!%m") >= "03" and date("!%m") < "11") and 2 or 1
     local nowUTC = time(date("!*t"))
@@ -127,7 +127,7 @@ function TanaanTracker.CharKilledToday(rareName)
     local key = string.format("%04d-%02d-%02d", dateTbl.year, dateTbl.month, dateTbl.day)
     local charKey = UnitName("player") .. "-" .. GetRealmName()
 
-    local kills = TanaanTrackerDB.charKills and TanaanTrackerDB.charKills[charKey] and TanaanTrackerDB.charKills[charKey][key]
+    local kills = WorldBossTrackerDB.charKills and WorldBossTrackerDB.charKills[charKey] and WorldBossTrackerDB.charKills[charKey][key]
     return kills and kills[rareName] or false
 end
 
@@ -152,7 +152,7 @@ end
 local function MaybeAlert(rareName, remaining)
 
     -- master toggle: bail if alerts are disabled
-    if not TanaanTracker.GetAlertsEnabled() then return end
+    if not WorldBossTracker.GetAlertsEnabled() then return end
 
     if not remaining or remaining <= 0 then
         alerted[rareName] = nil
@@ -173,9 +173,9 @@ local function MaybeAlert(rareName, remaining)
         return string.format("|cffffd100%s|r", name)
     end
 
-function TanaanTracker.InitAlertFrame()
-    if TanaanTrackerAlertFrame then return end
-    local f = CreateFrame("Frame", "TanaanTrackerAlertFrame", UIParent)
+function WorldBossTracker.InitAlertFrame()
+    if WorldBossTrackerAlertFrame then return end
+    local f = CreateFrame("Frame", "WorldBossTrackerAlertFrame", UIParent)
     f:SetSize(800, 100)
     f:SetPoint("CENTER", UIParent, "CENTER", 0, 150)
 
@@ -195,16 +195,16 @@ function TanaanTracker.InitAlertFrame()
     fade:SetSmoothing("OUT")
     f.fade:SetScript("OnFinished", function() f:Hide() end)
     f:Hide()
-    TanaanTrackerAlertFrame = f
+    WorldBossTrackerAlertFrame = f
 end
 
     local function ShowCenterMessage(msg)
         if InCombatLockdown() then return end
-        if not TanaanTrackerAlertFrame then
-            TanaanTracker.InitAlertFrame()
+        if not WorldBossTrackerAlertFrame then
+            WorldBossTracker.InitAlertFrame()
         end
-        if not TanaanTrackerAlertFrame then return end
-        local f = TanaanTrackerAlertFrame
+        if not WorldBossTrackerAlertFrame then return end
+        local f = WorldBossTrackerAlertFrame
         f.text:SetText(msg)
         f:SetAlpha(1)
         f:Show()
@@ -217,7 +217,7 @@ end
     -------------------------------------------------
     local function IsFightingRare()
         if not UnitAffectingCombat("player") then return false end
-        local rares = TanaanTracker.rares
+        local rares = WorldBossTracker.rares
         if not rares then return false end
 
         local function checkUnit(u)
@@ -240,7 +240,7 @@ end
 
         local msg = string.format("%s respawns in ~5 minutes!", ColoredName(rareName))
         ShowCenterMessage(msg)
-        print("|cffffd200[TanaanTracker]|r " .. msg)
+        print("|cffffd200[WorldBossTracker]|r " .. msg)
 
         if not IsFightingRare() then
             PlaySoundFile("Sound\\interface\\alarmclockwarning2.ogg", "Master")
@@ -252,11 +252,11 @@ end
     elseif lastAlert ~= 1 and remaining <= 60 and remaining > 0 then
         alerted[rareName] = 1
         local msg = string.format("%s respawns in ~1 minute!", ColoredName(rareName))
-        print("|cffffd200[TanaanTracker]|r " .. msg)
+        print("|cffffd200[WorldBossTracker]|r " .. msg)
     end
 end
 
-TanaanTracker._MaybeAlert = MaybeAlert
+WorldBossTracker._MaybeAlert = MaybeAlert
 
 -------------------------------------------------------------
 -- Background Alert Runner (UI-independent)
@@ -268,18 +268,18 @@ bgAlertFrame:SetScript("OnUpdate", function(_, delta)
     if elapsed < 60 then return end
     elapsed = 0
     -- Master toggle: don't scan if alerts are disabled
-    if not TanaanTracker.GetAlertsEnabled() then return end
+    if not WorldBossTracker.GetAlertsEnabled() then return end
 
-    if not TanaanTracker.rares then return end
+    if not WorldBossTracker.rares then return end
     local now = GetServerTime()
 
-    for rareName, data in pairs(TanaanTracker.rares) do
-        local lastKill = TanaanTracker:RealmDB()[rareName]
+    for rareName, data in pairs(WorldBossTracker.rares) do
+        local lastKill = WorldBossTracker:RealmDB()[rareName]
         if lastKill and type(lastKill) == "number" then
             local remaining = (lastKill + (data.respawn or 3600)) - now
             if remaining > 0 and remaining <= 300 then
-                if TanaanTracker._MaybeAlert then
-                    TanaanTracker._MaybeAlert(rareName, remaining)
+                if WorldBossTracker._MaybeAlert then
+                    WorldBossTracker._MaybeAlert(rareName, remaining)
                 end
             end
         end
@@ -289,15 +289,15 @@ end)
 -------------------------------------------------------------
 -- Debug & Utility
 -------------------------------------------------------------
-function TanaanTracker:DebugPrint(...)
-    if TanaanTrackerDB.debug then print("|cFF00FFFF[TanaanTracker DEBUG]|r", ...) end
+function WorldBossTracker:DebugPrint(...)
+    if WorldBossTrackerDB.debug then print("|cFF00FFFF[WorldBossTracker DEBUG]|r", ...) end
 end
 
-function TanaanTracker:GetServerNow() return GetServerTime() end
+function WorldBossTracker:GetServerNow() return GetServerTime() end
 
 local function safeTimeAgo(sec)
     if not sec or type(sec) ~= "number" then return "?" end
-    local diff = TanaanTracker:GetServerNow() - sec
+    local diff = WorldBossTracker:GetServerNow() - sec
     if diff < 60 then return string.format("%ds ago", diff)
     elseif diff < 3600 then return string.format("%dm ago", math.floor(diff/60))
     else return string.format("%dh %dm ago", math.floor(diff/3600), math.floor((diff%3600)/60)) end
@@ -343,10 +343,10 @@ local function announce(msg, where)
     elseif where == "guild" then SendChatMessage(msg, "GUILD")
     elseif where == "party" then SendChatMessage(msg, "PARTY")
     elseif where == "raid" then SendChatMessage(msg, "RAID")
-    else print("|cffffd200[TanaanTracker]|r " .. msg) end
+    else print("|cffffd200[WorldBossTracker]|r " .. msg) end
 end
 
-function TanaanTracker:RunSlash(text)
+function WorldBossTracker:RunSlash(text)
     local editBox = ChatEdit_ChooseBoxForSend(DEFAULT_CHAT_FRAME)
     if not editBox then return end
     ChatEdit_ActivateChat(editBox)
@@ -354,10 +354,10 @@ function TanaanTracker:RunSlash(text)
     ChatEdit_OnEnterPressed(editBox)
 end
 
-TanaanTracker.safeTimeAgo = safeTimeAgo
-TanaanTracker.formatCountdown = formatCountdown
-TanaanTracker.safeFormatTime = safeFormatTime
-TanaanTracker.announce = announce
+WorldBossTracker.safeTimeAgo = safeTimeAgo
+WorldBossTracker.formatCountdown = formatCountdown
+WorldBossTracker.safeFormatTime = safeFormatTime
+WorldBossTracker.announce = announce
 
 -------------------------------------------------------------
 -- UI updater ticker
@@ -366,11 +366,11 @@ local uiTicker = 0
 local updater = CreateFrame("Frame")
 updater:SetScript("OnUpdate", function(_, elapsed)
     uiTicker = uiTicker + elapsed
-    if uiTicker >= (TanaanTracker.UI_UPDATE_INTERVAL or 1) then
+    if uiTicker >= (WorldBossTracker.UI_UPDATE_INTERVAL or 1) then
         uiTicker = 0
-        if TanaanTracker.mainFrame and TanaanTracker.mainFrame:IsShown() and TanaanTracker.UpdateUI then
+        if WorldBossTracker.mainFrame and WorldBossTracker.mainFrame:IsShown() and WorldBossTracker.UpdateUI then
             if not InCombatLockdown() then
-                TanaanTracker.UpdateUI()
+                WorldBossTracker.UpdateUI()
             end
         end
     end
@@ -388,7 +388,7 @@ SlashCmdList["TAN"] = function(msg)
     -- HELP COMMAND
     -------------------------------------------------
     if cmd == "help" or cmd == "?" then
-        print("|cff66c0f4TanaanTracker|r |cffffff00Available Commands:|r")
+        print("|cff66c0f4WorldBossTracker|r |cffffff00Available Commands:|r")
         print("  |cff66c0f4/tan|r - Toggle the UI")
         print("  |cff66c0f4/tan <rare name>|r - Print spawn for a specific rare")
         print("  |cff66c0f4/tan <channel>|r - Announce all timers to: say, yell, guild, party, raid")
@@ -403,8 +403,8 @@ SlashCmdList["TAN"] = function(msg)
     -- VERSION COMMAND
     -------------------------------------------------
     if cmd == "ver" or cmd == "version" then
-        local ver = GetAddOnMetadata("TanaanTracker", "Version") or "unknown"
-        print(string.format("|cff66ff66[TanaanTracker]|r version: |cffffff00%s|r", ver))
+        local ver = GetAddOnMetadata("WorldBossTracker", "Version") or "unknown"
+        print(string.format("|cff66ff66[WorldBossTracker]|r version: |cffffff00%s|r", ver))
         return
     end
 
@@ -418,8 +418,8 @@ SlashCmdList["TAN"] = function(msg)
             return
         end
 
-        local keepAuto = TanaanTrackerDB and TanaanTrackerDB.autoAnnounce or false
-        TanaanTrackerDB = {
+        local keepAuto = WorldBossTrackerDB and WorldBossTrackerDB.autoAnnounce or false
+        WorldBossTrackerDB = {
             realms = {},
             autoAnnounce = keepAuto,
             debug = false,
@@ -430,16 +430,16 @@ SlashCmdList["TAN"] = function(msg)
             print("|cffaaaaaa(auto-announce setting preserved)|r")
         end
 
-        if TanaanTracker.mainFrame then
-            TanaanTracker.mainFrame:Hide()
+        if WorldBossTracker.mainFrame then
+            WorldBossTracker.mainFrame:Hide()
             C_Timer.After(0.1, function()
-                TanaanTracker.mainFrame:Show()
-                if TanaanTracker.UpdateUI then
-                    TanaanTracker.UpdateUI()
+                WorldBossTracker.mainFrame:Show()
+                if WorldBossTracker.UpdateUI then
+                    WorldBossTracker.UpdateUI()
                 end
             end)
-        elseif TanaanTracker.UpdateUI then
-            TanaanTracker.UpdateUI()
+        elseif WorldBossTracker.UpdateUI then
+            WorldBossTracker.UpdateUI()
         end
         return
     end
@@ -447,8 +447,8 @@ SlashCmdList["TAN"] = function(msg)
     -------------------------------------------------
     -- RARE LOOKUP
     -------------------------------------------------
-    local rares = TanaanTracker.rares
-    local raresOrder = TanaanTracker.raresOrder
+    local rares = WorldBossTracker.rares
+    local raresOrder = WorldBossTracker.raresOrder
     local rareName
     for name, data in pairs(rares) do
         if cmd == name:lower() then rareName = name; break end
@@ -461,13 +461,13 @@ SlashCmdList["TAN"] = function(msg)
     end
 
     if rareName then
-        local t = TanaanTracker:RealmDB()[rareName]
+        local t = WorldBossTracker:RealmDB()[rareName]
         if t and type(t) == "number" then
-            local remaining = (t + rares[rareName].respawn) - TanaanTracker:GetServerNow()
+            local remaining = (t + rares[rareName].respawn) - WorldBossTracker:GetServerNow()
             if remaining < 0 then remaining = 0 end
             local msgOut = string.format("%s: in ~%s (killed %s)",
-                rareName, TanaanTracker.formatCountdown(remaining), TanaanTracker.safeFormatTime(t))
-            if arg ~= "" then TanaanTracker.announce(msgOut, arg) else print(msgOut) end
+                rareName, WorldBossTracker.formatCountdown(remaining), WorldBossTracker.safeFormatTime(t))
+            if arg ~= "" then WorldBossTracker.announce(msgOut, arg) else print(msgOut) end
         else
             print(rareName .. ": no data yet")
         end
@@ -480,12 +480,12 @@ SlashCmdList["TAN"] = function(msg)
     local validChannels = { say=true, yell=true, guild=true, party=true, raid=true }
     if cmd ~= "" and validChannels[cmd] then
         for _, name in ipairs(raresOrder) do
-            local t = TanaanTracker:RealmDB()[name]
+            local t = WorldBossTracker:RealmDB()[name]
             if t and type(t) == "number" then
-                local remaining = (t + rares[name].respawn) - TanaanTracker:GetServerNow()
+                local remaining = (t + rares[name].respawn) - WorldBossTracker:GetServerNow()
                 if remaining < 0 then remaining = 0 end
-                local msgOut = string.format("%s: next respawn ~%s", name, TanaanTracker.formatCountdown(remaining))
-                TanaanTracker.announce(msgOut, cmd)
+                local msgOut = string.format("%s: next respawn ~%s", name, WorldBossTracker.formatCountdown(remaining))
+                WorldBossTracker.announce(msgOut, cmd)
             end
         end
         return
@@ -496,13 +496,13 @@ SlashCmdList["TAN"] = function(msg)
     -------------------------------------------------
     if cmd == "" then
         if InCombatLockdown() then
-            print("|cffff0000[TanaanTracker]|r Cannot toggle UI during combat lockdown.")
+            print("|cffff0000[WorldBossTracker]|r Cannot toggle UI during combat lockdown.")
             return
         end
-        if TanaanTracker.ToggleMainFrame then
-            TanaanTracker.ToggleMainFrame()
-        elseif not TanaanTracker.mainFrame and TanaanTracker.CreateMainFrame then
-            TanaanTracker.CreateMainFrame()
+        if WorldBossTracker.ToggleMainFrame then
+            WorldBossTracker.ToggleMainFrame()
+        elseif not WorldBossTracker.mainFrame and WorldBossTracker.CreateMainFrame then
+            WorldBossTracker.CreateMainFrame()
         end
         return
     end
@@ -527,7 +527,7 @@ local function handleCombatLog(...)
 
     if not subevent or not destGUID then return end
 
-    local rares = TanaanTracker.rares
+    local rares = WorldBossTracker.rares
     if not rares then return end
 
     -- get rareName by NPC id
@@ -552,7 +552,7 @@ local function handleCombatLog(...)
         if sourceGUID and IsMine(sourceGUID, sourceFlags) then
             local rareName = RareNameFromGUID(destGUID)
             if rareName then
-                taggedByMe[destGUID] = { rareName = rareName, ts = TanaanTracker:GetServerNow() }
+                taggedByMe[destGUID] = { rareName = rareName, ts = WorldBossTracker:GetServerNow() }
             end
         end
         return
@@ -563,23 +563,23 @@ local function handleCombatLog(...)
         local rareName, data = RareNameFromGUID(destGUID)
         if not rareName then return end
 
-        local now = TanaanTracker:GetServerNow()
+        local now = WorldBossTracker:GetServerNow()
         local last = (lastWrite and lastWrite[rareName]) or 0
         if (now - last) < WRITE_THROTTLE then return end
 
         -- always save the kill time
-        TanaanTracker:RealmDB()[rareName] = now
+        WorldBossTracker:RealmDB()[rareName] = now
         lastWrite[rareName] = now
 
         -- decide if this was a confirmed kill (tagged recently)
         local tagged = taggedByMe[destGUID]
         if tagged and tagged.rareName == rareName and (now - tagged.ts) <= 600 then
             -- 10m window: safe cushion for long fights (if solo on wod)
-            if TanaanTracker.MarkCharKillToday then
-                TanaanTracker.MarkCharKillToday(rareName)
+            if WorldBossTracker.MarkCharKillToday then
+                WorldBossTracker.MarkCharKillToday(rareName)
             end
 
-            if TanaanTrackerDB.autoAnnounce and IsInGuild() then
+            if WorldBossTrackerDB.autoAnnounce and IsInGuild() then
                 local mins = (data.respawn or 3600) / 60
                 SendChatMessage(string.format("%s down — respawn ~%dm", rareName, mins), "GUILD")
             end
@@ -587,12 +587,12 @@ local function handleCombatLog(...)
 
         -- UI + sync, regardless of who tagged (so timers stay correct)
         print(string.format("|cffff0000%s killed!|r Respawn timer started (%d min).", rareName, (data.respawn or 3600)/60))
-        TanaanTracker:DebugPrint("Saved time for", rareName, now)
-        if TanaanTracker.SendGuildSync then
-            TanaanTracker.SendGuildSync(rareName, now)
+        WorldBossTracker:DebugPrint("Saved time for", rareName, now)
+        if WorldBossTracker.SendGuildSync then
+            WorldBossTracker.SendGuildSync(rareName, now)
         end
-        if TanaanTracker.UpdateUI then
-            TanaanTracker.UpdateUI()
+        if WorldBossTracker.UpdateUI then
+            WorldBossTracker.UpdateUI()
         end
 
         -- cleanup tag cache for this corpse
@@ -604,30 +604,30 @@ end
 local function handleLootOpened()
     local target = UnitName("target")
     if not target or type(target) ~= "string" then return end
-    local rares = TanaanTracker.rares
+    local rares = WorldBossTracker.rares
     for rareName, data in pairs(rares) do
         if target:find(rareName, 1, true) then
-            local now = TanaanTracker:GetServerNow()
+            local now = WorldBossTracker:GetServerNow()
             local last = lastWrite[rareName] or 0
             if (now - last) < WRITE_THROTTLE then return end
             -- save kill time to DB
-            TanaanTracker:RealmDB()[rareName] = now
+            WorldBossTracker:RealmDB()[rareName] = now
             lastWrite[rareName] = now
             -- mark character kill
-            if TanaanTracker.MarkCharKillToday then
-                TanaanTracker.MarkCharKillToday(rareName)
+            if WorldBossTracker.MarkCharKillToday then
+                WorldBossTracker.MarkCharKillToday(rareName)
             end
             -- local message
             print(string.format("|cff00ff00Looted %s!|r Respawn timer started (%d min).", rareName, data.respawn / 60))
             -- sync and update UI
-            if TanaanTracker.SendGuildSync then
-                TanaanTracker.SendGuildSync(rareName, now)
+            if WorldBossTracker.SendGuildSync then
+                WorldBossTracker.SendGuildSync(rareName, now)
             end
-            if TanaanTracker.UpdateUI then
-                TanaanTracker.UpdateUI()
+            if WorldBossTracker.UpdateUI then
+                WorldBossTracker.UpdateUI()
             end
 
-            TanaanTracker:DebugPrint("Saved time via loot for", rareName, now)
+            WorldBossTracker:DebugPrint("Saved time via loot for", rareName, now)
             return
         end
     end
@@ -636,22 +636,22 @@ end
 
 EF:SetScript("OnEvent", function(_, event, ...)
     if event == "PLAYER_LOGIN" then
-        TanaanTrackerDB.debug = TanaanTrackerDB.debug or false
-        TanaanTracker:DebugPrint("Loaded for realm:", currentRealm)
-        if TanaanTracker.InitAlertFrame then TanaanTracker.InitAlertFrame() end
-        if TanaanTracker.CreateMinimapButton then TanaanTracker.CreateMinimapButton() end
-        if TanaanTracker.CreateMainFrame then TanaanTracker.CreateMainFrame() end
+        WorldBossTrackerDB.debug = WorldBossTrackerDB.debug or false
+        WorldBossTracker:DebugPrint("Loaded for realm:", currentRealm)
+        if WorldBossTracker.InitAlertFrame then WorldBossTracker.InitAlertFrame() end
+        if WorldBossTracker.CreateMinimapButton then WorldBossTracker.CreateMinimapButton() end
+        if WorldBossTracker.CreateMainFrame then WorldBossTracker.CreateMainFrame() end
         -- load alert toggle
-        if TanaanTrackerDB.alertsEnabled == nil then
-            TanaanTrackerDB.alertsEnabled = true
+        if WorldBossTrackerDB.alertsEnabled == nil then
+            WorldBossTrackerDB.alertsEnabled = true
         end
     elseif event == "PLAYER_REGEN_ENABLED" then
-        if TanaanTracker._pendingUpdateUI and TanaanTracker.UpdateUI then
-            TanaanTracker._pendingUpdateUI = nil
-            TanaanTracker.UpdateUI()
+        if WorldBossTracker._pendingUpdateUI and WorldBossTracker.UpdateUI then
+            WorldBossTracker._pendingUpdateUI = nil
+            WorldBossTracker.UpdateUI()
         end
     elseif event == "CHAT_MSG_ADDON" then
-        if TanaanTracker.OnAddonMessage then TanaanTracker.OnAddonMessage(...) end
+        if WorldBossTracker.OnAddonMessage then WorldBossTracker.OnAddonMessage(...) end
     elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
         handleCombatLog(...)
     elseif event == "LOOT_OPENED" then

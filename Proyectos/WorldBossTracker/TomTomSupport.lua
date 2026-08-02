@@ -1,8 +1,8 @@
--- TanaanTracker: TomTomSupport.lua
-TanaanTracker = TanaanTracker or {}
+-- WorldBossTracker: TomTomSupport.lua
+WorldBossTracker = WorldBossTracker or {}
 
 -- Create and wire TomTom buttons for a row
-function TanaanTracker.AttachTomTomButtons(row, rareName, anchorTo)
+function WorldBossTracker.AttachTomTomButtons(row, rareName, anchorTo)
     local tomSet = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
     tomSet:SetSize(24, 24)
     tomSet:SetPoint("LEFT", anchorTo, "RIGHT", 6, -8)
@@ -27,7 +27,7 @@ function TanaanTracker.AttachTomTomButtons(row, rareName, anchorTo)
             S:HandleButton(tomSet, true)
             S:HandleButton(tomClear, true)
 
-            -- Optional: color accent to match TanaanTracker theme (soft blue)
+            -- Optional: color accent to match WorldBossTracker theme (soft blue)
             local r, g, b = 0.4, 0.7, 1.0
             tomSet:SetBackdropBorderColor(r, g, b, 0.8)
             tomClear:SetBackdropBorderColor(r, g, b, 0.8)
@@ -39,7 +39,7 @@ function TanaanTracker.AttachTomTomButtons(row, rareName, anchorTo)
     -------------------------------------------------------------
     tomSet:SetScript("OnClick", function()
         if not TomTom then print("TomTom not found."); return end
-        local info = TanaanTracker.rares[rareName]
+        local info = WorldBossTracker.rares[rareName]
         if not info or not info.coords then
             print("Missing coordinates for " .. rareName); return
         end
@@ -48,7 +48,7 @@ function TanaanTracker.AttachTomTomButtons(row, rareName, anchorTo)
 
         local zone = "Tanaan Jungle"
         local title = rareName
-        TanaanTracker:RunSlash(string.format("/way %s %.2f %.2f %s", zone, x, y, title))
+        WorldBossTracker:RunSlash(string.format("/way %s %.2f %.2f %s", zone, x, y, title))
         print(string.format("TomTom waypoint set for %s (%.2f, %.2f)", rareName, x, y))
     end)
 
@@ -77,7 +77,7 @@ function TanaanTracker.AttachTomTomButtons(row, rareName, anchorTo)
                 TomTom:HideCrazyArrow()
                 print("TomTom arrow hidden.")
             else
-                TanaanTracker:RunSlash("/cway")
+                WorldBossTracker:RunSlash("/cway")
                 print("TomTom arrow cleared (fallback).")
             end
         end

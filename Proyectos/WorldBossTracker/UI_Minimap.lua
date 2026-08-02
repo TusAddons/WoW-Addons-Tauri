@@ -1,15 +1,15 @@
--- TanaanTracker: Minimap Button
-TanaanTracker = TanaanTracker or {}
+-- WorldBossTracker: Minimap Button
+WorldBossTracker = WorldBossTracker or {}
 
 -------------------------------------------------
 -- SAVED POSITION
 -------------------------------------------------
-TanaanTrackerMiniDB = TanaanTrackerMiniDB or { x = 0, y = 0 }
+WorldBossTrackerMiniDB = WorldBossTrackerMiniDB or { x = 0, y = 0 }
 
 -------------------------------------------------
 -- BUTTON FRAME
 -------------------------------------------------
-local btn = CreateFrame("Button", "TanaanTrackerMinimapButton", Minimap)
+local btn = CreateFrame("Button", "WorldBossTrackerMinimapButton", Minimap)
 btn:SetWidth(33)
 btn:SetHeight(33)
 btn:SetFrameStrata("MEDIUM")
@@ -22,7 +22,7 @@ btn:SetUserPlaced(true)
 -- ICON TEXTURE
 -------------------------------------------------
 local icon = btn:CreateTexture(nil, "BACKGROUND")
-icon:SetTexture("Interface\\AddOns\\TanaanTracker\\Icon.tga")
+icon:SetTexture("Interface\\AddOns\\WorldBossTracker\\Icon.tga")
 icon:SetTexCoord(0, 1, 0, 1)
 icon:SetWidth(20)
 icon:SetHeight(20)
@@ -61,7 +61,7 @@ end)
 btn:SetScript("OnDragStop", function(self)
     self:StopMovingOrSizing()
     local point, _, _, x, y = self:GetPoint(1)
-    TanaanTrackerMiniDB.x, TanaanTrackerMiniDB.y = x, y
+    WorldBossTrackerMiniDB.x, WorldBossTrackerMiniDB.y = x, y
 end)
 
 -------------------------------------------------
@@ -69,7 +69,7 @@ end)
 -------------------------------------------------
 btn:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-    GameTooltip:AddLine("|cff00ff00TanaanTracker|r")
+    GameTooltip:AddLine("|cff00ff00WorldBossTracker|r")
     GameTooltip:AddLine("Shift + Left-Drag to move", 0.8, 0.8, 0.8)
     GameTooltip:AddLine("Left-click: Toggle main window", 1, 1, 1)
     GameTooltip:Show()
@@ -78,21 +78,21 @@ btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
 btn:SetScript("OnClick", function()
     if InCombatLockdown() then
-        print("|cffff0000[TanaanTracker]|r Cannot toggle UI during combat lockdown.")
+        print("|cffff0000[WorldBossTracker]|r Cannot toggle UI during combat lockdown.")
         return
     end
     -- try to toggle main frame safely
-    if TanaanTracker.ToggleMainFrame and type(TanaanTracker.ToggleMainFrame) == "function" then
-        TanaanTracker.ToggleMainFrame()
-    elseif TanaanTracker.mainFrame then
+    if WorldBossTracker.ToggleMainFrame and type(WorldBossTracker.ToggleMainFrame) == "function" then
+        WorldBossTracker.ToggleMainFrame()
+    elseif WorldBossTracker.mainFrame then
         -- fallback toggle if no dedicated function exists
-        if TanaanTracker.mainFrame:IsShown() then
-            TanaanTracker.mainFrame:Hide()
+        if WorldBossTracker.mainFrame:IsShown() then
+            WorldBossTracker.mainFrame:Hide()
         else
-            TanaanTracker.mainFrame:Show()
+            WorldBossTracker.mainFrame:Show()
         end
     else
-        print("|cff00ff00[TanaanTracker]|r UI toggle not found.")
+        print("|cff00ff00[WorldBossTracker]|r UI toggle not found.")
     end
 end)
 
@@ -102,14 +102,14 @@ end)
 local function RestorePosition()
     btn:ClearAllPoints()
     btn:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT",
-        TanaanTrackerMiniDB.x or 0,
-        TanaanTrackerMiniDB.y or 0)
+        WorldBossTrackerMiniDB.x or 0,
+        WorldBossTrackerMiniDB.y or 0)
 end
 RestorePosition()
 
 -------------------------------------------------
 -- PUBLIC CREATION CALL
 -------------------------------------------------
-function TanaanTracker.CreateMinimapButton()
+function WorldBossTracker.CreateMinimapButton()
     btn:Show()
 end

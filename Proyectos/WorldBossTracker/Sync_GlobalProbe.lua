@@ -1,12 +1,12 @@
--- TanaanTracker: Sync_GlobalProbe.lua
+-- WorldBossTracker: Sync_GlobalProbe.lua
 -- Global sync via /global chat probe + whisper sync using existing /tsync logic.
 
-local TanaanTracker = TanaanTracker or {}
+local WorldBossTracker = WorldBossTracker or {}
 
 -------------------------------------------------
 -- CONFIG
 -------------------------------------------------
-local SYNC_PREFIX          = "TanaanTracker"
+local SYNC_PREFIX          = "WorldBossTracker"
 local GLOBAL_CHANNEL_NAME  = "global"      
 local COOLDOWN_SECONDS     = 3600          -- 1 hour between probes
 local DISCOVERY_WINDOW     = 5.0           
@@ -17,15 +17,15 @@ local PROBE_TAG            = "#TT"
 -------------------------------------------------
 -- SAVED VAR DEFAULTS
 -------------------------------------------------
-TanaanTrackerDB = TanaanTrackerDB or {}
-if TanaanTrackerDB.globalProbeLastAt == nil then
-    TanaanTrackerDB.globalProbeLastAt = 0
+WorldBossTrackerDB = WorldBossTrackerDB or {}
+if WorldBossTrackerDB.globalProbeLastAt == nil then
+    WorldBossTrackerDB.globalProbeLastAt = 0
 end
-if TanaanTrackerDB.globalProbeMessage == nil then
-    TanaanTrackerDB.globalProbeMessage = "hi"
+if WorldBossTrackerDB.globalProbeMessage == nil then
+    WorldBossTrackerDB.globalProbeMessage = "hi"
 end
-if TanaanTrackerDB.globalProbeConfirmed == nil then
-    TanaanTrackerDB.globalProbeConfirmed = false
+if WorldBossTrackerDB.globalProbeConfirmed == nil then
+    WorldBossTrackerDB.globalProbeConfirmed = false
 end
 
 -------------------------------------------------
@@ -54,12 +54,12 @@ local function ShortName(full)
 end
 
 local function PrintInfo(msg)
-    print("|cff66ff66[TanaanTracker]|r " .. tostring(msg))
+    print("|cff66ff66[WorldBossTracker]|r " .. tostring(msg))
 end
 
 local function ProbeDebug(...)
-    if not TanaanTrackerDB or not TanaanTrackerDB.debug then return end
-    print("|cff00bfff[TanaanTracker:Probe DEBUG]|r", ...)
+    if not WorldBossTrackerDB or not WorldBossTrackerDB.debug then return end
+    print("|cff00bfff[WorldBossTracker:Probe DEBUG]|r", ...)
 end
 
 -- normalize realm names
@@ -73,7 +73,7 @@ end
 
 -- return the user-chosen base text
 local function EffectiveProbeMessage()
-    local raw = TanaanTrackerDB.globalProbeMessage or "hi"
+    local raw = WorldBossTrackerDB.globalProbeMessage or "hi"
     raw = raw:gsub("|", "/")
     -- trim extremely long inputs
     if #raw > 120 then
@@ -85,8 +85,8 @@ end
 --compute "freshness" for a given realm:
 local function RealmFreshness(realmName)
     realmName = realmName or MyRealm()
-    local rares  = TanaanTracker.rares
-    local realms = TanaanTrackerDB and TanaanTrackerDB.realms
+    local rares  = WorldBossTracker.rares
+    local realms = WorldBossTrackerDB and WorldBossTrackerDB.realms
     if not rares or not realms then
         return 0, 0
     end
@@ -301,7 +301,7 @@ end)
 -------------------------------------------------
 -- CHAT_MSG_ADDON / HAVE HANDLING via OnAddonMessage hook
 -------------------------------------------------
-hooksecurefunc(TanaanTracker, "OnAddonMessage", function(prefix, message, channel, sender)
+hooksecurefunc(WorldBossTracker, "OnAddonMessage", function(prefix, message, channel, sender)
     if prefix ~= SYNC_PREFIX or not message or not sender then
         return
     end
@@ -320,7 +320,7 @@ end)
 -- UI: Global Sync button on main frame (bottom-left)
 -------------------------------------------------
 local function SecondsLeft()
-    local last = TanaanTrackerDB.globalProbeLastAt or 0
+    local last = WorldBossTrackerDB.globalProbeLastAt or 0
     local elapsed = NowServer() - last
     if elapsed < 0 then
         elapsed = 0
@@ -392,7 +392,7 @@ end
 
 local function OpenGlobalProbeConfig(onConfirm)
     if not configFrame then
-        local f = CreateFrame("Frame", "TanaanTracker_GlobalProbeConfig", UIParent, "BasicFrameTemplateWithInset")
+        local f = CreateFrame("Frame", "WorldBossTracker_GlobalProbeConfig", UIParent, "BasicFrameTemplateWithInset")
         f:SetSize(380, 190)
         f:SetFrameStrata("DIALOG")
         f:EnableMouse(true)
@@ -403,13 +403,13 @@ local function OpenGlobalProbeConfig(onConfirm)
 
         f.title = f:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         f.title:SetPoint("TOP", 0, -8)
-        f.title:SetText("TanaanTracker - Global Sync")
+        f.title:SetText("WorldBossTracker - Global Sync")
 
         local warn = f:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
         warn:SetPoint("TOPLEFT", 16, -28)
         warn:SetWidth(348)
         warn:SetJustifyH("LEFT")
-        warn:SetText("This will send the message below (plus a small '#TT' tag) to channel '" .. GLOBAL_CHANNEL_NAME .. "' to request a sync from other TanaanTracker users on your realm.")
+        warn:SetText("This will send the message below (plus a small '#TT' tag) to channel '" .. GLOBAL_CHANNEL_NAME .. "' to request a sync from other WorldBossTracker users on your realm.")
 
         local edit = CreateFrame("EditBox", nil, f, "InputBoxTemplate")
         edit:SetSize(280, 20)
@@ -458,13 +458,13 @@ local function OpenGlobalProbeConfig(onConfirm)
 
     -- position: below the main addon frame if it exists, else center
     f:ClearAllPoints()
-    if TanaanTracker.mainFrame then
-        f:SetPoint("TOP", TanaanTracker.mainFrame, "BOTTOM", 0, -10)
+    if WorldBossTracker.mainFrame then
+        f:SetPoint("TOP", WorldBossTracker.mainFrame, "BOTTOM", 0, -10)
     else
         f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     end
 
-    local defaultText = TanaanTrackerDB.globalProbeMessage or "hi"
+    local defaultText = WorldBossTrackerDB.globalProbeMessage or "hi"
     f.editBox:ClearAllPoints()
     f.editBox:SetPoint("TOP", f, "TOP", 0, -78)
     f.editBox:SetText(defaultText)
@@ -486,8 +486,8 @@ local function OpenGlobalProbeConfig(onConfirm)
             return
         end
 
-        TanaanTrackerDB.globalProbeMessage = text
-        TanaanTrackerDB.globalProbeConfirmed = true
+        WorldBossTrackerDB.globalProbeMessage = text
+        WorldBossTrackerDB.globalProbeConfirmed = true
 
         f:Hide()
 
@@ -505,15 +505,15 @@ end
 -- BUTTON CREATION & CLICK HANDLER
 -------------------------------------------------
 local function EnsureGlobalSyncButton()
-    if not TanaanTracker or not TanaanTracker.mainFrame then
+    if not WorldBossTracker or not WorldBossTracker.mainFrame then
         return
     end
-    local f = TanaanTracker.mainFrame
+    local f = WorldBossTracker.mainFrame
     if f._globalSyncBtn then
         return
     end
 
-    local btn = CreateFrame("Button", "TanaanTracker_GlobalSyncButton", f, "UIPanelButtonTemplate")
+    local btn = CreateFrame("Button", "WorldBossTracker_GlobalSyncButton", f, "UIPanelButtonTemplate")
     btn:SetSize(160, 23)
     btn:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 12, 7)
     btn:SetText("Global Sync")
@@ -572,7 +572,7 @@ local function EnsureGlobalSyncButton()
             end
 
             -- only stamp cooldown if we actually managed to broadcast the probe
-            TanaanTrackerDB.globalProbeLastAt = NowServer()
+            WorldBossTrackerDB.globalProbeLastAt = NowServer()
             UpdateButtonState(btn)
 
             PrintInfo("Probing 'global' for fresher timers...")
@@ -582,7 +582,7 @@ local function EnsureGlobalSyncButton()
 
         -- shift+click: quick-send using last confirmed message, no popup
         if IsShiftKeyDown() then
-            if not TanaanTrackerDB.globalProbeConfirmed then
+            if not WorldBossTrackerDB.globalProbeConfirmed then
                 -- if user never confirmed before, force config once
                 OpenGlobalProbeConfig(DoProbe)
             else
@@ -609,8 +609,8 @@ end
 -------------------------------------------------
 -- Hook into CreateMainFrame + login to ensure button exists
 -------------------------------------------------
-if TanaanTracker and TanaanTracker.CreateMainFrame then
-    hooksecurefunc(TanaanTracker, "CreateMainFrame", function()
+if WorldBossTracker and WorldBossTracker.CreateMainFrame then
+    hooksecurefunc(WorldBossTracker, "CreateMainFrame", function()
         C_Timer.After(0, EnsureGlobalSyncButton)
     end)
 end
@@ -618,11 +618,11 @@ end
 local probeInitFrame = CreateFrame("Frame")
 probeInitFrame:RegisterEvent("PLAYER_LOGIN")
 probeInitFrame:SetScript("OnEvent", function()
-    if TanaanTrackerDB and TanaanTrackerDB.globalProbeLastAt == nil then
-        TanaanTrackerDB.globalProbeLastAt = 0
+    if WorldBossTrackerDB and WorldBossTrackerDB.globalProbeLastAt == nil then
+        WorldBossTrackerDB.globalProbeLastAt = 0
     end
-    if TanaanTrackerDB and TanaanTrackerDB.globalProbeMessage == nil then
-        TanaanTrackerDB.globalProbeMessage = "hi"
+    if WorldBossTrackerDB and WorldBossTrackerDB.globalProbeMessage == nil then
+        WorldBossTrackerDB.globalProbeMessage = "hi"
     end
     C_Timer.After(3, EnsureGlobalSyncButton)
 end)
@@ -630,7 +630,7 @@ end)
 -------------------------------------------------
 -- DEBUG
 -------------------------------------------------
-function TanaanTracker.DebugGlobalProbe()
+function WorldBossTracker.DebugGlobalProbe()
     if not probeSession then
         PrintInfo("Global probe: no active session.")
         return

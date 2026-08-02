@@ -1,13 +1,13 @@
--- TanaanTracker: Sync_Manual.lua
+-- WorldBossTracker: Sync_Manual.lua
 -- Adds manual on-demand sync between players or groups (/tsync)
 -- Whisper sync is bidirectional (both sides exchange data)
 
-TanaanTracker = TanaanTracker or {}
+WorldBossTracker = WorldBossTracker or {}
 
 -------------------------------------------------
 -- CONFIG
 -------------------------------------------------
-local SYNC_PREFIX = "TanaanTracker"
+local SYNC_PREFIX = "WorldBossTracker"
 local SYNC_REPLY_INTERVAL = 0.20
 local SYNC_THROTTLE = 3
 local lastManualSent = {}
@@ -17,7 +17,7 @@ local lastManualSent = {}
 -------------------------------------------------
 local function SafeSend(targetType, target)
     if not SendAddonMessage then
-        print("|cffff0000[TanaanTracker]|r Addon messages unavailable.")
+        print("|cffff0000[WorldBossTracker]|r Addon messages unavailable.")
         return false
     end
 
@@ -26,7 +26,7 @@ local function SafeSend(targetType, target)
 
     if targetType == "WHISPER" then
         if not target or target == "" then
-            print("|cffff0000[TanaanTracker]|r Whisper target missing or invalid.")
+            print("|cffff0000[WorldBossTracker]|r Whisper target missing or invalid.")
             return false
         end
         SendAddonMessage(SYNC_PREFIX, payload, "WHISPER", target)
@@ -46,7 +46,7 @@ SlashCmdList["TSYNC"] = function(msg)
     cmd = cmd:lower()
 
     if cmd == "" then
-        print("|cff66c0f4TanaanTracker Sync|r usage:")
+        print("|cff66c0f4WorldBossTracker Sync|r usage:")
         print("  /tsync party       - request sync from all party members")
         print("  /tsync raid        - request sync from all raid members")
         print("  /tsync <player>    - request sync from a specific player (bidirectional)")
@@ -54,34 +54,34 @@ SlashCmdList["TSYNC"] = function(msg)
     end
 
     -- Setup sync tracking
-    TanaanTracker._manualSyncStartTime = GetTime()
-    TanaanTracker._manualSyncGotUpdate = false
-    TanaanTracker._manualSyncUpdatesCount = 0
+    WorldBossTracker._manualSyncStartTime = GetTime()
+    WorldBossTracker._manualSyncGotUpdate = false
+    WorldBossTracker._manualSyncUpdatesCount = 0
 
     local function FinishCheck()
-        if not TanaanTracker._manualSyncGotUpdate then
-            print("|cff66ff66[TanaanTracker]|r No data to sync — database is already up to date!")
+        if not WorldBossTracker._manualSyncGotUpdate then
+            print("|cff66ff66[WorldBossTracker]|r No data to sync — database is already up to date!")
         else
-            print(string.format("|cff66ff66[TanaanTracker]|r %d timer%s updated via manual sync.",
-                TanaanTracker._manualSyncUpdatesCount,
-                TanaanTracker._manualSyncUpdatesCount == 1 and "" or "s"))
-            if TanaanTracker.UpdateUI then
-                TanaanTracker.UpdateUI()
+            print(string.format("|cff66ff66[WorldBossTracker]|r %d timer%s updated via manual sync.",
+                WorldBossTracker._manualSyncUpdatesCount,
+                WorldBossTracker._manualSyncUpdatesCount == 1 and "" or "s"))
+            if WorldBossTracker.UpdateUI then
+                WorldBossTracker.UpdateUI()
             end
-            if TanaanTracker.mainFrame then
-                TanaanTracker.mainFrame:Show()
+            if WorldBossTracker.mainFrame then
+                WorldBossTracker.mainFrame:Show()
             end
         end
-        TanaanTracker._manualSyncStartTime = nil
-        TanaanTracker._manualSyncGotUpdate = nil
-        TanaanTracker._manualSyncUpdatesCount = nil
+        WorldBossTracker._manualSyncStartTime = nil
+        WorldBossTracker._manualSyncGotUpdate = nil
+        WorldBossTracker._manualSyncUpdatesCount = nil
     end
 
     C_Timer.After(6, FinishCheck)
 
     if cmd == "party" then
         if IsInGroup() then
-            print("|cff66ff66[TanaanTracker]|r Requesting sync from party...")
+            print("|cff66ff66[WorldBossTracker]|r Requesting sync from party...")
             SafeSend("PARTY")
         else
             print("|cffff0000Not in a party.|r")
@@ -89,7 +89,7 @@ SlashCmdList["TSYNC"] = function(msg)
         return
     elseif cmd == "raid" then
         if IsInRaid() then
-            print("|cff66ff66[TanaanTracker]|r Requesting sync from raid...")
+            print("|cff66ff66[WorldBossTracker]|r Requesting sync from raid...")
             SafeSend("RAID")
         else
             print("|cffff0000Not in a raid.|r")
@@ -97,7 +97,7 @@ SlashCmdList["TSYNC"] = function(msg)
         return
     else
         local playerName = cmd
-        print("|cff66ff66[TanaanTracker]|r Requesting sync from |cffffff00" .. playerName .. "|r ...")
+        print("|cff66ff66[WorldBossTracker]|r Requesting sync from |cffffff00" .. playerName .. "|r ...")
         SafeSend("WHISPER", playerName)
     end
 end
@@ -105,16 +105,16 @@ end
 -------------------------------------------------
 -- Respond to Manual Sync Requests
 -------------------------------------------------
-function TanaanTracker.HandleManualSyncRequest(prefix, message, channel, sender)
+function WorldBossTracker.HandleManualSyncRequest(prefix, message, channel, sender)
     if prefix ~= SYNC_PREFIX or not message or not channel or sender == UnitName("player") then return end
     if not sender or sender == "" then return end
 
     -- Prevent duplicate REQ triggers from the same sender
-    TanaanTracker._recentReqs = TanaanTracker._recentReqs or {}
+    WorldBossTracker._recentReqs = WorldBossTracker._recentReqs or {}
     local now = GetTime()
-    local lastReq = TanaanTracker._recentReqs[sender] or 0
+    local lastReq = WorldBossTracker._recentReqs[sender] or 0
     if (now - lastReq) < 1 then return end
-    TanaanTracker._recentReqs[sender] = now
+    WorldBossTracker._recentReqs[sender] = now
 
     local msgType, reqSender = strsplit("|", message)
     if msgType ~= "REQ" then return end
@@ -125,11 +125,11 @@ function TanaanTracker.HandleManualSyncRequest(prefix, message, channel, sender)
     local myName = UnitName("player") or "Unknown"
     local total = 0
 
-    print(string.format("|cff66ff66[TanaanTracker]|r Manual sync request from |cffffff00%s|r — sending timers...", reqSender or sender))
+    print(string.format("|cff66ff66[WorldBossTracker]|r Manual sync request from |cffffff00%s|r — sending timers...", reqSender or sender))
 
     -- Send all known realm data
-    if TanaanTrackerDB and TanaanTrackerDB.realms then
-        for realmName, db in pairs(TanaanTrackerDB.realms) do
+    if WorldBossTrackerDB and WorldBossTrackerDB.realms then
+        for realmName, db in pairs(WorldBossTrackerDB.realms) do
             if type(db) == "table" then
                 for rareName, t in pairs(db) do
                     if type(t) == "number" then
@@ -149,9 +149,9 @@ function TanaanTracker.HandleManualSyncRequest(prefix, message, channel, sender)
     end
 
     if total > 0 then
-        print(string.format("|cff66ff66[TanaanTracker]|r Sent %d timer(s) to %s.", total, reqSender or sender))
+        print(string.format("|cff66ff66[WorldBossTracker]|r Sent %d timer(s) to %s.", total, reqSender or sender))
     else
-        print(string.format("|cff66ff66[TanaanTracker]|r No data available to send to %s (DB empty or up to date).", reqSender or sender))
+        print(string.format("|cff66ff66[WorldBossTracker]|r No data available to send to %s (DB empty or up to date).", reqSender or sender))
     end
 
     -------------------------------------------------
@@ -160,10 +160,10 @@ function TanaanTracker.HandleManualSyncRequest(prefix, message, channel, sender)
     if strupper(channel) == "WHISPER" then
         local targetPlayer = sender
         if targetPlayer and targetPlayer ~= "" and targetPlayer ~= UnitName("player") then
-            TanaanTracker._lastWhisperSync = TanaanTracker._lastWhisperSync or {}
-            local last = TanaanTracker._lastWhisperSync[targetPlayer] or 0
+            WorldBossTracker._lastWhisperSync = WorldBossTracker._lastWhisperSync or {}
+            local last = WorldBossTracker._lastWhisperSync[targetPlayer] or 0
             if (now - last) < 8 then return end
-            TanaanTracker._lastWhisperSync[targetPlayer] = now
+            WorldBossTracker._lastWhisperSync[targetPlayer] = now
 
             C_Timer.After(2.0, function()
                 if targetPlayer and targetPlayer ~= "" and targetPlayer ~= UnitName("player") then
@@ -177,8 +177,8 @@ end
 -------------------------------------------------
 -- Hook into main addon handler
 -------------------------------------------------
-hooksecurefunc(TanaanTracker, "OnAddonMessage", function(prefix, message, channel, sender)
-    TanaanTracker.HandleManualSyncRequest(prefix, message, channel, sender)
+hooksecurefunc(WorldBossTracker, "OnAddonMessage", function(prefix, message, channel, sender)
+    WorldBossTracker.HandleManualSyncRequest(prefix, message, channel, sender)
 
     if prefix == SYNC_PREFIX and message:find("^SYNC|") and sender ~= UnitName("player") then
         local _, rareName, ts, origin, realmName, targetName = strsplit("|", message)
@@ -186,23 +186,23 @@ hooksecurefunc(TanaanTracker, "OnAddonMessage", function(prefix, message, channe
             return -- message meant for someone else
         end
         local tnum = tonumber(ts)
-        local rares = TanaanTracker.rares
+        local rares = WorldBossTracker.rares
         local targetRealm = realmName or GetRealmName() or "Unknown"
 
         if rareName and tnum and rares and rares[rareName] then
-            TanaanTrackerDB.realms = TanaanTrackerDB.realms or {}
-            TanaanTrackerDB.realms[targetRealm] = TanaanTrackerDB.realms[targetRealm] or {}
-            local db = TanaanTrackerDB.realms[targetRealm]
+            WorldBossTrackerDB.realms = WorldBossTrackerDB.realms or {}
+            WorldBossTrackerDB.realms[targetRealm] = WorldBossTrackerDB.realms[targetRealm] or {}
+            local db = WorldBossTrackerDB.realms[targetRealm]
             local myTs = db[rareName]
 
             if not myTs or tnum > myTs then
                 db[rareName] = tnum
-                if TanaanTracker._manualSyncStartTime then
-                    TanaanTracker._manualSyncGotUpdate = true
-                    TanaanTracker._manualSyncUpdatesCount = (TanaanTracker._manualSyncUpdatesCount or 0) + 1
+                if WorldBossTracker._manualSyncStartTime then
+                    WorldBossTracker._manualSyncGotUpdate = true
+                    WorldBossTracker._manualSyncUpdatesCount = (WorldBossTracker._manualSyncUpdatesCount or 0) + 1
                 end
-                if TanaanTracker.currentRealmView == targetRealm and TanaanTracker.UpdateUI then
-                    TanaanTracker.UpdateUI()
+                if WorldBossTracker.currentRealmView == targetRealm and WorldBossTracker.UpdateUI then
+                    WorldBossTracker.UpdateUI()
                 end
             end
         end
