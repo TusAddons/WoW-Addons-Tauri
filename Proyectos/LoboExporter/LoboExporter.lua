@@ -433,12 +433,7 @@ local function ExportRaidLootAsync(progressCallback, callback)
             end
             raidIndex = raidIndex + 1
         end
-        callback("{
-  "raidLoot": [
-" .. table.concat(results, ",
-") .. "
-  ]
-}", #results)
+        callback("{\n  \"raidLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}", #results)
     end)
     RunCoroutine(co)
 end
@@ -537,12 +532,7 @@ local function ExportDungeonLootAsync(progressCallback, callback)
             end
             dungeonIndex = dungeonIndex + 1
         end
-        callback("{
-  "dungeonLoot": [
-" .. table.concat(results, ",
-") .. "
-  ]
-}", #results)
+        callback("{\n  \"dungeonLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}", #results)
     end)
     RunCoroutine(co)
 end
@@ -562,38 +552,22 @@ local function GenerateExport()
         parts[#parts+1] = string.format("=== EXPORTACIÓN DE PERSONAJE: %s-%s (%s Nvl %d) ===", playerName, playerRealm, playerClass, playerLevel)
     end
     
-    if LoboExporterDB.exportEquipment then parts[#parts+1] = (isJSON and (#parts > 1 and ",
-" or "") or "
-") .. GetEquipmentData(isJSON) end
-    if LoboExporterDB.exportCurrencies then parts[#parts+1] = (isJSON and (#parts > 1 and ",
-" or "") or "
-") .. GetCurrenciesData(isJSON) end
-    if LoboExporterDB.exportReputations then parts[#parts+1] = (isJSON and (#parts > 1 and ",
-" or "") or "
-") .. GetReputationsData(isJSON) end
+    if LoboExporterDB.exportEquipment then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetEquipmentData(isJSON) end
+    if LoboExporterDB.exportCurrencies then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetCurrenciesData(isJSON) end
+    if LoboExporterDB.exportReputations then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetReputationsData(isJSON) end
     if LoboExporterDB.exportFollowers then
         local ok, data = pcall(GetFollowersData, isJSON)
         if ok then
-            parts[#parts+1] = (isJSON and (#parts > 1 and ",
-" or "") or "
-") .. data
+            parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. data
         else
-            parts[#parts+1] = (isJSON and (#parts > 1 and ",
-" or "") or "
-") .. (isJSON and ('  "followers_error": "' .. EscapeJSON(tostring(data)) .. '"') or ("ERROR: " .. tostring(data)))
+            parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. (isJSON and ('  "followers_error": "' .. EscapeJSON(tostring(data)) .. '"') or ("ERROR: " .. tostring(data)))
         end
     end
-    if LoboExporterDB.exportCompletedAchievs then parts[#parts+1] = (isJSON and (#parts > 1 and ",
-" or "") or "
-") .. GetAchievementsData(true, false, isJSON) end
-    if LoboExporterDB.exportIncompleteAchievs then parts[#parts+1] = (isJSON and (#parts > 1 and ",
-" or "") or "
-") .. GetAchievementsData(false, true, isJSON) end
+    if LoboExporterDB.exportCompletedAchievs then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetAchievementsData(true, false, isJSON) end
+    if LoboExporterDB.exportIncompleteAchievs then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetAchievementsData(false, true, isJSON) end
     
-    if isJSON then parts[#parts+1] = "
-}" end
-    return table.concat(parts, isJSON and "" or "
-")
+    if isJSON then parts[#parts+1] = "\n}" end
+    return table.concat(parts, isJSON and "" or "\n")
 end
 
 -- ==========================================================
@@ -603,8 +577,8 @@ local UIFrame = CreateFrame("Frame", "LoboExporterFrame", UIParent)
 UIFrame:SetSize(700, 620)
 UIFrame:SetPoint("CENTER")
 UIFrame:SetBackdrop({
-    bgFile = "Interface\DialogFrame\UI-DialogBox-Background",
-    edgeFile = "Interface\DialogFrame\UI-DialogBox-Border",
+    bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+    edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
     tile = true, tileSize = 32, edgeSize = 32,
     insets = { left = 11, right = 12, top = 12, bottom = 11 }
 })
@@ -617,7 +591,7 @@ UIFrame:Hide()
 tinsert(UISpecialFrames, "LoboExporterFrame")
 
 local TitleTexture = UIFrame:CreateTexture(nil, "ARTWORK")
-TitleTexture:SetTexture("Interface\DialogFrame\UI-DialogBox-Header")
+TitleTexture:SetTexture("Interface\\DialogFrame\\UI-DialogBox-Header")
 TitleTexture:SetWidth(420)
 TitleTexture:SetHeight(64)
 TitleTexture:SetPoint("TOP", UIFrame, "TOP", 0, 12)
@@ -690,8 +664,8 @@ local ScrollBG = CreateFrame("Frame", nil, UIFrame)
 ScrollBG:SetPoint("TOPLEFT", ScrollFrame, "TOPLEFT", -6, 6)
 ScrollBG:SetPoint("BOTTOMRIGHT", ScrollFrame, "BOTTOMRIGHT", 26, -6)
 ScrollBG:SetBackdrop({
-    bgFile = "Interface\Tooltips\UI-Tooltip-Background",
-    edgeFile = "Interface\Tooltips\UI-Tooltip-Border",
+    bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+    edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
     tile = true, tileSize = 16, edgeSize = 16,
     insets = { left = 4, right = 4, top = 4, bottom = 4 }
 })
@@ -721,13 +695,13 @@ end)
 local ProgressBar = CreateFrame("StatusBar", nil, UIFrame)
 ProgressBar:SetSize(620, 24)
 ProgressBar:SetPoint("BOTTOM", UIFrame, "BOTTOM", 0, 20)
-ProgressBar:SetStatusBarTexture("Interface\TargetingFrame\UI-StatusBar")
+ProgressBar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
 ProgressBar:SetStatusBarColor(0.2, 0.8, 0.2)
 ProgressBar:Hide()
 
 ProgressBar.bg = ProgressBar:CreateTexture(nil, "BACKGROUND")
 ProgressBar.bg:SetAllPoints()
-ProgressBar.bg:SetTexture("Interface\TargetingFrame\UI-StatusBar")
+ProgressBar.bg:SetTexture("Interface\\TargetingFrame\\UI-StatusBar")
 ProgressBar.bg:SetVertexColor(0.1, 0.1, 0.1, 0.8)
 
 ProgressBar.text = ProgressBar:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
@@ -749,7 +723,7 @@ local function CreateStatusLine(parent, label, yOffset)
     frame.icon = frame:CreateTexture(nil, "ARTWORK")
     frame.icon:SetSize(24, 24)
     frame.icon:SetPoint("LEFT", frame, "LEFT", 0, 0)
-    frame.icon:SetTexture("Interface\RAIDFRAME\ReadyCheck-NotReady")
+    frame.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-NotReady")
     
     frame.label = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
     frame.label:SetPoint("LEFT", frame.icon, "RIGHT", 10, 0)
@@ -771,26 +745,26 @@ local function UpdateStatusUI()
     local st = LoboExporterDB.ExportStatus
     
     if st.raidItems and st.raidItems > 0 then
-        StatusRaid.icon:SetTexture("Interface\RAIDFRAME\ReadyCheck-Ready")
+        StatusRaid.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-Ready")
         StatusRaid.info:SetText(string.format("|cff00FF00✅ Completado|r (%d objetos) - %s", st.raidItems, st.raidDate or ""))
     else
-        StatusRaid.icon:SetTexture("Interface\RAIDFRAME\ReadyCheck-NotReady")
+        StatusRaid.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-NotReady")
         StatusRaid.info:SetText("|cffFF3333❌ Pendiente|r")
     end
     
     if st.dungeonItems and st.dungeonItems > 0 then
-        StatusDungeon.icon:SetTexture("Interface\RAIDFRAME\ReadyCheck-Ready")
+        StatusDungeon.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-Ready")
         StatusDungeon.info:SetText(string.format("|cff00FF00✅ Completado|r (%d objetos) - %s", st.dungeonItems, st.dungeonDate or ""))
     else
-        StatusDungeon.icon:SetTexture("Interface\RAIDFRAME\ReadyCheck-NotReady")
+        StatusDungeon.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-NotReady")
         StatusDungeon.info:SetText("|cffFF3333❌ Pendiente|r")
     end
     
     if st.charDate then
-        StatusChar.icon:SetTexture("Interface\RAIDFRAME\ReadyCheck-Ready")
+        StatusChar.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-Ready")
         StatusChar.info:SetText(string.format("|cff00FF00✅ Completado|r - %s", st.charDate))
     else
-        StatusChar.icon:SetTexture("Interface\RAIDFRAME\ReadyCheck-NotReady")
+        StatusChar.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-NotReady")
         StatusChar.info:SetText("|cffFF3333❌ Pendiente|r")
     end
 end
@@ -810,9 +784,7 @@ ExportDungeonBtn:SetText("🏰 Extraer Botín de MAZMORRAS")
 
 local DbDesc = PanelLoot:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
 DbDesc:SetPoint("TOP", PanelLoot, "TOP", 0, -90)
-DbDesc:SetText("Las extracciones recorrerán todas las instancias, jefes, dificultades
-y las 12 clases para garantizar que no se pierda ningún objeto.
-Puede tardar unos 10-15 segundos. El juego NO se congelará.")
+DbDesc:SetText("Las extracciones recorrerán todas las instancias, jefes, dificultades\ny las 12 clases para garantizar que no se pierda ningún objeto.\nPuede tardar unos 10-15 segundos. El juego NO se congelará.")
 
 local function OnProgress(processed, total)
     ProgressBar:Show()
@@ -841,11 +813,7 @@ ExportRaidBtn:SetScript("OnClick", function()
         ProgressBar:Hide()
         ExportRaidBtn:Enable()
         ExportDungeonBtn:Enable()
-        EditBox:SetText("¡Completado! ("..count.." objetos)
-
-La base de datos se ha guardado en la memoria de LoboExporter.
-
-Recuerda escribir /reload en el chat para guardarlo al disco (WTF).")
+        EditBox:SetText("¡Completado! ("..count.." objetos)\n\nLa base de datos se ha guardado en la memoria de LoboExporter.\n\nRecuerda escribir /reload en el chat para guardarlo al disco (WTF).")
         print("|cffFF7D0A[LoboExporter]|r Botín de Bandas exportado con éxito.")
     end)
 end)
@@ -870,11 +838,7 @@ ExportDungeonBtn:SetScript("OnClick", function()
         ProgressBar:Hide()
         ExportRaidBtn:Enable()
         ExportDungeonBtn:Enable()
-        EditBox:SetText("¡Completado! ("..count.." objetos)
-
-La base de datos se ha guardado en la memoria de LoboExporter.
-
-Recuerda escribir /reload en el chat para guardarlo al disco (WTF).")
+        EditBox:SetText("¡Completado! ("..count.." objetos)\n\nLa base de datos se ha guardado en la memoria de LoboExporter.\n\nRecuerda escribir /reload en el chat para guardarlo al disco (WTF).")
         print("|cffFF7D0A[LoboExporter]|r Botín de Mazmorras exportado con éxito.")
     end)
 end)
@@ -981,7 +945,6 @@ SearchEditBox:SetSize(250, 24)
 SearchEditBox:SetPoint("LEFT", SearchLabel, "RIGHT", 10, 0)
 SearchEditBox:SetAutoFocus(false)
 SearchEditBox:SetScript("OnEnterPressed", function(self)
-    -- Lógica de búsqueda original
     local query = self:GetText()
     self:ClearFocus()
     if not query or query == "" then EditBox:SetText("Escribe algo para buscar..."); return end
@@ -991,9 +954,7 @@ SearchEditBox:SetScript("OnEnterPressed", function(self)
         local results = {}
         local found = 0
         local isJSON = LoboExporterDB.formatJSON
-        if isJSON then results[#results+1] = "{
-  "searchQuery": "" .. EscapeJSON(query) .. "",
-  "results": [" else results[#results+1] = "=== RESULTADOS DE BÚSQUEDA: '" .. query .. "' ===" end
+        if isJSON then results[#results+1] = "{\n  \"searchQuery\": \"" .. EscapeJSON(query) .. "\",\n  \"results\": [" else results[#results+1] = "=== RESULTADOS DE BÚSQUEDA: '" .. query .. "' ===" end
         local matchItems = {}
         for _, catID in ipairs(cats) do
             local num = GetCategoryNumAchievements(catID)
@@ -1007,13 +968,9 @@ SearchEditBox:SetScript("OnEnterPressed", function(self)
                 end
             end
         end
-        if isJSON then results[#results+1] = table.concat(matchItems, ",
-"); results[#results+1] = "  ]
-}"
-        else results[#results+1] = string.format("
-Total encontrados: %d logros.", found) end
-        EditBox:SetText(table.concat(results, "
-"))
+        if isJSON then results[#results+1] = table.concat(matchItems, ",\n"); results[#results+1] = "  ]\n}"
+        else results[#results+1] = string.format("\nTotal encontrados: %d logros.", found) end
+        EditBox:SetText(table.concat(results, "\n"))
         EditBox:SetFocus()
         EditBox:HighlightText()
     end)
