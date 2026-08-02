@@ -1,3 +1,7 @@
+## [v2.0.5] - 2026-08-02
+### Modificado
+- Cambiado el comportamiento de la extracción de bandas y mazmorras a petición manual. Ya no se recorrerán forzosamente las 12 clases una por una para sacar el botín de todo el mundo; ahora el Addon **únicamente extraerá los objetos de la clase que tengas seleccionada en ese momento en tu Guía de Aventuras**. Esto permite un control total y selectivo del botín que deseas exportar.
+
 ## [v2.0.4] - 2026-08-02
 ### Arreglado
 - Parcheado un problema por el cual, al terminar de exportar los objetos, el filtro de la Guía de Aventuras se quedaba atascado en la clase "Cazador de Demonios". Ahora el AddOn recuerda tu filtro original y lo restaura al terminar.

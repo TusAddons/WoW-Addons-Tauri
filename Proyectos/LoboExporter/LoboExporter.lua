@@ -380,9 +380,11 @@ local function ExportRaidLootAsync(progressCallback, callback)
                     EJ_SetDifficulty(diff[1])
                     local seenItems = {}
                     
-                    for classID = 1, 12 do
-                        EJ_SetLootFilter(classID, 0)
-                        local numLoot = EJ_GetNumLoot()
+                    if origClass and origClass > 0 then
+                        EJ_SetLootFilter(origClass, 0) -- Todas las especializaciones de la clase actual
+                    end
+                    
+                    local numLoot = EJ_GetNumLoot()
                         for j = 1, numLoot do
                             local infoName, _, infoSlot, _, infoItemID, infoLink = EJ_GetLootInfoByIndex(j)
                             local itemID = infoItemID or 0
@@ -413,7 +415,6 @@ local function ExportRaidLootAsync(progressCallback, callback)
                                 end
                             end
                         end
-                    end
                 end
                 
                 bossesProcessed = bossesProcessed + 1
@@ -470,9 +471,11 @@ local function ExportDungeonLootAsync(progressCallback, callback)
                     EJ_SetDifficulty(diff[1])
                     local seenItems = {}
                     
-                    for classID = 1, 12 do
-                        EJ_SetLootFilter(classID, 0)
-                        local numLoot = EJ_GetNumLoot()
+                    if origClass and origClass > 0 then
+                        EJ_SetLootFilter(origClass, 0) -- Todas las especializaciones de la clase actual
+                    end
+                    
+                    local numLoot = EJ_GetNumLoot()
                         for j = 1, numLoot do
                             local vals = { EJ_GetLootInfoByIndex(j) }
                             local itemID = 0
@@ -514,7 +517,6 @@ local function ExportDungeonLootAsync(progressCallback, callback)
                                 end
                             end
                         end
-                    end
                 end
                 
                 bossesProcessed = bossesProcessed + 1
@@ -878,7 +880,7 @@ end
 
 ExportRaidBtn:SetScript("OnClick", function()
     SetButtonsEnabled(false)
-    EditBox:SetText("Iniciando extracción de bandas... (Revisando clases 1-12 por cada jefe)")
+    EditBox:SetText("Iniciando extracción de bandas... (Extrayendo solo para la clase seleccionada en la Guía de Aventuras)")
     ProgressBar:SetMinMaxValues(0, 100)
     ProgressBar:SetValue(0)
     ProgressBar.text:SetText("Progreso: 0%")
@@ -901,7 +903,7 @@ end)
 
 ExportDungeonBtn:SetScript("OnClick", function()
     SetButtonsEnabled(false)
-    EditBox:SetText("Iniciando extracción de mazmorras... (Revisando clases 1-12 por cada jefe)")
+    EditBox:SetText("Iniciando extracción de mazmorras... (Extrayendo solo para la clase seleccionada en la Guía de Aventuras)")
     ProgressBar:SetMinMaxValues(0, 100)
     ProgressBar:SetValue(0)
     ProgressBar.text:SetText("Progreso: 0%")
@@ -924,7 +926,7 @@ end)
 
 ExportRaidCopyBtn:SetScript("OnClick", function()
     SetButtonsEnabled(false)
-    LoboExporter_ShowTextPaginated("Iniciando extracción de bandas para copiar...")
+    LoboExporter_ShowTextPaginated("Iniciando extracción de bandas para copiar... (Sólo la clase seleccionada)")
     ProgressBar:SetMinMaxValues(0, 100)
     ProgressBar:SetValue(0)
     ProgressBar.text:SetText("Progreso: 0%")
@@ -942,7 +944,7 @@ end)
 
 ExportDungeonCopyBtn:SetScript("OnClick", function()
     SetButtonsEnabled(false)
-    LoboExporter_ShowTextPaginated("Iniciando extracción de mazmorras para copiar...")
+    LoboExporter_ShowTextPaginated("Iniciando extracción de mazmorras para copiar... (Sólo la clase seleccionada)")
     ProgressBar:SetMinMaxValues(0, 100)
     ProgressBar:SetValue(0)
     ProgressBar.text:SetText("Progreso: 0%")
