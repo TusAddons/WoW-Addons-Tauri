@@ -96,26 +96,15 @@ local function ChatFilter(self, event, msg, sender, ...)
         return false, msg, sender, ...
     end
 
-    local newMsg = RomanizeString(msg)
+    local newMsg = msg and RomanizeString(msg) or msg
     local newSender = sender and RomanizeString(sender) or sender
     
-    if newSender ~= sender then
+    if sender and newSender ~= sender then
         RealNames[newSender] = sender
         RealNames[newSender:lower()] = sender
-        
-        -- Also store without realm name for local whispers
-        local rawSender = sender:match("([^%-]+)")
-        local rawNewSender = newSender:match("([^%-]+)")
-        if rawSender and rawNewSender then
-            RealNames[rawNewSender] = rawSender
-            RealNames[rawNewSender:lower()] = rawSender
-        end
     end
     
-    if newMsg ~= msg or newSender ~= sender then
-        return false, newMsg, newSender, ...
-    end
-    return false, msg, sender, ...
+    return false, newMsg, newSender, ...
 end
 
 local events = {
@@ -231,21 +220,6 @@ initFrame:SetScript("OnEvent", function(self, event, addon)
             romanizeGreek = true,
             useTags = true
         }
-        
-        -- Hook de AddMessage definitivo (atrapa Prat y ElvUI antes de imprimir)
-        for i = 1, NUM_CHAT_WINDOWS do
-            local cf = _G["ChatFrame"..i]
-            if cf and cf ~= COMBATLOG and cf.AddMessage then
-                local origAddMessage = cf.AddMessage
-                cf.AddMessage = function(self, text, r, g, b, id)
-                    if ChatFontFixDB and ChatFontFixDB.enabled and type(text) == "string" then
-                        text = RomanizeString(text)
-                    end
-                    return origAddMessage(self, text, r, g, b, id)
-                end
-            end
-        end
-
         self:UnregisterEvent("ADDON_LOADED")
     end
 end)
