@@ -1,3 +1,7 @@
+## [v2.0.6] - 2026-08-02
+### Arreglado
+- Parcheado un error provocado por la API nativa de WoW 7.3.5 al leer el botín, la cual devolvía el `itemID` disfrazado de nombre. Esto provocaba que algunos abalorios y reliquias extraños tuvieran de nombre su ID (ej. `139325`) y el `slot` estuviese ocupado erróneamente por el nombre real (`Apéndices espontáneos`). La lógica de lectura ha sido reconstruida de manera 100% robusta contra los caprichos del cliente antiguo de WoW.
+
 ## [v2.0.5] - 2026-08-02
 ### Modificado
 - Cambiado el comportamiento de la extracción de bandas y mazmorras a petición manual. Ya no se recorrerán forzosamente las 12 clases una por una para sacar el botín de todo el mundo; ahora el Addon **únicamente extraerá los objetos de la clase que tengas seleccionada en ese momento en tu Guía de Aventuras**. Esto permite un control total y selectivo del botín que deseas exportar.

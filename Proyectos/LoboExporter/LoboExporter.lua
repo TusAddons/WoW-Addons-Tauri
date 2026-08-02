@@ -386,14 +386,34 @@ local function ExportRaidLootAsync(progressCallback, callback)
                     
                     local numLoot = EJ_GetNumLoot()
                         for j = 1, numLoot do
-                            local infoName, _, infoSlot, _, infoItemID, infoLink = EJ_GetLootInfoByIndex(j)
-                            local itemID = infoItemID or 0
-                            if infoLink and itemID == 0 then
-                                local foundID = string.match(infoLink, "item:(%d+)")
+                            local vals = { EJ_GetLootInfoByIndex(j) }
+                            local itemID = 0
+                            local itemLink = nil
+                            local infoName = nil
+                            local infoSlot = nil
+                            
+                            for _, v in ipairs(vals) do
+                                if type(v) == "string" then
+                                    if string.find(v, "Hitem:") then
+                                        itemLink = v
+                                    elseif string.find(v, "Interface") then
+                                        -- ignorar icono
+                                    elseif v == "Tela" or v == "Placas" or v == "Malla" or v == "Cuero" or v == "Reliquia" or v == "Cloth" or v == "Plate" or v == "Mail" or v == "Leather" or v == "Relic" then
+                                        -- ignorar armorType
+                                    elseif string.len(v) > 2 and string.match(v, "[%a%s]+") then
+                                        if not infoName then infoName = v else infoSlot = v end
+                                    end
+                                elseif type(v) == "number" and v > 1000 then
+                                    itemID = v
+                                end
+                            end
+                            
+                            if itemLink and itemID == 0 then
+                                local foundID = string.match(itemLink, "item:(%d+)")
                                 if foundID then itemID = tonumber(foundID) end
                             end
                             
-                            local query = infoLink or itemID
+                            local query = itemLink or itemID
                             if query and query ~= 0 and not seenItems[itemID] then
                                 local itemName, _, _, _, _, _, itemSubType, _, itemEquipLoc = GetItemInfo(query)
                                 if not itemName or itemName == "" then itemName = infoName end
