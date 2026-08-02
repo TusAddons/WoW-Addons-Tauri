@@ -1,28 +1,32 @@
 local WorldBossTracker = WorldBossTracker or {}
 
+local locale = GetLocale()
+local function GetL(en, es)
+    if locale == "esES" or locale == "esMX" then return es else return en end
+end
+
 -- Lista de misiones de Jefes de Mundo en Legion y Argus
 WorldBossTracker.legionBosses = {
     -- Islas Abruptas (Semanal)
-    { id = 43193, name = "Calamir" },
-    { id = 43448, name = "Cazadores de Almas" },
-    { id = 43192, name = "Cosechador de almas" },
-    { id = 42270, name = "Levantus" },
-    { id = 43512, name = "Ana-Mouz" },
-    { id = 42269, name = "Nithogg" },
-    { id = 43152, name = "Naz'ak el Maligno" },
-    { id = 43451, name = "Shar'thos" },
-    { id = 42779, name = "Shivermaw" },
-    { id = 43985, name = "Drugon el Sangrehielo" },
-    { id = 43450, name = "Humongris" },
-    { id = 42819, name = "Withered J'im" },
+    { id = 43193, name = GetL("Calamir", "Calamir") },
+    { id = 43448, name = GetL("The Soultakers", "Cazadores de Almas") },
+    { id = 42270, name = GetL("Levantus", "Levantus") },
+    { id = 43512, name = GetL("Ana-Mouz", "Ana-Mouz") },
+    { id = 42269, name = GetL("Nithogg", "Nithogg") },
+    { id = 43152, name = GetL("Na'zak the Fiend", "Naz'ak el Maligno") },
+    { id = 43451, name = GetL("Shar'thos", "Shar'thos") },
+    { id = 42779, name = GetL("Shivermaw", "Escarcha") },
+    { id = 43985, name = GetL("Drugon the Frostblood", "Drugon el Sangrehielo") },
+    { id = 43450, name = GetL("Humongris", "Humongris") },
+    { id = 42819, name = GetL("Withered J'im", "Withered J'im") },
     
     -- Jefes de Mundo de Argus (Invasiones Mayores)
-    { id = 49202, name = "Matrona Folnuna" },
-    { id = 49203, name = "Maestro Alluradel" },
-    { id = 49204, name = "Inquisidor Meto" },
-    { id = 49205, name = "Ocularus" },
-    { id = 49206, name = "Pit Lord Vilemus" },
-    { id = 49207, name = "Sotanathor" }
+    { id = 49202, name = GetL("Matron Folnuna", "Matrona Folnuna") },
+    { id = 49203, name = GetL("Mistress Alluradel", "Señora Alluradel") },
+    { id = 49204, name = GetL("Inquisitor Meto", "Inquisidor Meto") },
+    { id = 49205, name = GetL("Ocularus", "Ocularus") },
+    { id = 49206, name = GetL("Pit Lord Vilemus", "Señor del foso Vilemus") },
+    { id = 49207, name = GetL("Sotanathor", "Sotanathor") }
 }
 
 function WorldBossTracker.GetActiveLegionBosses()

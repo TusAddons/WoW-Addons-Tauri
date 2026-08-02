@@ -274,7 +274,7 @@ function WorldBossTracker.UpdateUI()
             bar:SetMinMaxValues(0, 1)
             bar:SetValue(1)
             bar:SetStatusBarColor(0.2, 0.2, 0.2)
-            bar.label:SetText(rareName .. " |cff888888(Sin datos)|r")
+            bar.label:SetText((rData.locName or rareName) .. " |cff888888(Sin datos)|r")
             bar.timeText:SetText("--")
         else
             local elapsed = now - lastKill
@@ -283,13 +283,13 @@ function WorldBossTracker.UpdateUI()
             
             if remain == 0 then
                 bar:SetStatusBarColor(0.2, 0.8, 0.2)
-                bar.label:SetText(rareName .. " |cff00ff00(Activo / Vivo)|r")
+                bar.label:SetText((rData.locName or rareName) .. " |cff00ff00(Activo / Vivo)|r")
                 bar.timeText:SetText("¡VIVO!")
             else
                 bar:SetStatusBarColor(0.8, 0.2, 0.2)
                 local m = math.floor(remain / 60)
                 local s = remain % 60
-                bar.label:SetText(rareName)
+                bar.label:SetText(rData.locName or rareName)
                 bar.timeText:SetText(string.format("%02d:%02d", m, s))
             end
         end
