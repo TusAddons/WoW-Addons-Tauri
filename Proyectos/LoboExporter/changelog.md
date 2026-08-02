@@ -1,3 +1,14 @@
+## [v2.0.0] - 2026-08-02
+### Añadido
+- Rediseño arquitectónico completo de la interfaz gráfica usando un sistema de pestañas (Tabs).
+- Barra de progreso interactiva (0% - 100%) en tiempo real al exportar bases de datos.
+- Sistema de escaneo de 12 clases por jefe para garantizar que se obtienen absolutamente todos los objetos sin saltarse ninguno.
+- Panel de "Dashboard" que te dice cuándo fue la última vez que exportaste cada cosa.
+
+### Cambiado
+- El botón de extraer mazmorras y bandas ahora deshabilita los demás botones para evitar problemas de cuelgues.
+- Reestructuración de la base de datos `LoboExporterDB.ExportStatus` para guardar el historial.
+
 
 ## Recuperado del Historial de Discord
 🐺 ¡ESTRENO EXCLUSIVO: LOBOEXPORTER! 🐺
