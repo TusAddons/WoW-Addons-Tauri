@@ -1,3 +1,8 @@
+## [v2.0.3] - 2026-08-02
+### Arreglado
+- Parcheado un cuelgue del cliente de WoW (freeze/crasheo) que ocurría al intentar imprimir más de 1 Megabyte de texto JSON de golpe en el cuadro de texto (`EditBox`) tras usar los botones de copiado de mazmorras/bandas.
+- Se ha implementado un nuevo **Sistema de Paginación** interno. Ahora el AddOn dividirá automáticamente los textos gigantes en bloques seguros de 40,000 caracteres, permitiéndote navegar por ellos con los nuevos botones `<` y `>` para ir copiando las partes de manera 100% fluida y segura.
+
 ## [v2.0.2] - 2026-08-02
 ### Añadido
 - Añadidos dos nuevos botones a la pestaña "Bases de Datos (BiS)" ("Generar Texto de BANDAS/MAZMORRAS para Copiar").

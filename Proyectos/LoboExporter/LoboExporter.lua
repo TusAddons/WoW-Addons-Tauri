@@ -676,17 +676,84 @@ EditBox:SetMultiLine(true)
 EditBox:SetFontObject("ChatFontNormal")
 EditBox:SetAutoFocus(false)
 EditBox:EnableKeyboard(true)
+EditBox:SetMaxBytes(10000000)
 EditBox:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
 ScrollFrame:SetScrollChild(EditBox)
 
+local currentPages = {}
+local currentPageIdx = 1
+
 local CopyAllBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
-CopyAllBtn:SetSize(200, 24)
+CopyAllBtn:SetSize(160, 24)
 CopyAllBtn:SetPoint("BOTTOMRIGHT", ScrollFrame, "TOPRIGHT", 0, 5)
 CopyAllBtn:SetText("📋 Seleccionar Todo")
 CopyAllBtn:SetScript("OnClick", function()
     EditBox:SetFocus()
     EditBox:HighlightText()
 end)
+
+local PageText = UIFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+PageText:SetPoint("RIGHT", CopyAllBtn, "LEFT", -10, 0)
+PageText:SetText("Pág. 1/1")
+
+local NextPageBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
+NextPageBtn:SetSize(30, 24)
+NextPageBtn:SetPoint("RIGHT", PageText, "LEFT", -5, 0)
+NextPageBtn:SetText(">")
+
+local PrevPageBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
+PrevPageBtn:SetSize(30, 24)
+PrevPageBtn:SetPoint("RIGHT", NextPageBtn, "LEFT", -5, 0)
+PrevPageBtn:SetText("<")
+
+local function UpdatePaginationUI()
+    if #currentPages <= 1 then
+        PrevPageBtn:Hide()
+        NextPageBtn:Hide()
+        PageText:Hide()
+    else
+        PrevPageBtn:Show()
+        NextPageBtn:Show()
+        PageText:Show()
+        PageText:SetText(string.format("Pág. %d/%d", currentPageIdx, #currentPages))
+        PrevPageBtn:SetEnabled(currentPageIdx > 1)
+        NextPageBtn:SetEnabled(currentPageIdx < #currentPages)
+    end
+end
+
+PrevPageBtn:SetScript("OnClick", function()
+    if currentPageIdx > 1 then
+        currentPageIdx = currentPageIdx - 1
+        EditBox:SetText(currentPages[currentPageIdx])
+        UpdatePaginationUI()
+    end
+end)
+
+NextPageBtn:SetScript("OnClick", function()
+    if currentPageIdx < #currentPages then
+        currentPageIdx = currentPageIdx + 1
+        EditBox:SetText(currentPages[currentPageIdx])
+        UpdatePaginationUI()
+    end
+end)
+
+function LoboExporter_ShowTextPaginated(text)
+    currentPages = {}
+    currentPageIdx = 1
+    local limit = 40000
+    if #text <= limit then
+        table.insert(currentPages, text)
+    else
+        local idx = 1
+        while idx <= #text do
+            local slice = string.sub(text, idx, idx + limit - 1)
+            table.insert(currentPages, slice)
+            idx = idx + limit
+        end
+    end
+    EditBox:SetText(currentPages[1] or "")
+    UpdatePaginationUI()
+end
 
 -- ==========================================================
 -- BARRA DE PROGRESO GLOBAL
@@ -834,7 +901,7 @@ ExportRaidBtn:SetScript("OnClick", function()
         
         ProgressBar:Hide()
         SetButtonsEnabled(true)
-        EditBox:SetText("¡Completado! ("..count.." objetos)\n\nLa base de datos se ha guardado en la memoria de LoboExporter.\n\nRecuerda escribir /reload en el chat para guardarlo al disco (WTF).")
+        LoboExporter_ShowTextPaginated("¡Completado! ("..count.." objetos)\n\nLa base de datos se ha guardado en la memoria de LoboExporter.\n\nRecuerda escribir /reload en el chat para guardarlo al disco (WTF).")
         print("|cffFF7D0A[LoboExporter]|r Botín de Bandas exportado con éxito.")
     end)
 end)
@@ -857,14 +924,14 @@ ExportDungeonBtn:SetScript("OnClick", function()
         
         ProgressBar:Hide()
         SetButtonsEnabled(true)
-        EditBox:SetText("¡Completado! ("..count.." objetos)\n\nLa base de datos se ha guardado en la memoria de LoboExporter.\n\nRecuerda escribir /reload en el chat para guardarlo al disco (WTF).")
+        LoboExporter_ShowTextPaginated("¡Completado! ("..count.." objetos)\n\nLa base de datos se ha guardado en la memoria de LoboExporter.\n\nRecuerda escribir /reload en el chat para guardarlo al disco (WTF).")
         print("|cffFF7D0A[LoboExporter]|r Botín de Mazmorras exportado con éxito.")
     end)
 end)
 
 ExportRaidCopyBtn:SetScript("OnClick", function()
     SetButtonsEnabled(false)
-    EditBox:SetText("Iniciando extracción de bandas para copiar...")
+    LoboExporter_ShowTextPaginated("Iniciando extracción de bandas para copiar...")
     ProgressBar:SetMinMaxValues(0, 100)
     ProgressBar:SetValue(0)
     ProgressBar.text:SetText("Progreso: 0%")
@@ -873,7 +940,7 @@ ExportRaidCopyBtn:SetScript("OnClick", function()
     ExportRaidLootAsync(OnProgress, function(json, count)
         ProgressBar:Hide()
         SetButtonsEnabled(true)
-        EditBox:SetText(json)
+        LoboExporter_ShowTextPaginated(json)
         EditBox:SetFocus()
         EditBox:HighlightText()
         print("|cffFF7D0A[LoboExporter]|r Texto generado, listo para CTRL+C.")
@@ -882,7 +949,7 @@ end)
 
 ExportDungeonCopyBtn:SetScript("OnClick", function()
     SetButtonsEnabled(false)
-    EditBox:SetText("Iniciando extracción de mazmorras para copiar...")
+    LoboExporter_ShowTextPaginated("Iniciando extracción de mazmorras para copiar...")
     ProgressBar:SetMinMaxValues(0, 100)
     ProgressBar:SetValue(0)
     ProgressBar.text:SetText("Progreso: 0%")
@@ -891,7 +958,7 @@ ExportDungeonCopyBtn:SetScript("OnClick", function()
     ExportDungeonLootAsync(OnProgress, function(json, count)
         ProgressBar:Hide()
         SetButtonsEnabled(true)
-        EditBox:SetText(json)
+        LoboExporter_ShowTextPaginated(json)
         EditBox:SetFocus()
         EditBox:HighlightText()
         print("|cffFF7D0A[LoboExporter]|r Texto generado, listo para CTRL+C.")
@@ -941,7 +1008,7 @@ GenerateBtn:SetScript("OnClick", function()
     EditBox:SetText("Generando datos, por favor espera...")
     C_Timer.After(0.05, function()
         local result = GenerateExport()
-        EditBox:SetText(result)
+        LoboExporter_ShowTextPaginated(result)
         EditBox:SetFocus()
         EditBox:HighlightText()
         
@@ -971,7 +1038,7 @@ BikiniBtn:SetScript("OnClick", function()
         for _, itemID in ipairs(ids) do GetItemInfo(itemID) end
     end
     C_Timer.After(1.5, function()
-        EditBox:SetText(GetBikiniDataJSON())
+        LoboExporter_ShowTextPaginated(GetBikiniDataJSON())
         EditBox:SetFocus()
         EditBox:HighlightText()
         print("|cffFF7D0A[LoboExporter]|r Datos de transfiguración (Bikini Plate) listos para copiar.")
@@ -1025,7 +1092,7 @@ SearchEditBox:SetScript("OnEnterPressed", function(self)
         end
         if isJSON then results[#results+1] = table.concat(matchItems, ",\n"); results[#results+1] = "  ]\n}"
         else results[#results+1] = string.format("\nTotal encontrados: %d logros.", found) end
-        EditBox:SetText(table.concat(results, "\n"))
+        LoboExporter_ShowTextPaginated(table.concat(results, "\n"))
         EditBox:SetFocus()
         EditBox:HighlightText()
     end)
