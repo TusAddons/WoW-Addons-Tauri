@@ -1,3 +1,7 @@
+## [v2.0.9] - 2026-08-02
+### Ajustes
+- Se ha incrementado drásticamente el límite de la paginación segura de 40.000 a 250.000 caracteres por página para reducir en gran medida el número de páginas necesarias durante exportaciones masivas, asumiendo un equilibrio entre comodidad y riesgo de bloqueo de interfaz.
+
 ## [v2.0.8] - 2026-08-02
 ### Añadido
 - Añadida una casilla "Cargar todo (Riesgo crash)" encima de los botones de paginación. Si se activa, desactivará la división del texto en páginas.

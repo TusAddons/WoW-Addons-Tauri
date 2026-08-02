@@ -782,7 +782,7 @@ function LoboExporter_ShowTextPaginated(text)
     currentPages = {}
     currentPageIdx = 1
     
-    local limit = 40000
+    local limit = 250000 -- Aumentado de 40000 a 250000 para reducir el número de páginas
     if LoboExporterDB and LoboExporterDB.disablePagination then
         limit = 99999999
     end
