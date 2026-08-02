@@ -323,157 +323,180 @@ local function GetFollowersData(isJSON)
     end
 end
 
-local function GetRaidLootDataJSON()
-    local results = {}
-    
-    -- Seleccionar Tier 7 (Legion en 7.3.5)
-    EJ_SelectTier(7)
-    EJ_SetLootFilter(0, 0) -- Forzar exportación de TODAS las clases
-    
-    local raidIndex = 1
-    while true do
-        local instanceID, raidName = EJ_GetInstanceByIndex(raidIndex, true) -- true = raid
-        if not instanceID then break end
-        
-        EJ_SelectInstance(instanceID)
-        local i = 1
-        while true do
-            local bossName, description, bossID = EJ_GetEncounterInfoByIndex(i)
-            if not bossName then break end
-            
-            EJ_SelectEncounter(bossID)
-            
-            local diffs = { {14, "Normal"}, {15, "Heroico"}, {16, "Mítico"} }
-            
-            for _, diff in ipairs(diffs) do
-                EJ_SetDifficulty(diff[1])
-                local numLoot = EJ_GetNumLoot()
-                for j = 1, numLoot do
-                    local vals = { EJ_GetLootInfoByIndex(j) }
-                    local itemID = 0
-                    local itemLink = nil
-                    local backupName = ""
-                    local backupSlot = ""
-                    
-                    for _, v in ipairs(vals) do
-                        if type(v) == "string" then
-                            if string.find(v, "Hitem:") then
-                                itemLink = v
-                            elseif string.find(v, "Interface") then
-                                -- ignorar icono
-                            elseif v == "Tela" or v == "Placas" or v == "Malla" or v == "Cuero" or v == "Reliquia" or v == "Cloth" or v == "Plate" or v == "Mail" or v == "Leather" or v == "Relic" then
-                                -- ignorar armorType
-                            elseif string.len(v) > 2 then
-                                if backupName == "" then
-                                    backupName = v
-                                else
-                                    backupSlot = v
-                                end
-                            end
-                        end
-                    end
-                    
-                    if itemLink then
-                        local foundID = string.match(itemLink, "item:(%d+)")
-                        if foundID then itemID = tonumber(foundID) end
-                    end
-                    
-                    local query = itemLink or itemID
-                    if query and query ~= 0 then
-                        local itemName, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(query)
-                        if not itemName then itemName = backupName end
-                        if not itemEquipLoc then itemEquipLoc = backupSlot end
-                        
-                        if itemName and itemName ~= "" then
-                            results[#results+1] = string.format(
-                                '    {"raid": "%s", "boss": "%s", "difficulty": "%s", "itemName": "%s", "itemID": %d, "slot": "%s"}',
-                                EscapeJSON(raidName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(itemEquipLoc or "")
-                            )
-                        end
-                    end
-                end
+local function RunCoroutine(co)
+    local ticker
+    ticker = C_Timer.NewTicker(0.01, function()
+        if coroutine.status(co) ~= "dead" then
+            local success, err = coroutine.resume(co)
+            if not success then
+                print("|cffFF0000[LoboExporter] Error en exportación:|r", err)
+                ticker:Cancel()
             end
-            i = i + 1
+        else
+            ticker:Cancel()
         end
-        raidIndex = raidIndex + 1
-    end
-    return "{\n  \"raidLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}"
+    end)
 end
 
-local function GetDungeonLootDataJSON()
+
+local function ExportRaidLootAsync(callback)
     local results = {}
     
-    EJ_SelectTier(7)
-    EJ_SetLootFilter(0, 0) -- Forzar exportación de TODAS las clases
-    
-    local dungeonIndex = 1
-    while true do
-        local instanceID, instanceName = EJ_GetInstanceByIndex(dungeonIndex, false) -- false = mazmorra
-        if not instanceID then break end
+    local co = coroutine.create(function()
+        EJ_SelectTier(7)
+        EJ_SetLootFilter(0, 0) -- Forzar exportación de TODAS las clases
         
-        EJ_SelectInstance(instanceID)
-        local i = 1
+        local raidIndex = 1
         while true do
-            local bossName, description, bossID = EJ_GetEncounterInfoByIndex(i)
-            if not bossName then break end
+            local instanceID, raidName = EJ_GetInstanceByIndex(raidIndex, true) -- true = raid
+            if not instanceID then break end
             
-            EJ_SelectEncounter(bossID)
-            
-            local diffs = { {1, "Normal"}, {2, "Heroico"}, {23, "Mítico"} }
-            
-            for _, diff in ipairs(diffs) do
-                EJ_SetDifficulty(diff[1])
-                local numLoot = EJ_GetNumLoot()
-                for j = 1, numLoot do
-                    local vals = { EJ_GetLootInfoByIndex(j) }
-                    local itemID = 0
-                    local itemLink = nil
-                    local backupName = ""
-                    local backupSlot = ""
-                    
-                    for _, v in ipairs(vals) do
-                        if type(v) == "string" then
-                            if string.find(v, "Hitem:") then
-                                itemLink = v
-                            elseif string.find(v, "Interface") then
-                                -- ignorar icono
-                            elseif v == "Tela" or v == "Placas" or v == "Malla" or v == "Cuero" or v == "Reliquia" or v == "Cloth" or v == "Plate" or v == "Mail" or v == "Leather" or v == "Relic" then
-                                -- ignorar armorType
-                            elseif string.len(v) > 2 then
-                                if backupName == "" then
-                                    backupName = v
-                                else
-                                    backupSlot = v
+            EJ_SelectInstance(instanceID)
+            local i = 1
+            while true do
+                local bossName, description, bossID = EJ_GetEncounterInfoByIndex(i)
+                if not bossName then break end
+                
+                EJ_SelectEncounter(bossID)
+                
+                local diffs = { {14, "Normal"}, {15, "Heroico"}, {16, "Mítico"} }
+                
+                for _, diff in ipairs(diffs) do
+                    EJ_SetDifficulty(diff[1])
+                    local numLoot = EJ_GetNumLoot()
+                    for j = 1, numLoot do
+                        local vals = { EJ_GetLootInfoByIndex(j) }
+                        local itemID = 0
+                        local itemLink = nil
+                        local backupName = ""
+                        local backupSlot = ""
+                        
+                        for _, v in ipairs(vals) do
+                            if type(v) == "string" then
+                                if string.find(v, "Hitem:") then
+                                    itemLink = v
+                                elseif string.find(v, "Interface") then
+                                    -- ignorar icono
+                                elseif v == "Tela" or v == "Placas" or v == "Malla" or v == "Cuero" or v == "Reliquia" or v == "Cloth" or v == "Plate" or v == "Mail" or v == "Leather" or v == "Relic" then
+                                    -- ignorar armorType
+                                elseif string.len(v) > 2 then
+                                    if backupName == "" then
+                                        backupName = v
+                                    else
+                                        backupSlot = v
+                                    end
                                 end
                             end
                         end
-                    end
-                    
-                    if itemLink then
-                        local foundID = string.match(itemLink, "item:(%d+)")
-                        if foundID then itemID = tonumber(foundID) end
-                    end
-                    
-                    local query = itemLink or itemID
-                    if query and query ~= 0 then
-                        local itemName, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(query)
-                        if not itemName then itemName = backupName end
-                        if not itemEquipLoc then itemEquipLoc = backupSlot end
                         
-                        if itemName and itemName ~= "" then
-                            results[#results+1] = string.format(
-                                '    {"dungeon": "%s", "boss": "%s", "difficulty": "%s", "itemName": "%s", "itemID": %d, "slot": "%s"}',
-                                EscapeJSON(instanceName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(itemEquipLoc or "")
-                            )
+                        if itemLink then
+                            local foundID = string.match(itemLink, "item:(%d+)")
+                            if foundID then itemID = tonumber(foundID) end
+                        end
+                        
+                        local query = itemLink or itemID
+                        if query and query ~= 0 then
+                            local itemName, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(query)
+                            if not itemName then itemName = backupName end
+                            if not itemEquipLoc then itemEquipLoc = backupSlot end
+                            
+                            if itemName and itemName ~= "" then
+                                results[#results+1] = string.format(
+                                    '    {"raid": "%s", "boss": "%s", "difficulty": "%s", "itemName": "%s", "itemID": %d, "slot": "%s"}',
+                                    EscapeJSON(raidName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(itemEquipLoc or "")
+                                )
+                            end
                         end
                     end
                 end
+                i = i + 1
+                coroutine.yield() -- Yield after each boss to prevent client freeze
             end
-            i = i + 1
+            raidIndex = raidIndex + 1
         end
-        dungeonIndex = dungeonIndex + 1
-    end
-    return "{\n  \"dungeonLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}"
+        callback("{\n  \"raidLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}")
+    end)
+    RunCoroutine(co)
+end
+
+local function ExportDungeonLootAsync(callback)
+    local results = {}
+    
+    local co = coroutine.create(function()
+        EJ_SelectTier(7)
+        EJ_SetLootFilter(0, 0) -- Forzar exportación de TODAS las clases
+        
+        local dungeonIndex = 1
+        while true do
+            local instanceID, instanceName = EJ_GetInstanceByIndex(dungeonIndex, false) -- false = mazmorra
+            if not instanceID then break end
+            
+            EJ_SelectInstance(instanceID)
+            local i = 1
+            while true do
+                local bossName, description, bossID = EJ_GetEncounterInfoByIndex(i)
+                if not bossName then break end
+                
+                EJ_SelectEncounter(bossID)
+                
+                local diffs = { {1, "Normal"}, {2, "Heroico"}, {23, "Mítico"} }
+                
+                for _, diff in ipairs(diffs) do
+                    EJ_SetDifficulty(diff[1])
+                    local numLoot = EJ_GetNumLoot()
+                    for j = 1, numLoot do
+                        local vals = { EJ_GetLootInfoByIndex(j) }
+                        local itemID = 0
+                        local itemLink = nil
+                        local backupName = ""
+                        local backupSlot = ""
+                        
+                        for _, v in ipairs(vals) do
+                            if type(v) == "string" then
+                                if string.find(v, "Hitem:") then
+                                    itemLink = v
+                                elseif string.find(v, "Interface") then
+                                    -- ignorar icono
+                                elseif v == "Tela" or v == "Placas" or v == "Malla" or v == "Cuero" or v == "Reliquia" or v == "Cloth" or v == "Plate" or v == "Mail" or v == "Leather" or v == "Relic" then
+                                    -- ignorar armorType
+                                elseif string.len(v) > 2 then
+                                    if backupName == "" then
+                                        backupName = v
+                                    else
+                                        backupSlot = v
+                                    end
+                                end
+                            end
+                        end
+                        
+                        if itemLink then
+                            local foundID = string.match(itemLink, "item:(%d+)")
+                            if foundID then itemID = tonumber(foundID) end
+                        end
+                        
+                        local query = itemLink or itemID
+                        if query and query ~= 0 then
+                            local itemName, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(query)
+                            if not itemName then itemName = backupName end
+                            if not itemEquipLoc then itemEquipLoc = backupSlot end
+                            
+                            if itemName and itemName ~= "" then
+                                results[#results+1] = string.format(
+                                    '    {"dungeon": "%s", "boss": "%s", "difficulty": "%s", "itemName": "%s", "itemID": %d, "slot": "%s"}',
+                                    EscapeJSON(instanceName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(itemEquipLoc or "")
+                                )
+                            end
+                        end
+                    end
+                end
+                i = i + 1
+                coroutine.yield() -- Yield after each boss
+            end
+            dungeonIndex = dungeonIndex + 1
+        end
+        callback("{\n  \"dungeonLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}")
+    end)
+    RunCoroutine(co)
 end
 
 local function GenerateExport()
@@ -1074,10 +1097,9 @@ SlashCmdList["LOBOEXPORTER"] = function(msg)
     end
     if msg == "raidloot" then
         if not UIFrame:IsShown() then UIFrame:Show() end
-        EditBox:SetText("Extrayendo objetos de las bandas de Legion... (Esto puede tardar unos segundos)")
+        EditBox:SetText("Extrayendo objetos de las bandas de Legion... (Esto puede tardar unos segundos, el juego no se congelará)")
         
-        C_Timer.After(0.5, function()
-            local json = GetRaidLootDataJSON()
+        ExportRaidLootAsync(function(json)
             EditBox:SetText(json)
             EditBox:SetFocus()
             EditBox:HighlightText()
@@ -1087,10 +1109,9 @@ SlashCmdList["LOBOEXPORTER"] = function(msg)
     end
     if msg == "dungeonloot" then
         if not UIFrame:IsShown() then UIFrame:Show() end
-        EditBox:SetText("Extrayendo objetos de las mazmorras de Legion... (Esto puede tardar unos segundos)")
+        EditBox:SetText("Extrayendo objetos de las mazmorras de Legion... (Esto puede tardar unos segundos, el juego no se congelará)")
         
-        C_Timer.After(0.5, function()
-            local json = GetDungeonLootDataJSON()
+        ExportDungeonLootAsync(function(json)
             EditBox:SetText(json)
             EditBox:SetFocus()
             EditBox:HighlightText()
