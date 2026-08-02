@@ -1,3 +1,7 @@
+## [v2.0.1] - 2026-08-02
+### Arreglado
+- Solucionado un error grave que impedía la carga completa del Addon (`attempt to index local 'tab' (a nil value)`) debido a un conflicto de nombres con el sistema nativo de pestañas de la interfaz (PanelTemplates). El addon vuelve a cargar perfectamente al escribir `/lex`.
+
 ## [v2.0.0] - 2026-08-02
 ### Añadido
 - Rediseño arquitectónico completo de la interfaz gráfica usando un sistema de pestañas (Tabs).
