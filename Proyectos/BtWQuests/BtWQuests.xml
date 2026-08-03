@@ -104,7 +104,7 @@
 						end
 					</OnLeave>
 					<OnClick>
-						ToggleDropDownMenu(nil, nil, self:GetParent());
+						L_ToggleDropDownMenu(nil, nil, self:GetParent());
 						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 					</OnClick>
 				</Scripts>
@@ -144,7 +144,7 @@
 		</Frames>
 		<Scripts>
 			<OnHide>
-				CloseDropDownMenus();
+				L_CloseDropDownMenus();
 			</OnHide>
 		</Scripts>
 	</Frame>
@@ -473,8 +473,8 @@
 				</Anchors>
 				<Scripts>
 					<OnShow>
-						UIDropDownMenu_SetWidth(self, 156, 23 * 2);
-						UIDropDownMenu_Initialize(self, BtWQuestsCharacterDropDown_Initialize);
+						L_UIDropDownMenu_SetWidth(self, 156, 23 * 2);
+						L_UIDropDownMenu_Initialize(self, BtWQuestsCharacterDropDown_Initialize);
 					</OnShow>
 				</Scripts>
 			</Frame>
@@ -543,16 +543,16 @@
 					</Layer>
 				</Layers>
 				<Frames>
-					<Frame name="$parentExpansionDropDown" parentKey="ExpansionDropDown" inherits="UIDropDownMenuTemplate">
+					<Frame name="$parentExpansionDropDown" parentKey="ExpansionDropDown" inherits="L_UIDropDownMenuTemplate">
 						<Size x="156" y="32"/>
 						<Anchors>
 							<Anchor point="TOPRIGHT" x="0" y="-10"/>
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								UIDropDownMenu_SetWidth(self, 156);
-								UIDropDownMenu_JustifyText(self, "LEFT");
-								UIDropDownMenu_Initialize(self, BtWQuestsExpansionDropDown_Initialize);
+								L_UIDropDownMenu_SetWidth(self, 156);
+								L_UIDropDownMenu_JustifyText(self, "LEFT");
+								L_UIDropDownMenu_Initialize(self, BtWQuestsExpansionDropDown_Initialize);
 							</OnShow>
 						</Scripts>
 					</Frame>

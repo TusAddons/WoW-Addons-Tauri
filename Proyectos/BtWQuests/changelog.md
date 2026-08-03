@@ -1,3 +1,7 @@
+## [v2.3-tauri] - 2026-08-03
+### Arreglado
+- **Taint Fix (`CompactUnitFrame.lua`)**: Solucionado el infame error de taint que provocaba crasheos al renderizar placas de nombre (`nameplates`) durante el combate (`Attempt to access forbidden object from code tainted by an AddOn`). El problema era originado por el uso del menú desplegable nativo de Blizzard (`UIDropDownMenu`). Se ha portado todo el código y las plantillas XML del addon para utilizar la librería independiente `LibUIDropDownMenu`, eliminando completamente la fuga de taint hacia los marcos de unidad.
+
 ## [v2.2-tauri] - 2026-08-02
 ### Arreglado
 - **Restricciones de Facción (Alianza/Horda)**: Definidas las constantes `Restrictions.Alliance` y `Restrictions.Horde` en la capa de compatibilidad. Los datos de expansiones clásicas (TBC, WotLK, etc.) ahora ocultan correctamente las cadenas de misiones de la facción contraria, eliminando las entradas duplicadas en los menús de categorías.

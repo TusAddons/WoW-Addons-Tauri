@@ -106,7 +106,7 @@ function BtWQuests_SelectExpansion(id, scrollTo, noHistory)
 	    local questSelect = BtWQuests.QuestSelect;
         local tierData = BTWQUESTS_EXPANSION_DATA[expansion];
         questSelect.bg:SetTexture(tierData.backgroundTexture);
-        UIDropDownMenu_SetText(questSelect.ExpansionDropDown, BtWQuests_GetExpansionInfo(BtWQuests_GetCurrentExpansion()));
+        L_UIDropDownMenu_SetText(questSelect.ExpansionDropDown, BtWQuests_GetExpansionInfo(BtWQuests_GetCurrentExpansion()));
     end
 
     BtWQuests_DisplayCurrentCategory(scrollTo)
@@ -148,7 +148,7 @@ function BtWQuests_SelectCategory(id, scrollTo, noHistory)
 	    local questSelect = BtWQuests.QuestSelect;
         local tierData = BTWQUESTS_EXPANSION_DATA[expansion];
         questSelect.bg:SetTexture(tierData.backgroundTexture);
-        UIDropDownMenu_SetText(questSelect.ExpansionDropDown, BtWQuests_GetExpansionInfo(BtWQuests_GetCurrentExpansion()));
+        L_UIDropDownMenu_SetText(questSelect.ExpansionDropDown, BtWQuests_GetExpansionInfo(BtWQuests_GetCurrentExpansion()));
     end
 
     BtWQuests_DisplayCurrentCategory(scrollTo)
@@ -184,7 +184,7 @@ function BtWQuests_SelectChain(id, scrollTo, noHistory)
 	    local questSelect = BtWQuests.QuestSelect;
         local tierData = BTWQUESTS_EXPANSION_DATA[expansion];
         questSelect.bg:SetTexture(tierData.backgroundTexture);
-        UIDropDownMenu_SetText(questSelect.ExpansionDropDown, BtWQuests_GetExpansionInfo(BtWQuests_GetCurrentExpansion()));
+        L_UIDropDownMenu_SetText(questSelect.ExpansionDropDown, BtWQuests_GetExpansionInfo(BtWQuests_GetCurrentExpansion()));
     end
 
     BtWQuests_DisplayCurrentChain(scrollTo)
@@ -1461,7 +1461,7 @@ function BtWQuests_OnLoad(self)
     local realm = GetRealmName()
     self.CharacterDropDown.xOffset = 8
     self.CharacterDropDown.yOffset = 15
-    UIDropDownMenu_SetText(self.CharacterDropDown, name .. "-" .. realm)
+    L_UIDropDownMenu_SetText(self.CharacterDropDown, name .. "-" .. realm)
     
 	local homeData = {
 		name = HOME,
@@ -1632,7 +1632,7 @@ function BtWQuests_OnShow(self)
         if expansion and BTWQUESTS_EXPANSION_DATA[expansion] then
             local tierData = BTWQUESTS_EXPANSION_DATA[expansion];
             questSelect.bg:SetTexture(tierData.backgroundTexture);
-            UIDropDownMenu_SetText(questSelect.ExpansionDropDown, BtWQuests_GetExpansionInfo(BtWQuests_GetCurrentExpansion()));
+            L_UIDropDownMenu_SetText(questSelect.ExpansionDropDown, BtWQuests_GetExpansionInfo(BtWQuests_GetCurrentExpansion()));
         end
     end
     
@@ -2448,12 +2448,12 @@ function BtWQuestsCharacterDropDown_Initialize(self, level)
     local name = UnitName("player")
     local realm = GetRealmName()
 
-	local info = UIDropDownMenu_CreateInfo();
+	local info = L_UIDropDownMenu_CreateInfo();
     info.text = name .. "-" .. realm;
     info.func = BtWQuestsCharacterDropDown_Select
     info.checked = BtWQuests_Character.realm == realm and BtWQuests_Character.name == name;
     info.arg1 = BtWQuests_CharactersMap[realm][name];
-    UIDropDownMenu_AddButton(info, level)
+    L_UIDropDownMenu_AddButton(info, level)
 
     for _,character in ipairs(BtWQuests_Characters) do
         if character.name ~= name or character.realm ~= realm then
@@ -2461,7 +2461,7 @@ function BtWQuestsCharacterDropDown_Initialize(self, level)
             info.func = BtWQuestsCharacterDropDown_Select
             info.checked = BtWQuests_Character.realm == character.realm and BtWQuests_Character.name == character.name;
             info.arg1 = character;
-            UIDropDownMenu_AddButton(info, level)
+            L_UIDropDownMenu_AddButton(info, level)
         end
     end
 end
@@ -2473,7 +2473,7 @@ function BtWQuestsCharacterDropDown_Select(self, character)
     BtWQuests_Character = character
     BtWQuests_CharacterIsPlayer = (character.realm == realm and character.name == name)
 
-    UIDropDownMenu_SetText(BtWQuests.CharacterDropDown, character.name .. "-" .. character.realm);
+    L_UIDropDownMenu_SetText(BtWQuests.CharacterDropDown, character.name .. "-" .. character.realm);
     
     if BtWQuests_CurrentChain ~= nil then
         BtWQuests_SelectChain(BtWQuests_CurrentChain)
@@ -2488,7 +2488,7 @@ end
 -- [[ Expansion Dropdown ]]
 
 function BtWQuestsExpansionDropDown_Initialize(self, level)
-	local info = UIDropDownMenu_CreateInfo();
+	local info = L_UIDropDownMenu_CreateInfo();
 	local numTiers = BtWQuests_GetExpansionCount();
 	local current = BtWQuests_GetCurrentExpansion();
     for i=0,numTiers - 1 do
@@ -2497,7 +2497,7 @@ function BtWQuestsExpansionDropDown_Initialize(self, level)
             info.func = BtWQuestsExpansionDropDown_Select
             info.checked = i == current;
             info.arg1 = i;
-            UIDropDownMenu_AddButton(info, level)
+            L_UIDropDownMenu_AddButton(info, level)
         end
 	end
 end
