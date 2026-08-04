@@ -1,0 +1,86 @@
+------------------------------------------------------------------------
+r212 | Tuhljin | 2018-06-05 19:07:48 +0000 (Tue, 05 Jun 2018) | 1 line
+Changed paths:
+   M /trunk/Overachiever_Tabs/Suggestions.lua
+   M /trunk/readme.txt
+
+- Suggestions Tab: Updated suggestions for Ulduar to account for 10- and 25-man achievements being replaced by new any-raid-size achievements.
+------------------------------------------------------------------------
+r211 | Tuhljin | 2018-06-04 23:05:34 +0000 (Mon, 04 Jun 2018) | 1 line
+Changed paths:
+   M /trunk/Overachiever_Tabs/localization.lua
+
+Fix syntax error.
+------------------------------------------------------------------------
+r210 | Tuhljin | 2018-06-04 22:52:13 +0000 (Mon, 04 Jun 2018) | 1 line
+Changed paths:
+   M /trunk/Overachiever_Tabs/localization.lua
+
+Use localization substitution fix for all locales.
+------------------------------------------------------------------------
+r209 | Tuhljin | 2018-06-04 22:37:58 +0000 (Mon, 04 Jun 2018) | 1 line
+Changed paths:
+   M /trunk/Overachiever_Tabs/localization.lua
+
+Some trial and error since localization substitution isn't properly documented any more.
+------------------------------------------------------------------------
+r208 | Tuhljin | 2018-06-04 22:30:52 +0000 (Mon, 04 Jun 2018) | 1 line
+Changed paths:
+   M /trunk/Overachiever_Tabs/localization.lua
+
+- Adjust localization to handle new output from the CurseForge localization system. (It still seems to have problems but they are less serious and we should be able to work around them.)
+------------------------------------------------------------------------
+r207 | Tuhljin | 2018-06-04 21:14:41 +0000 (Mon, 04 Jun 2018) | 1 line
+Changed paths:
+   M /trunk/Overachiever_Tabs/localization.lua
+   M /trunk/Overachiever_Trade/localization.lua
+   M /trunk/localization.lua
+
+- Use the CurseForge localization substitution system again instead of hardcoded strings. (The problem with it on their side should be resolved now.)
+------------------------------------------------------------------------
+r206 | Tuhljin | 2018-06-04 12:27:55 +0000 (Mon, 04 Jun 2018) | 3 lines
+Changed paths:
+   M /trunk/Calendar.lua
+   M /trunk/GameTip.lua
+   M /trunk/Options.lua
+   M /trunk/Overachiever.lua
+   M /trunk/Overachiever_Tabs/Suggestions.lua
+   M /trunk/localization.lua
+   M /trunk/readme.txt
+
+- New option added to exclude guild achievements from "need to kill" reminders.
+- Fixed an issue where taint could be introduced when clicking a hyperlink.
+- Fixed an error that can occur if the Tabs module is disabled and a holiday toast is clicked.
+------------------------------------------------------------------------
+r205 | Tuhljin | 2018-06-03 10:35:18 +0000 (Sun, 03 Jun 2018) | 2 lines
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/Overachiever.toc
+   M /trunk/Overachiever_Tabs/Overachiever_Tabs.toc
+   M /trunk/Overachiever_Trade/Overachiever_Trade.toc
+   M /trunk/libs
+   D /trunk/libs/LibBabble-SubZone-3.0
+
+- Fix version in TOC files.
+- Revert adjustments made to work around a previous issue with including LibBabble-SubZone-3.0 library. (The issue may have been resolved by now.)
+------------------------------------------------------------------------
+r204 | Tuhljin | 2018-06-03 09:59:09 +0000 (Sun, 03 Jun 2018) | 3 lines
+Changed paths:
+   M /trunk
+   M /trunk/AchieveID.lua
+   M /trunk/Overachiever_Tabs/Search.lua
+   M /trunk/Overachiever_Tabs/Suggestions.lua
+   M /trunk/Overachiever_Tabs/Watch.lua
+   M /trunk/Overachiever_Tabs/build.lua
+   M /trunk/Overachiever_Tabs/localization.lua
+   M /trunk/Overachiever_Trade/localization.lua
+   M /trunk/Templates.xml
+   M /trunk/libs/TjAchieve.lua
+   M /trunk/libs/TjThreads.lua
+   M /trunk/readme.txt
+
+- Added achievements for Argus zones to exploration auto-tracking.
+- Suggestions Tab: Added suggestions for Argus zones, the Seat of the Triumvirate, and Antorus, the Burning Throne.
+- Tabs module: Added text overlay to indicate when the achievement completion filter (earned or incomplete) has caused an achievement to be omitted from the Search results or a Watch list.
+------------------------------------------------------------------------
+
