@@ -29,11 +29,11 @@ jobs:
           done
           
       - name: Upload to GitHub Releases
-        uses: ncipollo/release-action@v1
+        uses: softprops/action-gh-release@v2
         with:
-          allowUpdates: true
-          replacesArtifacts: true
-          tag: "latest"
+          tag_name: "latest"
           name: "Última Versión"
-          artifacts: "release_assets/*.zip"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          files: release_assets/*.zip
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
