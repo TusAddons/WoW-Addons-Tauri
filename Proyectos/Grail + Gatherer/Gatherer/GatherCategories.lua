@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 	Gatherable Nodes, type groupings definitions
 	Gatherer Addon for World of Warcraft(tm).
 	Version: 7.3.1 (<%codename%>)
@@ -104,6 +104,7 @@ ObjectCategories = {
 	[245324] = "ORE_RLEYSTONE", -- Rich Leystone Deposit
 	[253280] = "ORE_SEAMLEYSTONE", -- Leystone Seam
 	[241743] = "ORE_FELSLATE", -- Felslate Deposit
+	[244775] = "ORE_FELSLATE", -- Felslate Deposit (Alt)
 	[245325] = "ORE_RFELSLATE", -- Rich Felslate Deposit
 	[255344] = "ORE_SEAMFELSLATE", -- Felslate Seam
 	[272768] = "ORE_EMPYRIUM",  -- Empyrium Deposit

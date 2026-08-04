@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 	Icon set definitions
 	Gatherer Addon for World of Warcraft(tm).
 	Version: 7.3.1 (<%codename%>)
@@ -83,6 +83,7 @@ Gatherer.Icons = {
 	[245324] = "Mine\\Leystone", -- Rich Leystone Deposit
 	[253280] = "Mine\\Leystone", -- Leystone Seam
 	[241743] = "Mine\\Felslate", -- Felslate Deposit
+	[244775] = "Mine\\Felslate", -- Felslate Deposit (Alt)
 	[245325] = "Mine\\Felslate", -- Rich Felslate Deposit
 	[255344] = "Mine\\Felslate", -- Felslate Seam
 	[272768] = "Mine\\EmpyriumDeposit", -- Empyrium Deposit

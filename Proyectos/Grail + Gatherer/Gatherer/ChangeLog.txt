@@ -614,3 +614,5 @@ Deleted a rogue print2 statement.
 
 --------------
 Revision: $Id: ChangeLog.txt 1134 2014-11-14 01:27:24Z Esamynn $
+
+[v2.1] Fixed 'Unknown: 244775' error. Added Felslate Deposit (Alt) missing IDs to Categories and Icons.
