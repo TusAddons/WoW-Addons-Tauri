@@ -3355,166 +3355,44 @@ _G.GAC=addon
 -- =========================================================================
 local fallbackInfo = { buildingID = -1 }
 
-local function ProtectButton(btn)
-    if btn and type(btn) == "table" then
-        if not btn.info or type(btn.info) ~= "table" then
-            btn.info = fallbackInfo
-        end
-        if not btn.info.buildingID then
-            btn.info.buildingID = -1
-        end
-    end
-    return btn
-end
-
-local buttonsMT = {
-    __index = function(t, k)
-        local val = rawget(t, k)
-        if val and type(val) == "table" then
-            return ProtectButton(val)
-        end
-        if type(k) == "number" then
-            local dummyBtn = rawget(t, "_dummyBtn")
-            if not dummyBtn then
-                dummyBtn = CreateFrame("Button")
-                dummyBtn.info = fallbackInfo
-                dummyBtn.Name = dummyBtn:CreateFontString()
-                dummyBtn.Icon = dummyBtn:CreateTexture()
-                dummyBtn.BG = dummyBtn:CreateTexture()
-                dummyBtn.SelectedBG = dummyBtn:CreateTexture()
-                dummyBtn.Plans = dummyBtn:CreateTexture()
-                rawset(t, "_dummyBtn", dummyBtn)
-            end
-            return dummyBtn
-        end
-        return val
-    end,
-    __newindex = function(t, k, v)
-        if v and type(v) == "table" then
-            ProtectButton(v)
-        end
-        rawset(t, k, v)
-    end
-}
-
-local function SanitizeGarrisonBuildingButtons()
+local function FixGarrisonBuildingButtons()
     local frame = GarrisonBuildingFrame
-    if not frame or not frame.BuildingList then return end
-
-    if not frame.BuildingList.buttons then
-        frame.BuildingList.buttons = {}
-    end
-
-    local lists = { frame.BuildingList.buttons, frame.BuildingList.Buttons }
-    for _, list in ipairs(lists) do
-        if type(list) == "table" then
-            for i = 1, #list do
-                ProtectButton(list[i])
+    if not frame or not frame.BuildingList or not frame.BuildingList.buttons then return end
+    
+    for i = 1, #frame.BuildingList.buttons do
+        local btn = frame.BuildingList.buttons[i]
+        if btn and type(btn) == "table" then
+            if not btn.info or type(btn.info) ~= "table" then
+                btn.info = fallbackInfo
             end
-            for _, btn in pairs(list) do
-                ProtectButton(btn)
-            end
-            if getmetatable(list) ~= buttonsMT then
-                setmetatable(list, buttonsMT)
+            if not btn.info.buildingID then
+                btn.info.buildingID = -1
             end
         end
     end
-end
-
-local wrappedFunctions = {}
-
-local function InstallGarrisonBuildingUIHooks()
-    local frame = GarrisonBuildingFrame
-    if not frame or not frame.BuildingList then return end
-
-    SanitizeGarrisonBuildingButtons()
-
-    -- 1. Envolver GarrisonBuildingFrame_OnShow
-    local orig_FrameOnShow = _G.GarrisonBuildingFrame_OnShow or (frame.GetScript and frame:GetScript("OnShow"))
-    if type(orig_FrameOnShow) == "function" and not wrappedFunctions[orig_FrameOnShow] then
-        local safe_FrameOnShow = function(selfOrArg, ...)
-            SanitizeGarrisonBuildingButtons()
-            local res = orig_FrameOnShow(selfOrArg, ...)
-            SanitizeGarrisonBuildingButtons()
-            return res
-        end
-        wrappedFunctions[orig_FrameOnShow] = true
-        wrappedFunctions[safe_FrameOnShow] = true
-        _G.GarrisonBuildingFrame_OnShow = safe_FrameOnShow
-        if frame.SetScript then
-            frame:SetScript("OnShow", safe_FrameOnShow)
-        end
-    end
-
-    -- 2. Envolver y asegurar GarrisonBuildingList_SelectBuilding (en _G y en frame.BuildingList.SelectBuilding)
-    local orig_SelectBuilding = _G.GarrisonBuildingList_SelectBuilding or frame.BuildingList.SelectBuilding
-    if type(orig_SelectBuilding) == "function" and not wrappedFunctions[orig_SelectBuilding] then
-        local safe_SelectBuilding = function(selfOrArg, ...)
-            SanitizeGarrisonBuildingButtons()
-            return orig_SelectBuilding(selfOrArg, ...)
-        end
-        wrappedFunctions[orig_SelectBuilding] = true
-        wrappedFunctions[safe_SelectBuilding] = true
-        _G.GarrisonBuildingList_SelectBuilding = safe_SelectBuilding
-        if type(frame.BuildingList.SelectBuilding) == "function" then
-            frame.BuildingList.SelectBuilding = safe_SelectBuilding
-        end
-    end
-
-    -- 3. Envolver y asegurar GarrisonBuildingList_Update (en _G y en frame.BuildingList.Update)
-    local orig_Update = _G.GarrisonBuildingList_Update or frame.BuildingList.Update
-    if type(orig_Update) == "function" and not wrappedFunctions[orig_Update] then
-        local safe_Update = function(selfOrArg, ...)
-            SanitizeGarrisonBuildingButtons()
-            local res = orig_Update(selfOrArg, ...)
-            SanitizeGarrisonBuildingButtons()
-            return res
-        end
-        wrappedFunctions[orig_Update] = true
-        wrappedFunctions[safe_Update] = true
-        _G.GarrisonBuildingList_Update = safe_Update
-        if type(frame.BuildingList.Update) == "function" then
-            frame.BuildingList.Update = safe_Update
-        end
-    end
-
-    -- 4. Envolver y asegurar GarrisonBuildingList_Show (en _G y en frame.BuildingList.Show)
-    local orig_Show = _G.GarrisonBuildingList_Show or frame.BuildingList.Show
-    if type(orig_Show) == "function" and not wrappedFunctions[orig_Show] then
-        local safe_Show = function(selfOrArg, ...)
-            SanitizeGarrisonBuildingButtons()
-            local res = orig_Show(selfOrArg, ...)
-            SanitizeGarrisonBuildingButtons()
-            return res
-        end
-        wrappedFunctions[orig_Show] = true
-        wrappedFunctions[safe_Show] = true
-        _G.GarrisonBuildingList_Show = safe_Show
-        if type(frame.BuildingList.Show) == "function" then
-            frame.BuildingList.Show = safe_Show
-        end
-    end
-end
-
-InstallGarrisonBuildingUIHooks()
-if type(GarrisonBuildingList_Update) == "function" and not wrappedFunctions["hooked_Update"] then
-    wrappedFunctions["hooked_Update"] = true
-    hooksecurefunc("GarrisonBuildingList_Update", SanitizeGarrisonBuildingButtons)
 end
 
 local loaderFrame = CreateFrame("Frame")
 loaderFrame:RegisterEvent("ADDON_LOADED")
-loaderFrame:RegisterEvent("GARRISON_SHOW_LANDING_PAGE")
-loaderFrame:RegisterEvent("GARRISON_BUILDING_UPDATE")
 loaderFrame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == "Blizzard_GarrisonUI" then
-        InstallGarrisonBuildingUIHooks()
-        if type(GarrisonBuildingList_Update) == "function" and not wrappedFunctions["hooked_Update"] then
-            wrappedFunctions["hooked_Update"] = true
-            hooksecurefunc("GarrisonBuildingList_Update", SanitizeGarrisonBuildingButtons)
+    if arg1 == "Blizzard_GarrisonUI" then
+        if _G.GarrisonBuildingList_Update then
+            hooksecurefunc("GarrisonBuildingList_Update", FixGarrisonBuildingButtons)
         end
-    elseif event ~= "ADDON_LOADED" then
-        InstallGarrisonBuildingUIHooks()
+        if _G.GarrisonBuildingFrame_OnShow then
+            hooksecurefunc("GarrisonBuildingFrame_OnShow", FixGarrisonBuildingButtons)
+        end
+        FixGarrisonBuildingButtons()
     end
 end)
+
+if IsAddOnLoaded("Blizzard_GarrisonUI") then
+    if _G.GarrisonBuildingList_Update then
+        hooksecurefunc("GarrisonBuildingList_Update", FixGarrisonBuildingButtons)
+    end
+    if _G.GarrisonBuildingFrame_OnShow then
+        hooksecurefunc("GarrisonBuildingFrame_OnShow", FixGarrisonBuildingButtons)
+    end
+    FixGarrisonBuildingButtons()
+end
 -- =========================================================================
