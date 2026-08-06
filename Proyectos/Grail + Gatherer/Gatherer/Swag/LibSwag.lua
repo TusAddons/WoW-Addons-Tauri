@@ -398,28 +398,21 @@ if (create or update) then
 		-- Hook into the SetText of GameTooltip to catch the original setting of the tooltip
 		LibSwagFrame.ttLine = 0
 		-- Hook GameTooltipTextLeft1:SetText()
-		function LibSwagFrame.GameTooltipSetTextLeft1(this, ...)
+		hooksecurefunc(GameTooltipTextLeft1, "SetText", function(this, ...)
 			LibSwag.SetTooltip(1, ...)
-			LibSwagFrame.OldGameTooltipSetTextLeft1(this, ...)
-		end
-		LibSwagFrame.OldGameTooltipSetTextLeft1 = GameTooltipTextLeft1.SetText
-		GameTooltipTextLeft1.SetText = LibSwagFrame.GameTooltipSetTextLeft1
+		end)
+		
 		-- Hook GameTooltip:SetText() and keep track of the current line
-		function LibSwagFrame.GameTooltipSetText(this, ...)
+		hooksecurefunc(GameTooltip, "SetText", function(this, ...)
 			local line = LibSwagFrame.ttLine + 1
 			LibSwagFrame.ttLine = line
 			LibSwag.SetTooltip(line, ...)
-			LibSwagFrame.OldGameTooltipSetText(this, ...)
-		end
-		LibSwagFrame.OldGameTooltipSetText = GameTooltip.SetText
-		GameTooltip.SetText = LibSwagFrame.GameTooltipSetText
+		end)
+		
 		-- Hook GameTooltip:ClearLines to reset the line number
-		function LibSwagFrame.GameTooltipClearLines(this)
+		hooksecurefunc(GameTooltip, "ClearLines", function(this)
 			LibSwagFrame.ttLine = 0
-			LibSwagFrame.OldGameTooltipClearLines(this)
-		end
-		LibSwagFrame.OldGameTooltipClearLines = GameTooltip.ClearLines
-		GameTooltip.ClearLines = LibSwagFrame.GameTooltipClearLines
+		end)
 
 		-- Display the frame and set the event callback function
 		LibSwagFrame:Show()
