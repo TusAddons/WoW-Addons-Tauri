@@ -587,10 +587,49 @@ local function GenerateExport()
         end
     end
     if LoboExporterDB.exportCompletedAchievs then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetAchievementsData(true, false, isJSON) end
-    if LoboExporterDB.exportIncompleteAchievs then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetAchievementsData(false, true, isJSON) end
-    
     if isJSON then parts[#parts+1] = "\n}" end
     return table.concat(parts, isJSON and "" or "\n")
+end
+
+-- Base64 Encode function for the AI Token
+local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+local function encBase64(data)
+    return ((data:gsub('.', function(x) 
+        local r,b='',x:byte()
+        for i=8,1,-1 do r=r..(b%2^i-b%2^(i-1)>0 and '1' or '0') end
+        return r;
+    end)..'0000'):gsub('%d%d%d?%d?%d?%d?', function(x)
+        if (#x < 6) then return '' end
+        local c=0
+        for i=1,6 do c=c+(x:sub(i,i)=='1' and 2^(6-i) or 0) end
+        return b:sub(c+1,c+1)
+    end)..({ '', '==', '=' })[#data%3+1])
+end
+
+local function GenerateAIToken()
+    local playerName, playerRealm = UnitName("player"), GetRealmName()
+    
+    local parts = {}
+    parts[#parts+1] = '{'
+    parts[#parts+1] = string.format('  "verify": "%s-%s",', EscapeJSON(playerName), EscapeJSON(playerRealm))
+    parts[#parts+1] = '  "context": {'
+    
+    local contextParts = {}
+    if LoboExporterDB.exportCurrencies then contextParts[#contextParts+1] = '"currencies": ' .. GetCurrenciesData(true) end
+    if LoboExporterDB.exportReputations then contextParts[#contextParts+1] = '"reputations": ' .. GetReputationsData(true) end
+    if LoboExporterDB.exportFollowers then 
+        local ok, data = pcall(GetFollowersData, true)
+        if ok then contextParts[#contextParts+1] = '"followers": ' .. data end
+    end
+    if LoboExporterDB.exportCompletedAchievs then contextParts[#contextParts+1] = '"achievements_completed": ' .. GetAchievementsData(true, false, true) end
+    if LoboExporterDB.exportIncompleteAchievs then contextParts[#contextParts+1] = '"achievements_incomplete": ' .. GetAchievementsData(false, true, true) end
+    
+    parts[#parts+1] = table.concat(contextParts, ",\n")
+    parts[#parts+1] = '  }'
+    parts[#parts+1] = '}'
+    
+    local jsonStr = table.concat(parts, "\n")
+    return encBase64(jsonStr)
 end
 
 -- ==========================================================
@@ -1062,6 +1101,21 @@ GenerateBtn:SetScript("OnClick", function()
         LoboExporterDB.ExportStatus.charDate = date("%Y-%m-%d %H:%M:%S")
         UpdateStatusUI()
         print("|cffFF7D0A[LoboExporter]|r Datos del personaje generados.")
+    end)
+end)
+
+local AIBtn = CreateFrame("Button", nil, PanelChar, "UIPanelButtonTemplate")
+AIBtn:SetSize(280, 40)
+AIBtn:SetPoint("TOPLEFT", GenerateBtn, "BOTTOMLEFT", 0, -10)
+AIBtn:SetText("🤖 Obtener Token para IA (Discord)")
+AIBtn:SetScript("OnClick", function()
+    EditBox:SetText("Generando token encriptado...")
+    C_Timer.After(0.05, function()
+        local token = GenerateAIToken()
+        LoboExporter_ShowTextPaginated(token)
+        EditBox:SetFocus()
+        EditBox:HighlightText()
+        print("|cffFF7D0A[LoboExporter]|r Token de IA generado. Cópialo y pégalo en Discord con el comando /verificar_personaje")
     end)
 end)
 
