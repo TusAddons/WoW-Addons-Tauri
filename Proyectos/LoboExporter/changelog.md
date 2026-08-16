@@ -1,3 +1,89 @@
+# [v3.0.0] - 2026-08-16
+
+Reescritura completa del AddOn. Ninguna opción de la 2.x ha desaparecido.
+
+## Errores corregidos
+
+- **Recursión infinita en los comandos.** `/lex debug` y `/lex progreso` se
+  llamaban a sí mismos (`SlashCmdList["LOBOEXPORTER"]("debug")` dentro del
+  propio manejador de `"debug"`). Los botones *Mostrar Progreso* e *Info Mapa*
+  disparaban justo esos comandos, así que colgaban el cliente. Ahora cada
+  subcomando ejecuta su propia función.
+- **`UpdateLoboMapPins()` no existía.** Las dos casillas de la pestaña
+  "Opciones y Mapa" llamaban a una función que nunca se programó: pulsarlas
+  soltaba un error de Lua y la funcionalidad de pines estaba vacía. Ahora está
+  implementada de verdad (ver *LoboTracker*).
+- **`dungeonName` era una errata de `instanceName`.** Todo el botín de mazmorras
+  se exportaba con `"dungeon": ""`. Se exportaba mal desde la v2.0.0.
+- **El token para la IA generaba JSON inválido.** Concatenaba `"currencies": `
+  delante de un bloque que ya traía su propia clave `"wealth":`, produciendo
+  `"currencies":   "wealth": {...}`. El bot no podía parsearlo. Lo mismo con
+  reputaciones y logros.
+- **La casilla "Logros Pendientes" no hacía nada** en la exportación normal:
+  `GenerateExport` sólo miraba `exportCompletedAchievs`. Sólo tenía efecto en el
+  token.
+- **La casilla "Seguidores" no se restauraba** al abrir la ventana: `OnShow`
+  sincronizaba todas las casillas menos esa.
+- **Las opciones nuevas nunca llegaban a los usuarios antiguos.** El patrón
+  `LoboExporterDB = LoboExporterDB or {...}` conserva la tabla guardada tal
+  cual, así que cualquier clave añadida después salía `nil`. Ahora hay una
+  fusión de valores por defecto en `ADDON_LOADED`.
+- **Botín duplicado.** `seenItems` se reiniciaba en cada dificultad, así que el
+  mismo objeto se guardaba una vez por Normal, Heroico y Mítico.
+- **La Guía de Aventuras se quedaba tocada.** Se restauraba el filtro de clase
+  pero no el nivel (tier), la instancia ni la dificultad seleccionados.
+- **Faltaba la dificultad Buscador** en el escaneo de bandas.
+- **Los emoji no se ven en 7.3.5.** La fuente del cliente no los tiene y salían
+  como cuadros. Sustituidos por texturas del juego (`|T...|t`).
+
+## Novedades
+
+- **LoboTracker: pines en el mapa del mundo.** El cliente no expone en ninguna
+  API las coordenadas de un logro, así que el AddOn trae el motor completo más
+  un editor dentro del juego: te colocas en el sitio y pulsas *Añadir pin en mi
+  posición*, opcionalmente asociándolo a un ID de logro y a un criterio. El pin
+  se oculta solo al completarlo (o se queda con el check verde, según las dos
+  casillas de siempre). Clic derecho sobre un pin para borrarlo. Los pines se
+  guardan en SavedVariables y se exportan en JSON para compartirlos.
+- **Cancelar.** Cualquier exportación larga se puede detener a mitad.
+- **Nuevas secciones de exportación:** especialización y estadísticas
+  secundarias, talentos activos, profesiones y arma artefacto.
+- **Campeones de la Sede de Clase** además de los seguidores de Ciudadela.
+- **Datos de equipo más completos:** itemID, calidad, encantamiento y enlace.
+- **Reputaciones de amistad** (Nomi y compañía) con su escala correcta.
+- **La ventana se puede redimensionar** y recuerda tamaño y posición.
+- **`/lex ayuda`** con todos los comandos, y `/lex pin`, `/lex pines`,
+  `/lex buscar`, `/lex cancelar`, `/lex reset`.
+
+## Cambios internos
+
+- Dividido en 7 archivos (`Core`, `Data`, `Export_Character`, `Export_Journal`,
+  `Map`, `UI`, `Commands`) en vez de un único `.lua` de 1260 líneas.
+- **Los recolectores devuelven tablas Lua, no texto.** El JSON se serializa al
+  final con un codificador propio, así que es imposible generar JSON roto. Las
+  claves salen ordenadas, de modo que dos exportaciones iguales dan el mismo
+  texto (útil para cachear en el bot).
+- **Escaneo asíncrono por tiempo, no por elementos.** La corrutina cede el
+  control cada ~8 ms reales en vez de "cada N objetos", así que el juego no se
+  congela dé igual lo lento que sea el PC. Los logros, que antes se recorrían de
+  forma síncrona, ya no bloquean el cliente.
+- **Base64 reescrito** con aritmética por bytes; la versión anterior hacía
+  exponenciales carácter a carácter y tardaba segundos con textos grandes.
+- La lectura de `EJ_GetLootInfoByIndex` usa primero la firma posicional y sólo
+  recurre a la deducción por forma cuando el cliente devuelve los campos
+  descolocados, que es lo que pasa en Tauri con algunas reliquias.
+- El escaneo de logros se hace **una sola vez** aunque estén marcadas las dos
+  casillas de logros.
+
+## Verificación
+
+Se incluye un banco de pruebas (`test/`) con un simulador de la API de WoW que
+ejecuta el AddOn fuera del juego: **86 comprobaciones**, incluidas la validez
+del JSON generado, la decodificación del token y las regresiones de todos los
+errores listados arriba.
+
+---
+
 ## [v2.0.9] - 2026-08-02
 ### Ajustes
 - Se ha incrementado drásticamente el límite de la paginación segura de 40.000 a 250.000 caracteres por página para reducir en gran medida el número de páginas necesarias durante exportaciones masivas, asumiendo un equilibrio entre comodidad y riesgo de bloqueo de interfaz.
