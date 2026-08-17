@@ -1,0 +1,6 @@
+## Interface: 70300
+## Title: GarrisonBuildingFix
+## Author: Artiom97es
+## Notes: Evita el error "attempt to index field 'info' (a nil value)" en GarrisonBuildingList_SelectBuilding (Blizzard_GarrisonUI) cuando la lista de edificios aun no ha terminado de poblarse
+## Version: 1.0-Artiom97es
+core.lua
