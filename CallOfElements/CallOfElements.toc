@@ -1,0 +1,18 @@
+## Interface: 70300
+## Title: Call Of Elements
+## Notes: The All-In-One Shaman Addon
+## OptionalDeps: Chronos
+## SavedVariables: COE_Saved
+## SavedVariablesPerCharacter: COE_SavedTotemSets, COE_CustomTotemSets, COE_DisplayedTotems, COE_TotemBars
+## X-Curse-Packaged-Version: v6.13
+## X-Curse-Project-Name: Call of Elements
+## X-Curse-Project-ID: call-of-elements-continued
+## X-Curse-Repository-ID: wow/call-of-elements-continued/mainline
+
+# Embedded Chronos
+Chronos\Chronos.xml
+
+CallOfElements.xml
+COE_ConfigTemplates.xml
+COE_Config.xml
+COE_Totem.xml

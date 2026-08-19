@@ -1,0 +1,183 @@
+<!--
+
+	CALL OF ELEMENTS
+	The All-In-One Shaman Addon
+
+	by Wyverex (2006)
+
+
+	Key Bindings
+
+-->
+
+<Bindings>
+	<!-- Configuration dialog -->
+	<Binding name="COESHOWCONFIG"  header="CALLOFELEMENTS">
+		if( COE.Initialized ) then
+			COE_ToggleConfigFrame();
+		end
+	</Binding>
+
+	<!-- Healing functions -->
+	<Binding name="COEBESTHEAL">
+		if( COE.Initialized ) then
+			COE_Heal:BestHeal();
+		end
+	</Binding>
+	<Binding name="COEBATTLEHEAL">
+		if( COE.Initialized ) then
+			COE_Heal:BattleHeal();
+		end
+	</Binding>
+
+	<!-- Throw suggested totem -->
+	<!-- Throw suggested totem -->
+	<Binding name="COETHROWADVISED">
+        COE:Message("Disabled feature since WoW 2.0");
+		--if( COE.Initialized ) then
+			--COE_Totem:ThrowAdvisedTotem();
+		--end
+	</Binding>
+
+	<!-- Totem sets -->
+	<Binding name="COENEXTSET">
+		if( COE.Initialized ) then
+			COE_Totem:SwitchToNextSet();
+		end
+	</Binding>
+	<Binding name="COEDROPSET">
+		--COE:Message("Dummy message to prevent the binding to be removed by the game if it's empty");
+	</Binding>
+	<Binding name="COEDROPSET2">
+		--COE:Message("Dummy message to prevent the binding to be removed by the game if it's empty");
+	</Binding>
+	<Binding name="COETHROWSET">
+        COE:Message("Disabled feature since WoW 2.0 - Use new keybinding '"..BINDING_NAME_COEDROPSET.."' instead");
+		--if( COE.Initialized ) then
+			--COE_Totem:ThrowSet();
+		--end
+	</Binding>
+	<Binding name="COERESTARTSET">
+        COE:Message("Disabled feature since WoW 2.0 - Use new keybinding '"..BINDING_NAME_COEDROPSET.."' instead");
+		--if( COE.Initialized ) then
+			--COE_Totem:ResetSetCycle();
+		--end
+	</Binding>
+
+	<!-- Earth totems -->
+	<Binding name="TOTEMEARTH1">
+		--COE_Totem:ThrowTotem( "Earth", 1 );
+	</Binding>
+	<Binding name="TOTEMEARTH2">
+		--COE_Totem:ThrowTotem( "Earth", 2 );
+	</Binding>
+	<Binding name="TOTEMEARTH3">
+		--COE_Totem:ThrowTotem( "Earth", 3 );
+	</Binding>
+	<Binding name="TOTEMEARTH4">
+		--COE_Totem:ThrowTotem( "Earth", 4 );
+	</Binding>
+	<Binding name="TOTEMEARTH5">
+		--COE_Totem:ThrowTotem( "Earth", 5 );
+	</Binding>
+	<Binding name="TOTEMEARTH6">
+		--COE_Totem:ThrowTotem( "Earth", 6 );
+	</Binding>
+	<Binding name="TOTEMEARTH7">
+		--COE_Totem:ThrowTotem( "Earth", 7 );
+	</Binding>
+	<Binding name="TOTEMEARTH8">
+		--COE_Totem:ThrowTotem( "Earth", 8 );
+	</Binding>
+	<Binding name="TOTEMEARTH9">
+		--COE_Totem:ThrowTotem( "Earth", 9 );
+	</Binding>
+
+	<!-- Fire totems -->
+	<Binding name="TOTEMFIRE1">
+		--COE_Totem:ThrowTotem( "Fire", 1 );
+	</Binding>
+	<Binding name="TOTEMFIRE2">
+		--COE_Totem:ThrowTotem( "Fire", 2 );
+	</Binding>
+	<Binding name="TOTEMFIRE3">
+		--COE_Totem:ThrowTotem( "Fire", 3 );
+	</Binding>
+	<Binding name="TOTEMFIRE4">
+		--COE_Totem:ThrowTotem( "Fire", 4 );
+	</Binding>
+	<Binding name="TOTEMFIRE5">
+		--COE_Totem:ThrowTotem( "Fire", 5 );
+	</Binding>
+	<Binding name="TOTEMFIRE6">
+		--COE_Totem:ThrowTotem( "Fire", 6 );
+	</Binding>
+	<Binding name="TOTEMFIRE7">
+		--COE_Totem:ThrowTotem( "Fire", 7 );
+	</Binding>
+	<Binding name="TOTEMFIRE8">
+		--COE_Totem:ThrowTotem( "Fire", 8 );
+	</Binding>
+	<Binding name="TOTEMFIRE9">
+		--COE_Totem:ThrowTotem( "Fire", 9 );
+	</Binding>
+
+	<!-- Water totems -->
+	<Binding name="TOTEMWATER1">
+		--COE_Totem:ThrowTotem( "Water", 1 );
+	</Binding>
+	<Binding name="TOTEMWATER2">
+		--COE_Totem:ThrowTotem( "Water", 2 );
+	</Binding>
+	<Binding name="TOTEMWATER3">
+		--COE_Totem:ThrowTotem( "Water", 3 );
+	</Binding>
+	<Binding name="TOTEMWATER4">
+		--COE_Totem:ThrowTotem( "Water", 4 );
+	</Binding>
+	<Binding name="TOTEMWATER5">
+		--COE_Totem:ThrowTotem( "Water", 5 );
+	</Binding>
+	<Binding name="TOTEMWATER6">
+		--COE_Totem:ThrowTotem( "Water", 6 );
+	</Binding>
+	<Binding name="TOTEMWATER7">
+		--COE_Totem:ThrowTotem( "Water", 7 );
+	</Binding>
+	<Binding name="TOTEMWATER8">
+		--COE_Totem:ThrowTotem( "Water", 8 );
+	</Binding>
+	<Binding name="TOTEMWATER9">
+		--COE_Totem:ThrowTotem( "Water", 9 );
+	</Binding>
+
+	<!-- Air totems -->
+	<Binding name="TOTEMAIR1">
+		--COE_Totem:ThrowTotem( "Air", 1 );
+	</Binding>
+	<Binding name="TOTEMAIR2">
+		--COE_Totem:ThrowTotem( "Air", 2 );
+	</Binding>
+	<Binding name="TOTEMAIR3">
+		--COE_Totem:ThrowTotem( "Air", 3 );
+	</Binding>
+	<Binding name="TOTEMAIR4">
+		--COE_Totem:ThrowTotem( "Air", 4 );
+	</Binding>
+	<Binding name="TOTEMAIR5">
+		--COE_Totem:ThrowTotem( "Air", 5 );
+	</Binding>
+	<Binding name="TOTEMAIR6">
+		--COE_Totem:ThrowTotem( "Air", 6 );
+	</Binding>
+	<Binding name="TOTEMAIR7">
+		--COE_Totem:ThrowTotem( "Air", 7 );
+	</Binding>
+	<Binding name="TOTEMAIR8">
+		--COE_Totem:ThrowTotem( "Air", 8 );
+	</Binding>
+	<Binding name="TOTEMAIR9">
+		--COE_Totem:ThrowTotem( "Air", 9 );
+	</Binding>
+
+</Bindings>
