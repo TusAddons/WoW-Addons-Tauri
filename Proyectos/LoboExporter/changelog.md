@@ -1,3 +1,34 @@
+# [v3.0.2] - 2026-08-18
+
+Corrección sobre el token para la IA (botón "Obtener Token para IA" de la
+pestaña "Exportar Personaje" / comando `/lex verificar`).
+
+- **El token generaba JSON inválido y el bot lo rechazaba** ("El token
+  proporcionado es inválido"). `GenerateAIToken()` anteponía una clave
+  (`"currencies": `, `"reputations": `, `"followers": `,
+  `"achievements_completed": `, `"achievements_incomplete": `) delante de
+  cada bloque, pero esas funciones ya devuelven su propio JSON con su
+  propia clave (`"wealth"`, `"reputations"`, `"followers"`,
+  `"completedAchievements"`/`"incompleteAchievements"`/`"allAchievements"`),
+  así que el resultado quedaba con una clave pegada a otra sin separador
+  válido. Ahora cada bloque se usa tal cual lo devuelve su función. Este
+  era el mismo bug ya documentado (y arreglado) en la reescritura v3.0.0
+  de más abajo, pendiente de desplegar; aquí se corrige puntualmente sobre
+  la versión que corre en el juego.
+
+# [v3.0.1] - 2026-08-18
+
+Cambio pequeño sobre la versión que corre en el juego (la reescritura
+completa de más abajo, v3.0.0, sigue pendiente de desplegar sobre el
+cliente — se queda para más adelante).
+
+- **Nuevo comando `/lex verificar`**: abre el addon directamente en la
+  pestaña "Exportar Personaje", donde está el botón "Obtener Token para IA
+  (Discord)". No genera el token solo, únicamente lleva ahí al jugador.
+  El comando del bot de Discord para vincular la cuenta sigue siendo
+  `/verificar_personaje` (eso no cambia, solo se añadió el atajo dentro
+  del juego).
+
 # [v3.0.0] - 2026-08-16
 
 Reescritura completa del AddOn. Ninguna opción de la 2.x ha desaparecido.

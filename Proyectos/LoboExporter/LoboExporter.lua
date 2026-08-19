@@ -614,15 +614,19 @@ local function GenerateAIToken()
     parts[#parts+1] = string.format('  "verify": "%s-%s",', EscapeJSON(playerName), EscapeJSON(playerRealm))
     parts[#parts+1] = '  "context": {'
     
+    -- Nota: cada helper (GetCurrenciesData, GetReputationsData, GetFollowersData,
+    -- GetAchievementsData) ya devuelve su propio bloque JSON con su clave incluida
+    -- (p.ej. '"wealth": {...}'), así que aquí NO se debe anteponer otra clave o el
+    -- JSON queda inválido (clave seguida de clave, sin separador).
     local contextParts = {}
-    if LoboExporterDB.exportCurrencies then contextParts[#contextParts+1] = '"currencies": ' .. GetCurrenciesData(true) end
-    if LoboExporterDB.exportReputations then contextParts[#contextParts+1] = '"reputations": ' .. GetReputationsData(true) end
-    if LoboExporterDB.exportFollowers then 
+    if LoboExporterDB.exportCurrencies then contextParts[#contextParts+1] = GetCurrenciesData(true) end
+    if LoboExporterDB.exportReputations then contextParts[#contextParts+1] = GetReputationsData(true) end
+    if LoboExporterDB.exportFollowers then
         local ok, data = pcall(GetFollowersData, true)
-        if ok then contextParts[#contextParts+1] = '"followers": ' .. data end
+        if ok then contextParts[#contextParts+1] = data end
     end
-    if LoboExporterDB.exportCompletedAchievs then contextParts[#contextParts+1] = '"achievements_completed": ' .. GetAchievementsData(true, false, true) end
-    if LoboExporterDB.exportIncompleteAchievs then contextParts[#contextParts+1] = '"achievements_incomplete": ' .. GetAchievementsData(false, true, true) end
+    if LoboExporterDB.exportCompletedAchievs then contextParts[#contextParts+1] = GetAchievementsData(true, false, true) end
+    if LoboExporterDB.exportIncompleteAchievs then contextParts[#contextParts+1] = GetAchievementsData(false, true, true) end
     
     parts[#parts+1] = table.concat(contextParts, ",\n")
     parts[#parts+1] = '  }'
@@ -660,7 +664,7 @@ TitleTexture:SetPoint("TOP", UIFrame, "TOP", 0, 12)
 
 local TitleText = UIFrame:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
 TitleText:SetPoint("TOP", TitleTexture, "TOP", 0, -14)
-TitleText:SetText("|cffFF7D0ALobo|r Exporter & Tracker 2.0")
+TitleText:SetText("|cffFF7D0ALobo|r Exporter & Tracker 3.0")
 
 local CloseBtn = CreateFrame("Button", nil, UIFrame, "UIPanelCloseButton")
 CloseBtn:SetPoint("TOPRIGHT", UIFrame, "TOPRIGHT", -8, -8)
@@ -1246,7 +1250,15 @@ SlashCmdList["LOBOEXPORTER"] = function(msg)
         ExportDungeonBtn:Click()
         return
     end
-    
+    if msg == "verificar" then
+        -- Abre el addon directamente en la pestaña "Exportar Personaje",
+        -- donde está el botón "Obtener Token para IA (Discord)". No genera
+        -- el token automáticamente, solo lleva al jugador a la opción.
+        if not UIFrame:IsShown() then UIFrame:Show() end
+        SelectTab(3)
+        return
+    end
+
     if UIFrame:IsShown() then UIFrame:Hide() else UIFrame:Show() end
 end
 
