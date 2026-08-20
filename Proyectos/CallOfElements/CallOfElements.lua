@@ -142,13 +142,41 @@ if( not COE ) then
 	COE = {};
 end 
 
-COE_VERSION = 6.13
+COE_VERSION = 6.14
 
 COECOL_TOTEMWARNING = 1;
 COECOL_TOTEMDESTROYED = 2;
 COECOL_TOTEMCLEANSING = 3;
 
 COE_ActiveTalents = nil;
+
+--[[ ----------------------------------------------------------------
+	METHOD: COE_GetTalentGroup
+
+	PURPOSE: WoW removed the old dual-spec "talent group" API
+		(GetActiveTalentGroup) starting with Mists of Pandaria's
+		talent revamp, and Legion clients (like this Tauri 7.3.5
+		server) don't expose it at all. Calling it directly threw
+		a Lua error on every PLAYER_ENTERING_WORLD, which aborted
+		COE:CheckTalentSpecChanged() before COE_ActiveTalents was
+		ever set - and with COE_ActiveTalents left nil, every table
+		keyed by it (COE_TotemBars[COE_ActiveTalents], etc.) errored
+		too, which is why the totem bars never appeared and the
+		config panel misbehaved (e.g. the Totem Sets tab).
+		GetSpecialization() is the modern equivalent (1/2/3 for a
+		Shaman's Elemental/Enhancement/Restoration spec) and serves
+		the same purpose here: a stable per-spec index to save
+		distinct totem bar / totem set configs under.
+-------------------------------------------------------------------]]
+function COE_GetTalentGroup()
+	if( GetSpecialization ) then
+		return GetSpecialization() or 1;
+	elseif( GetActiveTalentGroup ) then
+		return GetActiveTalentGroup();
+	else
+		return 1;
+	end
+end
 
 --[[ ----------------------------------------------------------------
 	When DebugMode is set to true, all DebugMessage calls will
@@ -395,8 +423,8 @@ end
 
 function COE:CheckTalentSpecChanged(dont_scan)
   -- Check for SV init
-  if(COE_ActiveTalents ~= GetActiveTalentGroup()) then
-    COE_ActiveTalents = GetActiveTalentGroup();
+  if(COE_ActiveTalents ~= COE_GetTalentGroup()) then
+    COE_ActiveTalents = COE_GetTalentGroup();
     COE:Message("Switched to talent spec "..COE_ActiveTalents);
 
     if(COE_Saved[COE_ActiveTalents] == nil) then

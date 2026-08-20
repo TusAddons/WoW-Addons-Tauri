@@ -25,6 +25,7 @@ ahi ta la wea aesar
 - Parche Anti-Taint: Modificados los hooks inseguros de LibSwag.lua (SetText) a hooksecurefunc para evitar la propagación de errores de Taint a otros addons durante el combate.
 
 ## CallOfElements
+- v6.14 - Arreglado el bug que impedía ver las barras de tótems: el addon llamaba a `GetActiveTalentGroup()`, una API del sistema de dual-spec eliminada en Legion, en cada `PLAYER_ENTERING_WORLD`. Esto lanzaba un error Lua que abortaba la inicialización antes de fijar la especialización activa, y con ese dato en `nil` el addon volvía a fallar en cada frame al intentar mostrar la barra (por eso nunca aparecía) y también al abrir la pestaña "Totem Sets" del panel de configuración (por eso se quedaba superpuesta al cambiar de pestaña). Sustituido por un wrapper compatible (`COE_GetTalentGroup`) que usa `GetSpecialization()` en Legion.
 - CallOfElements v6.13 adaptado para Legion (7.3.5): resucitado y adaptado este clásico gestor de tótems (original de MoP) para que funcione en Legion sin errores Lua.
 - Arreglo del sistema de sonido: adaptado a los requisitos de la API 7.3 que rompían el addon al pulsar en los menús.
 - Limpieza de código obsoleto (Chronos): purgado y modernizado el uso de variables descontinuadas en toda su estructura, permitiendo que la configuración y las barras abran sin fallos.
