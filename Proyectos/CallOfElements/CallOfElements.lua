@@ -142,7 +142,7 @@ if( not COE ) then
 	COE = {};
 end 
 
-COE_VERSION = 6.14
+COE_VERSION = 6.15
 
 COECOL_TOTEMWARNING = 1;
 COECOL_TOTEMDESTROYED = 2;
@@ -175,6 +175,37 @@ function COE_GetTalentGroup()
 		return GetActiveTalentGroup();
 	else
 		return 1;
+	end
+end
+
+
+--[[ ----------------------------------------------------------------
+	METHOD: COE_GetNumPartyMembers
+
+	PURPOSE: GetNumPartyMembers() was removed from the WoW API (the
+		advisor's party scan in COE_TotemLogic.lua called it
+		directly, which errored with "attempt to call global
+		'GetNumPartyMembers' (a nil value)" every time the advisor
+		ran). GetNumGroupMembers() is the modern replacement: it
+		counts the player too and also counts raid members, so we
+		subtract 1 for the player and return 0 while in a raid to
+		match the old function's exact behaviour (only "party1".."party4"
+		style members, not raid members).
+-------------------------------------------------------------------]]
+function COE_GetNumPartyMembers()
+	if( IsInRaid and IsInRaid() ) then
+		return 0;
+	elseif( GetNumGroupMembers ) then
+		local n = GetNumGroupMembers();
+		if( n > 0 ) then
+			return n - 1;
+		else
+			return 0;
+		end
+	elseif( GetNumPartyMembers ) then
+		return GetNumPartyMembers();
+	else
+		return 0;
 	end
 end
 

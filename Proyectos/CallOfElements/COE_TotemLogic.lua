@@ -160,7 +160,7 @@ function COESched_RunAdvisor()
 	-- scan party
 	-- -----------
 	local i;
-	for i = 1, GetNumPartyMembers() do
+	for i = 1, COE_GetNumPartyMembers() do
 		if( warnPoison and warnDisease and warnTremor ) then
 			break;
 		end
