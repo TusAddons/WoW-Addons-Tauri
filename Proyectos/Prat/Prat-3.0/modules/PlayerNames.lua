@@ -1184,10 +1184,18 @@ Prat:AddModuleToLoad(function()
       for i = 1, GetNumGuildMembers(true) do
         Name, _, _, Level, _, _, _, _, _, _, Class = GetGuildRosterInfo(i)
 
-        local plr, svr = Name:match("([^%-]+)%-?(.*)")
+        -- GetGuildRosterInfo can return a nil name for an index whose data
+        -- hasn't streamed in yet right after GuildRoster()/login (same race
+        -- other functions in this file already guard against, e.g. updateBG
+        -- below checks "if name then" before doing the same match). Without
+        -- this check, Name:match() throws "attempt to index local 'Name'
+        -- (a nil value)" and aborts the whole guild scan.
+        if Name then
+          local plr, svr = Name:match("([^%-]+)%-?(.*)")
 
-        self:addName(plr, nil, Class, Level, nil, "GUILD")
-        self:addName(plr, svr, Class, Level, nil, "GUILD")
+          self:addName(plr, nil, Class, Level, nil, "GUILD")
+          self:addName(plr, svr, Class, Level, nil, "GUILD")
+        end
       end
     end
   end

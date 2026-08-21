@@ -1,4 +1,7 @@
 
+## Prat-3.0
+- Arreglado un error Lua en `PlayerNames.lua` ("attempt to index local 'Name' (a nil value)") que saltaba al escanear la lista de hermandad: `GetGuildRosterInfo` puede devolver el nombre en `nil` para un miembro cuyos datos aún no han llegado del servidor justo tras `GuildRoster()`/al entrar al juego, y esa función no comprobaba el valor antes de usarlo (a diferencia de `updateBG`, que ya hace esa comprobación un poco más abajo en el mismo archivo). Añadido el mismo guardado.
+
 ## Recuperado del Historial de Discord
 veeeenganza
 
