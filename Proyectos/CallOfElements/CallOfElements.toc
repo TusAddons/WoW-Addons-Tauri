@@ -4,7 +4,7 @@
 ## OptionalDeps: Chronos
 ## SavedVariables: COE_Saved
 ## SavedVariablesPerCharacter: COE_SavedTotemSets, COE_CustomTotemSets, COE_DisplayedTotems, COE_TotemBars
-## X-Curse-Packaged-Version: v6.15
+## X-Curse-Packaged-Version: v6.16
 ## X-Curse-Project-Name: Call of Elements
 ## X-Curse-Project-ID: call-of-elements-continued
 ## X-Curse-Repository-ID: wow/call-of-elements-continued/mainline

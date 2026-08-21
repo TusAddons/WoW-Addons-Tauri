@@ -1006,11 +1006,40 @@ end
 
 
 --[[ ----------------------------------------------------------------
+	METHOD: COE_EnsureTotemBars
+
+	PURPOSE: The "Configure Bar" combo boxes (Direction/Frame mode/
+		Flex count) index COE_TotemBars[COE_ActiveTalents] directly.
+		That's normally set up by COE:CheckTalentSpecChanged on
+		PLAYER_ENTERING_WORLD, but if this sub panel's OnShow fires
+		before that has run (or the two ever get out of sync), the
+		index is nil and every one of those combo boxes throws
+		"attempt to index field '?' (a nil value)". Call this first
+		in each of them to guarantee a valid entry exists.
+-------------------------------------------------------------------]]
+function COE_EnsureTotemBars()
+	if( COE_ActiveTalents == nil or COE_TotemBars[COE_ActiveTalents] == nil ) then
+		COE:CheckTalentSpecChanged(true);
+	end
+	if( COE_TotemBars[COE_ActiveTalents] == nil ) then
+		-- still nothing (addon not fully initialized yet): fall back to
+		-- a fresh copy of the defaults so the UI doesn't error out.
+		if( COE_ActiveTalents == nil ) then
+			COE_ActiveTalents = 1;
+		end
+		COE_TotemBars[COE_ActiveTalents] = COE:DuplicateTable(COE_TotemBars_Defaults);
+	end
+end
+
+
+--[[ ----------------------------------------------------------------
 	METHOD: COEOptionDirectionInit
-	
-	PURPOSE: Fills the Configure Bar combo box 
+
+	PURPOSE: Fills the Configure Bar combo box
 -------------------------------------------------------------------]]
 function COEOptionDirectionInit()
+
+	COE_EnsureTotemBars();
 
 	local i;
 	for i = 1, #COEUI_DIRECTION do
@@ -1024,10 +1053,12 @@ end
 
 --[[ ----------------------------------------------------------------
 	METHOD: COEOptionDirectionClick()
-	
+
 	PURPOSE: Selects the clicked button and stores the option
 -------------------------------------------------------------------]]
 function COEOptionDirectionClick(self)
+
+	COE_EnsureTotemBars();
 
 	UIDropDownMenu_SetSelectedID( COE_OptionDirectionCB, self:GetID() );
 	COE_TotemBars[COE_ActiveTalents][COE_Config:GetSaved( COEOPT_CURRENTFRAME )].Direction = self.value;
@@ -1046,6 +1077,8 @@ end
 	PURPOSE: Fills the Frame mode combo box 
 -------------------------------------------------------------------]]
 function COEOptionFrameModeInit()
+
+	COE_EnsureTotemBars();
 
 	local i;
 	for i = 1, #COEUI_FRAMEMODE do
@@ -1071,6 +1104,8 @@ end
 	PURPOSE: Selects the clicked button and stores the option
 -------------------------------------------------------------------]]
 function COEOptionFrameModeClick(self)
+
+	COE_EnsureTotemBars();
 
 	UIDropDownMenu_SetSelectedID( COE_OptionFrameModeCB, self:GetID() );
 	COE_TotemBars[COE_ActiveTalents][COE_Config:GetSaved( COEOPT_CURRENTFRAME )].Mode = self.value;
@@ -1102,8 +1137,10 @@ end
 -------------------------------------------------------------------]]
 function COEOptionFlexCountShow()
 
+	COE_EnsureTotemBars();
+
 	local element = COE_Config:GetSaved( COEOPT_CURRENTFRAME );
-	
+
 	-- set values
 	-- -----------
 	COE_OptionFlexCount:SetMinMaxValues( 1, COE.MaxTotems[element] );
@@ -1126,8 +1163,10 @@ end
 -------------------------------------------------------------------]]
 function COEOptionFlexCountChange()
 
+	COE_EnsureTotemBars();
+
 	local element = COE_Config:GetSaved( COEOPT_CURRENTFRAME );
-	
+
 	COE_TotemBars[COE_ActiveTalents][element].FlexCount = COE_OptionFlexCount:GetValue();
 
 	-- set the frame parameters
