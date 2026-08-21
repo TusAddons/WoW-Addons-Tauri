@@ -2,7 +2,7 @@
 ## Title: WorldBossTracker
 ## Author: Artiom97es
 ## Notes: Track World Bosses across Draenor and Legion.
-## Version: 3.0.0
+## Version: 3.0.1
 ## SavedVariables: WorldBossTrackerDB
 
 DraenorTracker.lua

@@ -1,4 +1,7 @@
 
+## WorldBossTracker
+- v3.0.1 - Arreglado que la ventana se abriera sola cada vez que entrabas con el personaje: `CreateMainFrame()` se llama en cada `PLAYER_LOGIN` para tener el frame listo, pero un frame creado con `CreateFrame()` empieza visible por defecto y nunca se ocultaba. Ahora se oculta al terminar de crearse; se sigue abriendo normal con el icono del minimapa o `/tan`.
+
 ## Prat-3.0
 - Arreglado un error Lua en `PlayerNames.lua` ("attempt to index local 'Name' (a nil value)") que saltaba al escanear la lista de hermandad: `GetGuildRosterInfo` puede devolver el nombre en `nil` para un miembro cuyos datos aún no han llegado del servidor justo tras `GuildRoster()`/al entrar al juego, y esa función no comprobaba el valor antes de usarlo (a diferencia de `updateBG`, que ya hace esa comprobación un poco más abajo en el mismo archivo). Añadido el mismo guardado.
 

@@ -238,7 +238,14 @@ function WorldBossTracker.CreateMainFrame()
 
     WorldBossTracker.mainFrame = f
     TabOnClick(tabTanaan)
-    
+
+    -- CreateMainFrame() se llama en cada PLAYER_LOGIN (para tener el frame
+    -- listo antes de que se necesite), y un frame recien creado con
+    -- CreateFrame() esta visible por defecto salvo que se oculte a mano.
+    -- Sin esto la ventana se abria sola cada vez que entrabas con el
+    -- personaje. Se abre solo al pulsar el icono del minimapa o /wbt.
+    f:Hide()
+
     f:SetScript("OnUpdate", function(self, elapsed)
         self.timer = (self.timer or 0) + elapsed
         if self.timer >= 1 then
