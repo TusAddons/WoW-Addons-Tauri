@@ -309,6 +309,24 @@ end
 function COE:ScanTotems()
 	COE.KnownTotems = COE_BuildSpellIDList();
 	COE:DebugMessage( "Scanning Totems..." );
+
+	-- DIAGNOSTICO TEMPORAL (v6.17): GetMultiCastTotemSpells es la API que
+	-- se usaba en Cata/MoP para listar los totems del "multi-drop bar" de
+	-- cada escuela. Si en este cliente de Legion ya no devuelve nada (aun
+	-- sin dar error), COE.KnownTotems queda vacio y la barra de totems
+	-- nunca aparece, sin ningun error visible en Swatter. Este mensaje lo
+	-- confirma. Se puede quitar en cuanto se confirme la causa real.
+	do
+		local diag = { Fire = 0, Earth = 0, Water = 0, Air = 0 };
+		for _,spell in ipairs(COE.KnownTotems) do
+			if( diag[spell.element] ~= nil ) then
+				diag[spell.element] = diag[spell.element] + 1;
+			end
+		end
+		COE:Message( string.format(
+			"[Diagnostico v6.17] GetMultiCastTotemSpells devolvio: Tierra=%d Fuego=%d Agua=%d Aire=%d (total %d hechizos candidatos)",
+			diag.Earth, diag.Fire, diag.Water, diag.Air, #COE.KnownTotems ) );
+	end
 	
 	-- delete existing totem objects
 	-- ------------------------------
@@ -469,10 +487,10 @@ function COE:ScanTotems()
 	-- Finish
 	-- ===================================
 	
-	COE:DebugMessage( "Found " .. COE.TotemCount .. " totems in spellbook" .. 
-		"(" .. COE.TotemsAvailable.Earth .. " Earth, " ..
-		COE.TotemsAvailable.Fire .. " Fire, " .. COE.TotemsAvailable.Water .. " Water, " ..
-		COE.TotemsAvailable.Air .. " Air)" );
+	COE:Message( "[Diagnostico v6.17] Tras el filtro quedaron " .. COE.TotemCount .. " totems utilizables " ..
+		"(" .. COE.TotemsAvailable.Earth .. " Tierra, " ..
+		COE.TotemsAvailable.Fire .. " Fuego, " .. COE.TotemsAvailable.Water .. " Agua, " ..
+		COE.TotemsAvailable.Air .. " Aire)" );
 --[[ -- Bug avec le nouveau code dualspec
   -- Check for non existant totems
   for name,totem in pairs(COE_DisplayedTotems[COE_ActiveTalents])
