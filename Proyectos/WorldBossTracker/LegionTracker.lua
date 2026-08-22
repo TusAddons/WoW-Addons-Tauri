@@ -9,6 +9,7 @@ end
 WorldBossTracker.legionBosses = {
     -- Islas Abruptas (Semanal)
     { id = 43193, name = GetL("Calamir", "Calamir") },
+    { id = 43192, name = GetL("Soul Harvester", "Cosechador de almas") },
     { id = 43448, name = GetL("The Soultakers", "Cazadores de Almas") },
     { id = 42270, name = GetL("Levantus", "Levantus") },
     { id = 43512, name = GetL("Ana-Mouz", "Ana-Mouz") },

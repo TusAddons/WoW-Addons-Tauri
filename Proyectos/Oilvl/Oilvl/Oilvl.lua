@@ -715,7 +715,6 @@ function ORfbIlvl(ounit)
 			end
 				--oilvlframedata.ilvl[tonumber(ounit)][1] = ""
 				oilvl(OTCurrent2)
-			end
 		elseif IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
 			if ounit == "1" or ounit == 1 then
 				OTCurrent = "OILVLRAIDFRAME1";
@@ -730,7 +729,6 @@ function ORfbIlvl(ounit)
 				end
 					--oilvlframedata.ilvl[1][1] = ""
 					oilvl(OTCurrent2)
-				end
 			else
 				OTCurrent = "OILVLRAIDFRAME"..ounit;
 				OTCurrent2 = "party"..(tonumber(ounit)-1);
@@ -744,7 +742,6 @@ function ORfbIlvl(ounit)
 				end
 					--oilvlframedata.ilvl[tonumber(ounit)][1] = ""
 					oilvl(OTCurrent2)
-				end
 			end
 		elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
 			if ounit == "1"  or ounit == 1 then
@@ -760,7 +757,6 @@ function ORfbIlvl(ounit)
 				end
 					--oilvlframedata.ilvl[1][1] = ""
 					oilvl(OTCurrent2)
-				end
 			else
 				OTCurrent = "OILVLRAIDFRAME"..ounit;
 				OTCurrent2 = "party"..(tonumber(ounit)-1);
@@ -774,7 +770,6 @@ function ORfbIlvl(ounit)
 				end
 					--oilvlframedata.ilvl[tonumber(ounit)][1] = ""
 					oilvl(OTCurrent2)
-				end
 			end
 		else
 			OTCurrent = "OILVLRAIDFRAME1";
@@ -789,7 +784,6 @@ function ORfbIlvl(ounit)
 			end
 				--oilvlframedata.ilvl[1][1] = ""
 				oilvl(OTCurrent2)
-			end
 		end
 	end
 end

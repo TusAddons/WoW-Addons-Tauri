@@ -220,6 +220,24 @@ initFrame:SetScript("OnEvent", function(self, event, addon)
             romanizeGreek = true,
             useTags = true
         }
+
+        -- Hook de AddMessage (atrapa Prat y ElvUI, que reformatean e imprimen sus
+        -- propios mensajes sin pasar por ChatFrame_AddMessageEventFilter). Este
+        -- hook se añadió en 48322ff para justo este motivo y se perdió sin querer
+        -- al simplificar ChatFilter en 10dd58d.
+        for i = 1, NUM_CHAT_WINDOWS do
+            local cf = _G["ChatFrame"..i]
+            if cf and cf.AddMessage then
+                local origAddMessage = cf.AddMessage
+                cf.AddMessage = function(self, text, r, g, b, id)
+                    if ChatFontFixDB and ChatFontFixDB.enabled and type(text) == "string" then
+                        text = RomanizeString(text)
+                    end
+                    return origAddMessage(self, text, r, g, b, id)
+                end
+            end
+        end
+
         self:UnregisterEvent("ADDON_LOADED")
     end
 end)

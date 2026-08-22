@@ -540,7 +540,10 @@ local function ExportDungeonLootAsync(progressCallback, callback)
                                     seenItems[itemID] = true
                                     results[#results+1] = string.format(
                                         '    {"dungeon": "%s", "boss": "%s", "difficulty": "%s", "itemName": "%s", "itemID": %d, "slot": "%s"}',
-                                        EscapeJSON(dungeonName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(finalSlot or "")
+                                        -- Antes usaba "dungeonName" (variable global nunca declarada, siempre nil),
+                                        -- en vez de la variable local real "instanceName" -> el campo "dungeon"
+                                        -- salía vacío en todo el JSON exportado de mazmorras/bandas.
+                                        EscapeJSON(instanceName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(finalSlot or "")
                                     )
                                 end
                             end
@@ -587,6 +590,9 @@ local function GenerateExport()
         end
     end
     if LoboExporterDB.exportCompletedAchievs then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetAchievementsData(true, false, isJSON) end
+    -- Se perdió al añadir GenerateAIToken() en b0e64f9: el checkbox "Logros
+    -- Pendientes" seguía en la UI pero ya no tenía efecto en la exportación normal.
+    if LoboExporterDB.exportIncompleteAchievs then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetAchievementsData(false, true, isJSON) end
     if isJSON then parts[#parts+1] = "\n}" end
     return table.concat(parts, isJSON and "" or "\n")
 end

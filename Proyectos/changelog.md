@@ -1,4 +1,10 @@
 
+## Auditoría de commits (varios addons)
+- **OiLvl**: `Oilvl.lua` tenía un error de sintaxis (un `end` de más en `ORfbIlvl()`, de un intento anterior de filtrar "Entidad Desconocida" en escaneos agresivos) que impedía cargar el addon entero. Corregido manteniendo el filtro: ahora compila y sigue evitando que se guarde "Entidad Desconocida"/"Unknown" como nombre.
+- **ChatFontFix**: restaurado el hook de `AddMessage` sobre los `ChatFrame` (atrapa mensajes reformateados por Prat/ElvUI antes de imprimirse) que se había perdido sin querer al simplificar `ChatFilter` en un commit posterior — la romanización dejaba de aplicarse a los mensajes que pasan por esos addons.
+- **LoboExporter**: en la exportación de mazmorras/bandas, el campo `"dungeon"` del JSON salía siempre vacío por un typo (`dungeonName` en vez de la variable real `instanceName`). Además, se restauró el checkbox "Logros Pendientes", que seguía en la UI pero había dejado de incluirse en la exportación normal desde que se añadió el botón de token para IA.
+- **WorldBossTracker**: recuperado el jefe de Islas Abruptas "Cosechador de almas" (id 43192), que se perdió al añadir localización a la lista de jefes de Legion.
+
 ## GarrisonCommander & OrderHallCommander
 - Arreglado que el botón "Calculate" del Shipyard (control de misiones navales) avisara de "demasiados seguidores activos" sin relación con tu flota: `ShipControl.lua` comprobaba `IsAboveFollowerSoftCap` con el tipo de guarnición TERRESTRE (copiado tal cual de `MissionControl.lua`) en vez del tipo de la FLOTA NAVAL, así que el aviso se disparaba según tus seguidores terrestres ocupados, no tus barcos.
 
