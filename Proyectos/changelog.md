@@ -1,4 +1,8 @@
 
+## OPie
+- Arreglado un error Lua en el hint del Botón de Acción Adicional con cargas: `extrabuttonHint()` (en `Handlers.lua`) usaba la función global `time` en vez de `GetTime()` para calcular el cooldown restante de cargas, lanzando "attempt to perform arithmetic on a global 'time' (a function value)" cada vez que la acción del botón extra tenía cargas por debajo del máximo y estaba fuera de cooldown.
+- Arregladas tres ventanas que aparecían vacías en pantalla nada más cargar el addon en vez de quedarse ocultas hasta abrirse: el editor de combinación alternativa de teclas y el prompt genérico de confirmación (`OPieConfig.lua`), y la ventana de "nuevo ring" del gestor de rings (`RingKeeperConfig.lua`) — a las tres les faltaba el `:Hide()` inicial tras crearse con `CreateFrame()`.
+
 ## WorldBossTracker
 - v3.0.1 - Arreglado que la ventana se abriera sola cada vez que entrabas con el personaje: `CreateMainFrame()` se llama en cada `PLAYER_LOGIN` para tener el frame listo, pero un frame creado con `CreateFrame()` empieza visible por defecto y nunca se ocultaba. Ahora se oculta al terminar de crearse; se sigue abriendo normal con el icono del minimapa o `/tan`.
 
