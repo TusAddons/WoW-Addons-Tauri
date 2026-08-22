@@ -350,7 +350,11 @@ function module:OnClick_Start(this,button)
 		GMC.list.widget:SetTitleColor(C.Orange())
 		return
 	end
-	if ( G.IsAboveFollowerSoftCap(1) ) then
+	-- Bug: comprobaba el soft cap de seguidores de la GUARNICIÓN TERRESTRE (tipo 1),
+	-- copiado de MissionControl.lua, en vez del soft cap de la FLOTA NAVAL. Por eso
+	-- avisaba de "demasiados seguidores activos" en el Shipyard basándose en tus
+	-- seguidores terrestres ocupados, sin relación con tus barcos (8/10 no es el problema).
+	if ( G.IsAboveFollowerSoftCap(LE_FOLLOWER_TYPE_SHIPYARD_6_2) ) then
 		print("|cffff0000[GC Debug]|r Excedes el límite máximo de barcos activos.")
 		GMC.list.widget:SetTitle(GARRISON_MAX_FOLLOWERS_MISSION_TOOLTIP)
 		GMC.list.widget:SetTitleColor(C.Red())

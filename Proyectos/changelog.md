@@ -1,4 +1,7 @@
 
+## GarrisonCommander & OrderHallCommander
+- Arreglado que el botón "Calculate" del Shipyard (control de misiones navales) avisara de "demasiados seguidores activos" sin relación con tu flota: `ShipControl.lua` comprobaba `IsAboveFollowerSoftCap` con el tipo de guarnición TERRESTRE (copiado tal cual de `MissionControl.lua`) en vez del tipo de la FLOTA NAVAL, así que el aviso se disparaba según tus seguidores terrestres ocupados, no tus barcos.
+
 ## OPie
 - Arreglado un error Lua en el hint del Botón de Acción Adicional con cargas: `extrabuttonHint()` (en `Handlers.lua`) usaba la función global `time` en vez de `GetTime()` para calcular el cooldown restante de cargas, lanzando "attempt to perform arithmetic on a global 'time' (a function value)" cada vez que la acción del botón extra tenía cargas por debajo del máximo y estaba fuera de cooldown.
 - Arregladas tres ventanas que aparecían vacías en pantalla nada más cargar el addon en vez de quedarse ocultas hasta abrirse: el editor de combinación alternativa de teclas y el prompt genérico de confirmación (`OPieConfig.lua`), y la ventana de "nuevo ring" del gestor de rings (`RingKeeperConfig.lua`) — a las tres les faltaba el `:Hide()` inicial tras crearse con `CreateFrame()`.
