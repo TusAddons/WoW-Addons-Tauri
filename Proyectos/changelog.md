@@ -1,4 +1,10 @@
 
+## Details
+- El aviso automático de "versión desactualizada" que se susurra a otros jugadores ahora está **desactivado por defecto** — antes se enviaba a todo el mundo salvo que lo desactivaras a mano.
+- Nuevo `/detailspam guild` (o `/detailspam hermandad`): limita el aviso a que solo se les envíe a jugadores de tu propia hermandad, en vez de a cualquiera.
+- Nuevo `/detailspam msg <texto>` (o `/detailspam mensaje <texto>`): permite personalizar el mensaje que se envía; usado sin texto restaura el mensaje predeterminado en español e inglés.
+- El toggle original `/detailspam` (sin argumentos) se mantiene igual, activando/desactivando el envío del aviso.
+
 ## Auditoría de commits (varios addons)
 - **OiLvl**: `Oilvl.lua` tenía un error de sintaxis (un `end` de más en `ORfbIlvl()`, de un intento anterior de filtrar "Entidad Desconocida" en escaneos agresivos) que impedía cargar el addon entero. Corregido manteniendo el filtro: ahora compila y sigue evitando que se guarde "Entidad Desconocida"/"Unknown" como nombre.
 - **ChatFontFix**: restaurado el hook de `AddMessage` sobre los `ChatFrame` (atrapa mensajes reformateados por Prat/ElvUI antes de imprimirse) que se había perdido sin querer al simplificar `ChatFilter` en un commit posterior — la romanización dejaba de aplicarse a los mensajes que pasan por esos addons.

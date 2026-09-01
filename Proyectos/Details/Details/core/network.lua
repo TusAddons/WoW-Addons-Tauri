@@ -64,9 +64,30 @@
 	}
 	
 	local plugins_registred = {}
-	
+
 	local temp = {}
-	
+
+	-- Aviso de versión desactualizada a otros jugadores (susurro): DESACTIVADO por defecto.
+	-- Solo se activa explícitamente con /detailspam, y a partir de ahí se guarda la elección.
+	if not _detalhes_global then _detalhes_global = {} end
+	if _detalhes_global.disable_update_spam == nil then _detalhes_global.disable_update_spam = true end
+
+	local function _DetailsSpam_IsGuildMember (name)
+		if (not name) or (not IsInGuild()) then return false end
+		local shortName = name:match ("^([^%-]+)") or name
+		local numMembers = GetNumGuildMembers and GetNumGuildMembers() or 0
+		for i = 1, numMembers do
+			local guildName = GetGuildRosterInfo (i)
+			if (guildName) then
+				local guildShort = guildName:match ("^([^%-]+)") or guildName
+				if (guildShort == shortName) then
+					return true
+				end
+			end
+		end
+		return false
+	end
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --> comm functions
 
@@ -76,11 +97,37 @@
 	SLASH_DETAILSSPAM1 = "/detailspam"
 	SlashCmdList["DETAILSSPAM"] = function(msg)
 		if not _detalhes_global then _detalhes_global = {} end
+		if _detalhes_global.disable_update_spam == nil then _detalhes_global.disable_update_spam = true end
+
+		msg = strtrim (msg or "")
+		local cmd, rest = msg:match ("^(%S*)%s*(.-)$")
+		cmd = (cmd or ""):lower()
+
+		if (cmd == "guild" or cmd == "hermandad") then
+			_detalhes_global.update_spam_guild_only = not _detalhes_global.update_spam_guild_only
+			if _detalhes_global.update_spam_guild_only then
+				print("|cffffff00Details!|r: Aviso de actualización limitado a jugadores de tu |cff00ff00hermandad|r.")
+			else
+				print("|cffffff00Details!|r: Aviso de actualización para |cff00ff00cualquier jugador|r (no solo hermandad).")
+			end
+			return
+		elseif (cmd == "msg" or cmd == "mensaje") then
+			if (rest and rest ~= "") then
+				_detalhes_global.update_spam_message = rest
+				print("|cffffff00Details!|r: Mensaje de aviso personalizado guardado: \"" .. rest .. "\"")
+			else
+				_detalhes_global.update_spam_message = nil
+				print("|cffffff00Details!|r: Mensaje de aviso restaurado al predeterminado (ES+EN).")
+			end
+			return
+		end
+
 		_detalhes_global.disable_update_spam = not _detalhes_global.disable_update_spam
 		if _detalhes_global.disable_update_spam then
 			print("|cffffff00Details!|r: Envío de alertas de actualización a otros jugadores |cffff0000DESACTIVADO|r.")
 		else
 			print("|cffffff00Details!|r: Envío de alertas de actualización a otros jugadores |cff00ff00ACTIVADO|r.")
+			print("|cffffff00Details!|r: Usa |cffffffff/detailspam guild|r para limitarlo a tu hermandad, o |cffffffff/detailspam msg <texto>|r para personalizar el mensaje (vacío = restaurar el predeterminado).")
 		end
 	end
 
@@ -109,14 +156,26 @@
 			if not _detalhes.whispered_players then _detalhes.whispered_players = {} end
 			if not _detalhes.whispered_players[player] then
 				_detalhes.whispered_players[player] = true
-				local myName = UnitName("player")
-				if not (_detalhes_global and _detalhes_global.disable_update_spam) then
-					if myName == "Apipupa" or myName == "Lobopower" then
-						SendChatMessage("¡Oye! Tu versión de Details! está desactualizada. Compruebalo por ti mismo en Discord o susurra a Artiom97es para conseguir la versión ultra-optimizada.", "WHISPER", nil, player)
-						SendChatMessage("Hey! Your Details! version is out of date. Check it yourself on Discord or whisper Artiom97es to get the ultra-optimized version.", "WHISPER", nil, player)
-					else
-						SendChatMessage("¡Oye! Tu versión de Details! está desactualizada. En ¨Cara Máxima¨ en Discord para conseguir la versión ultra-optimizada.", "WHISPER", nil, player)
-						SendChatMessage("Hey! Your Details! version is out of date. Check 'Cara Maxima' on Discord to get the ultra-optimized version.", "WHISPER", nil, player)
+				-- Aviso automático DESACTIVADO por defecto (activar con /detailspam); se puede
+				-- limitar a hermandad (/detailspam guild) y personalizar el mensaje (/detailspam msg <texto>).
+				if (_detalhes_global and _detalhes_global.disable_update_spam == false) then
+					local canSend = true
+					if (_detalhes_global.update_spam_guild_only and not _DetailsSpam_IsGuildMember (player)) then
+						canSend = false
+					end
+					if (canSend) then
+						if (_detalhes_global.update_spam_message) then
+							SendChatMessage (_detalhes_global.update_spam_message, "WHISPER", nil, player)
+						else
+							local myName = UnitName("player")
+							if myName == "Apipupa" or myName == "Lobopower" then
+								SendChatMessage("¡Oye! Tu versión de Details! está desactualizada. Compruebalo por ti mismo en Discord o susurra a Artiom97es para conseguir la versión ultra-optimizada.", "WHISPER", nil, player)
+								SendChatMessage("Hey! Your Details! version is out of date. Check it yourself on Discord or whisper Artiom97es to get the ultra-optimized version.", "WHISPER", nil, player)
+							else
+								SendChatMessage("¡Oye! Tu versión de Details! está desactualizada. En ¨Cara Máxima¨ en Discord para conseguir la versión ultra-optimizada.", "WHISPER", nil, player)
+								SendChatMessage("Hey! Your Details! version is out of date. Check 'Cara Maxima' on Discord to get the ultra-optimized version.", "WHISPER", nil, player)
+							end
+						end
 					end
 				end
 			end
