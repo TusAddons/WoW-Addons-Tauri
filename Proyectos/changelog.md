@@ -1,4 +1,12 @@
 
+## DragonflightUI (nuevo, versión inicial experimental — Legion 7.3.5)
+- Primer port no oficial de **DragonflightUI** (interfaz moderna estilo Dragonflight, de Karl-Heinz Schneider) a clientes Legion 7.3.5 — el addon original solo da soporte oficial a Cata Classic/Wrath. Se publica en fase experimental porque en la comunidad de Discord lo pidieron para probarlo.
+- Docenas de errores de compatibilidad corregidos: texturas/objetos de UI que existen en este cliente pero sin ciertos métodos modernos (guardas defensivas), atlas de Dragonflight que no existen aquí y que sin arreglo se veían como un cuadrado verde sólido, y varias funciones que se ejecutaban por una mala detección de versión (`DF.Cata`/`DF.Wrath`) propia de este cliente.
+- El panel de opciones (categorías + lista de ajustes) estaba completamente vacío porque dependía del framework moderno de Blizzard (ScrollBox/TreeDataProvider) que no existe en 7.3.5 — reescrito desde cero con widgets clásicos (checkboxes, sliders, dropdowns, color picker) manteniendo el mismo comportamiento.
+- Los botones propios del addon en el menú de escape se superponían con los nativos del cliente — desactivados por ahora; usa `/dfedit` para abrir/cerrar el modo edición en su lugar.
+- El "Quick Keybind" rápido está desactivado (dependía de APIs de keybinding modernas que no existen en este cliente).
+- **Sigue en pruebas**: es posible que aparezcan errores puntuales al usarlo — si te sale alguno, avisa en el canal con `/console scriptErrors 1` activado y el texto del error.
+
 ## Details
 - El aviso automático de "versión desactualizada" que se susurra a otros jugadores ahora está **desactivado por defecto** — antes se enviaba a todo el mundo salvo que lo desactivaras a mano.
 - Nuevo `/detailspam guild` (o `/detailspam hermandad`): limita el aviso a que solo se les envíe a jugadores de tu propia hermandad, en vez de a cualquiera.
