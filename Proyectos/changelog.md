@@ -1,4 +1,9 @@
 
+## LegionBackdropShim (nuevo)
+- Addon nuevo, mínimo e independiente: define un `BackdropTemplate` virtual vacío para este cliente Legion 7.3.5, que no lo trae porque en esta versión `SetBackdrop` ya es nativo en todos los frames (ese template solo se volvió necesario a partir de Battle for Azeroth 8.0, cuando Blizzard sacó el sistema de backdrop de los frames normales).
+- Soluciona el error `CreateFrame(): Couldn't find inherited node "BackdropTemplate"` que salta en cualquier addon o librería escrita pensando en clientes modernos (por ejemplo, la copia de AceGUI-3.0 que trae **GarrisonCommander**, que crasheaba al abrir su menú del Shipyard).
+- Solo hace falta tenerlo instalado y activado; no requiere configuración ni interfiere con ningún otro addon.
+
 ## DragonflightUI (nuevo, versión inicial experimental — Legion 7.3.5)
 - Primer port no oficial de **DragonflightUI** (interfaz moderna estilo Dragonflight, de Karl-Heinz Schneider) a clientes Legion 7.3.5 — el addon original solo da soporte oficial a Cata Classic/Wrath. Se publica en fase experimental porque en la comunidad de Discord lo pidieron para probarlo.
 - Docenas de errores de compatibilidad corregidos: texturas/objetos de UI que existen en este cliente pero sin ciertos métodos modernos (guardas defensivas), atlas de Dragonflight que no existen aquí y que sin arreglo se veían como un cuadrado verde sólido, y varias funciones que se ejecutaban por una mala detección de versión (`DF.Cata`/`DF.Wrath`) propia de este cliente.

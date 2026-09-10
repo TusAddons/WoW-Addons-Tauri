@@ -1,0 +1,25 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <!--
+        LegionBackdropShim
+
+        En clientes modernos (Battle for Azeroth 8.0+), Blizzard saco el sistema de
+        backdrop (SetBackdrop, SetBackdropColor, SetBackdropBorderColor, etc.) de los
+        frames normales, y desde entonces un frame solo tiene esos metodos si hereda
+        explicitamente el template "BackdropTemplate".
+
+        En este cliente (Legion 7.3.5) es al reves: TODOS los frames ya traen
+        SetBackdrop de forma NATIVA, sin necesitar ningun template. El template
+        "BackdropTemplate" simplemente no existe aqui.
+
+        Muchos addons (o librerias que traen, como AceGUI-3.0 en versiones recientes)
+        estan escritos pensando en clientes modernos y hacen:
+            CreateFrame('Frame', name, parent, 'BackdropTemplate')
+        lo que en este cliente falla con:
+            "CreateFrame(): Couldn't find inherited node 'BackdropTemplate'"
+
+        Esta plantilla virtual vacia soluciona el problema: basta con que el template
+        EXISTA (aunque no añada nada) para que CreateFrame() deje de crashear, ya que
+        el propio frame ya tiene SetBackdrop de forma nativa en este cliente.
+    -->
+    <Frame name="BackdropTemplate" virtual="true" />
+</Ui>

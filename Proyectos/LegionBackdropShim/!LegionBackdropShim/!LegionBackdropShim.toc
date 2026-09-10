@@ -1,0 +1,8 @@
+## Interface: 70300
+## Title: Legion Backdrop Shim
+## Notes: Compatibilidad: define un BackdropTemplate virtual vacio para que addons pensados para clientes modernos (BfA 8.0+) no crasheen en este cliente Legion 7.3.5, donde SetBackdrop ya es nativo en todos los frames.
+## Author: Artiom97es
+## Version: 1.0-Artiom97es
+## SavedVariables:
+
+Templates.xml
