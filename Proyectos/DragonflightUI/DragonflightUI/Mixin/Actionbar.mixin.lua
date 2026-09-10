@@ -485,7 +485,7 @@ function DragonflightUIActionbarMixin:UpdateGridState()
         else
             btn:SetAttribute("showgrid", 0)
         end
-        if ActionButton_ShowGrid then ActionButton_ShowGrid(btn) end
+        if ActionButton_ShowGrid then pcall(ActionButton_ShowGrid, btn) end
     end
 
     if DF.API.Version.IsTBC then self:UpdateBlizzEditmodeState(); end
@@ -1244,7 +1244,7 @@ function DragonflightUIActionbarMixin:SetupPageNumberFrame()
     MainMenuBarPageNumber:ClearAllPoints()
     MainMenuBarPageNumber:SetPoint('CENTER', f, 'CENTER', 0, 0)
     MainMenuBarPageNumber:SetParent(f)
-    MainMenuBarPageNumber:SetScale(1.25)
+    if MainMenuBarPageNumber.SetScale then MainMenuBarPageNumber:SetScale(1.25) end
     MainMenuBarPageNumber:SetJustifyV('MIDDLE')
 
     local deltaTable = {[1] = -1.75, [2] = -0.5, [3] = -0.5, [4] = -0.5, [5] = -0.5, [6] = -0.5, [7] = -0.5, [8] = -0.5}

@@ -477,11 +477,11 @@ function SubModuleMixin:Update()
             local clockSpace;
             if state.hideClock then
                 -- _G['TimeManagerClockButton']:Hide();
-                C_CVar.SetCVar('showMinimapClock', 0)
+                pcall(C_CVar.SetCVar, 'showMinimapClock', 0)
                 clockSpace = 0;
             else
                 -- _G['TimeManagerClockButton']:Show();
-                C_CVar.SetCVar('showMinimapClock', 1)
+                pcall(C_CVar.SetCVar, 'showMinimapClock', 1)
                 clockSpace = 40;
             end
             -- _G['MinimapZoneTextButton']:SetWidth(140 - 4 - clockSpace - 4)
@@ -755,7 +755,12 @@ function SubModuleMixin:ChangeTrackingEra()
 end
 
 function SubModuleMixin:UpdateTrackingEra()
-    local icon = GetTrackingTexture();
+    local icon
+    if type(GetTrackingTexture) == 'function' then
+        icon = GetTrackingTexture()
+    elseif C_Minimap and C_Minimap.GetTrackingTexture then
+        icon = C_Minimap.GetTrackingTexture()
+    end
     if (icon) then
         -- MiniMapTrackingIcon:SetTexture(icon);
         SetPortraitToTexture(MiniMapTrackingIcon, icon)
@@ -890,9 +895,21 @@ function SubModuleMixin:ChangeCalendar()
     self.CalendarButtonText = text
 
     local function UpdateCalendar()
-        local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime()
-        local day = currentCalendarTime.monthDay
-        self.CalendarButtonText:SetText(tostring(day))
+        -- FIX Legion 7.3.5: C_DateAndTime no existe en este cliente. Se intenta con C_Calendar
+        -- (API clasica equivalente) y, si tampoco esta, se cae al dia del sistema con os.date
+        -- para que al menos el numero del boton del calendario no quede vacio.
+        local day
+        if C_DateAndTime and C_DateAndTime.GetCurrentCalendarTime then
+            local currentCalendarTime = C_DateAndTime.GetCurrentCalendarTime()
+            day = currentCalendarTime and currentCalendarTime.monthDay
+        elseif C_Calendar and C_Calendar.GetDate then
+            local d = C_Calendar.GetDate()
+            day = d and d.monthDay
+        end
+        if not day then
+            day = tonumber(date('%d'))
+        end
+        self.CalendarButtonText:SetText(tostring(day or ''))
     end
     UpdateCalendar()
 
@@ -906,7 +923,7 @@ function SubModuleMixin:ChangeCalendar()
         GameTimeCalendarInvitesTexture:SetParent(button)
         GameTimeCalendarInvitesTexture:SetPoint('CENTER', text, 'CENTER', 0, 0)
         GameTimeCalendarInvitesTexture:SetSize(18, 18)
-        GameTimeCalendarInvitesTexture:SetScale(1)
+        if GameTimeCalendarInvitesTexture.SetScale then GameTimeCalendarInvitesTexture:SetScale(1) end
         GameTimeCalendarInvitesTexture:SetDrawLayer('OVERLAY', 2)
 
         local glowSize = 18 + 10
@@ -914,7 +931,7 @@ function SubModuleMixin:ChangeCalendar()
         GameTimeCalendarInvitesGlow:SetParent(button)
         GameTimeCalendarInvitesGlow:SetPoint('CENTER', text, 'CENTER', 0, 0)
         GameTimeCalendarInvitesGlow:SetSize(glowSize, glowSize)
-        GameTimeCalendarInvitesGlow:SetScale(1)
+        if GameTimeCalendarInvitesGlow.SetScale then GameTimeCalendarInvitesGlow:SetScale(1) end
         GameTimeCalendarInvitesGlow:SetDrawLayer('OVERLAY', 1)
 
         local PI = PI;
@@ -974,7 +991,7 @@ function SubModuleMixin:SetupMinimap()
     MinimapCompassTexture:SetTexture('Interface\\Addons\\DragonflightUI\\Textures\\uiminimap2x')
     MinimapCompassTexture:SetTexCoord(0.001953125, 0.857421875, 0.056640625, 0.505859375)
     MinimapCompassTexture:SetSize(140 + delta - dx, 140 + delta)
-    MinimapCompassTexture:SetScale(1)
+    if MinimapCompassTexture.SetScale then MinimapCompassTexture:SetScale(1) end
     MinimapCompassTexture:ClearAllPoints()
     MinimapCompassTexture:SetPoint('CENTER', Minimap, 'CENTER', 1, 0)
 
@@ -1018,7 +1035,7 @@ function SubModuleMixin:ChangeMail()
     mail:SetTexCoord(0.08203125, 0.158203125, 0.5078125, 0.537109375)
     mail:SetSize(19.5, 15)
     mail:SetPoint('CENTER', MiniMapMailFrame, 'CENTER', -3, 0)
-    mail:SetScale(1)
+    if mail.SetScale then mail:SetScale(1) end
 end
 
 function SubModuleMixin:ChangeDifficulty()

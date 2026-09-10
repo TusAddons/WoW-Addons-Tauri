@@ -762,7 +762,7 @@ function DragonflightUIAuraButtonTemplateMixin:UpdateStyle()
         self.Cooldown:Hide()
     end
 
-    self.Cooldown:SetHideCountdownNumbers(header.hideCooldownDurationText)
+    self.Cooldown:SetHideCountdownNumbers(header.hideCooldownDurationText and true or false)
 end
 
 function DragonflightUIAuraButtonTemplateMixin:UpdateTempStyle(id)

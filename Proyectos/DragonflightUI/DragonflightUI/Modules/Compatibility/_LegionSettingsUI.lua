@@ -28,6 +28,22 @@
 
 local DF = LibStub('AceAddon-3.0'):GetAddon('DragonflightUI')
 
+-- Paso 2 (repaso de estetica): en vez de colores planos inventados, se reutiliza el mismo
+-- textil que ya trae el addon para separadores (Editmode/ui-friendsframe-onlinedivider, la
+-- misma textura que usaba el DFSettingsListDivider original en XML\DFSettingsList.xml) y una
+-- paleta dorado/gris que imita los colores por defecto de las fuentes de Blizzard que ya usa
+-- el resto del addon (GameFontNormal = dorado, GameFontHighlight = blanco resaltado,
+-- GameFontDisable = gris apagado), en vez de inventar colores sueltos.
+local DIVIDER_TEXTURE = 'Interface/AddOns/DragonflightUI/Textures/Editmode/ui-friendsframe-onlinedivider'
+local COLOR_GOLD_SELECTED = {1, 0.82, 0, 0.18}
+local COLOR_HOVER = {1, 1, 1, 0.08}
+
+local function ApplyDividerTexture(tex)
+    tex:SetTexture(DIVIDER_TEXTURE)
+    tex:SetTexCoord(0, 1, 0, 1)
+    tex:SetVertexColor(1, 1, 1, 1)
+end
+
 local function HexToRGB(hex)
     hex = hex or 'ffffff'
     hex = tostring(hex):gsub('^#', '')
@@ -72,6 +88,27 @@ function DFSettingsCategoryListMixin:OnLoad()
     scroll:SetScript('OnSizeChanged', function(_, w)
         if w and w > 0 then content:SetWidth(w) end
     end)
+
+    -- Paso 2 (estetica): un fondo oscuro sutil para agrupar visualmente el sidebar de
+    -- categorias (antes quedaba completamente transparente, flotando sobre el fondo general
+    -- del panel) y una linea dorada fina a la derecha separandolo del contenido, imitando la
+    -- separacion entre sidebar/contenido que tiene el DragonflightUI original.
+    if not self.Background then
+        local bg = self:CreateTexture(nil, 'BACKGROUND', nil, -8)
+        bg:SetPoint('TOPLEFT', self, 'TOPLEFT', -4, 2)
+        bg:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', 2, 0)
+        bg:SetColorTexture(0, 0, 0, 0.18)
+        self.Background = bg
+    end
+
+    if not self.Divider then
+        local divider = self:CreateTexture(nil, 'ARTWORK')
+        divider:SetWidth(1)
+        divider:SetPoint('TOPRIGHT', self, 'TOPRIGHT', 2, 0)
+        divider:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', 2, 0)
+        divider:SetColorTexture(1, 0.82, 0, 0.25)
+        self.Divider = divider
+    end
 end
 
 function DFSettingsCategoryListMixin:AcquireRow(index)
@@ -92,8 +129,9 @@ function DFSettingsCategoryListMixin:AcquireRow(index)
     row.Label = label
 
     local hl = row:CreateTexture(nil, 'BACKGROUND')
-    hl:SetAllPoints()
-    hl:SetColorTexture(1, 1, 1, 0.12)
+    hl:SetPoint('TOPLEFT', row, 'TOPLEFT', -2, 0)
+    hl:SetPoint('BOTTOMRIGHT', row, 'BOTTOMRIGHT', -2, 0)
+    hl:SetColorTexture(unpack(COLOR_HOVER))
     hl:Hide()
     row.Highlight = hl
 
@@ -120,7 +158,7 @@ function DFSettingsCategoryListMixin:Refresh()
         headerRow:SetHeight(CAT_HEADER_HEIGHT)
         headerRow:SetPoint('TOPLEFT', self.RealScrollChild, 'TOPLEFT', 0, -y)
         headerRow:SetPoint('TOPRIGHT', self.RealScrollChild, 'TOPRIGHT', 0, -y)
-        headerRow.Label:SetFontObject('GameFontNormalLarge')
+        headerRow.Label:SetFontObject('GameFontHighlightMedium')
         headerRow.Label:SetText((cat.collapsed and '+ ' or '- ') .. (cat.name or cat.id))
         headerRow.Highlight:Hide()
         headerRow:SetScript('OnClick', function()
@@ -156,15 +194,30 @@ function DFSettingsCategoryListMixin:Refresh()
                 row:SetPoint('TOPLEFT', self.RealScrollChild, 'TOPLEFT', 14, -y)
                 row:SetPoint('TOPRIGHT', self.RealScrollChild, 'TOPRIGHT', 0, -y)
 
-                if el.isEnabled then
+                local isSelected = (self.selectedElement == el.key)
+                row.isSelected = isSelected
+
+                -- Paso 2 (estetica): jerarquia de 3 estados igual que el resto del addon -
+                -- seleccionado = texto blanco resaltado + barra dorada fija; habilitado sin
+                -- seleccionar = texto dorado normal; deshabilitado = gris atenuado.
+                if isSelected then
                     row.Label:SetFontObject('GameFontHighlight')
+                    row.Label:SetAlpha(1)
+                elseif el.isEnabled then
+                    row.Label:SetFontObject('GameFontNormal')
                     row.Label:SetAlpha(1)
                 else
                     row.Label:SetFontObject('GameFontDisable')
                     row.Label:SetAlpha(0.6)
                 end
                 row.Label:SetText(el.name or el.id)
-                row.Highlight:SetShown(self.selectedElement == el.key)
+
+                if isSelected then
+                    row.Highlight:SetColorTexture(unpack(COLOR_GOLD_SELECTED))
+                    row.Highlight:Show()
+                else
+                    row.Highlight:Hide()
+                end
 
                 row:SetScript('OnClick', function()
                     if not el.isEnabled then return end
@@ -177,8 +230,20 @@ function DFSettingsCategoryListMixin:Refresh()
                         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
                     end
                 end)
-                row:SetScript('OnEnter', function() row.Highlight:Show() end)
-                row:SetScript('OnLeave', function() row.Highlight:SetShown(self.selectedElement == el.key) end)
+                row:SetScript('OnEnter', function()
+                    if not row.isSelected then
+                        row.Highlight:SetColorTexture(unpack(COLOR_HOVER))
+                        row.Highlight:Show()
+                    end
+                end)
+                row:SetScript('OnLeave', function()
+                    if row.isSelected then
+                        row.Highlight:SetColorTexture(unpack(COLOR_GOLD_SELECTED))
+                        row.Highlight:Show()
+                    else
+                        row.Highlight:Hide()
+                    end
+                end)
                 row:Show()
 
                 y = y + CAT_ROW_HEIGHT + CAT_ROW_SPACING
@@ -273,6 +338,24 @@ function DFSettingsListMixin:OnLoad()
     self.rows = {}
     self.ddCounter = 0
 
+    -- Paso 2 (estetica): self.Header.HorizontalDivider (definido en XML\DFSettingsList.xml)
+    -- usa atlas="Options_HorizontalDivider", un atlas de Dragonflight que no existe en este
+    -- cliente - el mismo tipo de atlas que causaba el cuadrado verde del fondo del panel
+    -- (ver Config.mixin.lua:OnLoad). Se oculta y se sustituye por la misma textura de
+    -- separador que ya trae el addon (la que usaba el DFSettingsListDivider original).
+    if self.Header and self.Header.HorizontalDivider then
+        self.Header.HorizontalDivider:Hide()
+        self.Header.HorizontalDivider:SetTexture(nil)
+    end
+    if self.Header and not self.Header.RealDivider then
+        local headerDivider = self.Header:CreateTexture(nil, 'ARTWORK')
+        ApplyDividerTexture(headerDivider)
+        headerDivider:SetHeight(10)
+        headerDivider:SetPoint('TOPLEFT', self.Header, 'TOPLEFT', 4, -50)
+        headerDivider:SetPoint('TOPRIGHT', self.Header, 'TOPRIGHT', -4, -50)
+        self.Header.RealDivider = headerDivider
+    end
+
     local scroll = CreateFrame('ScrollFrame', nil, self, 'UIPanelScrollFrameTemplate')
     scroll:SetPoint('TOPLEFT', self.Header, 'BOTTOMLEFT', 4, -6)
     scroll:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', -28, 6)
@@ -317,15 +400,15 @@ function DFSettingsListMixin:RenderHeaderRow(g, y)
     row:SetPoint('TOPLEFT', self.RealScrollChild, 'TOPLEFT', 0, -y)
     row:SetPoint('TOPRIGHT', self.RealScrollChild, 'TOPRIGHT', 0, -y)
 
-    local text = row:CreateFontString(nil, 'ARTWORK', 'GameFontNormalLarge')
+    local text = row:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightLarge')
     text:SetPoint('LEFT', row, 'LEFT', 4, -4)
     text:SetText((self.collapsedGroups[g.key] and '+ ' or '- ') .. (g.name or g.key))
 
     local line = row:CreateTexture(nil, 'ARTWORK')
-    line:SetHeight(1)
+    ApplyDividerTexture(line)
+    line:SetHeight(8)
     line:SetPoint('BOTTOMLEFT', row, 'BOTTOMLEFT', 0, 0)
     line:SetPoint('BOTTOMRIGHT', row, 'BOTTOMRIGHT', 0, 0)
-    line:SetColorTexture(1, 1, 1, 0.2)
 
     row:SetScript('OnClick', function()
         self.collapsedGroups[g.key] = not self.collapsedGroups[g.key]
@@ -351,12 +434,25 @@ function DFSettingsListMixin:RenderRow(elementData, indent, y)
 
     if elementType == 'divider' then
         local line = row:CreateTexture(nil, 'ARTWORK')
+        ApplyDividerTexture(line)
         line:SetPoint('LEFT', row, 'LEFT', 0, 0)
         line:SetPoint('RIGHT', row, 'RIGHT', 0, 0)
-        line:SetHeight(1)
-        line:SetColorTexture(1, 1, 1, 0.15)
+        line:SetHeight(8)
         return y + height + ROW_SPACING
     end
+
+    -- Paso 2 (estetica): resaltado sutil al pasar el raton por encima, igual que
+    -- DFHoverBackgroundTemplate en el XML original (una textura blanca casi transparente
+    -- que se extiende un poco mas alla de los bordes de la fila). Se aplica a todas las
+    -- filas menos los dividers (arriba, ya se ha salido con return).
+    row:EnableMouse(true)
+    local rowHighlight = row:CreateTexture(nil, 'BACKGROUND')
+    rowHighlight:SetPoint('TOPLEFT', row, 'TOPLEFT', -6, 1)
+    rowHighlight:SetPoint('BOTTOMRIGHT', row, 'BOTTOMRIGHT', 6, -1)
+    rowHighlight:SetColorTexture(1, 1, 1, 0.05)
+    rowHighlight:Hide()
+    row:SetScript('OnEnter', function() rowHighlight:Show() end)
+    row:SetScript('OnLeave', function() rowHighlight:Hide() end)
 
     if elementType == 'description' then
         local text = row:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
@@ -378,14 +474,17 @@ function DFSettingsListMixin:RenderRow(elementData, indent, y)
     label:SetText(args.name or '')
 
     if args.desc and args.desc ~= '' then
-        row:EnableMouse(true)
         row:SetScript('OnEnter', function()
+            rowHighlight:Show()
             GameTooltip:SetOwner(row, 'ANCHOR_RIGHT')
             GameTooltip:SetText(args.name or '', 1, 1, 1)
             GameTooltip:AddLine(args.desc, nil, nil, nil, true)
             GameTooltip:Show()
         end)
-        row:SetScript('OnLeave', function() GameTooltip:Hide() end)
+        row:SetScript('OnLeave', function()
+            rowHighlight:Hide()
+            GameTooltip:Hide()
+        end)
     end
 
     local function safeGet()

@@ -1471,7 +1471,13 @@ function Module:AddCustomButtons()
         Module['Custom' .. i .. 'Button'] = btn;
     end
 
-    _G['DragonflightUIQuickKeybindFrame']:HookCustomFlyoutButtons()
+    -- FIX Legion 7.3.5: DragonflightUIQuickKeybindFrame nunca se crea en este cliente (ver
+    -- Config.mixin.lua:InitQuickKeybind() - el frame de Quick Keybind depende de APIs modernas
+    -- de binding sets que no existen aqui, asi que se desactivo por completo).
+    local quickKeybindFrame = _G['DragonflightUIQuickKeybindFrame']
+    if quickKeybindFrame and quickKeybindFrame.HookCustomFlyoutButtons then
+        quickKeybindFrame:HookCustomFlyoutButtons()
+    end
 end
 
 local frame = CreateFrame('FRAME')

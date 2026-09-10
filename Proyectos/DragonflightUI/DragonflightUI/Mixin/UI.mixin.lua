@@ -821,7 +821,7 @@ function DragonflightUIMixin:ChangeDressupFrame()
     DressUpFrameCancelButton:ClearAllPoints()
     DressUpFrameCancelButton:SetPoint('BOTTOMRIGHT', DressUpFrame, 'BOTTOMRIGHT', -7, 5)
 
-    local container = DressUpFrame.TitleContainer;
+    local container = DressUpFrame.TitleContainer or DressUpFrame;
     DressUpFrameTitleText:ClearAllPoints()
     -- DressUpFrameTitleText:SetPoint('TOP', container, 'TOP', 0, 0)
     -- DressUpFrameTitleText:SetPoint('LEFT', container, 'LEFT', 60, 0)
@@ -835,16 +835,20 @@ function DragonflightUIMixin:ChangeDressupFrame()
     newTitle:SetPoint('LEFT', DressUpFrame, 'LEFT', 60, 0)
     newTitle:SetPoint('RIGHT', DressUpFrame, 'RIGHT', -30, 0)
 
-    DressUpFrameDescriptionText:ClearAllPoints()
-    DressUpFrameDescriptionText:SetPoint('TOP', newTitle, 'BOTTOM', 6, -6)
+    if DressUpFrameDescriptionText then
+        DressUpFrameDescriptionText:ClearAllPoints()
+        DressUpFrameDescriptionText:SetPoint('TOP', newTitle, 'BOTTOM', 6, -6)
+    end
 
-    DressUpModelFrame:ClearAllPoints()
-    DressUpModelFrame:SetPoint('TOPLEFT', DressUpFrame, 'TOPLEFT', 19, -75)
-    DressUpModelFrame:SetHeight(351 - 18)
+    if DressUpModelFrame then
+        DressUpModelFrame:ClearAllPoints()
+        DressUpModelFrame:SetPoint('TOPLEFT', DressUpFrame, 'TOPLEFT', 19, -75)
+        DressUpModelFrame:SetHeight(351 - 18)
 
-    if eraFix then
-        --
-        DressUpModelFrame:SetPoint('TOPLEFT', DressUpFrame, 'TOPLEFT', 19 - 10 - 2, -75 + 10 + 1)
+        if eraFix then
+            --
+            DressUpModelFrame:SetPoint('TOPLEFT', DressUpFrame, 'TOPLEFT', 19 - 10 - 2, -75 + 10 + 1)
+        end
     end
 
     do
@@ -857,12 +861,14 @@ function DragonflightUIMixin:ChangeDressupFrame()
         -- _G[inset:GetName() .. 'Bg']:Hide()
     end
 
-    DressUpFrameBackgroundTopLeft:SetPoint('TOPLEFT', DressUpFrame, 'TOPLEFT', 19, -75)
-    if eraFix then
-        --
-        DressUpFrameBackgroundTopLeft:ClearAllPoints()
-        -- DressUpFrameBackgroundTopLeft:SetPoint('TOPLEFT', DressUpFrame, 'TOPLEFT', 19 - 10 - 1, -75 + 10)
-        DressUpFrameBackgroundTopLeft:SetPoint('TOPLEFT', DressUpModelFrame, 'TOPLEFT', 0, 0)
+    if DressUpFrameBackgroundTopLeft then
+        DressUpFrameBackgroundTopLeft:SetPoint('TOPLEFT', DressUpFrame, 'TOPLEFT', 19, -75)
+        if eraFix then
+            --
+            DressUpFrameBackgroundTopLeft:ClearAllPoints()
+            -- DressUpFrameBackgroundTopLeft:SetPoint('TOPLEFT', DressUpFrame, 'TOPLEFT', 19 - 10 - 1, -75 + 10)
+            DressUpFrameBackgroundTopLeft:SetPoint('TOPLEFT', DressUpModelFrame, 'TOPLEFT', 0, 0)
+        end
     end
 
     local rotateBtn = DressUpModelFrameRotateRightButton
@@ -873,18 +879,20 @@ function DragonflightUIMixin:ChangeDressupFrame()
 
     do
         local port = DressUpFramePortrait
-        port:SetSize(62, 62)
-        port:ClearAllPoints()
-        port:SetPoint('TOPLEFT', -5, 7)
-        port:SetDrawLayer('OVERLAY', 6)
-
         local pp = frame.PortraitFrame
-        pp:SetTexture(base .. 'UI-Frame-PortraitMetal-CornerTopLeft')
-        pp:SetTexCoord(0.0078125, 0.0078125, 0.0078125, 0.6171875, 0.6171875, 0.0078125, 0.6171875, 0.6171875)
-        pp:SetSize(84, 84)
-        pp:ClearAllPoints()
-        pp:SetPoint('CENTER', port, 'CENTER', 0, 0)
-        pp:SetDrawLayer('OVERLAY', 7)
+        if port and pp then
+            port:SetSize(62, 62)
+            port:ClearAllPoints()
+            port:SetPoint('TOPLEFT', -5, 7)
+            port:SetDrawLayer('OVERLAY', 6)
+
+            pp:SetTexture(base .. 'UI-Frame-PortraitMetal-CornerTopLeft')
+            pp:SetTexCoord(0.0078125, 0.0078125, 0.0078125, 0.6171875, 0.6171875, 0.0078125, 0.6171875, 0.6171875)
+            pp:SetSize(84, 84)
+            pp:ClearAllPoints()
+            pp:SetPoint('CENTER', port, 'CENTER', 0, 0)
+            pp:SetDrawLayer('OVERLAY', 7)
+        end
     end
 
     DragonflightUIMixin:FrameBackgroundSolid(frame, true)
@@ -897,6 +905,8 @@ function DragonflightUIMixin:ChangeDressupFrame()
 end
 
 function DragonflightUIMixin:EnhanceDressupFrame()
+    if not DressUpModelFrame then return end
+
     DressUpModelFrame:EnableMouseWheel(true)
     DressUpModelFrame:HookScript('OnMouseWheel', Model_OnMouseWheel)
     DressUpModelFrame:HookScript('OnMouseDown', function(self, button)
@@ -911,13 +921,15 @@ function DragonflightUIMixin:EnhanceDressupFrame()
     end)
 
     -- default reset is not at 0
-    DressUpFrameResetButton:HookScript('OnClick', function()
-        --
-        DressUpModelFrame:SetRotation(0)
-        DressUpModelFrame:SetPosition(0, 0, 0)
-        DressUpModelFrame:SetPortraitZoom(0)
-        DressUpModelFrame:RefreshCamera()
-    end)
+    if DressUpFrameResetButton then
+        DressUpFrameResetButton:HookScript('OnClick', function()
+            --
+            DressUpModelFrame:SetRotation(0)
+            DressUpModelFrame:SetPosition(0, 0, 0)
+            DressUpModelFrame:SetPortraitZoom(0)
+            DressUpModelFrame:RefreshCamera()
+        end)
+    end
 end
 
 function DragonflightUIMixin:ChangeInspectFrameEra()
@@ -2077,10 +2089,12 @@ function DragonflightUIMixin:ChangeTaxiFrame()
     DragonflightUIMixin:FrameBackgroundSolid(frame, true)
 
     local header = TaxiMerchant
-    header:ClearAllPoints()
-    header:SetPoint('TOP', frame, 'TOP', 0, -5)
-    header:SetPoint('LEFT', frame, 'LEFT', 60, 0)
-    header:SetPoint('RIGHT', frame, 'RIGHT', -60, 0)
+    if header then
+        header:ClearAllPoints()
+        header:SetPoint('TOP', frame, 'TOP', 0, -5)
+        header:SetPoint('LEFT', frame, 'LEFT', 60, 0)
+        header:SetPoint('RIGHT', frame, 'RIGHT', -60, 0)
+    end
 
     local closeButton = TaxiCloseButton
     DragonflightUIMixin:UIPanelCloseButton(closeButton)
@@ -2365,25 +2379,25 @@ function DragonflightUIMixin:ChangeQuestFrame()
     closeButton:SetPoint('TOPRIGHT', QuestFrame, 'TOPRIGHT', 1, 0)
 
     local decline = QuestFrameDeclineButton
-    decline:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 4)
+    if decline then decline:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 4) end
 
     local cancel = QuestFrameCancelButton
-    cancel:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 4)
+    if cancel then cancel:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 4) end
 
     local accept = QuestFrameAcceptButton
-    accept:SetPoint('BOTTOMLEFT', frame, 'BOTTOMLEFT', 6, 4)
+    if accept then accept:SetPoint('BOTTOMLEFT', frame, 'BOTTOMLEFT', 6, 4) end
 
     local complete = QuestFrameCompleteQuestButton
-    complete:SetPoint('BOTTOMLEFT', frame, 'BOTTOMLEFT', 6, 4)
+    if complete then complete:SetPoint('BOTTOMLEFT', frame, 'BOTTOMLEFT', 6, 4) end
 
     local gb = QuestFrameGoodbyeButton
-    gb:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 4)
+    if gb then gb:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 4) end
 
     local greetGb = QuestFrameGreetingGoodbyeButton
-    greetGb:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 4)
+    if greetGb then greetGb:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 4) end
 
     local completeP = QuestFrameCompleteButton
-    completeP:SetPoint('BOTTOMLEFT', frame, 'BOTTOMLEFT', 6, 4)
+    if completeP then completeP:SetPoint('BOTTOMLEFT', frame, 'BOTTOMLEFT', 6, 4) end
 
     if DF.API.Version.IsTBC then
         detail:ClearAllPoints()
@@ -2602,7 +2616,12 @@ end
 
 function DragonflightUIMixin:ChangeGossipFrame()
     local frame = GossipFrame
+    if not frame then return end
     local greeting = frame.GreetingPanel
+    if not greeting then
+        -- GossipFrame.GreetingPanel no existe en este cliente (Legion 7.3.5) - se omite
+        return
+    end
 
     local regions = {greeting:GetRegions()}
     local port
@@ -4177,7 +4196,19 @@ function DragonflightUIMixin:AddNineSliceTextures(frame, portrait)
     slice.LeftEdge = frame:CreateTexture('LeftEdge')
     slice.RightEdge = frame:CreateTexture('RightEdge')
 
-    frame.Bg = CreateFrame('FRAME', 'Bg', frame, 'FlatPanelBackgroundTemplate')
+    -- FIX Legion 7.3.5: 'FlatPanelBackgroundTemplate' es una plantilla de Shadowlands+ que no
+    -- existe en este cliente - CreateFrame() con un inherits desconocido lanza un error real
+    -- (distinto de los fallos silenciosos de otras plantillas modernas), y frame.Bg se usa sin
+    -- comprobar en muchos otros sitios de este archivo (SetPoint, etc.), asi que en vez de dejar
+    -- frame.Bg en nil (lo que solo trasladaria el crash a esos otros sitios) se cae a un Frame
+    -- generico sin plantilla si la de Dragonflight no esta disponible. frame.Bg.TopSection y
+    -- similares (subwidgets propios de esa plantilla) ya se comprueban aparte donde se usan.
+    local bgOk, bgFrame = pcall(CreateFrame, 'FRAME', 'Bg', frame, 'FlatPanelBackgroundTemplate')
+    if bgOk and bgFrame then
+        frame.Bg = bgFrame
+    else
+        frame.Bg = CreateFrame('FRAME', 'Bg', frame)
+    end
     frame.Bg:SetPoint('TOPLEFT', frame, 'TOPLEFT', 7, -18)
     frame.Bg:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -3, 3)
     frame.Bg:SetFrameLevel(0)

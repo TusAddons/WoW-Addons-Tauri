@@ -619,8 +619,10 @@ function SubModuleMixin:CreatePlayerFrameTextures()
 
     if not self.PlayerFrameBackground then
         local background = PlayerFrame:CreateTexture('DragonflightUIPlayerFrameBackground')
-        background:SetTexelSnappingBias(0.0)
-        background:SetSnapToPixelGrid(false)
+        -- FIX Legion 7.3.5: SetTexelSnappingBias/SetSnapToPixelGrid son metodos de Texture de
+        -- BfA+ que no existen en este cliente.
+        if background.SetTexelSnappingBias then background:SetTexelSnappingBias(0.0) end
+        if background.SetSnapToPixelGrid then background:SetSnapToPixelGrid(false) end
         self.PlayerFrameBackground = background
     end
 
@@ -714,11 +716,13 @@ function SubModuleMixin:CreateRestFlipbook()
 
         animationGroup:SetLooping('REPEAT')
         local size = 60
-        animation:SetFlipBookFrameWidth(size)
-        animation:SetFlipBookFrameHeight(size)
-        animation:SetFlipBookRows(7)
-        animation:SetFlipBookColumns(6)
-        animation:SetFlipBookFrames(42)
+        if animation.SetFlipBookFrameWidth then
+            animation:SetFlipBookFrameWidth(size)
+            animation:SetFlipBookFrameHeight(size)
+            animation:SetFlipBookRows(7)
+            animation:SetFlipBookColumns(6)
+            animation:SetFlipBookFrames(42)
+        end
         animation:SetDuration(1.5)
 
         self.RestIcon = rest

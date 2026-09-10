@@ -250,15 +250,19 @@ function SubModuleMixin:SkinTotems()
                             v:ClearAllPoints()
                             v:SetPoint("CENTER", totem, "CENTER")
 
-                            if not totem.DFMask then
+                            if not totem.DFMask and totem.icon then
                                 totem.DFMask = totem:CreateMaskTexture()
                                 totem.DFMask:SetTexture(base .. 'tempportraitalphamask')
                                 local delta = 0;
                                 totem.DFMask:SetPoint('TOPLEFT', totem.icon, 'TOPLEFT', delta, -delta)
                                 totem.DFMask:SetPoint('BOTTOMRIGHT', totem.icon, 'BOTTOMRIGHT', -delta, delta)
-                                totem.icon.texture:AddMaskTexture(totem.DFMask)
+                                if totem.icon.texture then
+                                    totem.icon.texture:AddMaskTexture(totem.DFMask)
+                                end
 
-                                totem.icon.cooldown:SetUseCircularEdge(true)
+                                if totem.icon.cooldown then
+                                    totem.icon.cooldown:SetUseCircularEdge(true)
+                                end
                             end
                         end
                     end

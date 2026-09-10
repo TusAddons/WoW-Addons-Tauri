@@ -271,6 +271,17 @@ function SubModuleMixin:Update()
     -- f:UpdateStateHandler(state)
 end
 
+local function SafeAttachResourceBar(name, parent, point, relPoint, x, y, width)
+    local f = _G[name]
+    -- Algunos de estos globals existen en este cliente como stubs/tablas vacias
+    -- (no frames reales), asi que comprobamos que los metodos existan de verdad.
+    if not f or not f.SetParent or not f.ClearAllPoints or not f.SetPoint then return end
+    if width and f.SetWidth then f:SetWidth(width) end
+    f:SetParent(parent)
+    f:ClearAllPoints()
+    f:SetPoint(point, parent, relPoint, x, y)
+end
+
 function SubModuleMixin:CreateSecondaryResFrame()
     local fakeWidget = CreateFrame('Frame', 'DragonflightUIPlayerSecondaryRessourceFrame', UIParent)
     fakeWidget:SetSize(125, 40)
@@ -291,49 +302,27 @@ function SubModuleMixin:CreateSecondaryResFrame()
     -- end
 
     if DF.Wrath then
-        _G['RuneFrame']:SetWidth(123)
-        _G['RuneFrame']:ClearAllPoints()
-        _G['RuneFrame']:SetParent(self.PreviewFrame)
-        _G['RuneFrame']:SetPoint('TOP', self.PreviewFrame, 'TOP', 0, -6)
-
+        SafeAttachResourceBar('RuneFrame', self.PreviewFrame, 'TOP', 'TOP', 0, -6, 123)
     end
 
     if DF.Cata then
-        _G['PaladinPowerBar']:SetParent(self.PreviewFrame)
-        _G['PaladinPowerBar']:ClearAllPoints()
-        _G['PaladinPowerBar']:SetPoint('TOP', self.PreviewFrame, 'TOP', 0, 5)
-
-        _G['EclipseBarFrame']:SetParent(self.PreviewFrame)
-        _G['EclipseBarFrame']:ClearAllPoints()
-        _G['EclipseBarFrame']:SetPoint('TOP', self.PreviewFrame, 'TOP', 0, -1)
+        SafeAttachResourceBar('PaladinPowerBar', self.PreviewFrame, 'TOP', 'TOP', 0, 5)
+        SafeAttachResourceBar('EclipseBarFrame', self.PreviewFrame, 'TOP', 'TOP', 0, -1)
     end
 
     if DF.API.Version.IsCata then
-        _G['ShardBarFrame']:SetParent(self.PreviewFrame)
-        _G['ShardBarFrame']:ClearAllPoints()
-        _G['ShardBarFrame']:SetPoint('TOP', self.PreviewFrame, 'TOP', 0, -9)
+        SafeAttachResourceBar('ShardBarFrame', self.PreviewFrame, 'TOP', 'TOP', 0, -9)
     elseif DF.API.Version.IsMoP then
-        _G['MonkHarmonyBar']:SetParent(self.PreviewFrame)
-        _G['MonkHarmonyBar']:ClearAllPoints()
-        _G['MonkHarmonyBar']:SetPoint('TOP', self.PreviewFrame, 'TOP', 0, 18)
+        SafeAttachResourceBar('MonkHarmonyBar', self.PreviewFrame, 'TOP', 'TOP', 0, 18)
+        SafeAttachResourceBar('WarlockPowerFrame', self.PreviewFrame, 'TOP', 'TOP', 0, -7)
+        SafeAttachResourceBar('ShardBarFrame', self.PreviewFrame, 'TOP', 'TOP', 0, -2)
+        SafeAttachResourceBar('BurningEmbersBarFrame', self.PreviewFrame, 'TOP', 'TOP', 0, -0.5)
 
-        -- WarlockPowerFrame
-        _G['WarlockPowerFrame']:SetParent(self.PreviewFrame)
-        _G['WarlockPowerFrame']:ClearAllPoints()
-        _G['WarlockPowerFrame']:SetPoint('TOP', self.PreviewFrame, 'TOP', 0, -7)
-
-        _G['ShardBarFrame']:SetParent(self.PreviewFrame)
-        _G['ShardBarFrame']:ClearAllPoints()
-        _G['ShardBarFrame']:SetPoint('TOP', self.PreviewFrame, 'TOP', 0, -2)
-
-        _G['BurningEmbersBarFrame']:SetParent(self.PreviewFrame)
-        _G['BurningEmbersBarFrame']:ClearAllPoints()
-        _G['BurningEmbersBarFrame']:SetPoint('TOP', self.PreviewFrame, 'TOP', 0, -0.5)
-
-        -- PriestBarFrame
-        -- _G['PriestBarFrame']:SetParent(self.PreviewFrame)
-        _G['PriestBarFrame']:ClearAllPoints()
-        _G['PriestBarFrame']:SetPoint('TOP', self.PreviewFrame, 'TOP', 0, 0.5)
+        local priestBar = _G['PriestBarFrame']
+        if priestBar then
+            priestBar:ClearAllPoints()
+            priestBar:SetPoint('TOP', self.PreviewFrame, 'TOP', 0, 0.5)
+        end
     end
 end
 
@@ -448,7 +437,12 @@ function SubModuleMixin:HookSecondaryRes()
         self.SecondaryResToHide = _G['PriestBarFrame'];
     end
 
-    if not self.SecondaryResToHide then return end
+    -- Algunos de estos globals existen en este cliente como stubs/tablas vacias
+    -- (no frames reales) sin HookScript - nos aseguramos de que sea un frame de verdad.
+    if not self.SecondaryResToHide or not self.SecondaryResToHide.HookScript then
+        self.SecondaryResToHide = nil
+        return
+    end
 
     if self.SecondaryResToHide == _G['ShardBarFrame'] and not DF.API.Version.IsCata then
         -- warlock MoP onwards
@@ -457,11 +451,13 @@ function SubModuleMixin:HookSecondaryRes()
         local t = {_G['ShardBarFrame'], _G['BurningEmbersBarFrame'], _G['DemonicFuryBarFrame']}
 
         for k, v in ipairs(t) do
-            v:HookScript('OnShow', function()
-                --
-                -- print('onshow')
-                if not self.ModuleRef.db.profile.playerSecondaryRes.activate then v:Hide() end
-            end)
+            if v and v.HookScript then
+                v:HookScript('OnShow', function()
+                    --
+                    -- print('onshow')
+                    if not self.ModuleRef.db.profile.playerSecondaryRes.activate then v:Hide() end
+                end)
+            end
         end
     elseif self.SecondaryResToHide == _G['PriestBarFrame'] then
         self.SecondaryResToHide:HookScript('OnShow', function()
@@ -469,6 +465,7 @@ function SubModuleMixin:HookSecondaryRes()
             -- print('onshow')
             if not self.ModuleRef.db.profile.playerSecondaryRes.activate then self.SecondaryResToHide:Hide() end
         end)
+        if _G['PriestBarFrame'] and _G['PriestBarFrame'].CheckAndShow then
         hooksecurefunc(_G['PriestBarFrame'], 'CheckAndShow', function()
             local spec = C_SpecializationInfo.GetSpecialization();
             if (spec == SPEC_PRIEST_SHADOW) then
@@ -480,6 +477,7 @@ function SubModuleMixin:HookSecondaryRes()
                 end
             end
         end)
+        end
     else
         self.SecondaryResToHide:HookScript('OnShow', function()
             --

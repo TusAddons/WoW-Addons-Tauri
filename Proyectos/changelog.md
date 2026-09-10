@@ -1,4 +1,16 @@
 
+## DragonflightUI (actualización — muchos más fixes de compatibilidad)
+- Segunda tanda grande de correcciones sobre el port a Legion 7.3.5, a partir de decenas de errores reportados jugando en directo tras la versión inicial experimental.
+- Barras de recurso de clase (Paladín, Druida, Brujo, Monje, Sacerdote, Caballero de la Muerte) y sus globals asociados (`PaladinPowerBar`, `EclipseBarFrame`, `ShardBarFrame`, etc.) protegidos: en este cliente algunos existen como "stubs" sin los métodos reales, no solo como nil.
+- Micromenú: botones que no existen en este cliente (PvP, Ayuda, extensor de la barra principal) ya no tumban el addon al cargar.
+- Marcos de personalización (probador de ropa, misiones, gremio/gossip, taxi) protegidos frente a sub-elementos que no existen en este cliente (`DressUpModelFrame`, `QuestFrameCancelButton`, `GossipFrame.GreetingPanel`, `TaxiMerchant`, etc.).
+- Minimapa: reloj, correo, calendario, brújula y el icono de rastreo (`GetTrackingTexture`) corregidos — mezcla de texturas sin `SetScale` en este cliente y de CVars/funciones que no existen aquí.
+- Marco de mascota: texto de vida/maná protegido igual que los demás FontStrings sin `SetScale`.
+- Tótems del chamán: se evita un crash cuando un tótem concreto no tiene icono en este cliente.
+- Barra de acción: `SetAttributeNoHandler` (con fallback a `SetAttribute`) y una llamada nativa de Blizzard (`ActionButton_ShowGrid`) que a veces recibía un botón mal formado, ahora protegida con `pcall`.
+- **Nuevo addon recomendado junto a este**: `!LegionBackdropShim` (ver más abajo) — soluciona un error de `BackdropTemplate` que puede afectar a DragonflightUI o a otros addons en este cliente.
+- Sigue en fase de pruebas: si te sale algún error, `/console scriptErrors 1` y pega el texto en el canal.
+
 ## LegionBackdropShim (nuevo)
 - Addon nuevo, mínimo e independiente: define un `BackdropTemplate` virtual vacío para este cliente Legion 7.3.5, que no lo trae porque en esta versión `SetBackdrop` ya es nativo en todos los frames (ese template solo se volvió necesario a partir de Battle for Azeroth 8.0, cuando Blizzard sacó el sistema de backdrop de los frames normales).
 - Soluciona el error `CreateFrame(): Couldn't find inherited node "BackdropTemplate"` que salta en cualquier addon o librería escrita pensando en clientes modernos (por ejemplo, la copia de AceGUI-3.0 que trae **GarrisonCommander**, que crasheaba al abrir su menú del Shipyard).

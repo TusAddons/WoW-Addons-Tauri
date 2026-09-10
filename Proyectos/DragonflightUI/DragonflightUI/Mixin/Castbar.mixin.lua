@@ -134,7 +134,13 @@ function DragonFlightUICastbarMixin:OnEvent(event, ...)
         local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellId =
             UnitCastingInfo(unit);
         -- print(name, notInterruptible)
-        local subText = GetSpellSubtext(spellId) or ''
+        -- FIX Legion 7.3.5: GetSpellSubtext() no existe como global en este cliente.
+        local subText = ''
+        if type(GetSpellSubtext) == 'function' then
+            subText = GetSpellSubtext(spellId) or ''
+        elseif C_Spell and C_Spell.GetSpellSubtext then
+            subText = C_Spell.GetSpellSubtext(spellId) or ''
+        end
         if not self.showRank then subText = '' end
         if subText ~= '' then subText = ' (' .. subText .. ')' end
 

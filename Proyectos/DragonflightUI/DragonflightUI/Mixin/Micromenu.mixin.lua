@@ -236,18 +236,20 @@ function DragonflightUIMicroMenuMixin:ChangeButtons()
         self:ChangeMicroMenuButton(CollectionsMicroButton, 'Collections')
         self:ChangeMicroMenuButton(PVPMicroButton, 'AdventureGuide')
         self:BetterPVPMicroButton(PVPMicroButton)
-        PVPMicroButtonTexture:Hide()
+        if PVPMicroButtonTexture then PVPMicroButtonTexture:Hide() end
         self:ChangeMicroMenuButton(LFGMicroButton, 'Groupfinder')
         self:ChangeMicroMenuButton(EJMicroButton, 'AdventureGuide')
         self:ChangeMicroMenuButton(StoreMicroButton, 'Shop')
         self:ChangeMicroMenuButton(MainMenuMicroButton, 'GameMenu')
 
-        MainMenuBarTextureExtender:Hide()
+        if MainMenuBarTextureExtender then MainMenuBarTextureExtender:Hide() end
 
         -- MainMenuBarPerformanceBar:ClearAllPoints()
-        MainMenuBarPerformanceBar:SetPoint('BOTTOM', MainMenuMicroButton, 'BOTTOM', 0, 0)
-        MainMenuBarPerformanceBar:SetSize(19, 39)
-        MainMenuBarPerformanceBar:Hide() -- TODO
+        if MainMenuBarPerformanceBar then
+            MainMenuBarPerformanceBar:SetPoint('BOTTOM', MainMenuMicroButton, 'BOTTOM', 0, 0)
+            MainMenuBarPerformanceBar:SetSize(19, 39)
+            MainMenuBarPerformanceBar:Hide() -- TODO
+        end
 
         -- self:HookMicromenuOverride()
     elseif DF.Cata then
@@ -261,17 +263,19 @@ function DragonflightUIMicroMenuMixin:ChangeButtons()
         self:ChangeMicroMenuButton(CollectionsMicroButton, 'Collections')
         self:ChangeMicroMenuButton(PVPMicroButton, 'AdventureGuide')
         self:BetterPVPMicroButton(PVPMicroButton)
-        PVPMicroButtonTexture:Hide()
+        if PVPMicroButtonTexture then PVPMicroButtonTexture:Hide() end
         self:ChangeMicroMenuButton(LFGMicroButton, 'Groupfinder')
         self:ChangeMicroMenuButton(EJMicroButton, 'AdventureGuide')
         self:ChangeMicroMenuButton(MainMenuMicroButton, 'Shop')
         self:ChangeMicroMenuButton(HelpMicroButton, 'GameMenu')
 
-        MainMenuBarTextureExtender:Hide()
+        if MainMenuBarTextureExtender then MainMenuBarTextureExtender:Hide() end
 
         -- MainMenuBarPerformanceBar:ClearAllPoints()
-        MainMenuBarPerformanceBar:SetPoint('BOTTOM', MainMenuMicroButton, 'BOTTOM', 0, 0)
-        MainMenuBarPerformanceBar:SetSize(19, 39)
+        if MainMenuBarPerformanceBar then
+            MainMenuBarPerformanceBar:SetPoint('BOTTOM', MainMenuMicroButton, 'BOTTOM', 0, 0)
+            MainMenuBarPerformanceBar:SetSize(19, 39)
+        end
 
         -- self:HookMicromenuOverride()
     elseif DF.Wrath then
@@ -285,16 +289,18 @@ function DragonflightUIMicroMenuMixin:ChangeButtons()
         self:ChangeMicroMenuButton(CollectionsMicroButton, 'Collections')
         self:ChangeMicroMenuButton(PVPMicroButton, 'AdventureGuide')
         self:BetterPVPMicroButton(PVPMicroButton)
-        PVPMicroButtonTexture:Hide()
+        if PVPMicroButtonTexture then PVPMicroButtonTexture:Hide() end
         self:ChangeMicroMenuButton(LFGMicroButton, 'Groupfinder')
         self:ChangeMicroMenuButton(MainMenuMicroButton, 'Shop')
         self:ChangeMicroMenuButton(HelpMicroButton, 'GameMenu')
 
-        MainMenuBarTextureExtender:Hide()
+        if MainMenuBarTextureExtender then MainMenuBarTextureExtender:Hide() end
 
         -- MainMenuBarPerformanceBar:ClearAllPoints()
-        MainMenuBarPerformanceBar:SetPoint('BOTTOM', MainMenuMicroButton, 'BOTTOM', 0, 0)
-        MainMenuBarPerformanceBar:SetSize(19, 39)
+        if MainMenuBarPerformanceBar then
+            MainMenuBarPerformanceBar:SetPoint('BOTTOM', MainMenuMicroButton, 'BOTTOM', 0, 0)
+            MainMenuBarPerformanceBar:SetSize(19, 39)
+        end
     elseif DF.API.Version.IsTBC then
         self:ChangeCharacterMicroButton()
         self:ChangeMicroMenuButton(SpellbookMicroButton, 'SpellbookAbilities')
@@ -526,6 +532,10 @@ function DragonflightUIMicroMenuMixin:ChangeCharacterMicroButton()
 end
 
 function DragonflightUIMicroMenuMixin:BetterPVPMicroButton(btn)
+    if not btn then
+        -- El boton de PvP del micromenu no existe en este cliente (Legion 7.3.5) - se omite
+        return
+    end
     local tex = 'Interface\\Addons\\DragonflightUI\\Textures\\Micromenu\\micropvp'
 
     local englishFaction, localizedFaction = UnitFactionGroup('player')
@@ -559,6 +569,10 @@ end
 
 function DragonflightUIMicroMenuMixin:ChangeMicroMenuButton(frame, name)
     -- print('~~DragonflightUIMicroMenuMixin:ChangeMicroMenuButton()', frame:GetName())
+    if not frame then
+        -- Este boton del micromenu no existe en este cliente (Legion 7.3.5) - se omite
+        return
+    end
     table.insert(self.MicroButtons, frame)
     local microTexture = 'Interface\\Addons\\DragonflightUI\\Textures\\Micromenu\\uimicromenu2x'
 
@@ -687,11 +701,14 @@ function DragonflightUIMicroMenuMixin:ChangeMicroMenuButton(frame, name)
         frame.HandleState()
     end)    ]]
 
-    frame:GetPushedTexture():HookScript('OnShow', function(self)
-        -- frame.BackgroundPushed:Show()
-        frame.dfState.pushed = true
-        frame.HandleState()
-    end)
+    local pushedTex2 = frame:GetPushedTexture()
+    if pushedTex2 and pushedTex2.HookScript then
+        pushedTex2:HookScript('OnShow', function(self)
+            -- frame.BackgroundPushed:Show()
+            frame.dfState.pushed = true
+            frame.HandleState()
+        end)
+    end
 
     --[[   frame:GetPushedTexture():HookScript('OnHide', function(self)
         frame.BackgroundPushed:Hide()

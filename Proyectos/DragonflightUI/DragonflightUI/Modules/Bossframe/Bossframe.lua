@@ -378,6 +378,15 @@ function Module:ApplySettingsInternal(sub, key)
 
     local f = self.PreviewFrame
 
+    -- FIX Legion 7.3.5: mismo problema de deteccion de version que en AddEditMode() (arriba):
+    -- self.PreviewFrame solo existe si CreateBossFrames() llego a ejecutarse, cosa que no pasa
+    -- en este cliente porque el dispatcher real de version llama a Module:Wrath() (vacio) en vez
+    -- de Module:Cata(). Se omite aplicar ajustes de posicion/escala si no hay preview frame.
+    if not f then
+        DF:Debug(self, 'ApplySettingsInternal(): self.PreviewFrame no existe - se omite aplicar ajustes de Bossframe')
+        return
+    end
+
     local parent;
     if DF.Settings.ValidateFrame(state.customAnchorFrame) then
         parent = _G[state.customAnchorFrame]

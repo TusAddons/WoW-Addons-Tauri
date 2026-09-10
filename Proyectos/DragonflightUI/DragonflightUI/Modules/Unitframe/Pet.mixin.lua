@@ -532,18 +532,18 @@ function SubModuleMixin:ChangePetFrame()
     PetFrameHealthBarTextLeft:SetPoint('LEFT', PetFrameHealthBar, 'LEFT', dx, 0)
     PetFrameHealthBarTextRight:SetPoint('RIGHT', PetFrameHealthBar, 'RIGHT', -dx, 0)
 
-    PetFrameHealthBarText:SetScale(newPetTextScale)
-    PetFrameHealthBarTextLeft:SetScale(newPetTextScale)
-    PetFrameHealthBarTextRight:SetScale(newPetTextScale)
+    if PetFrameHealthBarText.SetScale then PetFrameHealthBarText:SetScale(newPetTextScale) end
+    if PetFrameHealthBarTextLeft.SetScale then PetFrameHealthBarTextLeft:SetScale(newPetTextScale) end
+    if PetFrameHealthBarTextRight.SetScale then PetFrameHealthBarTextRight:SetScale(newPetTextScale) end
 
     PetFrameManaBarText:SetPoint('CENTER', PetFrameManaBar, 'CENTER', deltaSize / 2, 0)
     PetFrameManaBarTextLeft:ClearAllPoints()
     PetFrameManaBarTextLeft:SetPoint('LEFT', PetFrameManaBar, 'LEFT', deltaSize + dx + 1.5, 0)
     PetFrameManaBarTextRight:SetPoint('RIGHT', PetFrameManaBar, 'RIGHT', -dx, 0)
 
-    PetFrameManaBarText:SetScale(newPetTextScale)
-    PetFrameManaBarTextLeft:SetScale(newPetTextScale)
-    PetFrameManaBarTextRight:SetScale(newPetTextScale)
+    if PetFrameManaBarText.SetScale then PetFrameManaBarText:SetScale(newPetTextScale) end
+    if PetFrameManaBarTextLeft.SetScale then PetFrameManaBarTextLeft:SetScale(newPetTextScale) end
+    if PetFrameManaBarTextRight.SetScale then PetFrameManaBarTextRight:SetScale(newPetTextScale) end
 
     if PetFrameHappiness then
         PetFrameHappiness:ClearAllPoints()

@@ -420,6 +420,16 @@ function Module:SetupMainmenuButton()
 
     local btn = configModule.EditModeButton
 
+    -- FIX Legion 7.3.5: configModule.EditModeButton solo se crea dentro de AddMainMenuButton()/
+    -- AddMainMenuButtonTBC(), que se desactivaron (do return end) porque sus botones se
+    -- superponian con los nativos del menu de escape en este cliente (ver Config.lua). El
+    -- reemplazo es el comando /dfedit; aqui simplemente no hay boton al que engancharle el
+    -- click.
+    if not btn then
+        DF:Debug(self, 'SetupMainmenuButton(): configModule.EditModeButton no existe (boton del menu de escape desactivado) - usa /dfedit')
+        return
+    end
+
     btn:SetScript('OnClick', function()
         -- 
         DF:Debug(self, 'editmode')

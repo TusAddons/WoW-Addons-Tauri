@@ -2297,7 +2297,11 @@ function Module:SetupActionbarFrames()
             btn.command = "CLICK DragonflightUIMultiactionBar" .. n .. "Button" .. i .. ":Keybind"
             btn.commandHuman = "Action Bar " .. n .. ' Button ' .. i
 
-            btn:SetAttributeNoHandler("commandName", btn.command)
+            if btn.SetAttributeNoHandler then
+                btn:SetAttributeNoHandler("commandName", btn.command)
+            else
+                btn:SetAttribute("commandName", btn.command)
+            end
 
             btns[i] = btn
             btn:Hide()

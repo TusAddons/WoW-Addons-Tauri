@@ -1010,6 +1010,16 @@ function DragonflightUIEditModeLayoutDropdownMixin:OnLoad()
     self.Button:SetPoint('BOTTOMRIGHT')
     -- self.Button:SetEnabled(false)
 
+    -- FIX Legion 7.3.5: self.Button hereda DropdownWithSteppersTemplate (API moderna de
+    -- dropdown con Menu system) que no existe en este cliente, asi que self.Button.Dropdown/
+    -- .Label/.IncrementButton/.DecrementButton nunca se crean. El desplegable de "layout" de
+    -- Edit Mode (elegir entre perfiles de UI guardados) no tiene forma realista de portarse sin
+    -- reescribir tambien este widget - se desactiva en vez de encadenar guardas sobre guardas.
+    if not self.Button.Dropdown then
+        self:Hide()
+        return
+    end
+
     self.Button.Dropdown:ClearAllPoints()
     self.Button.Dropdown:SetPoint('TOPLEFT')
     self.Button.Dropdown:SetPoint('BOTTOMRIGHT')
