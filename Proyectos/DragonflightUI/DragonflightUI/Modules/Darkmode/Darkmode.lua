@@ -579,18 +579,22 @@ function Module:UpdateTargetFrame(state)
     TargetFrameBackground:SetVertexColor(c:GetRGB())
 
     local tot = unitModule.SubTargetOfTarget
-    local TargetFrameToTBackground = tot.TargetFrameToTBackground
-    TargetFrameToTBackground:SetDesaturated(state.unitframeDesaturate)
-    TargetFrameToTBackground:SetVertexColor(c:GetRGB())
+    local TargetFrameToTBackground = tot and tot.TargetFrameToTBackground
+    if TargetFrameToTBackground then
+        TargetFrameToTBackground:SetDesaturated(state.unitframeDesaturate)
+        TargetFrameToTBackground:SetVertexColor(c:GetRGB())
+    end
 
     -- TODO
-    targetPortExtra:SetVertexColor(0.6, 0.6, 0.6)
+    if targetPortExtra then targetPortExtra:SetVertexColor(0.6, 0.6, 0.6) end
 
     -- editmode
     local e = f.PreviewTarget
-    e.TargetFrameBackground:SetDesaturated(state.unitframeDesaturate)
-    e.TargetFrameBackground:SetVertexColor(c:GetRGB())
-    e.PortraitExtra:SetVertexColor(0.6, 0.6, 0.6)
+    if e and e.TargetFrameBackground then
+        e.TargetFrameBackground:SetDesaturated(state.unitframeDesaturate)
+        e.TargetFrameBackground:SetVertexColor(c:GetRGB())
+    end
+    if e and e.PortraitExtra then e.PortraitExtra:SetVertexColor(0.6, 0.6, 0.6) end
 end
 
 function Module:UpdatePartyFrame(state)

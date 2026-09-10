@@ -1,4 +1,10 @@
 
+## DragonflightUI (actualización — arreglos visuales del micromenú + más fixes)
+- **Escudo de hermandad descuadrado**: Blizzard mete un frame hijo (`GuildMicroButtonTabard`) encima del botón con su propio anclaje interno cuando estás en una hermandad, y no había forma limpia de recolocarlo bien. Se esconde ese frame para que se vea el icono plano del addon, consistente con el resto de botones del micromenú (antes se veía el tabardo real pero desplazado hacia abajo).
+- **Botón de "Buscar grupo" sin estilizar**: el addon buscaba el global `LFGMicroButton` (nombre usado en clientes más modernos) pero en este cliente se llama `LFDMicroButton` — como no lo encontraba, nunca lo tocaba y se quedaba con el aspecto nativo de Blizzard (con marco, sin pegar con el resto). Corregidas las 5 referencias.
+- Marcos de personaje/objetivo/mascota, Darkmode y EditmodePreview: varias protecciones más contra campos y sub-elementos que no existen en este cliente (incluye un `hooksecurefunc` que fallaba al intentar enganchar una tabla nula).
+- Sigue en pruebas: `/console scriptErrors 1` y pega el error tal cual si te sale alguno.
+
 ## DragonflightUI (actualización — muchos más fixes de compatibilidad)
 - Segunda tanda grande de correcciones sobre el port a Legion 7.3.5, a partir de decenas de errores reportados jugando en directo tras la versión inicial experimental.
 - Barras de recurso de clase (Paladín, Druida, Brujo, Monje, Sacerdote, Caballero de la Muerte) y sus globals asociados (`PaladinPowerBar`, `EclipseBarFrame`, `ShardBarFrame`, etc.) protegidos: en este cliente algunos existen como "stubs" sin los métodos reales, no solo como nil.

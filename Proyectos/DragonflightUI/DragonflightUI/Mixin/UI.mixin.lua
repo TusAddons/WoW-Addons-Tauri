@@ -13,7 +13,11 @@ DragonflightUIMixin = {}
 local base = 'Interface\\Addons\\DragonflightUI\\Textures\\UI\\'
 
 function DragonflightUIMixin:UIPanelCloseButton(btn)
-    -- print('DragonflightUIMixin:UIPanelCloseButton(btn)', btn:GetName())  
+    -- print('DragonflightUIMixin:UIPanelCloseButton(btn)', btn:GetName())
+    if not btn then
+        -- El boton de cerrar no existe en este cliente (Legion 7.3.5) - se omite
+        return
+    end
     local tex = base .. 'redbutton2x'
 
     btn:SetSize(24, 24)
@@ -2098,20 +2102,24 @@ function DragonflightUIMixin:ChangeTaxiFrame()
 
     local closeButton = TaxiCloseButton
     DragonflightUIMixin:UIPanelCloseButton(closeButton)
-    closeButton:SetPoint('TOPRIGHT', frame, 'TOPRIGHT', 1, 0)
+    if closeButton then closeButton:SetPoint('TOPRIGHT', frame, 'TOPRIGHT', 1, 0) end
 
     do
         local map = TaxiRouteMap
-        map:ClearAllPoints()
-        map:SetPoint('TOPLEFT', frame, 'TOPLEFT', 8, -62)
+        if map then
+            map:ClearAllPoints()
+            map:SetPoint('TOPLEFT', frame, 'TOPLEFT', 8, -62)
+        end
 
         local taxi = TaxiMap
-        taxi:Show()
-        taxi:ClearAllPoints()
-        taxi:SetPoint('TOPLEFT', frame, 'TOPLEFT', 8, -62)
+        if taxi then
+            taxi:Show()
+            taxi:ClearAllPoints()
+            taxi:SetPoint('TOPLEFT', frame, 'TOPLEFT', 8, -62)
+        end
     end
 
-    do
+    if TaxiPortrait then
         local port = TaxiPortrait
         port:SetSize(62, 62)
         port:ClearAllPoints()

@@ -1019,11 +1019,13 @@ function DragonflightUIEditModePreviewRaidFrameMixin:OnLoad()
     self.MaxToShow = 15;
     self:UpdateState(nil)
 
-    hooksecurefunc(InterfaceOverrides, 'SetRaidProfileOption', function(option, value)
-        --
-        -- print('SetRaidProfileOption', option, value);
-        self:UpdateState(nil);
-    end)
+    if InterfaceOverrides and InterfaceOverrides.SetRaidProfileOption then
+        hooksecurefunc(InterfaceOverrides, 'SetRaidProfileOption', function(option, value)
+            --
+            -- print('SetRaidProfileOption', option, value);
+            self:UpdateState(nil);
+        end)
+    end
 
     local updateInterval = 0.15;
     self.LastUpdate = GetTime()

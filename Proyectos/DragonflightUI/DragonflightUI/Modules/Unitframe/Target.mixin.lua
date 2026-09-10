@@ -953,7 +953,7 @@ function SubModuleMixin:ChangeTargetFrame()
 
     -- TargetFrameBuff1:SetPoint('TOPLEFT', TargetFrame, 'BOTTOMLEFT', 5, 0)  
 
-    if not TargetFrameNameBackground.DFHooked then
+    if TargetFrameNameBackground and TargetFrameNameBackground.HookScript and not TargetFrameNameBackground.DFHooked then
         TargetFrameNameBackground.DFHooked = true
 
         TargetFrameNameBackground:HookScript('OnShow', function()
@@ -998,18 +998,28 @@ function SubModuleMixin:ChangeTargetFrame()
         end
     end
 
-    if DF.Wrath or DF.Era or DF.API.Version.IsTBC then
+    if (DF.Wrath or DF.Era or DF.API.Version.IsTBC) and TargetFrameTextureFrame.HealthBarText then
         local dx = 5
         -- health vs mana bar
         local deltaSize = 134 - 125
 
         TargetFrameTextureFrame.HealthBarText:SetPoint('CENTER', TargetFrameHealthBar, 'CENTER', 0, 0)
-        TargetFrameTextureFrame.HealthBarTextLeft:SetPoint('LEFT', TargetFrameHealthBar, 'LEFT', dx, 0)
-        TargetFrameTextureFrame.HealthBarTextRight:SetPoint('RIGHT', TargetFrameHealthBar, 'RIGHT', -dx, 0)
+        if TargetFrameTextureFrame.HealthBarTextLeft then
+            TargetFrameTextureFrame.HealthBarTextLeft:SetPoint('LEFT', TargetFrameHealthBar, 'LEFT', dx, 0)
+        end
+        if TargetFrameTextureFrame.HealthBarTextRight then
+            TargetFrameTextureFrame.HealthBarTextRight:SetPoint('RIGHT', TargetFrameHealthBar, 'RIGHT', -dx, 0)
+        end
 
-        TargetFrameTextureFrame.ManaBarText:SetPoint('CENTER', TargetFrameManaBar, 'CENTER', -deltaSize / 2, 0)
-        TargetFrameTextureFrame.ManaBarTextLeft:SetPoint('LEFT', TargetFrameManaBar, 'LEFT', dx, 0)
-        TargetFrameTextureFrame.ManaBarTextRight:SetPoint('RIGHT', TargetFrameManaBar, 'RIGHT', -deltaSize - dx, 0)
+        if TargetFrameTextureFrame.ManaBarText then
+            TargetFrameTextureFrame.ManaBarText:SetPoint('CENTER', TargetFrameManaBar, 'CENTER', -deltaSize / 2, 0)
+        end
+        if TargetFrameTextureFrame.ManaBarTextLeft then
+            TargetFrameTextureFrame.ManaBarTextLeft:SetPoint('LEFT', TargetFrameManaBar, 'LEFT', dx, 0)
+        end
+        if TargetFrameTextureFrame.ManaBarTextRight then
+            TargetFrameTextureFrame.ManaBarTextRight:SetPoint('RIGHT', TargetFrameManaBar, 'RIGHT', -deltaSize - dx, 0)
+        end
     end
 
     if not TargetFrame.DFRangeHooked then

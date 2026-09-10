@@ -237,7 +237,7 @@ function DragonflightUIMicroMenuMixin:ChangeButtons()
         self:ChangeMicroMenuButton(PVPMicroButton, 'AdventureGuide')
         self:BetterPVPMicroButton(PVPMicroButton)
         if PVPMicroButtonTexture then PVPMicroButtonTexture:Hide() end
-        self:ChangeMicroMenuButton(LFGMicroButton, 'Groupfinder')
+        self:ChangeMicroMenuButton(LFDMicroButton, 'Groupfinder')
         self:ChangeMicroMenuButton(EJMicroButton, 'AdventureGuide')
         self:ChangeMicroMenuButton(StoreMicroButton, 'Shop')
         self:ChangeMicroMenuButton(MainMenuMicroButton, 'GameMenu')
@@ -264,7 +264,7 @@ function DragonflightUIMicroMenuMixin:ChangeButtons()
         self:ChangeMicroMenuButton(PVPMicroButton, 'AdventureGuide')
         self:BetterPVPMicroButton(PVPMicroButton)
         if PVPMicroButtonTexture then PVPMicroButtonTexture:Hide() end
-        self:ChangeMicroMenuButton(LFGMicroButton, 'Groupfinder')
+        self:ChangeMicroMenuButton(LFDMicroButton, 'Groupfinder')
         self:ChangeMicroMenuButton(EJMicroButton, 'AdventureGuide')
         self:ChangeMicroMenuButton(MainMenuMicroButton, 'Shop')
         self:ChangeMicroMenuButton(HelpMicroButton, 'GameMenu')
@@ -290,7 +290,7 @@ function DragonflightUIMicroMenuMixin:ChangeButtons()
         self:ChangeMicroMenuButton(PVPMicroButton, 'AdventureGuide')
         self:BetterPVPMicroButton(PVPMicroButton)
         if PVPMicroButtonTexture then PVPMicroButtonTexture:Hide() end
-        self:ChangeMicroMenuButton(LFGMicroButton, 'Groupfinder')
+        self:ChangeMicroMenuButton(LFDMicroButton, 'Groupfinder')
         self:ChangeMicroMenuButton(MainMenuMicroButton, 'Shop')
         self:ChangeMicroMenuButton(HelpMicroButton, 'GameMenu')
 
@@ -309,7 +309,7 @@ function DragonflightUIMicroMenuMixin:ChangeButtons()
         if SocialsMicroButton then self:ChangeMicroMenuButton(SocialsMicroButton, 'GuildCommunities') end
         if GuildMicroButton then self:ChangeMicroMenuButton(GuildMicroButton, 'GuildCommunities') end
         if WorldMapMicroButton then self:ChangeMicroMenuButton(WorldMapMicroButton, 'Collections') end
-        -- if LFGMicroButton then self:ChangeMicroMenuButton(LFGMicroButton, 'Groupfinder') end
+        -- if LFDMicroButton then self:ChangeMicroMenuButton(LFDMicroButton, 'Groupfinder') end
 
         self:ChangeMicroMenuButton(MainMenuMicroButton, 'Shop')
         self:ChangeMicroMenuButton(HelpMicroButton, 'GameMenu')
@@ -327,7 +327,7 @@ function DragonflightUIMicroMenuMixin:ChangeButtons()
         -- WorldMapMicroButton    
         self:ChangeMicroMenuButton(WorldMapMicroButton, 'Collections')
 
-        if LFGMicroButton then self:ChangeMicroMenuButton(LFGMicroButton, 'Groupfinder') end
+        if LFDMicroButton then self:ChangeMicroMenuButton(LFDMicroButton, 'Groupfinder') end
         if SocialsMicroButton then self:ChangeMicroMenuButton(SocialsMicroButton, 'GuildCommunities') end
         if GuildMicroButton then self:ChangeMicroMenuButton(GuildMicroButton, 'GuildCommunities') end
 
@@ -588,6 +588,32 @@ function DragonflightUIMicroMenuMixin:ChangeMicroMenuButton(frame, name)
     frame:SetSize(sizeX, sizeY)
     frame:SetHitRectInsets(0, 0, 0, 0)
 
+    if frame == GuildMicroButton then
+        -- El template nativo de este cliente ancla GuildMicroButton con un desfase
+        -- vertical propio (pensado para el borde del tabardo de hermandad), lo que lo
+        -- deja mas abajo que el resto de botones del micromenu. Lo igualamos al resto
+        -- forzando el offset vertical a 0, sin tocar el resto del anclaje.
+        local point, relativeTo, relativePoint, xOfs, yOfs = frame:GetPoint(1)
+        if point and yOfs and yOfs ~= 0 then
+            frame:SetPoint(point, relativeTo, relativePoint, xOfs, 0)
+        end
+
+        -- El "escudo" descuadrado es GuildMicroButtonTabard: un FRAME HIJO (no una textura
+        -- suelta de frame:GetRegions()) que Blizzard crea encima del boton para dibujar el
+        -- tabardo real de la hermandad, con su propio anclaje interno pensado para un boton
+        -- de otro tamano/proporcion. Lo escondemos para que solo se vea nuestro icono plano,
+        -- igual que en el resto de botones del micromenu, y lo re-escondemos si Blizzard
+        -- intenta mostrarlo de nuevo (por ejemplo al entrar/salir de una hermandad).
+        local tabard = _G['GuildMicroButtonTabard']
+        if tabard then
+            tabard:Hide()
+            if not tabard.DFHiddenHook then
+                tabard.DFHiddenHook = true
+                hooksecurefunc(tabard, 'Show', function(s) s:Hide() end)
+            end
+        end
+    end
+
     frame:SetNormalTexture(microTexture)
     frame:GetNormalTexture():SetTexCoord(up[3], up[4], up[5], up[6])
 
@@ -614,10 +640,16 @@ function DragonflightUIMicroMenuMixin:ChangeMicroMenuButton(frame, name)
         end)
     end
 
-    if DF.API.Version.IsTBC and frame == GuildMicroButton then
+    if frame == GuildMicroButton and frame.UpdateTabard then
         -- print('here')
         -- GuildMicroButtonMixin:UpdateTabard(forceUpdate)
 
+        -- Nota: esto no debe limitarse a DF.API.Version.IsTBC. En este cliente, si el
+        -- personaje esta en una hermandad, Blizzard llama a UpdateTabard() de forma nativa
+        -- y sobreescribe nuestra textura del boton con el escudo/tabardo de la hermandad,
+        -- que tiene un tamano/posicion distinto al resto de botones del micromenu y por eso
+        -- se veia descuadrado (mas abajo de lo que deberia). Re-aplicamos nuestra textura
+        -- cada vez que Blizzard intente cambiarla.
         hooksecurefunc(frame, 'UpdateTabard', function(s, ...)
             -- print('updateTabard', s, ...)
             frame:SetNormalTexture(microTexture)
