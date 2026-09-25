@@ -1,4 +1,4 @@
-﻿--==============
+--==============
 -- Global Variables
 --==============
 ACP = {}
@@ -1423,6 +1423,7 @@ end
 
 function ACP:MatchesSearch(addon)
     if ACP_SearchText == "" then return true end
+    if type(addon) == "number" and addon > GetNumAddOns() then return false end
     local name, title = GetAddOnInfo(addon)
     if name and name:lower():find(ACP_SearchText) then return true end
     if title and title:lower():find(ACP_SearchText) then return true end

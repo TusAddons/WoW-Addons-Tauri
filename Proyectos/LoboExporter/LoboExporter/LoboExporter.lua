@@ -339,16 +339,31 @@ local function RunCoroutine(co)
 end
 
 
-local function ExportRaidLootAsync(callback)
+local function ExportRaidLootAsync(progressCallback, callback)
     local results = {}
     
     local co = coroutine.create(function()
         EJ_SelectTier(7)
-        EJ_SetLootFilter(0, 0) -- Forzar exportación de TODAS las clases
+        local totalBosses = 0
+        local idx = 1
+        while true do
+            local iID = EJ_GetInstanceByIndex(idx, true)
+            if not iID then break end
+            EJ_SelectInstance(iID)
+            local b = 1
+            while EJ_GetEncounterInfoByIndex(b) do
+                totalBosses = totalBosses + 1
+                b = b + 1
+            end
+            idx = idx + 1
+        end
         
+        local bossesProcessed = 0
+        
+        local origClass, origSpec = EJ_GetLootFilter()
         local raidIndex = 1
         while true do
-            local instanceID, raidName = EJ_GetInstanceByIndex(raidIndex, true) -- true = raid
+            local instanceID, raidName = EJ_GetInstanceByIndex(raidIndex, true)
             if not instanceID then break end
             
             EJ_SelectInstance(instanceID)
@@ -363,72 +378,103 @@ local function ExportRaidLootAsync(callback)
                 
                 for _, diff in ipairs(diffs) do
                     EJ_SetDifficulty(diff[1])
+                    local seenItems = {}
+                    
+                    if origClass and origClass > 0 then
+                        EJ_SetLootFilter(origClass, 0) -- Todas las especializaciones de la clase actual
+                    end
+                    
                     local numLoot = EJ_GetNumLoot()
-                    for j = 1, numLoot do
-                        local vals = { EJ_GetLootInfoByIndex(j) }
-                        local itemID = 0
-                        local itemLink = nil
-                        local backupName = ""
-                        local backupSlot = ""
-                        
-                        for _, v in ipairs(vals) do
-                            if type(v) == "string" then
-                                if string.find(v, "Hitem:") then
-                                    itemLink = v
-                                elseif string.find(v, "Interface") then
-                                    -- ignorar icono
-                                elseif v == "Tela" or v == "Placas" or v == "Malla" or v == "Cuero" or v == "Reliquia" or v == "Cloth" or v == "Plate" or v == "Mail" or v == "Leather" or v == "Relic" then
-                                    -- ignorar armorType
-                                elseif string.len(v) > 2 then
-                                    if backupName == "" then
-                                        backupName = v
-                                    else
-                                        backupSlot = v
+                        for j = 1, numLoot do
+                            local vals = { EJ_GetLootInfoByIndex(j) }
+                            local itemID = 0
+                            local itemLink = nil
+                            local infoName = nil
+                            local infoSlot = nil
+                            
+                            for _, v in ipairs(vals) do
+                                if type(v) == "string" then
+                                    if string.find(v, "Hitem:") then
+                                        itemLink = v
+                                    elseif string.find(v, "Interface") then
+                                        -- ignorar icono
+                                    elseif v == "Tela" or v == "Placas" or v == "Malla" or v == "Cuero" or v == "Reliquia" or v == "Cloth" or v == "Plate" or v == "Mail" or v == "Leather" or v == "Relic" then
+                                        -- ignorar armorType
+                                    elseif string.len(v) > 2 and string.match(v, "[%a%s]+") then
+                                        if not infoName then infoName = v else infoSlot = v end
                                     end
+                                elseif type(v) == "number" and v > 1000 then
+                                    itemID = v
+                                end
+                            end
+                            
+                            if itemLink then
+                                local foundID = string.match(itemLink, "item:(%d+)")
+                                if foundID then itemID = tonumber(foundID) end
+                            end
+                            
+                            local query = itemLink or itemID
+                            if query and query ~= 0 and not seenItems[itemID] then
+                                local itemName, _, _, _, _, _, itemSubType, _, itemEquipLoc = GetItemInfo(query)
+                                if not itemName or itemName == "" then itemName = infoName end
+                                
+                                local finalSlot = itemEquipLoc
+                                if not finalSlot or finalSlot == "" then
+                                    finalSlot = infoSlot
+                                end
+                                if not finalSlot or finalSlot == "" then
+                                    finalSlot = itemSubType
+                                end
+                                
+                                if itemName and itemName ~= "" then
+                                    seenItems[itemID] = true
+                                    results[#results+1] = string.format(
+                                        '    {"raid": "%s", "boss": "%s", "difficulty": "%s", "itemName": "%s", "itemID": %d, "slot": "%s"}',
+                                        EscapeJSON(raidName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(finalSlot or "")
+                                    )
                                 end
                             end
                         end
-                        
-                        if itemLink then
-                            local foundID = string.match(itemLink, "item:(%d+)")
-                            if foundID then itemID = tonumber(foundID) end
-                        end
-                        
-                        local query = itemLink or itemID
-                        if query and query ~= 0 then
-                            local itemName, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(query)
-                            if not itemName then itemName = backupName end
-                            if not itemEquipLoc then itemEquipLoc = backupSlot end
-                            
-                            if itemName and itemName ~= "" then
-                                results[#results+1] = string.format(
-                                    '    {"raid": "%s", "boss": "%s", "difficulty": "%s", "itemName": "%s", "itemID": %d, "slot": "%s"}',
-                                    EscapeJSON(raidName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(itemEquipLoc or "")
-                                )
-                            end
-                        end
-                    end
                 end
+                
+                bossesProcessed = bossesProcessed + 1
+                if progressCallback then progressCallback(bossesProcessed, totalBosses) end
                 i = i + 1
-                coroutine.yield() -- Yield after each boss to prevent client freeze
+                coroutine.yield()
             end
             raidIndex = raidIndex + 1
         end
-        callback("{\n  \"raidLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}")
+        if origClass then EJ_SetLootFilter(origClass, origSpec or 0) end
+        callback("{\n  \"raidLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}", #results)
     end)
     RunCoroutine(co)
 end
 
-local function ExportDungeonLootAsync(callback)
+local function ExportDungeonLootAsync(progressCallback, callback)
     local results = {}
     
     local co = coroutine.create(function()
         EJ_SelectTier(7)
-        EJ_SetLootFilter(0, 0) -- Forzar exportación de TODAS las clases
+        local totalBosses = 0
+        local idx = 1
+        while true do
+            local iID = EJ_GetInstanceByIndex(idx, false)
+            if not iID then break end
+            EJ_SelectInstance(iID)
+            local b = 1
+            while EJ_GetEncounterInfoByIndex(b) do
+                totalBosses = totalBosses + 1
+                b = b + 1
+            end
+            idx = idx + 1
+        end
         
+        local bossesProcessed = 0
+        
+        local origClass, origSpec = EJ_GetLootFilter()
         local dungeonIndex = 1
         while true do
-            local instanceID, instanceName = EJ_GetInstanceByIndex(dungeonIndex, false) -- false = mazmorra
+            local instanceID, instanceName = EJ_GetInstanceByIndex(dungeonIndex, false)
             if not instanceID then break end
             
             EJ_SelectInstance(instanceID)
@@ -443,58 +489,76 @@ local function ExportDungeonLootAsync(callback)
                 
                 for _, diff in ipairs(diffs) do
                     EJ_SetDifficulty(diff[1])
-                    local numLoot = EJ_GetNumLoot()
-                    for j = 1, numLoot do
-                        local vals = { EJ_GetLootInfoByIndex(j) }
-                        local itemID = 0
-                        local itemLink = nil
-                        local backupName = ""
-                        local backupSlot = ""
-                        
-                        for _, v in ipairs(vals) do
-                            if type(v) == "string" then
-                                if string.find(v, "Hitem:") then
-                                    itemLink = v
-                                elseif string.find(v, "Interface") then
-                                    -- ignorar icono
-                                elseif v == "Tela" or v == "Placas" or v == "Malla" or v == "Cuero" or v == "Reliquia" or v == "Cloth" or v == "Plate" or v == "Mail" or v == "Leather" or v == "Relic" then
-                                    -- ignorar armorType
-                                elseif string.len(v) > 2 then
-                                    if backupName == "" then
-                                        backupName = v
-                                    else
-                                        backupSlot = v
+                    local seenItems = {}
+                    
+                    if origClass and origClass > 0 then
+                        EJ_SetLootFilter(origClass, 0) -- Todas las especializaciones de la clase actual
+                    end
+                        local numLoot = EJ_GetNumLoot()
+                        for j = 1, numLoot do
+                            local vals = { EJ_GetLootInfoByIndex(j) }
+                            local itemID = 0
+                            local itemLink = nil
+                            local infoName = nil
+                            local infoSlot = nil
+                            
+                            for _, v in ipairs(vals) do
+                                if type(v) == "string" then
+                                    if string.find(v, "Hitem:") then
+                                        itemLink = v
+                                    elseif string.find(v, "Interface") then
+                                        -- ignorar icono
+                                    elseif v == "Tela" or v == "Placas" or v == "Malla" or v == "Cuero" or v == "Reliquia" or v == "Cloth" or v == "Plate" or v == "Mail" or v == "Leather" or v == "Relic" then
+                                        -- ignorar armorType
+                                    elseif string.len(v) > 2 and string.match(v, "[%a%s]+") then
+                                        if not infoName then infoName = v else infoSlot = v end
                                     end
+                                elseif type(v) == "number" and v > 1000 then
+                                    itemID = v
+                                end
+                            end
+                            
+                            if itemLink then
+                                local foundID = string.match(itemLink, "item:(%d+)")
+                                if foundID then itemID = tonumber(foundID) end
+                            end
+                            
+                            local query = itemLink or itemID
+                            if query and query ~= 0 and not seenItems[itemID] then
+                                local itemName, _, _, _, _, _, itemSubType, _, itemEquipLoc = GetItemInfo(query)
+                                if not itemName or itemName == "" then itemName = infoName end
+                                
+                                local finalSlot = itemEquipLoc
+                                if not finalSlot or finalSlot == "" then
+                                    finalSlot = infoSlot
+                                end
+                                if not finalSlot or finalSlot == "" then
+                                    finalSlot = itemSubType
+                                end
+                                
+                                if itemName and itemName ~= "" then
+                                    seenItems[itemID] = true
+                                    results[#results+1] = string.format(
+                                        '    {"dungeon": "%s", "boss": "%s", "difficulty": "%s", "itemName": "%s", "itemID": %d, "slot": "%s"}',
+                                        -- Antes usaba "dungeonName" (variable global nunca declarada, siempre nil),
+                                        -- en vez de la variable local real "instanceName" -> el campo "dungeon"
+                                        -- salía vacío en todo el JSON exportado de mazmorras/bandas.
+                                        EscapeJSON(instanceName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(finalSlot or "")
+                                    )
                                 end
                             end
                         end
-                        
-                        if itemLink then
-                            local foundID = string.match(itemLink, "item:(%d+)")
-                            if foundID then itemID = tonumber(foundID) end
-                        end
-                        
-                        local query = itemLink or itemID
-                        if query and query ~= 0 then
-                            local itemName, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(query)
-                            if not itemName then itemName = backupName end
-                            if not itemEquipLoc then itemEquipLoc = backupSlot end
-                            
-                            if itemName and itemName ~= "" then
-                                results[#results+1] = string.format(
-                                    '    {"dungeon": "%s", "boss": "%s", "difficulty": "%s", "itemName": "%s", "itemID": %d, "slot": "%s"}',
-                                    EscapeJSON(instanceName), EscapeJSON(bossName), diff[2], EscapeJSON(itemName), itemID, EscapeJSON(itemEquipLoc or "")
-                                )
-                            end
-                        end
-                    end
                 end
+                
+                bossesProcessed = bossesProcessed + 1
+                if progressCallback then progressCallback(bossesProcessed, totalBosses) end
                 i = i + 1
-                coroutine.yield() -- Yield after each boss
+                coroutine.yield()
             end
             dungeonIndex = dungeonIndex + 1
         end
-        callback("{\n  \"dungeonLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}")
+        if origClass then EJ_SetLootFilter(origClass, origSpec or 0) end
+        callback("{\n  \"dungeonLoot\": [\n" .. table.concat(results, ",\n") .. "\n  ]\n}", #results)
     end)
     RunCoroutine(co)
 end
@@ -514,18 +578,9 @@ local function GenerateExport()
         parts[#parts+1] = string.format("=== EXPORTACIÓN DE PERSONAJE: %s-%s (%s Nvl %d) ===", playerName, playerRealm, playerClass, playerLevel)
     end
     
-    if LoboExporterDB.exportEquipment then
-        parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetEquipmentData(isJSON)
-    end
-    
-    if LoboExporterDB.exportCurrencies then
-        parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetCurrenciesData(isJSON)
-    end
-    
-    if LoboExporterDB.exportReputations then
-        parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetReputationsData(isJSON)
-    end
-    
+    if LoboExporterDB.exportEquipment then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetEquipmentData(isJSON) end
+    if LoboExporterDB.exportCurrencies then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetCurrenciesData(isJSON) end
+    if LoboExporterDB.exportReputations then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetReputationsData(isJSON) end
     if LoboExporterDB.exportFollowers then
         local ok, data = pcall(GetFollowersData, isJSON)
         if ok then
@@ -534,298 +589,64 @@ local function GenerateExport()
             parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. (isJSON and ('  "followers_error": "' .. EscapeJSON(tostring(data)) .. '"') or ("ERROR: " .. tostring(data)))
         end
     end
-    
-    if LoboExporterDB.exportCompletedAchievs then
-        parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetAchievementsData(true, false, isJSON)
-    end
-    
-    if LoboExporterDB.exportIncompleteAchievs then
-        parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetAchievementsData(false, true, isJSON)
-    end
-    
-    if isJSON then
-        parts[#parts+1] = "\n}"
-    end
-    
+    if LoboExporterDB.exportCompletedAchievs then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetAchievementsData(true, false, isJSON) end
+    -- Se perdió al añadir GenerateAIToken() en b0e64f9: el checkbox "Logros
+    -- Pendientes" seguía en la UI pero ya no tenía efecto en la exportación normal.
+    if LoboExporterDB.exportIncompleteAchievs then parts[#parts+1] = (isJSON and (#parts > 1 and ",\n" or "") or "\n") .. GetAchievementsData(false, true, isJSON) end
+    if isJSON then parts[#parts+1] = "\n}" end
     return table.concat(parts, isJSON and "" or "\n")
 end
 
--- ==========================================================
--- MÓDULO DE MAPA: MARCAS EN EL MAPA DE MUNDO (LoboTracker)
--- ==========================================================
--- Helper para obtener el ID de logro correcto según la facción del jugador
-local function GetZoneAchID(info)
-    if not info then return nil end
-    if info.idHorde and UnitFactionGroup("player") == "Horde" then
-        return info.idHorde
-    end
-    return info.id
+-- Base64 Encode function for the AI Token
+local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+local function encBase64(data)
+    return ((data:gsub('.', function(x) 
+        local r,b='',x:byte()
+        for i=8,1,-1 do r=r..(b%2^i-b%2^(i-1)>0 and '1' or '0') end
+        return r;
+    end)..'0000'):gsub('%d%d%d?%d?%d?%d?', function(x)
+        if (#x < 6) then return '' end
+        local c=0
+        for i=1,6 do c=c+(x:sub(i,i)=='1' and 2^(6-i) or 0) end
+        return b:sub(c+1,c+1)
+    end)..({ '', '==', '=' })[#data%3+1])
 end
 
-local MAP_ZONES_INFO = {
-    -- Continente 1: Kalimdor (18 zonas: incluyendo Uldum y Monte Hyjal de Cataclysm)
-    [1] = {
-        { id = 4925, idHorde = 4976, name = "Vallefresno", x = 0.46, y = 0.40 },
-        { id = 4928, name = "Costa Oscura", x = 0.41, y = 0.34, faction = "Alliance" },
-        { id = 4926, name = "Isla Bruma de Sangre", x = 0.29, y = 0.18, faction = "Alliance" },
-        { id = 4929, idHorde = 4978, name = "Marjal Revolcafango", x = 0.58, y = 0.65 },
-        { id = 4932, idHorde = 4979, name = "Feralas", x = 0.41, y = 0.72 },
-        { id = 4937, idHorde = 4981, name = "Los Baldíos del Sur", x = 0.52, y = 0.60 },
-        { id = 4933, name = "Los Baldíos del Norte", x = 0.52, y = 0.50, faction = "Horde" },
-        { id = 4927, name = "Azshara", x = 0.58, y = 0.38, faction = "Horde" },
-        { id = 4935, name = "Tanaris", x = 0.60, y = 0.86 },
-        { id = 4939, name = "Cráter de Un'Goro", x = 0.50, y = 0.83 },
-        { id = 4930, name = "Desolace", x = 0.41, y = 0.56 },
-        { id = 4931, name = "Frondavil", x = 0.48, y = 0.30 },
-        { id = 4934, name = "Silithus", x = 0.40, y = 0.88 },
-        { id = 4936, idHorde = 4980, name = "Sierra Espolón", x = 0.44, y = 0.45 },
-        { id = 4938, name = "Las Mil Agujas", x = 0.52, y = 0.74 },
-        { id = 4940, name = "Cuna del Invierno", x = 0.58, y = 0.24 },
-        { id = 4872, name = "Uldum", x = 0.50, y = 0.92 },
-        { id = 4870, name = "Monte Hyjal", x = 0.52, y = 0.32 },
-    },
-    -- Continente 2: Reinos del Este (21 zonas: recalibradas vertical y horizontalmente según feedback visual)
-    [2] = {
-        { id = 4905, name = "Cabo de Tuercespina", x = 0.44, y = 0.91 },
-        { id = 4906, name = "Norte de la Vega de Tuercespina", x = 0.46, y = 0.85 },
-        { id = 4901, name = "Estepas Ardientes", x = 0.48, y = 0.71 },
-        { id = 4910, name = "Garganta de Fuego", x = 0.47, y = 0.66 },
-        { id = 4900, name = "Tierras Inhóspitas", x = 0.56, y = 0.65 },
-        { id = 12456, name = "Loch Modan", x = 0.53, y = 0.60, faction = "Alliance" },
-        { id = 12456, name = "Los Humedales", x = 0.52, y = 0.54, faction = "Alliance" },
-        { id = 4896, name = "Tierras Altas de Arathi", x = 0.53, y = 0.47 },
-        { id = 4897, name = "Tierras del Interior", x = 0.56, y = 0.39 },
-        { id = 4892, name = "Tierras de la Peste del Este", x = 0.55, y = 0.28 },
-        { id = 4893, name = "Tierras de la Peste del Oeste", x = 0.48, y = 0.29 },
-        { id = 4902, name = "Montañas Crestagrana", x = 0.54, y = 0.75, faction = "Alliance" },
-        { id = 12455, name = "Páramos de Poniente", x = 0.40, y = 0.81, faction = "Alliance" },
-        { id = 12455, name = "Bosque del Ocaso", x = 0.47, y = 0.79, faction = "Alliance" },
-        { id = 4894, name = "Bosque de Argénteos", x = 0.42, y = 0.36, faction = "Horde" },
-        { id = 4895, name = "Laderas de Trabalomas", x = 0.48, y = 0.40, faction = "Horde" },
-        { id = 4908, name = "Tierra Fantasma", x = 0.56, y = 0.16, faction = "Horde" },
-        { id = 4869, idHorde = 4982, name = "Vashj'ir", x = 0.30, y = 0.65 },
-        { id = 4873, idHorde = 5501, name = "Tierras Altas Crepusculares", x = 0.60, y = 0.56 },
-        { id = 4904, name = "Pantano de las Penas", x = 0.54, y = 0.78 },
-        { id = 4909, name = "Las Tierras Devastadas", x = 0.54, y = 0.84 },
-    },
-    -- Continente 3: Terrallende (7 zonas)
-    [3] = {
-        { id = 861, name = "Península del Fuego Infernal", x = 0.60, y = 0.52 },
-        { id = 862, name = "Marisma de Zangar", x = 0.33, y = 0.47 },
-        { id = 863, name = "Bosque de Terokkar", x = 0.45, y = 0.68 },
-        { id = 864, name = "Nagrand", x = 0.27, y = 0.68 },
-        { id = 865, name = "Montañas Filospada", x = 0.43, y = 0.28 },
-        { id = 866, name = "Tormenta Abisal", x = 0.63, y = 0.23 },
-        { id = 867, name = "Valle Sombraluna", x = 0.65, y = 0.75 },
-    },
-    -- Continente 4: Rasganorte (8 zonas: coordenadas ajustadas según feedback)
-    [4] = {
-        { id = 33, name = "Tundra Boreal", x = 0.22, y = 0.63 },
-        { id = 34, name = "Fiordo Aquilonal", x = 0.78, y = 0.68 },
-        { id = 35, name = "Cementerio de Dragones", x = 0.50, y = 0.62 },
-        { id = 36, name = "Colinas Pardas", x = 0.76, y = 0.56 },
-        { id = 37, name = "Zul'Drak", x = 0.68, y = 0.40 },
-        { id = 38, name = "Cuenca de Sholazar", x = 0.27, y = 0.43 },
-        { id = 39, name = "Las Cumbres Tormentosas", x = 0.58, y = 0.25 },
-        { id = 40, name = "Corona de Hielo", x = 0.45, y = 0.28 },
-    },
-    -- Continente 5: La Vorágine / Cataclysm (1 zona: Infralar)
-    [5] = {
-        { id = 4871, name = "Infralar", x = 0.55, y = 0.40 },
-    },
-    -- Continente 6: Pandaria (6 zonas: coordenadas ajustadas)
-    [6] = {
-        { id = 6300, name = "El Bosque de Jade", x = 0.68, y = 0.52 },
-        { id = 6301, name = "Valle de los Cuatro Vientos", x = 0.50, y = 0.68 },
-        { id = 6534, name = "Espesura de Krasarang", x = 0.48, y = 0.82 },
-        { id = 6535, name = "Cima Kun-Lai", x = 0.45, y = 0.32 },
-        { id = 6537, name = "Estepas de Tong Long", x = 0.28, y = 0.45 },
-        { id = 6538, name = "Desierto del Pavor", x = 0.33, y = 0.68 },
-    },
-    -- Continente 7: Draenor (6 zonas: separando Alianza y Horda)
-    [7] = {
-        { id = 8922, name = "Valle Sombraluna", x = 0.65, y = 0.70, faction = "Alliance" },
-        { id = 8921, name = "Cresta Fuego Glacial", x = 0.32, y = 0.30, faction = "Horde" },
-        { id = 8923, name = "Gorgrond", x = 0.55, y = 0.28 },
-        { id = 8924, name = "Talador", x = 0.52, y = 0.55 },
-        { id = 8925, name = "Cumbres de Arak", x = 0.48, y = 0.78 },
-        { id = 8926, name = "Nagrand (Draenor)", x = 0.28, y = 0.58 },
-    },
-    -- Continente 8: Islas Abruptas / Legion (6 zonas: ajustadas con precisión según feedback)
-    [8] = {
-        { id = 10763, name = "Azsuna", x = 0.29, y = 0.62 },
-        { id = 10698, name = "Val'sharah", x = 0.26, y = 0.35 },
-        { id = 10059, name = "Monte Alto", x = 0.42, y = 0.26 },
-        { id = 10790, name = "Tormenheim", x = 0.58, y = 0.36 },
-        { id = 11124, name = "Suramar", x = 0.44, y = 0.48 },
-        { id = 11546, name = "Costa Abrupta", x = 0.54, y = 0.65 },
-    },
-    -- Continente 9: Argus (1 zona: requiere logro Asalto a la Tumba / Breaching the Tomb 11546)
-    [9] = {
-        { id = 12066, name = "Argus", x = 0.75, y = 0.28, reqAch = 11546 },
-    }
-}
-
-local MapPins = {}
-
-local function HideAllMapPins()
-    for _, pin in ipairs(MapPins) do
-        pin:Hide()
-    end
-end
-
-local function GetOrCreatePin(index)
-    local mapFrame = WorldMapDetailFrame or WorldMapButton
-    if not mapFrame then return nil end
+local function GenerateAIToken()
+    local playerName, playerRealm = UnitName("player"), GetRealmName()
     
-    if not MapPins[index] then
-        local pin = CreateFrame("Button", "LoboMapPin"..index, mapFrame)
-        pin:SetSize(24, 24)
-        pin:SetFrameStrata("FULLSCREEN_DIALOG")
-        pin:SetFrameLevel(9999)
-        
-        -- Icono principal
-        pin.icon = pin:CreateTexture(nil, "ARTWORK")
-        pin.icon:SetSize(20, 20)
-        pin.icon:SetPoint("CENTER")
-        
-        pin:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:AddLine("|cffFF7D0ALoboExporter|r: Logro de Zona", 1, 1, 1)
-            GameTooltip:AddLine((self.zoneName or "") .. " (ID: " .. (self.achID or 0) .. ")", 1, 0.82, 0)
-            if self.isCompleted then
-                GameTooltip:AddLine("Estado: |cff00FF00[COMPLETADO]|r", 0.2, 1, 0.2)
-            else
-                GameTooltip:AddLine("Estado: |cffFF3333[PENDIENTE / FALTA]|r", 1, 0.2, 0.2)
-            end
-            if self.achID then
-                local num = GetAchievementNumCriteria(self.achID)
-                if num and num > 0 then
-                    local done = 0
-                    for c = 1, num do
-                        local _, _, critDone = GetAchievementCriteriaInfo(self.achID, c)
-                        if critDone then done = done + 1 end
-                    end
-                    GameTooltip:AddLine("Criterios de trama: " .. done .. " / " .. num, 0.8, 0.8, 0.8)
-                end
-            end
-            GameTooltip:Show()
-        end)
-        pin:SetScript("OnLeave", function() GameTooltip:Hide() end)
-        
-        pin:EnableMouse(true)
-        pin:RegisterForClicks("AnyUp")
-        pin:SetScript("OnClick", function(self)
-            local now = GetTime()
-            if self.lastClick and (now - self.lastClick) < 0.3 then return end
-            self.lastClick = now
-            
-            PlaySound(SOUNDKIT and SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON or 856)
-            print("|cffFF7D0A========================================|r")
-            print("|cffFF7D0A[LoboTracker Inspector]|r ¡Has hecho CLICK en un icono de NUESTRO AddOn!")
-            print(" -> |cffFFFFFFZona:|r " .. (self.zoneName or "Desconocida"))
-            print(" -> |cffFFFFFFID de Logro:|r " .. (self.achID or 0))
-            if self.isCompleted then
-                print(" -> |cffFFFFFFEstado en LoboExporter:|r |cff00FF00[COMPLETADO]|r")
-            else
-                print(" -> |cffFFFFFFEstado en LoboExporter:|r |cffFF3333[PENDIENTE / FALTA]|r")
-            end
-            if self.achID then
-                local num = GetAchievementNumCriteria(self.achID)
-                if num and num > 0 then
-                    local done = 0
-                    for c = 1, num do
-                        local _, _, critDone = GetAchievementCriteriaInfo(self.achID, c)
-                        if critDone then done = done + 1 end
-                    end
-                    print(" -> |cffFFFFFFCriterios de Trama:|r " .. done .. " / " .. num .. " completados.")
-                end
-            end
-            print("|cffFF7D0A========================================|r")
-        end)
-        
-        MapPins[index] = pin
+    local parts = {}
+    parts[#parts+1] = '{'
+    parts[#parts+1] = string.format('  "verify": "%s-%s",', EscapeJSON(playerName), EscapeJSON(playerRealm))
+    parts[#parts+1] = '  "context": {'
+    
+    -- Nota: cada helper (GetCurrenciesData, GetReputationsData, GetFollowersData,
+    -- GetAchievementsData) ya devuelve su propio bloque JSON con su clave incluida
+    -- (p.ej. '"wealth": {...}'), así que aquí NO se debe anteponer otra clave o el
+    -- JSON queda inválido (clave seguida de clave, sin separador).
+    local contextParts = {}
+    if LoboExporterDB.exportCurrencies then contextParts[#contextParts+1] = GetCurrenciesData(true) end
+    if LoboExporterDB.exportReputations then contextParts[#contextParts+1] = GetReputationsData(true) end
+    if LoboExporterDB.exportFollowers then
+        local ok, data = pcall(GetFollowersData, true)
+        if ok then contextParts[#contextParts+1] = data end
     end
-    return MapPins[index]
-end
-
-local function UpdateLoboMapPins()
-    HideAllMapPins()
-    if not LoboExporterDB.showMapPins then return end
+    if LoboExporterDB.exportCompletedAchievs then contextParts[#contextParts+1] = GetAchievementsData(true, false, true) end
+    if LoboExporterDB.exportIncompleteAchievs then contextParts[#contextParts+1] = GetAchievementsData(false, true, true) end
     
-    local mapFrame = WorldMapDetailFrame or WorldMapButton
-    if not mapFrame or not mapFrame:IsShown() then return end
+    parts[#parts+1] = table.concat(contextParts, ",\n")
+    parts[#parts+1] = '  }'
+    parts[#parts+1] = '}'
     
-    local mapName = GetMapInfo()
-    local MAP_NAME_TO_CONT = {
-        ["Kalimdor"] = 1, ["Azeroth"] = 2, ["Expansion01"] = 3,
-        ["Northrend"] = 4, ["TheMaelstrom"] = 5, ["Maelstrom"] = 5,
-        ["Pandaria"] = 6, ["Draenor"] = 7, ["BrokenIsles"] = 8, ["Argus"] = 9
-    }
-    local continent = MAP_NAME_TO_CONT[mapName] or GetCurrentMapContinent()
-    local zone = GetCurrentMapZone()
-    
-    -- Solo mostramos cuando se ve el mapa general de un continente
-    if (zone == 0 or zone == nil or MAP_NAME_TO_CONT[mapName]) and MAP_ZONES_INFO[continent] then
-        local pinIdx = 1
-        local w, h = mapFrame:GetWidth(), mapFrame:GetHeight()
-        if w and h and w > 0 and h > 0 then
-            local playerFaction = UnitFactionGroup("player")
-            for _, info in ipairs(MAP_ZONES_INFO[continent]) do
-                if (not info.faction or info.faction == playerFaction) and (not info.reqAch or IsAchievementDone(info.reqAch)) then
-                    local achID = GetZoneAchID(info)
-                    local completed = IsAchievementDone(achID)
-                    if (not completed) or LoboExporterDB.showMapCompleted then
-                        local pin = GetOrCreatePin(pinIdx)
-                        if pin then
-                            pin.zoneName = info.name
-                            pin.achID = achID
-                            pin.isCompleted = completed
-                            
-                            if completed then
-                                pin.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-Ready")
-                                pin:SetAlpha(1.0)
-                            else
-                                pin.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-NotReady")
-                                pin:SetAlpha(1.0)
-                            end
-                            
-                            pin:ClearAllPoints()
-                            pin:SetPoint("CENTER", mapFrame, "TOPLEFT", info.x * w, -info.y * h)
-                            pin:Show()
-                            pinIdx = pinIdx + 1
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
-
-local MapEventFrame = CreateFrame("Frame")
-MapEventFrame:RegisterEvent("WORLD_MAP_UPDATE")
-MapEventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-MapEventFrame:RegisterEvent("ACHIEVEMENT_EARNED")
-MapEventFrame:SetScript("OnEvent", function()
-    C_Timer.After(0.05, UpdateLoboMapPins)
-end)
-
-if WorldMapFrame then
-    WorldMapFrame:HookScript("OnShow", function()
-        C_Timer.After(0.05, UpdateLoboMapPins)
-    end)
-end
-if hooksecurefunc then
-    hooksecurefunc("WorldMapFrame_Update", function()
-        UpdateLoboMapPins()
-    end)
+    local jsonStr = table.concat(parts, "\n")
+    return encBase64(jsonStr)
 end
 
 -- ==========================================================
--- INTERFAZ GRÁFICA (UI)
+-- INTERFAZ GRÁFICA (UI) REDISEÑADA
 -- ==========================================================
 local UIFrame = CreateFrame("Frame", "LoboExporterFrame", UIParent)
-UIFrame:SetSize(640, 680)
+UIFrame:SetSize(700, 620)
 UIFrame:SetPoint("CENTER")
 UIFrame:SetBackdrop({
     bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
@@ -839,101 +660,76 @@ UIFrame:RegisterForDrag("LeftButton")
 UIFrame:SetScript("OnDragStart", UIFrame.StartMoving)
 UIFrame:SetScript("OnDragStop", UIFrame.StopMovingOrSizing)
 UIFrame:Hide()
+tinsert(UISpecialFrames, "LoboExporterFrame")
 
--- Título
 local TitleTexture = UIFrame:CreateTexture(nil, "ARTWORK")
 TitleTexture:SetTexture("Interface\\DialogFrame\\UI-DialogBox-Header")
-TitleTexture:SetWidth(380)
+TitleTexture:SetWidth(420)
 TitleTexture:SetHeight(64)
 TitleTexture:SetPoint("TOP", UIFrame, "TOP", 0, 12)
 
 local TitleText = UIFrame:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
 TitleText:SetPoint("TOP", TitleTexture, "TOP", 0, -14)
-TitleText:SetText("|cffFF7D0ALobo|r Exporter & Tracker")
+TitleText:SetText("|cffFF7D0ALobo|r Exporter & Tracker 3.0")
 
--- Botón Cerrar
 local CloseBtn = CreateFrame("Button", nil, UIFrame, "UIPanelCloseButton")
 CloseBtn:SetPoint("TOPRIGHT", UIFrame, "TOPRIGHT", -8, -8)
 
--- Panel Superior de Opciones (Checkboxes)
-local function CreateCheckbox(parent, label, key, x, y)
-    local cb = CreateFrame("CheckButton", nil, parent, "UICheckButtonTemplate")
-    cb:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
-    cb.text = cb:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    cb.text:SetPoint("LEFT", cb, "RIGHT", 4, 1)
-    cb.text:SetText(label)
-    cb:SetChecked(LoboExporterDB[key])
-    cb:SetScript("OnClick", function(self)
-        LoboExporterDB[key] = self:GetChecked()
-        UpdateLoboMapPins()
-    end)
-    return cb
+-- ==========================================================
+-- PESTAÑAS (TABS)
+-- ==========================================================
+local tabs = {}
+local panels = {}
+local activeTab = 1
+
+local function SelectTab(id)
+    activeTab = id
+    PanelTemplates_SetTab(UIFrame, id)
+    for i = 1, #tabs do
+        if i == id then
+            panels[i]:Show()
+        else
+            panels[i]:Hide()
+        end
+    end
 end
 
-local cbEquip = CreateCheckbox(UIFrame, "Equipamiento", "exportEquipment", 25, -45)
-local cbCurr = CreateCheckbox(UIFrame, "Oro y Monedas", "exportCurrencies", 165, -45)
-local cbRep = CreateCheckbox(UIFrame, "Reputaciones", "exportReputations", 305, -45)
-
-local cbAchDone = CreateCheckbox(UIFrame, "Logros Completados", "exportCompletedAchievs", 25, -75)
-local cbAchInc = CreateCheckbox(UIFrame, "Logros Sin Completar", "exportIncompleteAchievs", 165, -75)
-local cbFollowers = CreateCheckbox(UIFrame, "Seguidores (WoD)", "exportFollowers", 305, -75)
-
--- Checkboxes para Mapa de Logros
-local cbMapPins = CreateCheckbox(UIFrame, "❌ Ver Faltantes en Mapa", "showMapPins", 430, -45)
-local cbMapDone = CreateCheckbox(UIFrame, "✅ Ver Completados en Mapa", "showMapCompleted", 430, -75)
-
--- Botón Formato
-local FormatBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
-FormatBtn:SetSize(160, 24)
-FormatBtn:SetPoint("TOPRIGHT", UIFrame, "TOPRIGHT", -25, -105)
-local function UpdateFormatBtnText()
-    FormatBtn:SetText(LoboExporterDB.formatJSON and "Formato: JSON { }" or "Formato: Texto Legible")
+local function CreateTab(id, name, xOffset)
+    local tab = CreateFrame("Button", "LoboExporterFrameTab"..id, UIFrame, "CharacterFrameTabButtonTemplate")
+    tab:SetID(id)
+    tab:SetText(name)
+    if id == 1 then
+        tab:SetPoint("BOTTOMLEFT", UIFrame, "BOTTOMLEFT", xOffset, -32)
+    else
+        tab:SetPoint("LEFT", tabs[id-1], "RIGHT", -16, 0)
+    end
+    tab:SetScript("OnClick", function(self) SelectTab(self:GetID()) end)
+    table.insert(tabs, tab)
+    
+    local panel = CreateFrame("Frame", nil, UIFrame)
+    panel:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 15, -45)
+    panel:SetPoint("BOTTOMRIGHT", UIFrame, "BOTTOMRIGHT", -15, 15)
+    panel:Hide()
+    table.insert(panels, panel)
+    
+    return panel
 end
-FormatBtn:SetScript("OnClick", function()
-    LoboExporterDB.formatJSON = not LoboExporterDB.formatJSON
-    UpdateFormatBtnText()
-end)
 
--- Botones de Acción
-local GenerateBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
-GenerateBtn:SetSize(210, 30)
-GenerateBtn:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -105)
-GenerateBtn:SetText("⚡ Generar Datos para Copiar")
+local PanelStatus = CreateTab(1, "Progreso y Estado", 15)
+local PanelLoot = CreateTab(2, "Bases de Datos (BiS)", 0)
+local PanelChar = CreateTab(3, "Exportar Personaje", 0)
+local PanelTools = CreateTab(4, "Opciones y Mapa", 0)
 
-local CopyAllBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
-CopyAllBtn:SetSize(200, 30)
-CopyAllBtn:SetPoint("LEFT", GenerateBtn, "RIGHT", 10, 0)
-CopyAllBtn:SetText("📋 Seleccionar Todo (CTRL+C)")
+PanelTemplates_SetNumTabs(UIFrame, 4)
+PanelTemplates_SetTab(UIFrame, 1)
 
-local ExportRaidBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
-ExportRaidBtn:SetSize(210, 30)
-ExportRaidBtn:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -140)
-ExportRaidBtn:SetText("⚔️ Exportar Botín de Bandas")
-
-local ExportDungeonBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
-ExportDungeonBtn:SetSize(200, 30)
-ExportDungeonBtn:SetPoint("LEFT", ExportRaidBtn, "RIGHT", 10, 0)
-ExportDungeonBtn:SetText("🏰 Exportar Botín de Mazmorras")
-
-local BikiniBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
-BikiniBtn:SetSize(200, 30)
-BikiniBtn:SetPoint("LEFT", ExportDungeonBtn, "RIGHT", 10, 0)
-BikiniBtn:SetText("👙 Exportar Bikini Plate")
-
-local ProgresoBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
-ProgresoBtn:SetSize(210, 30)
-ProgresoBtn:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -175)
-ProgresoBtn:SetText("📊 Mostrar Progreso (Chat)")
-
-local DebugBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
-DebugBtn:SetSize(200, 30)
-DebugBtn:SetPoint("LEFT", ProgresoBtn, "RIGHT", 10, 0)
-DebugBtn:SetText("⚙️ Info Mapa (Debug)")
-
--- Caja de Texto Scrollable
+-- ==========================================================
+-- CAJA DE RESULTADOS (COMÚN EN BOTTOM)
+-- ==========================================================
 local ScrollFrame = CreateFrame("ScrollFrame", "LoboExporterScrollFrame", UIFrame, "UIPanelScrollFrameTemplate")
-ScrollFrame:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -255)
-ScrollFrame:SetPoint("BOTTOMRIGHT", UIFrame, "BOTTOMRIGHT", -45, 25)
+ScrollFrame:SetPoint("BOTTOMLEFT", UIFrame, "BOTTOMLEFT", 25, 60)
+ScrollFrame:SetPoint("BOTTOMRIGHT", UIFrame, "BOTTOMRIGHT", -45, 60)
+ScrollFrame:SetHeight(200)
 
 local ScrollBG = CreateFrame("Frame", nil, UIFrame)
 ScrollBG:SetPoint("TOPLEFT", ScrollFrame, "TOPLEFT", -6, 6)
@@ -947,165 +743,490 @@ ScrollBG:SetBackdrop({
 ScrollBG:SetBackdropColor(0.05, 0.05, 0.08, 0.95)
 
 local EditBox = CreateFrame("EditBox", nil, ScrollFrame)
-EditBox:SetSize(540, 360)
+EditBox:SetSize(600, 200)
 EditBox:SetMultiLine(true)
 EditBox:SetFontObject("ChatFontNormal")
 EditBox:SetAutoFocus(false)
 EditBox:EnableKeyboard(true)
+EditBox:SetMaxBytes(10000000)
 EditBox:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
 ScrollFrame:SetScrollChild(EditBox)
 
--- Create Search Label
-local SearchLabel = UIFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-SearchLabel:SetPoint("TOPLEFT", UIFrame, "TOPLEFT", 25, -218)
-SearchLabel:SetText("Buscar Logro o Ítem:")
+local currentPages = {}
+local currentPageIdx = 1
 
--- Create Search EditBox
-local SearchEditBox = CreateFrame("EditBox", "LoboExporterSearchEditBox", UIFrame, "InputBoxTemplate")
-SearchEditBox:SetSize(280, 24)
-SearchEditBox:SetPoint("LEFT", SearchLabel, "RIGHT", 10, 0)
-SearchEditBox:SetAutoFocus(false)
-
--- Perform Search Function
-local function PerformSearch(query)
-    if not query or query == "" then
-        EditBox:SetText("Escribe algo para buscar...")
-        return
-    end
-    EditBox:SetText("Buscando logros con: '" .. query .. "'...")
-    
-    C_Timer.After(0.05, function()
-        local cats = GetCategoryList()
-        local results = {}
-        local found = 0
-        local isJSON = LoboExporterDB.formatJSON
-        
-        if isJSON then
-            results[#results+1] = "{\n  \"searchQuery\": \"" .. EscapeJSON(query) .. "\",\n  \"results\": ["
-        else
-            results[#results+1] = "=== RESULTADOS DE BÚSQUEDA: '" .. query .. "' ==="
-        end
-        
-        local matchItems = {}
-        for _, catID in ipairs(cats) do
-            local num = GetCategoryNumAchievements(catID)
-            for i = 1, num do
-                local id, name, points, completed = GetAchievementInfo(catID, i)
-                -- FIX: Use plain search (4th arg = true) to prevent Lua regex pattern errors
-                if name and string.find(string.lower(name), string.lower(query), 1, true) then
-                    completed = IsAchievementDone(id)
-                    found = found + 1
-                    if isJSON then
-                        matchItems[#matchItems+1] = string.format('    {"id": %d, "name": "%s", "points": %d, "completed": %s}', id, EscapeJSON(name), points or 0, completed and "true" or "false")
-                    else
-                        results[#results+1] = string.format("[%s] %s (ID: %d - %d pts)", completed and "X" or " ", name, id, points or 0)
-                    end
-                end
-            end
-        end
-        
-        if isJSON then
-            results[#results+1] = table.concat(matchItems, ",\n")
-            results[#results+1] = "  ]\n}"
-        else
-            results[#results+1] = string.format("\nTotal encontrados: %d logros.", found)
-        end
-        
-        EditBox:SetText(table.concat(results, "\n"))
-        EditBox:SetFocus()
-        EditBox:HighlightText()
-    end)
-end
-
--- Create Search Button
-local SearchBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
-SearchBtn:SetSize(80, 24)
-SearchBtn:SetPoint("LEFT", SearchEditBox, "RIGHT", 10, 0)
-SearchBtn:SetText("Buscar")
-SearchBtn:SetScript("OnClick", function() PerformSearch(SearchEditBox:GetText()) end)
-SearchEditBox:SetScript("OnEnterPressed", function(self)
-    PerformSearch(self:GetText())
-    self:ClearFocus()
-end)
-
--- Create Clear Button
-local ClearBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
-ClearBtn:SetSize(80, 24)
-ClearBtn:SetPoint("LEFT", SearchBtn, "RIGHT", 10, 0)
-ClearBtn:SetText("Limpiar")
-ClearBtn:SetScript("OnClick", function()
-    SearchEditBox:SetText("")
-    EditBox:SetText("")
-    EditBox:ClearFocus()
-end)
-
--- Funciones de Botones
-GenerateBtn:SetScript("OnClick", function()
-    EditBox:SetText("Generando datos, por favor espera...")
-    C_Timer.After(0.05, function()
-        local result = GenerateExport()
-        EditBox:SetText(result)
-        EditBox:SetFocus()
-        EditBox:HighlightText()
-        print("|cffFF7D0A[LoboExporter]|r Datos generados (" .. string.len(result) .. " caracteres). Pulsa |cff00FF00CTRL + C|r para copiar.")
-    end)
-end)
-
+local CopyAllBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
+CopyAllBtn:SetSize(160, 24)
+CopyAllBtn:SetPoint("BOTTOMRIGHT", ScrollFrame, "TOPRIGHT", 0, 5)
+CopyAllBtn:SetFrameLevel(ScrollFrame:GetFrameLevel() + 10)
+CopyAllBtn:SetText("📋 Seleccionar Todo")
 CopyAllBtn:SetScript("OnClick", function()
     EditBox:SetFocus()
     EditBox:HighlightText()
-    print("|cffFF7D0A[LoboExporter]|r Texto seleccionado. Pulsa |cff00FF00CTRL + C|r para copiar en tu portapapeles.")
 end)
 
+local PageText = UIFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+PageText:SetPoint("RIGHT", CopyAllBtn, "LEFT", -10, 0)
+PageText:SetText("Pág. 1/1")
+
+local NextPageBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
+NextPageBtn:SetSize(30, 24)
+NextPageBtn:SetPoint("RIGHT", PageText, "LEFT", -5, 0)
+NextPageBtn:SetFrameLevel(ScrollFrame:GetFrameLevel() + 10)
+NextPageBtn:SetText(">")
+
+local PrevPageBtn = CreateFrame("Button", nil, UIFrame, "UIPanelButtonTemplate")
+PrevPageBtn:SetSize(30, 24)
+PrevPageBtn:SetPoint("RIGHT", NextPageBtn, "LEFT", -5, 0)
+PrevPageBtn:SetFrameLevel(ScrollFrame:GetFrameLevel() + 10)
+PrevPageBtn:SetText("<")
+
+local cbDisablePagination = CreateFrame("CheckButton", nil, UIFrame, "UICheckButtonTemplate")
+cbDisablePagination:SetSize(24, 24)
+cbDisablePagination:SetPoint("BOTTOMLEFT", ScrollFrame, "TOPLEFT", -5, 5)
+cbDisablePagination:SetFrameLevel(ScrollFrame:GetFrameLevel() + 10)
+cbDisablePagination.text = cbDisablePagination:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+cbDisablePagination.text:SetPoint("LEFT", cbDisablePagination, "RIGHT", 4, 1)
+cbDisablePagination.text:SetText("Cargar todo (Riesgo crash)")
+cbDisablePagination:SetScript("OnShow", function(self)
+    if LoboExporterDB then self:SetChecked(LoboExporterDB.disablePagination) end
+end)
+cbDisablePagination:SetScript("OnClick", function(self)
+    if not LoboExporterDB then LoboExporterDB = {} end
+    LoboExporterDB.disablePagination = self:GetChecked()
+end)
+
+local function UpdatePaginationUI()
+    if #currentPages <= 1 then
+        PrevPageBtn:Hide()
+        NextPageBtn:Hide()
+        PageText:Hide()
+    else
+        PrevPageBtn:Show()
+        NextPageBtn:Show()
+        PageText:Show()
+        PageText:SetText(string.format("Pág. %d/%d", currentPageIdx, #currentPages))
+        PrevPageBtn:SetEnabled(currentPageIdx > 1)
+        NextPageBtn:SetEnabled(currentPageIdx < #currentPages)
+    end
+end
+
+PrevPageBtn:SetScript("OnClick", function()
+    if currentPageIdx > 1 then
+        currentPageIdx = currentPageIdx - 1
+        EditBox:SetText(currentPages[currentPageIdx])
+        UpdatePaginationUI()
+    end
+end)
+
+NextPageBtn:SetScript("OnClick", function()
+    if currentPageIdx < #currentPages then
+        currentPageIdx = currentPageIdx + 1
+        EditBox:SetText(currentPages[currentPageIdx])
+        UpdatePaginationUI()
+    end
+end)
+
+function LoboExporter_ShowTextPaginated(text)
+    currentPages = {}
+    currentPageIdx = 1
+    
+    local limit = 250000 -- Aumentado de 40000 a 250000 para reducir el número de páginas
+    if LoboExporterDB and LoboExporterDB.disablePagination then
+        limit = 99999999
+    end
+    
+    if #text <= limit then
+        table.insert(currentPages, text)
+    else
+        local idx = 1
+        while idx <= #text do
+            local slice = string.sub(text, idx, idx + limit - 1)
+            table.insert(currentPages, slice)
+            idx = idx + limit
+        end
+    end
+    EditBox:SetText(currentPages[1] or "")
+    UpdatePaginationUI()
+end
+
+-- ==========================================================
+-- BARRA DE PROGRESO GLOBAL
+-- ==========================================================
+local ProgressBar = CreateFrame("StatusBar", nil, UIFrame)
+ProgressBar:SetSize(620, 24)
+ProgressBar:SetPoint("BOTTOM", UIFrame, "BOTTOM", 0, 20)
+ProgressBar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
+ProgressBar:SetStatusBarColor(0.2, 0.8, 0.2)
+ProgressBar:Hide()
+
+ProgressBar.bg = ProgressBar:CreateTexture(nil, "BACKGROUND")
+ProgressBar.bg:SetAllPoints()
+ProgressBar.bg:SetTexture("Interface\\TargetingFrame\\UI-StatusBar")
+ProgressBar.bg:SetVertexColor(0.1, 0.1, 0.1, 0.8)
+
+ProgressBar.text = ProgressBar:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+ProgressBar.text:SetPoint("CENTER")
+ProgressBar.text:SetText("Progreso: 0%")
+
+-- ==========================================================
+-- PANEL 1: ESTADO Y PROGRESO
+-- ==========================================================
+local StatusHeader = PanelStatus:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+StatusHeader:SetPoint("TOP", PanelStatus, "TOP", 0, -20)
+StatusHeader:SetText("Resumen de Exportaciones")
+
+local function CreateStatusLine(parent, label, yOffset)
+    local frame = CreateFrame("Frame", nil, parent)
+    frame:SetSize(600, 30)
+    frame:SetPoint("TOP", parent, "TOP", 0, yOffset)
+    
+    frame.icon = frame:CreateTexture(nil, "ARTWORK")
+    frame.icon:SetSize(24, 24)
+    frame.icon:SetPoint("LEFT", frame, "LEFT", 0, 0)
+    frame.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-NotReady")
+    
+    frame.label = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
+    frame.label:SetPoint("LEFT", frame.icon, "RIGHT", 10, 0)
+    frame.label:SetText(label)
+    
+    frame.info = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    frame.info:SetPoint("RIGHT", frame, "RIGHT", 0, 0)
+    frame.info:SetText("Nunca exportado")
+    
+    return frame
+end
+
+local StatusRaid = CreateStatusLine(PanelStatus, "⚔️ Base de Datos de Bandas", -70)
+local StatusDungeon = CreateStatusLine(PanelStatus, "🏰 Base de Datos de Mazmorras", -120)
+local StatusChar = CreateStatusLine(PanelStatus, "👤 Personaje", -170)
+
+local function UpdateStatusUI()
+    if not LoboExporterDB.ExportStatus then LoboExporterDB.ExportStatus = {} end
+    local st = LoboExporterDB.ExportStatus
+    
+    if st.raidItems and st.raidItems > 0 then
+        StatusRaid.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-Ready")
+        StatusRaid.info:SetText(string.format("|cff00FF00✅ Completado|r (%d objetos) - %s", st.raidItems, st.raidDate or ""))
+    else
+        StatusRaid.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-NotReady")
+        StatusRaid.info:SetText("|cffFF3333❌ Pendiente|r")
+    end
+    
+    if st.dungeonItems and st.dungeonItems > 0 then
+        StatusDungeon.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-Ready")
+        StatusDungeon.info:SetText(string.format("|cff00FF00✅ Completado|r (%d objetos) - %s", st.dungeonItems, st.dungeonDate or ""))
+    else
+        StatusDungeon.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-NotReady")
+        StatusDungeon.info:SetText("|cffFF3333❌ Pendiente|r")
+    end
+    
+    if st.charDate then
+        StatusChar.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-Ready")
+        StatusChar.info:SetText(string.format("|cff00FF00✅ Completado|r - %s", st.charDate))
+    else
+        StatusChar.icon:SetTexture("Interface\\RAIDFRAME\\ReadyCheck-NotReady")
+        StatusChar.info:SetText("|cffFF3333❌ Pendiente|r")
+    end
+end
+
+-- ==========================================================
+-- PANEL 2: BASES DE DATOS
+-- ==========================================================
+local ExportRaidBtn = CreateFrame("Button", nil, PanelLoot, "UIPanelButtonTemplate")
+ExportRaidBtn:SetSize(280, 40)
+ExportRaidBtn:SetPoint("TOPLEFT", PanelLoot, "TOPLEFT", 30, -20)
+ExportRaidBtn:SetText("⚔️ Extraer Botín de BANDAS")
+
+local ExportDungeonBtn = CreateFrame("Button", nil, PanelLoot, "UIPanelButtonTemplate")
+ExportDungeonBtn:SetSize(280, 40)
+ExportDungeonBtn:SetPoint("TOPRIGHT", PanelLoot, "TOPRIGHT", -30, -20)
+ExportDungeonBtn:SetText("🏰 Extraer Botín de MAZMORRAS")
+
+local ExportRaidCopyBtn = CreateFrame("Button", nil, PanelLoot, "UIPanelButtonTemplate")
+ExportRaidCopyBtn:SetSize(280, 30)
+ExportRaidCopyBtn:SetPoint("TOPLEFT", PanelLoot, "TOPLEFT", 30, -65)
+ExportRaidCopyBtn:SetText("📋 Generar Texto de BANDAS para Copiar")
+
+local ExportDungeonCopyBtn = CreateFrame("Button", nil, PanelLoot, "UIPanelButtonTemplate")
+ExportDungeonCopyBtn:SetSize(280, 30)
+ExportDungeonCopyBtn:SetPoint("TOPRIGHT", PanelLoot, "TOPRIGHT", -30, -65)
+ExportDungeonCopyBtn:SetText("📋 Generar Texto de MAZMORRAS para Copiar")
+
+local DbDesc = PanelLoot:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+DbDesc:SetPoint("TOP", PanelLoot, "TOP", 0, -110)
+DbDesc:SetText("Las extracciones recorrerán todas las instancias, jefes, dificultades\ny las 12 clases para garantizar que no se pierda ningún objeto.\nPuede tardar unos 10-15 segundos. El juego NO se congelará.")
+
+local function OnProgress(processed, total)
+    ProgressBar:Show()
+    local pct = (processed / total) * 100
+    ProgressBar:SetValue(pct)
+    ProgressBar.text:SetText(string.format("Progreso: %d/%d Jefes (%d%%)", processed, total, pct))
+end
+
+local function SetButtonsEnabled(enabled)
+    if enabled then
+        ExportRaidBtn:Enable()
+        ExportDungeonBtn:Enable()
+        ExportRaidCopyBtn:Enable()
+        ExportDungeonCopyBtn:Enable()
+    else
+        ExportRaidBtn:Disable()
+        ExportDungeonBtn:Disable()
+        ExportRaidCopyBtn:Disable()
+        ExportDungeonCopyBtn:Disable()
+    end
+end
+
 ExportRaidBtn:SetScript("OnClick", function()
-    EditBox:SetText("Extrayendo objetos de las bandas de Legion... (Esto puede tardar unos segundos, el juego no se congelará)")
-    ExportRaidLootAsync(function(json)
+    SetButtonsEnabled(false)
+    EditBox:SetText("Iniciando extracción de bandas... (Extrayendo solo para la clase seleccionada en la Guía de Aventuras)")
+    ProgressBar:SetMinMaxValues(0, 100)
+    ProgressBar:SetValue(0)
+    ProgressBar.text:SetText("Progreso: 0%")
+    ProgressBar:Show()
+    
+    ExportRaidLootAsync(OnProgress, function(json, count)
         if not LoboExporterDB then LoboExporterDB = {} end
+        if not LoboExporterDB.ExportStatus then LoboExporterDB.ExportStatus = {} end
         LoboExporterDB.RaidLoot = json
-        EditBox:SetText("¡Completado! La lista es demasiado grande (" .. string.len(json) .. " caracteres) para mostrarse aquí.\n\nSe ha guardado automáticamente en la base de datos del AddOn.\n\nSimplemente pon /reload en el chat para que el juego lo guarde en el disco (WTF).")
-        EditBox:SetFocus()
-        print("|cffFF7D0A[LoboExporter]|r Exportación de Raid BiS guardada en LoboExporterDB. ¡Pon /reload en el chat para guardar a disco!")
+        LoboExporterDB.ExportStatus.raidItems = count
+        LoboExporterDB.ExportStatus.raidDate = date("%Y-%m-%d %H:%M:%S")
+        UpdateStatusUI()
+        
+        ProgressBar:Hide()
+        SetButtonsEnabled(true)
+        LoboExporter_ShowTextPaginated("¡Completado! ("..count.." objetos)\n\nLa base de datos se ha guardado en la memoria de LoboExporter.\n\nRecuerda escribir /reload en el chat para guardarlo al disco (WTF).")
+        print("|cffFF7D0A[LoboExporter]|r Botín de Bandas exportado con éxito.")
     end)
 end)
 
 ExportDungeonBtn:SetScript("OnClick", function()
-    EditBox:SetText("Extrayendo objetos de las mazmorras de Legion... (Esto puede tardar unos segundos, el juego no se congelará)")
-    ExportDungeonLootAsync(function(json)
+    SetButtonsEnabled(false)
+    EditBox:SetText("Iniciando extracción de mazmorras... (Extrayendo solo para la clase seleccionada en la Guía de Aventuras)")
+    ProgressBar:SetMinMaxValues(0, 100)
+    ProgressBar:SetValue(0)
+    ProgressBar.text:SetText("Progreso: 0%")
+    ProgressBar:Show()
+    
+    ExportDungeonLootAsync(OnProgress, function(json, count)
         if not LoboExporterDB then LoboExporterDB = {} end
+        if not LoboExporterDB.ExportStatus then LoboExporterDB.ExportStatus = {} end
         LoboExporterDB.DungeonLoot = json
-        EditBox:SetText("¡Completado! La lista es demasiado grande (" .. string.len(json) .. " caracteres) para mostrarse aquí.\n\nSe ha guardado automáticamente en la base de datos del AddOn.\n\nSimplemente pon /reload en el chat para que el juego lo guarde en el disco (WTF).")
-        EditBox:SetFocus()
-        print("|cffFF7D0A[LoboExporter]|r Exportación de Dungeon BiS guardada en LoboExporterDB. ¡Pon /reload en el chat para guardar a disco!")
+        LoboExporterDB.ExportStatus.dungeonItems = count
+        LoboExporterDB.ExportStatus.dungeonDate = date("%Y-%m-%d %H:%M:%S")
+        UpdateStatusUI()
+        
+        ProgressBar:Hide()
+        SetButtonsEnabled(true)
+        LoboExporter_ShowTextPaginated("¡Completado! ("..count.." objetos)\n\nLa base de datos se ha guardado en la memoria de LoboExporter.\n\nRecuerda escribir /reload en el chat para guardarlo al disco (WTF).")
+        print("|cffFF7D0A[LoboExporter]|r Botín de Mazmorras exportado con éxito.")
     end)
 end)
 
+ExportRaidCopyBtn:SetScript("OnClick", function()
+    SetButtonsEnabled(false)
+    LoboExporter_ShowTextPaginated("Iniciando extracción de bandas para copiar... (Sólo la clase seleccionada)")
+    ProgressBar:SetMinMaxValues(0, 100)
+    ProgressBar:SetValue(0)
+    ProgressBar.text:SetText("Progreso: 0%")
+    ProgressBar:Show()
+    
+    ExportRaidLootAsync(OnProgress, function(json, count)
+        ProgressBar:Hide()
+        SetButtonsEnabled(true)
+        LoboExporter_ShowTextPaginated(json)
+        EditBox:SetFocus()
+        EditBox:HighlightText()
+        print("|cffFF7D0A[LoboExporter]|r Texto generado, listo para CTRL+C.")
+    end)
+end)
+
+ExportDungeonCopyBtn:SetScript("OnClick", function()
+    SetButtonsEnabled(false)
+    LoboExporter_ShowTextPaginated("Iniciando extracción de mazmorras para copiar... (Sólo la clase seleccionada)")
+    ProgressBar:SetMinMaxValues(0, 100)
+    ProgressBar:SetValue(0)
+    ProgressBar.text:SetText("Progreso: 0%")
+    ProgressBar:Show()
+    
+    ExportDungeonLootAsync(OnProgress, function(json, count)
+        ProgressBar:Hide()
+        SetButtonsEnabled(true)
+        LoboExporter_ShowTextPaginated(json)
+        EditBox:SetFocus()
+        EditBox:HighlightText()
+        print("|cffFF7D0A[LoboExporter]|r Texto generado, listo para CTRL+C.")
+    end)
+end)
+
+-- ==========================================================
+-- PANEL 3: PERSONAJE
+-- ==========================================================
+local function CreateCheckbox(parent, label, key, x, y)
+    local cb = CreateFrame("CheckButton", nil, parent, "UICheckButtonTemplate")
+    cb:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
+    cb.text = cb:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    cb.text:SetPoint("LEFT", cb, "RIGHT", 4, 1)
+    cb.text:SetText(label)
+    cb:SetChecked(LoboExporterDB[key])
+    cb:SetScript("OnClick", function(self)
+        LoboExporterDB[key] = self:GetChecked()
+    end)
+    return cb
+end
+
+local cbEquip = CreateCheckbox(PanelChar, "Equipamiento", "exportEquipment", 20, -20)
+local cbCurr = CreateCheckbox(PanelChar, "Oro y Monedas", "exportCurrencies", 250, -20)
+local cbRep = CreateCheckbox(PanelChar, "Reputaciones", "exportReputations", 450, -20)
+
+local cbAchDone = CreateCheckbox(PanelChar, "Logros Completados", "exportCompletedAchievs", 20, -70)
+local cbAchInc = CreateCheckbox(PanelChar, "Logros Pendientes", "exportIncompleteAchievs", 250, -70)
+local cbFollowers = CreateCheckbox(PanelChar, "Seguidores (WoD)", "exportFollowers", 450, -70)
+
+local FormatBtn = CreateFrame("Button", nil, PanelChar, "UIPanelButtonTemplate")
+FormatBtn:SetSize(160, 24)
+FormatBtn:SetPoint("TOPRIGHT", PanelChar, "TOPRIGHT", -10, -120)
+local function UpdateFormatBtnText()
+    FormatBtn:SetText(LoboExporterDB.formatJSON and "Formato: JSON { }" or "Formato: Texto Legible")
+end
+FormatBtn:SetScript("OnClick", function()
+    LoboExporterDB.formatJSON = not LoboExporterDB.formatJSON
+    UpdateFormatBtnText()
+end)
+
+local GenerateBtn = CreateFrame("Button", nil, PanelChar, "UIPanelButtonTemplate")
+GenerateBtn:SetSize(280, 40)
+GenerateBtn:SetPoint("TOPLEFT", PanelChar, "TOPLEFT", 10, -120)
+GenerateBtn:SetText("⚡ Generar Datos del Personaje")
+GenerateBtn:SetScript("OnClick", function()
+    EditBox:SetText("Generando datos, por favor espera...")
+    C_Timer.After(0.05, function()
+        local result = GenerateExport()
+        LoboExporter_ShowTextPaginated(result)
+        EditBox:SetFocus()
+        EditBox:HighlightText()
+        
+        if not LoboExporterDB.ExportStatus then LoboExporterDB.ExportStatus = {} end
+        LoboExporterDB.ExportStatus.charDate = date("%Y-%m-%d %H:%M:%S")
+        UpdateStatusUI()
+        print("|cffFF7D0A[LoboExporter]|r Datos del personaje generados.")
+    end)
+end)
+
+local AIBtn = CreateFrame("Button", nil, PanelChar, "UIPanelButtonTemplate")
+AIBtn:SetSize(280, 40)
+AIBtn:SetPoint("TOPLEFT", GenerateBtn, "BOTTOMLEFT", 0, -10)
+AIBtn:SetText("🤖 Obtener Token para IA (Discord)")
+AIBtn:SetScript("OnClick", function()
+    EditBox:SetText("Generando token encriptado...")
+    C_Timer.After(0.05, function()
+        local token = GenerateAIToken()
+        LoboExporter_ShowTextPaginated(token)
+        EditBox:SetFocus()
+        EditBox:HighlightText()
+        print("|cffFF7D0A[LoboExporter]|r Token de IA generado. Cópialo y pégalo en Discord con el comando /verificar_personaje")
+    end)
+end)
+
+-- ==========================================================
+-- PANEL 4: OPCIONES
+-- ==========================================================
+local cbMapPins = CreateCheckbox(PanelTools, "❌ Ver Logros Faltantes en el Mapa (LoboTracker)", "showMapPins", 20, -20)
+cbMapPins:SetScript("OnClick", function(self) LoboExporterDB["showMapPins"] = self:GetChecked(); UpdateLoboMapPins() end)
+
+local cbMapDone = CreateCheckbox(PanelTools, "✅ Ver Logros Completados en el Mapa", "showMapCompleted", 20, -60)
+cbMapDone:SetScript("OnClick", function(self) LoboExporterDB["showMapCompleted"] = self:GetChecked(); UpdateLoboMapPins() end)
+
+local BikiniBtn = CreateFrame("Button", nil, PanelTools, "UIPanelButtonTemplate")
+BikiniBtn:SetSize(200, 30)
+BikiniBtn:SetPoint("TOPLEFT", PanelTools, "TOPLEFT", 20, -120)
+BikiniBtn:SetText("👙 Exportar Bikini Plate")
 BikiniBtn:SetScript("OnClick", function()
     EditBox:SetText("Consultando la base de datos de Blizzard... (Forzando caché de objetos, espera 1.5s)")
     for _, ids in pairs(BIKINI_PLATES_IDS) do
-        for _, itemID in ipairs(ids) do
-            GetItemInfo(itemID)
-        end
+        for _, itemID in ipairs(ids) do GetItemInfo(itemID) end
     end
     C_Timer.After(1.5, function()
-        local result = GetBikiniDataJSON()
-        EditBox:SetText(result)
+        LoboExporter_ShowTextPaginated(GetBikiniDataJSON())
         EditBox:SetFocus()
         EditBox:HighlightText()
         print("|cffFF7D0A[LoboExporter]|r Datos de transfiguración (Bikini Plate) listos para copiar.")
     end)
 end)
 
-ProgresoBtn:SetScript("OnClick", function()
-    SlashCmdList["LOBOEXPORTER"]("progreso")
+local ProgresoBtn = CreateFrame("Button", nil, PanelTools, "UIPanelButtonTemplate")
+ProgresoBtn:SetSize(200, 30)
+ProgresoBtn:SetPoint("LEFT", BikiniBtn, "RIGHT", 10, 0)
+ProgresoBtn:SetText("📊 Mostrar Progreso (Chat)")
+ProgresoBtn:SetScript("OnClick", function() SlashCmdList["LOBOEXPORTER"]("progreso") end)
+
+local DebugBtn = CreateFrame("Button", nil, PanelTools, "UIPanelButtonTemplate")
+DebugBtn:SetSize(200, 30)
+DebugBtn:SetPoint("LEFT", ProgresoBtn, "RIGHT", 10, 0)
+DebugBtn:SetText("⚙️ Info Mapa (Debug)")
+DebugBtn:SetScript("OnClick", function() SlashCmdList["LOBOEXPORTER"]("debug") end)
+
+-- Búsqueda
+local SearchLabel = PanelTools:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+SearchLabel:SetPoint("TOPLEFT", PanelTools, "TOPLEFT", 20, -180)
+SearchLabel:SetText("Buscador de Logros:")
+
+local SearchEditBox = CreateFrame("EditBox", "LoboExporterSearchEditBox", PanelTools, "InputBoxTemplate")
+SearchEditBox:SetSize(250, 24)
+SearchEditBox:SetPoint("LEFT", SearchLabel, "RIGHT", 10, 0)
+SearchEditBox:SetAutoFocus(false)
+SearchEditBox:SetScript("OnEnterPressed", function(self)
+    local query = self:GetText()
+    self:ClearFocus()
+    if not query or query == "" then EditBox:SetText("Escribe algo para buscar..."); return end
+    EditBox:SetText("Buscando logros con: '" .. query .. "'...")
+    C_Timer.After(0.05, function()
+        local cats = GetCategoryList()
+        local results = {}
+        local found = 0
+        local isJSON = LoboExporterDB.formatJSON
+        if isJSON then results[#results+1] = "{\n  \"searchQuery\": \"" .. EscapeJSON(query) .. "\",\n  \"results\": [" else results[#results+1] = "=== RESULTADOS DE BÚSQUEDA: '" .. query .. "' ===" end
+        local matchItems = {}
+        for _, catID in ipairs(cats) do
+            local num = GetCategoryNumAchievements(catID)
+            for i = 1, num do
+                local id, name, points = GetAchievementInfo(catID, i)
+                if name and string.find(string.lower(name), string.lower(query), 1, true) then
+                    local completed = IsAchievementDone(id)
+                    found = found + 1
+                    if isJSON then matchItems[#matchItems+1] = string.format('    {"id": %d, "name": "%s", "points": %d, "completed": %s}', id, EscapeJSON(name), points or 0, completed and "true" or "false")
+                    else results[#results+1] = string.format("[%s] %s (ID: %d - %d pts)", completed and "X" or " ", name, id, points or 0) end
+                end
+            end
+        end
+        if isJSON then results[#results+1] = table.concat(matchItems, ",\n"); results[#results+1] = "  ]\n}"
+        else results[#results+1] = string.format("\nTotal encontrados: %d logros.", found) end
+        LoboExporter_ShowTextPaginated(table.concat(results, "\n"))
+        EditBox:SetFocus()
+        EditBox:HighlightText()
+    end)
 end)
 
-DebugBtn:SetScript("OnClick", function()
-    SlashCmdList["LOBOEXPORTER"]("debug")
-end)
+local SearchBtn = CreateFrame("Button", nil, PanelTools, "UIPanelButtonTemplate")
+SearchBtn:SetSize(80, 24)
+SearchBtn:SetPoint("LEFT", SearchEditBox, "RIGHT", 10, 0)
+SearchBtn:SetText("Buscar")
+SearchBtn:SetScript("OnClick", function() SearchEditBox:GetScript("OnEnterPressed")(SearchEditBox) end)
 
--- Carga inicial del estado
+local ClearBtn = CreateFrame("Button", nil, PanelTools, "UIPanelButtonTemplate")
+ClearBtn:SetSize(80, 24)
+ClearBtn:SetPoint("LEFT", SearchBtn, "RIGHT", 10, 0)
+ClearBtn:SetText("Limpiar")
+ClearBtn:SetScript("OnClick", function() SearchEditBox:SetText(""); EditBox:SetText(""); EditBox:ClearFocus() end)
+
+-- ==========================================================
+-- INICIALIZACIÓN
+-- ==========================================================
 UIFrame:SetScript("OnShow", function()
     UpdateFormatBtnText()
+    UpdateStatusUI()
+    SelectTab(activeTab)
     cbEquip:SetChecked(LoboExporterDB.exportEquipment)
     cbCurr:SetChecked(LoboExporterDB.exportCurrencies)
     cbRep:SetChecked(LoboExporterDB.exportReputations)
@@ -1115,122 +1236,43 @@ UIFrame:SetScript("OnShow", function()
     cbMapDone:SetChecked(LoboExporterDB.showMapCompleted)
 end)
 
--- Slash Commands
 SLASH_LOBOEXPORTER1 = "/loboexport"
 SLASH_LOBOEXPORTER2 = "/lex"
 SLASH_LOBOEXPORTER3 = "/exportar"
 SlashCmdList["LOBOEXPORTER"] = function(msg)
     msg = msg and strtrim(string.lower(msg)) or ""
     
-    if msg == "debug" then
-        local mapName = GetMapInfo()
-        local MAP_NAME_TO_CONT = {
-            ["Kalimdor"] = 1, ["Azeroth"] = 2, ["Expansion01"] = 3,
-            ["Northrend"] = 4, ["TheMaelstrom"] = 5, ["Maelstrom"] = 5,
-            ["Pandaria"] = 6, ["Draenor"] = 7,
-            ["BrokenIsles"] = 8, ["Argus"] = 9
-        }
-        local cont = MAP_NAME_TO_CONT[mapName] or GetCurrentMapContinent()
-        if not MAP_ZONES_INFO[cont] then cont = 1 end -- Si no hay datos, mostramos Kalimdor por defecto
-        print("|cffFF7D0A[LoboExporter Debug]|r Zonas del Continente " .. cont .. " (" .. (mapName or "Kalimdor") .. "):")
-        if MAP_ZONES_INFO[cont] then
-            local playerFaction = UnitFactionGroup("player")
-            for _, info in ipairs(MAP_ZONES_INFO[cont]) do
-                if not info.faction or info.faction == playerFaction then
-                    if info.reqAch and not IsAchievementDone(info.reqAch) then
-                        print(" - " .. info.name .. " |cffFF8800[BLOQUEADO - Requiere Logro " .. info.reqAch .. "]|r")
-                    else
-                        local achID = GetZoneAchID(info)
-                        local done = IsAchievementDone(achID)
-                        print(" - " .. info.name .. " (" .. achID .. "): " .. (done and "|cff00FF00[COMPLETADO]|r" or "|cffFF3333[PENDIENTE]|r"))
-                    end
-                end
-            end
-        end
-        return
-    end
-    if msg == "progreso" or msg == "stats" then
-        local numMounts = 0
-        if C_MountJournal and C_MountJournal.GetNumMounts then
-            numMounts = C_MountJournal.GetNumMounts()
-        end
-        local numPets = 0
-        if C_PetJournal and C_PetJournal.GetNumPets then
-            _, numPets = C_PetJournal.GetNumPets()
-        end
-        local totalPoints = GetTotalAchievementPoints()
-        print("|cffFF7D0A=== [LoboExporter: Resumen de Progreso] ===|r")
-        print("🏆 |cff00FF00Puntos de Logro:|r " .. (totalPoints or 0))
-        print("🐎 |cff00FF00Monturas en diario:|r " .. (numMounts or 0))
-        print("🐾 |cff00FF00Mascotas en diario:|r " .. (numPets or 0))
-        print("💰 |cff00FF00Oro actual:|r " .. GetCoinTextureString(GetMoney()))
-        return
-    end
+    if msg == "debug" then SlashCmdList["LOBOEXPORTER"]("debug"); return end
+    if msg == "progreso" or msg == "stats" then SlashCmdList["LOBOEXPORTER"]("progreso"); return end
     if msg == "raidloot" then
         if not UIFrame:IsShown() then UIFrame:Show() end
-        EditBox:SetText("Extrayendo objetos de las bandas de Legion... (Esto puede tardar unos segundos, el juego no se congelará)")
-        
-        ExportRaidLootAsync(function(json)
-            if not LoboExporterDB then LoboExporterDB = {} end
-            LoboExporterDB.RaidLoot = json
-            EditBox:SetText("¡Completado! La lista es demasiado grande (" .. string.len(json) .. " caracteres) para mostrarse aquí.\n\nSe ha guardado automáticamente en la base de datos del AddOn.\n\nSimplemente pon /reload en el chat para que el juego lo guarde en el disco (WTF).")
-            EditBox:SetFocus()
-            print("|cffFF7D0A[LoboExporter]|r Exportación de Raid BiS guardada en LoboExporterDB. ¡Pon /reload en el chat para guardar a disco!")
-        end)
+        SelectTab(2)
+        ExportRaidBtn:Click()
         return
     end
     if msg == "dungeonloot" then
         if not UIFrame:IsShown() then UIFrame:Show() end
-        EditBox:SetText("Extrayendo objetos de las mazmorras de Legion... (Esto puede tardar unos segundos, el juego no se congelará)")
-        
-        ExportDungeonLootAsync(function(json)
-            if not LoboExporterDB then LoboExporterDB = {} end
-            LoboExporterDB.DungeonLoot = json
-            EditBox:SetText("¡Completado! La lista es demasiado grande (" .. string.len(json) .. " caracteres) para mostrarse aquí.\n\nSe ha guardado automáticamente en la base de datos del AddOn.\n\nSimplemente pon /reload en el chat para que el juego lo guarde en el disco (WTF).")
-            EditBox:SetFocus()
-            print("|cffFF7D0A[LoboExporter]|r Exportación de Dungeon BiS guardada en LoboExporterDB. ¡Pon /reload en el chat para guardar a disco!")
-        end)
+        SelectTab(2)
+        ExportDungeonBtn:Click()
         return
     end
-    if msg == "bikini" then
+    if msg == "verificar" then
+        -- Abre el addon directamente en la pestaña "Exportar Personaje",
+        -- donde está el botón "Obtener Token para IA (Discord)". No genera
+        -- el token automáticamente, solo lleva al jugador a la opción.
         if not UIFrame:IsShown() then UIFrame:Show() end
-        EditBox:SetText("Consultando la base de datos de Blizzard... (Forzando caché de objetos, espera 1.5s)")
-        
-        -- Forzar al cliente a pedir los datos de todos los objetos al servidor
-        for _, ids in pairs(BIKINI_PLATES_IDS) do
-            for _, itemID in ipairs(ids) do
-                GetItemInfo(itemID)
-            end
-        end
-        
-        -- Esperar 1.5 segundos para que el servidor responda y llene la caché
-        C_Timer.After(1.5, function()
-            EditBox:SetText(GetBikiniDataJSON())
-            EditBox:SetFocus()
-            EditBox:HighlightText()
-            print("|cffFF7D0A[LoboExporter]|r Datos de transfiguración (Bikini Plate) listos para copiar.")
-        end)
+        SelectTab(3)
         return
     end
-    if string.sub(msg, 1, 6) == "search" then
-        local query = strtrim(string.sub(msg, 7))
-        if query == "" then query = "Frondavil" end
-        if not UIFrame:IsShown() then UIFrame:Show() end
-        SearchEditBox:SetText(query)
-        PerformSearch(query)
-        return
-    end
-    if UIFrame:IsShown() then
-        UIFrame:Hide()
-    else
-        UIFrame:Show()
-    end
+
+    if UIFrame:IsShown() then UIFrame:Hide() else UIFrame:Show() end
 end
 
 local EventFrame = CreateFrame("Frame")
 EventFrame:RegisterEvent("ADDON_LOADED")
 EventFrame:SetScript("OnEvent", function(self, event, arg1)
     if arg1 == ADDON_NAME then
-        print("|cffFF7D0A[LoboExporter]|r AddOn cargado (con LoboTracker de Mapa). Escribe |cff00FF00/lex|r para opciones.")
+        if not LoboExporterDB.ExportStatus then LoboExporterDB.ExportStatus = {} end
+        print("|cffFF7D0A[LoboExporter]|r AddOn cargado. Escribe |cff00FF00/lex|r para opciones.")
     end
 end)

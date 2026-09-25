@@ -1,0 +1,12 @@
+tag 430bc02bd1fec80d5468ea8c8e3d36f3cef26045 v1.0.5
+Author:	Alex Ford <alex.ford@codetunnel.com>
+Date:	Sun Jul 15 17:30:16 2018 -0600
+
+Upgrading fix version to 1.0.5.
+
+commit 787d844b9c2daf2bd697f3c11073433d8d1b3bc8
+Author: Alex Ford <alex.ford@codetunnel.com>
+Date:   Wed Jul 11 15:16:03 2018 -0600
+
+    Minor bug fixes.
+
