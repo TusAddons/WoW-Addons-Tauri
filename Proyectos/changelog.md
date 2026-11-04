@@ -1,4 +1,12 @@
 
+## WarpDeplete (nuevo — recreación desde cero para Legion 7.3.5)
+- **Temporizador minimalista de Míticas+ estilo Retail**: recreación completa de **WarpDeplete** adaptada nativamente al cliente Legion 7.3.5 (Tauri WoW), sin errores Lua y con la misma estética limpia y moderna (fuente *Expressway* y texturas planas incluidas).
+- **Barras dinámicas de cofres (+1 / +2 / +3)**: barra de tiempo particionada con marcadores para +3 (60%), +2 (80%) y +1 (100%), sincronizada a 10Hz con `GetWorldElapsedTime(1)` y bloqueo automático durante los 10 segundos de la barrera inicial.
+- **Tiempos parciales (Splits) y Mejor Marca Personal (PB)**: seguimiento de objetivos de jefes mediante `C_Scenario.GetCriteriaInfo`, guardando automáticamente tus mejores tiempos por mazmorra, nivel de piedra y jefe para mostrar el diferencial en vivo (`-mm:ss` en verde / `+mm:ss` en rojo).
+- **Barra dual de Fuerzas Enemigas y alerta al 100%**: muestra el porcentaje actual y el progreso estimado del pull en curso, con tokens personalizables (`:percent`, `:count`, `:total`, `:pull`) y efecto de resplandor (`LibCustomGlow-1.0`) al alcanzar el 100% de trash.
+- **Contador de muertes inteligente**: registra las muertes reales del grupo (+5s de penalización por muerte), ignora *Fingir muerte* de cazadores y muestra el desglose completo por jugador y hora en el tooltip al pasar el ratón.
+- **Modo Demo, panel de opciones completo y traducción al español**: incluye vista previa interactiva (`/wd demo`), bloqueo/arrastre libre (`/wd unlock`, `/wd lock`, `/wd reset`), menú completo en `/wd` y traducción íntegra al español (`esES`/`esMX`).
+
 ## DragonflightUI (actualización — arreglos visuales del micromenú + más fixes)
 - **Escudo de hermandad descuadrado**: Blizzard mete un frame hijo (`GuildMicroButtonTabard`) encima del botón con su propio anclaje interno cuando estás en una hermandad, y no había forma limpia de recolocarlo bien. Se esconde ese frame para que se vea el icono plano del addon, consistente con el resto de botones del micromenú (antes se veía el tabardo real pero desplazado hacia abajo).
 - **Botón de "Buscar grupo" sin estilizar**: el addon buscaba el global `LFGMicroButton` (nombre usado en clientes más modernos) pero en este cliente se llama `LFDMicroButton` — como no lo encontraba, nunca lo tocaba y se quedaba con el aspecto nativo de Blizzard (con marco, sin pegar con el resto). Corregidas las 5 referencias.

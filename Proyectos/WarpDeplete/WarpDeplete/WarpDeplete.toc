@@ -1,0 +1,25 @@
+## Interface: 70300
+## Title: WarpDeplete
+## Notes: Flexible and minimalist Mythic+ timer and tracker.
+## Notes-esES: Temporizador y rastreador flexible y minimalista para Míticas+.
+## Notes-ruRU: WarpDeplete - таймер для М+ подземелий с гибкими настройками
+## Author: Happens (Recreated for Legion 7.3.5)
+## Version: 1.0.0
+## SavedVariables: WarpDepleteDB
+## IconTexture: Interface\AddOns\WarpDeplete\logo
+## X-Category: Mythic+ Dungeons
+## X-License: MIT
+## X-Website: https://github.com/TusAddons/WoW-Addons-Tauri
+
+embeds.xml
+Locales\Load_Locales.xml
+
+Core.lua
+Util.lua
+DB.lua
+Timer.lua
+State.lua
+Render.lua
+Splits.lua
+Events.lua
+Options.lua
